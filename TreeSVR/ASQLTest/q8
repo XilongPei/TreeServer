@@ -1,0 +1,11 @@
+database lz
+from (scope:bh,"11111111111111","11111111111111")lz1
+to cx.dbf,*
+
+
+cond
+begin
+
+bh="11111111111111" $ record(@1)
+end
+act initrec(1);apprec(1,lz1.bh:="11111111111111",lz1.name:="pan")

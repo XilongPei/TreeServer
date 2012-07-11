@@ -1,0 +1,27 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>记录号</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><strong><span style="font-size: 12px">记录号(recno)</span></strong></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]LONG_TYPE recno( &lt;域名&gt; 
+    或&lt;数据源标识&gt;)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]&lt;数据源标识&gt;是对数据源进行标识的一个整数，第一张表为1，其它往下排……。该函数通过指定的域名传回指定数据源中数据表的当前记录号。如果指定工作区中没有数据库被打开，则函数返回值为0；若数据库是空的，函数返回值为1。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">第一条记录的记录号为1。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">若记录指针在文件中移动而且超过最后一个记录，那么该函数就会传回一个比数据库中总记录的数目大于1的值。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]刚打开文件SUB0.DBF，recno(code)的值为1。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> ASQL支持的数据源，缺省时是一种在DBF基础上开发的数据库系统（在不指定ODBC，也不指定SQL时），它支持记录号，认为每条记录是有物理顺序的，只有该表不被任何人操作了，记录的位置才可能被调整（视数据字典内的定义），所以可以用记录号来标识记录。事实上ASQL的视图就是这样实现的。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

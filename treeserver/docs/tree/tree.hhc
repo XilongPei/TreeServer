@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="Window Styles" value="0x800025">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="事务代理服务器TreeSVR技术大全">
+		<param name="Local" value="index.htm">
+		<param name="ImageNumber" value="21">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="TreeSVR的定位">
+		<param name="Local" value="TreeSVR的定位.htm">
+		<param name="ImageNumber" value="21">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="目录">
+		<param name="Local" value="目录.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第一章">
+		<param name="Local" value="第一章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="TreeSVR安装">
+			<param name="Local" value="1_2.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="目录结构">
+			<param name="Local" value="1_3.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="运行前设置">
+			<param name="Local" value="1_4.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="运行">
+			<param name="Local" value="1_5.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="系统的优化">
+			<param name="Local" value="1_6.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="客户访问">
+			<param name="Local" value="1_7.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="用户管理">
+			<param name="Local" value="1_8.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第二章">
+		<param name="Local" value="第二章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="服务系统构架">
+			<param name="Local" value="2_1.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="软件构架">
+			<param name="Local" value="2_2.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="引擎开发">
+			<param name="Local" value="2_3.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="应用程序界面（API）">
+			<param name="Local" value="2_4.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第三章">
+		<param name="Local" value="第三章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="操作系统安全">
+			<param name="Local" value="3_1.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="服务器安全">
+			<param name="Local" value="3_2.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="事务安全">
+			<param name="Local" value="3_3.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="数据库安全">
+			<param name="Local" value="3_4.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="对象授权办法">
+			<param name="Local" value="3_5.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第四章">
+		<param name="Local" value="第四章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="什么是事务处理">
+			<param name="Local" value="4_1.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="快速事务提交">
+			<param name="Local" value="4_2.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第五章">
+		<param name="Local" value="第五章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="TREESERVER与服务引擎间通讯协议">
+			<param name="Local" value="5_1.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="客户请求函数接口">
+			<param name="Local" value="5_2.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="用户管理">
+			<param name="Local" value="5_3.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第六章">
+		<param name="Local" value="第六章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="WEB方式信息系统">
+			<param name="Local" value="6_1.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="WEB上的静态信息与动态信息">
+			<param name="Local" value="6_2.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="网络计算方式信息系统特点">
+			<param name="Local" value="6_3.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第七章">
+		<param name="Local" value="第七章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="内部WEB方式信息系统配置">
+			<param name="Local" value="7_1.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Windows NT技术准备">
+			<param name="Local" value="7_2.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="关于配置TDC.DLL中环境的几点问题">
+			<param name="Local" value="7_3.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第八章">
+		<param name="Local" value="第八章.htm">
+		<param name="ImageNumber" value="2">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第九章">
+		<param name="Local" value="第九章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="历史数据管理的重要性">
+			<param name="Local" value="9_1.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="构成历史数据的数据分类">
+			<param name="Local" value="9_2.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="历史数据采集与分析的机制">
+			<param name="Local" value="9_3.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="历史数据采集与分析">
+			<param name="Local" value="9_4.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="历史数据采集条件样例">
+			<param name="Local" value="9_5.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第十章">
+		<param name="Local" value="第十章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第十一章">
+		<param name="Local" value="第十一章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第十二章">
+		<param name="Local" value="第十二章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="服务器端">
+			<param name="Local" value="12_1.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="客户端">
+			<param name="Local" value="12_2.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第十三章">
+		<param name="Local" value="第十三章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="服务器端支持函数">
+			<param name="Local" value="13_1.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="客户端支持函数">
+			<param name="Local" value="13_2.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第十四章">
+		<param name="Local" value="第十四章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="结构定义">
+			<param name="Local" value="14_1.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第十六章">
+		<param name="Local" value="第十六章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="第十五章">
+		<param name="Local" value="第十五章.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+</UL>
+</BODY></HTML>

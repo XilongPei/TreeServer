@@ -1,0 +1,35 @@
+pred
+	long x[10,10]
+from odbc:sybase_stray,spgl,spgl123,select * from TEST_T
+cond
+begin
+	stat x
+	#y1: 1
+	#y2: user_id = "2"
+	#y3: user_id = "3"
+	#y4: user_id = "4"
+	#y5: user_id = "5"
+	#y6: user_id = "6"
+	#y7: user_id = "7"
+	#y8: user_id = "8"
+	#y9: user_id = "9"
+	#y10: user_id = "1"
+	#y11: user_id = "2"
+	#y12: user_id = "3"
+	#y13: user_id = "4"
+	#y14: user_id = "5"
+	#y15: user_id = "6"
+	#y16: user_id = "7"
+	#y17: user_id = "8"
+	#y18: user_id = "9"
+	#x1:  1
+	#x2:  user_id = "*2"
+	#x3:  user_id = "*3"
+	#x4:  user_id = "*4"
+	#x5:  user_id = "*5"
+	#x6:  user_id = "*6"
+	#x7:  user_id = "*7"
+	#x8:  user_id = "*8"
+	#x9:  user_id = "*9"
+end
+act warray("e:\\test",x)

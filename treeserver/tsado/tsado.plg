@@ -1,0 +1,62 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: tsado - Win32 Release MinSize--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\TEMP\RSP109.tmp" with contents
+[
+/nologo /MD /W3 /GX /O1 /I "../tscapi" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /D "_ATL_DLL" /Fp"ReleaseMinSize/tsado.pch" /Yu"stdafx.h" /Fo"ReleaseMinSize/" /Fd"ReleaseMinSize/" /FD /c 
+"F:\MyProjects\TreeServer\tsado\AboutBox.cpp"
+"F:\MyProjects\TreeServer\tsado\Command.cpp"
+"F:\MyProjects\TreeServer\tsado\tsado.cpp"
+]
+Creating command line "cl.exe @C:\TEMP\RSP109.tmp" 
+Creating temporary file "C:\TEMP\RSP10A.tmp" with contents
+[
+/nologo /MD /W3 /GX /O1 /I "../tscapi" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /D "_ATL_DLL" /Fp"ReleaseMinSize/tsado.pch" /Yc"stdafx.h" /Fo"ReleaseMinSize/" /Fd"ReleaseMinSize/" /FD /c 
+"F:\MyProjects\TreeServer\tsado\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\TEMP\RSP10A.tmp" 
+Creating temporary file "C:\TEMP\RSP10B.tmp" with contents
+[
+WSOck32.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"ReleaseMinSize/tsado.pdb" /machine:I386 /def:".\tsado.def" /out:"ReleaseMinSize/tsado.dll" /implib:"ReleaseMinSize/tsado.lib" 
+.\ReleaseMinSize\AboutBox.obj
+.\ReleaseMinSize\Command.obj
+.\ReleaseMinSize\StdAfx.obj
+.\ReleaseMinSize\tsado.obj
+.\ReleaseMinSize\tsado.res
+..\tscapi\Debug\Tscapi.lib
+]
+Creating command line "link.exe @C:\TEMP\RSP10B.tmp"
+Creating temporary file "C:\TEMP\RSP10C.bat" with contents
+[
+@echo off
+regsvr32 /s /c ".\ReleaseMinSize\tsado.dll"
+echo regsvr32 exec. time > ".\ReleaseMinSize\regsvr32.trg"
+]
+Creating command line "C:\TEMP\RSP10C.bat"
+Compiling...
+StdAfx.cpp
+Compiling...
+AboutBox.cpp
+Command.cpp
+tsado.cpp
+Generating Code...
+Linking...
+   Creating library ReleaseMinSize/tsado.lib and object ReleaseMinSize/tsado.exp
+<h3>Output Window</h3>
+Performing registration
+RegSvr32: LoadLibrary(".\ReleaseMinSize\tsado.dll") failed.
+GetLastError returns 0x0000007e.
+
+
+
+
+<h3>Results</h3>
+tsado.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

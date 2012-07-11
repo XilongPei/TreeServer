@@ -1,0 +1,142 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>DBTREE接口函数</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>DBTREE接口函数</b></span></p>
+    <p><span style="font-size: 12px">DBTREE是一个称为“通用数据存储容器(G_D_C)”的一个数据存储管理函数集。它的特点是通过关键字来标识每个要存的信息，在存、取时都需给出这个关键字，而具体存储内容则邮DBTREE负责管理。</span></p>
+    <p><span style="font-size: 12px">DBTREE是一棵B+树，只是在个棵树的文件内容又有许多“数据结点”，这些“数据结点”存的是与B+树无关的数据，B+树叶子上的关键字的附属信息记录了这些数据结点的定位信息。如图8.1所示。</span></p>
+    <p><span style="font-size: 12px"><img SRC="../asql/images/Image4.gif" WIDTH="516"
+    HEIGHT="497"></span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px">图8.1 DBTREE的存储</span></p>
+    <p><span style="font-size: 12px">采用DBTREE的好处是不用再关心文件的定义格式及其I/O的缓冲等问题，用户只关心自己的数据就可以了。因为没有了具体的存储格式，所以文件格式的版本控制就相对来说容易得多了。</span></p>
+    <b><p><span style="font-size: 12px">接口函数定义：</span></p>
+    </b><p ALIGN="JUSTIFY"><span style="font-size: 12px">/* C语言定义的DBTREE接口函数<br>
+    * bHEAD 是一个内部定义的结构，使用时可以用void *代替*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">_declspec(dllimport) int WINAPI 
+    writeBtreeData(bHEAD *b_head, char *keyBuf, char *data, int dataLen);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">_declspec(dllimport) char * WINAPI 
+    readBtreeData(bHEAD *b_head, char *keyBuf, char *data, int dataLen);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">_declspec(dllimport) int WINAPI 
+    freeBtreeData(bHEAD *b_head, char *keyBuf);<br>
+    _declspec(dllimport) int WINAPI dbTreeClose( bHEAD *b_head );<br>
+    _declspec(dllimport) short dbTreeDispose(bHEAD *b_head);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">_declspec(dllimport) long WINAPI 
+    getBtreeDataLen(bHEAD *b_head, char *keyBuf);<br>
+    _declspec(dllimport) long WINAPI getBtreeError( void );<br>
+    _declspec(dllimport) void WINAPI freeBtreeMem(char *s);<br>
+    _declspec(dllimport) int WINAPI dbTreeBuild(char *ndxName, short keyLen, short nodeSize);<br>
+    _declspec(dllimport) bHEAD * WINAPI dbTreeOpen(char *ndxName);<br>
+    _declspec(dllimport) long int dbTreeSeek( bHEAD *b_head, char *keyContent );<br>
+    _declspec(dllimport) char * dbTreeGetKeyContent( bHEAD *b_head );<br>
+    _declspec(dllimport) long int dbTreeSkip( bHEAD *b_head, long int count );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* Return:<br>
+    * Success: the record no<br>
+    * Fail: 0 (error no in BtreeErr), negative of the record<br>
+    * no(cannot skip so much steps, skip to the limit)*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">_declspec(dllimport) long int 
+    dbTreeGoTop( bHEAD *b_head );<br>
+    _declspec(dllimport) long int dbTreeGoBottom( bHEAD *b_head );<br>
+    _declspec(dllimport) short dbTreeEof( bHEAD *b_head );<br>
+    _declspec(dllimport) int WINAPI dbTreeFlush( bHEAD *b_head );</span></p>
+    <b><p><span style="font-size: 12px">接口函数说明：</span></p>
+    </b><p><span style="font-size: 12px">注意：</span></p>
+    <p><span style="font-size: 12px">bHEAD * 
+    是一个内部存储结构，引用时将其看作void *就可。</span></p>
+    <p><span style="font-size: 12px">因DBTREE内部将关键字当作二进制看，所以传给DBTREE的关键字一定注意位数与建立DBTREE文件时一</span></p>
+    <p><span style="font-size: 12px">1.创建文件</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">int WINAPI dbTreeBuild(char *ndxName, 
+    short keyLen, short nodeSize);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ndxName为文件名，keyLen为关键字长，nodeSize为结点大小，通常为256,512,1024,2048,4096等，视存储信息的通常规模而定。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">2.打开文件</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">bHEAD * WINAPI dbTreeOpen(char *ndxName);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：ndxName：文件名</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">3.关闭文件</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">int WINAPI dbTreeClose( bHEAD *b_head );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：释放打开文件所点资源。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">4. 放弃文件</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">short dbTreeDispose(bHEAD *b_head);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：不存盘，关文件</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">5.写数据</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">int WINAPI writeBtreeData(bHEAD *b_head, 
+    char *keyBuf, char *data, int dataLen);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：dataLen：data空间大小。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">如果相应关键字已有内容，则覆盖写，否则，添加。返回0为成功，其它不成功。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">6.读数据</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">char * WINAPI readBtreeData(bHEAD 
+    *b_head, char *keyBuf, char *data, int dataLen);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：如要data为NULL，则函数内部申请空间。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">7.释放数据，删除数据</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">int WINAPI freeBtreeData(bHEAD *b_head, 
+    char *keyBuf);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：删记录。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">8.取数据长</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">long WINAPI getBtreeDataLen(bHEAD 
+    *b_head, char *keyBuf);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：取不出来返回:-1无数据，-2有关键字但无数据体</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">9.读镆误信息</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">long WINAPI getBtreeError( void );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：读错误号。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">10.内存空间释放</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">void WINAPI freeBtreeMem(char *s);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：释放readBtreeData可能申请的空间。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">11.关键字寻找</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">long int dbTreeSeek( bHEAD *b_head, char 
+    *keyContent );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：查打记录，看其存在否。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">12.读关键字</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">char * dbTreeGetKeyContent( bHEAD *b_head 
+    );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：读当前记录的关键字</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">13.跳一条记录</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">long int dbTreeSkip( bHEAD *b_head, long 
+    int count );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">14.到记录集的顶</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">long int dbTreeGoTop( bHEAD *b_head );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：到记录集的顶</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">15.到记录集的尾</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">long int dbTreeGoBottom( bHEAD *b_head );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：到记录集的尾</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">16.测尾</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">short dbTreeEof( bHEAD *b_head );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：至记录集的最后一条记录则返回1，其它返回0。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">17.刷新缓冲区</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">int WINAPI dbTreeFlush( bHEAD *b_head );</span></p>
+    <p><span style="font-size: 12px">说明：刷新缓冲区</span></p>
+    <b><p><span style="font-size: 12px">接口程序示例：</span></p>
+    </b><p ALIGN="JUSTIFY"><span style="font-size: 12px">/*DBTREE引用示例C程序*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">int testDbtree(){<br>
+    void *bh;<br>
+    char buf[4096];<br>
+    char *s;<br>
+    int i;<br>
+    dbTreeBuild(&quot;gdcname&quot;, 6, 512);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*创建这个文件，关键字6个字符长，结点512字节大*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">bh = dbTreeOpen(&quot;gdcname&quot;);<br>
+    strcpy(buf, &quot;David &quot;); /*注意传给DBTREE的关键字长度与事先声明的一致*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">i = writeBtreeData(bh, &amp;abc, buf, 
+    strlen(buf)+1);<br>
+    if( i != 0 )<br>
+    printf(&quot;write error\n&quot;);<br>
+    s=readBtreeData(bh, buf, NULL, 4096);<br>
+    printf(&quot;%s\n&quot;, s);<br>
+    freeBtreeMem(s);<br>
+    s=readBtreeData(bh, buf, buf, 4096);<br>
+    printf(&quot;%s\n&quot;, s);<br>
+    dbTreeClose(bh);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">}</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

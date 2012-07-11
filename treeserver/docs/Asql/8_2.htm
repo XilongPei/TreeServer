@@ -1,0 +1,104 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>ASQL服务器版</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><b><span style="font-size: 12px">ASQL服务器版</span></b></p>
+    <p><span style="font-size: 12px">ASQL 可在 Windows NT(4.0) 
+    及其以后版本的服务器上运行。ASQL 服务器版实现了：</span></p>
+    <p><span style="font-size: 12px">(1) 事务服务的线程化</span></p>
+    <p><span style="font-size: 12px">Windows NT 
+    提供了强大的线程调度能力。线程共享同一进程地址空间，ASQL 
+    每一用户服务对应一个线程，采用线程可大大的降低上下文切换费用，减少系统资源开销。各个数据库系统的事务逻辑、并发机制、全面缓冲管理、快速事务结果提交等功能融合到一个进程内。</span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px"><img SRC="../asql/images/Image5.gif"
+    WIDTH="510" HEIGHT="547"></span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px">图6.1 ASQL服务器版软件架构</span></p>
+    <p><span style="font-size: 12px">(2) 用户服务的并发</span></p>
+    <p><span style="font-size: 12px">ASQL 
+    在系统初始化时就创建了多个服务线程，当一个事务请求来到时，自动为其分配一个线程予以执行，事务结束后线程挂起。这样保证了多个用户的并发访问，同时也减少了每次创建线程的系统开销，提高了响应的速度。</span></p>
+    <p><span style="font-size: 12px">(3) 基于事务的安全审计</span></p>
+    <p><span style="font-size: 12px">数据库系统的安全审计是基于表的，用户一旦取得对于某张表的存取权限，就可以对该表的每条记录实施这种被授权的操作。ASQL 
+    允许在事务一级的审计。</span></p>
+    <p><span style="font-size: 12px">考虑一下火车票售票的例子：</span></p>
+    <p><span style="font-size: 12px">铁路系统对某一群体实施售出一张软卧票，则该包厢内的其它票就不可再售出，既该旅客虽然只买了一张票，但整个包厢就都被占有。而办理该项业务的售票员是要被授权的，在基于表格的安全审计中，这是需要在客户端软件中进行约束的，若基于事务的安全审计系统，则允许利用服务器进行统一的管理。</span></p>
+    <p><span style="font-size: 12px">(4) 提供了基于 Web 访问的接口</span></p>
+    <p><span style="font-size: 12px">随着数据库系统和 Internet 技术的发展，Web 
+    应用被引入信息系统，形成浏览器/服务器方式。ASQL 内置了对 Web 
+    的接口支持，使客户端可以方便地基于浏览器构造应用。例如如下的一个简单查询， 
+    包含三部分：</span></p>
+    <p><span style="font-size: 12px">主控查询页面文档，负责构造ASQL查询条件。它引用了查询脚本。</span></p>
+    <p><span style="font-size: 12px">&lt;HTML&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;HEAD&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;META HTTP-EQUIV=&quot;Content-Type&quot; 
+    CONTENT=&quot;text/html; charset=gb_2312-80&quot;&gt;<br>
+    &lt;META NAME=&quot;Generator&quot; CONTENT=&quot;Microsoft Frontpage 97&quot;&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;TITLE&gt; &lt;/TITLE&gt;<br>
+    &lt;/HEAD&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;BODY LINK=&quot;#0000ff&quot; 
+    BACKGROUND=&quot;Image13.gif&quot;&gt;<br>
+    &lt;P&gt;数据库查询&lt;/P&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;FORM ACTION=&quot;/scripts/DConnector.dll&quot; 
+    METHOD=POT&gt;<br>
+    &lt;INPUT TYPE=HIDDEN NAME=&quot;TDC_FILE&quot; 
+    VALUE=&quot;d:\inetpub\scripts\mwd\HELLO.TDC&quot;&gt;</span></p>
+    <p><span style="font-size: 12px">From :<br>
+    &lt;INPUT NAME=&quot;VAR_FROM&quot;&gt;</span></p>
+    <p><span style="font-size: 12px">Sex =<br>
+    &lt;INPUT NAME=&quot;SEX&quot;&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;br&gt;&lt;br&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;INPUT TYPE=SUBMIT VALUE=&quot;提交&quot;&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;/FORM&gt;<br>
+    &lt;/BODY&gt;<br>
+    &lt;/HTML&gt;</span></p>
+    <p><span style="font-size: 12px">结果输出模板文件</span></p>
+    <p><span style="font-size: 12px">&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD 
+    HTML//EN&quot;&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;html&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;head&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;meta http-equiv=&quot;Content-Type&quot; 
+    content=&quot;text/html; charset=gb_2312-80&quot;&gt;<br>
+    &lt;meta name=&quot;GENERATOR&quot; content=&quot;Microsoft FrontPage 2.0&quot;&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;title&gt;TreeServer-Internet数据库连接器&lt;/title&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;/head&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;body bgcolor=&quot;#FFFFFF&quot;&gt;<br>
+    &lt;h2 align=&quot;center&quot;&gt;<br>
+    &lt;font color=&quot;#8080FF&quot;&gt;TreeServer-Internet连接器测试&lt;/font&gt;&lt;/h2&gt;<br>
+    &lt;h3 align=&quot;center&quot;&gt;&lt;font color=&quot;#8080FF&quot;&gt;From : 
+    %VAR_FROM%&lt;/font&gt;&lt;/h3&gt;<br>
+    &lt;div align=&quot;center&quot;&gt;&lt;center&gt;<br>
+    &lt;table border=&quot;3&quot;&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;%begindetail%&gt;<br>
+    &lt;tr&gt;<br>
+    &lt;td&gt;Record : &lt;/td&gt;<br>
+    &lt;td&gt;%name%&lt;/td&gt;<br>
+    &lt;/tr&gt;<br>
+    &lt;%enddetail%&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;/table&gt;<br>
+    &lt;/center&gt;&lt;/div&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;h3 align=&quot;center&quot;&gt;&lt;font 
+    color=&quot;#8080FF&quot;&gt;From : %VAR_FROM%&lt;/font&gt;&lt;/h3&gt;<br>
+    &lt;h3 align=&quot;center&quot;&gt;&lt;font color=&quot;#8080FF&quot;&gt;Everything is 
+    done!&lt;/font&gt;&lt;/h3&gt;</span></p>
+    <p><span style="font-size: 12px">&lt;/body&gt;<br>
+    &lt;/html&gt;</span></p>
+    <p><span style="font-size: 12px">查询脚本</span></p>
+    <p><span style="font-size: 12px">act webprint( &quot;name&quot;, &quot;\n&quot; ) /* 
+    先传回域信息，以回车结束*/<br>
+    from %VAR_FROM% /* from d:\projects\lz0.dbf */</span></p>
+    <p><span style="font-size: 12px">condition<br>
+    begin<br>
+    sex = &quot;%SEX%&quot; $ webprint( name )<br>
+    end</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

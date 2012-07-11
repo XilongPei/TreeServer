@@ -1,0 +1,77 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>概述</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><strong><font size="2">汉字替换概述</font></strong></p>
+    <ol style="font-size: 12px">
+      <li><span style="font-size: 12px">概述</span></li>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px"><br>
+      在信息系统中，用汉字作为信息存储的方式是不合理的，其主要原因有：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">1. 
+      用汉字表示具有共性的信息，往往会存在二义性，如助工、 
+      助理工程师及工程系列的初级职称等说法，在汉语中表示的意思都是相同的。但是在计算机进行识别和处理时，却认为这是描述了三个不同的对象。</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">2. 
+      汉字信息通常占有的存储空间数倍于代码信息， 
+      在信息的存储和传输时都是一个极大的浪费。</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">3. 
+      用汉字来描述对象的最大缺点是数据的不规范性， 
+      数据的不规范导致信息的可用性很差，而且无法共享。</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">由于上述的三个原因，信息必须进行编码，使一个对象仅用一个代码来表示，以便于信息的存储、信息的处理和信息的规范化。</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　将复杂的事物划分为有规律的事物系列和对象，并按照一定的规则给定一个字符串用于唯一地标定该对象，这就是编码。</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">在信息的存储、处理和传输时均采用代码的形式，在显示信息内容或信息的打印输出时则将代码信息转换成汉字信息，这就是汉字替换，这是管理信息系统的基本要求。</span></p>
+      <li><span style="font-size: 12px">汉字替换的应用<br>
+        <br>
+        下面结合一个劳资人事系统（《劳动部劳资人事管理系统》）中代码的应用进行讨论。</span><p
+        ALIGN="JUSTIFY"><span style="font-size: 12px">　　在信息系统中主要的功能是：数据库维护、查询、统计分析和事务处理。以上功能与汉字替换有关的主要有以下几方面：</span></p>
+        <ol>
+          <li><p ALIGN="JUSTIFY"><span style="font-size: 12px">数据库维护<br>
+            <br>
+            数据库维护的主要功能是增、删、改。就是将数据录入到系统中，并对数据库中的数据进行修改和删除。在增、删、改的过程中，数据处理对象是代码，而用户所需看到的则应是汉字信息。</span></p>
+          </li>
+          <li><p ALIGN="JUSTIFY"><span style="font-size: 12px">查询<br>
+            <br>
+            在查询的整个过程中，其系统内部处理对象都是代码，但与用户交互形成条件的提示和处理结果，在显示和打印时用户需得到的结果则是汉字信息。</span></p>
+          </li>
+          <li><p ALIGN="JUSTIFY"><span style="font-size: 12px">条件编辑<br>
+            <br>
+            统计程序是独立于统计条件和数据的，不同的统计要求只和统计条件有关，为了使用户编辑统计条件更为方便，在系统中设计条件编辑器作为软件工具是一明智之举，使统计条件的编辑更为方便。统计条件编辑中有关域名和代码条件都能用汉字进行提示。</span></p>
+          </li>
+          <li><p ALIGN="JUSTIFY"><span style="font-size: 12px">事务处理</span></p>
+          </li>
+        </ol>
+        <p ALIGN="JUSTIFY"><span style="font-size: 12px">总结以上系统中各功能中的汉字替换的要求，可以将汉字替换归结为以下三方面：</span></p>
+        <ol>
+          <li><p ALIGN="JUSTIFY"><span style="font-size: 12px">汉字信息显示<br>
+            <br>
+            &nbsp;&nbsp;&nbsp; 
+            汉字信息显示有两个方面：一个是在数据录入时，另一个是查询结果的显示或打印。　　数据录入是将相应的代码录入到数据库中，为了使数据录入的屏幕直观，并易于操作，我们将数据录入设计成为一定的格式，用中文提示出所需录入数据的内容，在录入时键入的是代码，录入后立即显示出汉字信息，以便于检查和校对。这就是即时替换。</span></p>
+            <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　在查询结果显示时，由于查询是将数据库中的部分信息按给定的查询条件取出，所以取出的是代码信息，为了便于用户查看查询结果库中的信息，应将这些代码信息转换成为汉字信息。</span></p>
+          </li>
+          <li><p ALIGN="JUSTIFY"><span style="font-size: 12px">汉字信息打印<br>
+            <br>
+            &nbsp;&nbsp;&nbsp; 
+            在信息系统中有大量的名册要打印，例如花名册和各类人员名册的打印；还有呈报表，履历表等，这些报表的打印都是将有关信息先查询出来，再经过汉字替换然后再把汉字替换的结果打印出来。</span></p>
+            <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　汉字信息的打印主要包含在查询结果的打印中。</span></p>
+          </li>
+          <li><p ALIGN="JUSTIFY"><span style="font-size: 12px">代码提示<br>
+            <br>
+            　　按通常的思维习惯，用户熟悉的某个事物的特征是用汉字来描述的，要将这些信息按规范的代码送进计算机，首先要将这些汉字信息翻译成为代码信息。信息系统中在数据录入时和查询条件构造时需给出代码信息提示，以方便用户的操作。</span></p>
+          </li>
+        </ol>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

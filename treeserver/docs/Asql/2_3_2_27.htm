@@ -1,0 +1,76 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>统计X轴运算</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>统计X轴运算(statx)</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]statx(列号,数组）</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]列号，从0开始计。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">做统计运算时，此函数和staty()连用，对staty()置1的行进行列运算。它通过列号和staty()的行号与二维数组一一对应。列条件成立，则在二维数组相应位置+1，否则不动。最后数组中的数据即是相应的统计计数结果。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*求全员的年龄层次及相应的性别比例。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">PREDICATES<br>
+    LONG fxr(3,10)<br>
+    FROM \TG\DATA\SUB0.DBF<br>
+    CONDITION<br>
+    BEGIN<br>
+    STATISTICS fxr</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*行条件*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">AGE(BIRTHDAY)&lt;=&quot;25&quot; $ 
+    staty(1);<br>
+    AGE(BIRTHDAY)&lt;=&quot;30&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;26&quot; $ staty(2);<br>
+    AGE(BIRTHDAY)&lt;=&quot;35&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;31&quot; $ staty(3);<br>
+    AGE(BIRTHDAY)&lt;=&quot;40&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;36&quot; $ staty(4);<br>
+    AGE(BIRTHDAY)&lt;=&quot;45&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;41&quot; $ staty(5);<br>
+    AGE(BIRTHDAY)&lt;=&quot;50&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;46&quot; $ staty(6);<br>
+    AGE(BIRTHDAY)&lt;=&quot;55&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;51&quot; $ staty(7);<br>
+    AGE(BIRTHDAY)&lt;=&quot;60&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;56&quot; $ staty(8);<br>
+    AGE(BIRTHDAY)&gt;&quot;61&quot; $ staty(9);<br>
+    AGE(BIRTHDAY)&gt;&quot;0&quot; $ staty(10);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*列条件*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">SEX=1 $ statx(1,fxr);<br>
+    SEX=2 $ statx(2,fxr);<br>
+    SEX=1||SEX=2 $ statx(3,fxr);<br>
+    END<br>
+    ACTION warray(&quot;\\TG\\DATA\\CXMAIN.DBF&quot;,fxr)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">此程序完全可简化写成如下形式：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">PREDICATES<br>
+    LONG fxr(3,10)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\SUB0<br>
+    CONDITION<br>
+    BEGIN<br>
+    STATISTICS fxr<br>
+    #Y1: AGE(BIRTHDAY)&lt;=&quot;25&quot;;<br>
+    #Y2: AGE(BIRTHDAY)&lt;=&quot;30&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;26&quot;;<br>
+    #Y3: AGE(BIRTHDAY)&lt;=&quot;35&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;31&quot;;<br>
+    #Y4: AGE(BIRTHDAY)&lt;=&quot;40&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;36&quot;;<br>
+    #Y5: AGE(BIRTHDAY)&lt;=&quot;45&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;41&quot;;<br>
+    #Y6: AGE(BIRTHDAY)&lt;=&quot;50&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;46&quot;;<br>
+    #Y7: AGE(BIRTHDAY)&lt;=&quot;55&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;51&quot;;<br>
+    #Y8: AGE(BIRTHDAY)&lt;=&quot;60&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;56&quot;;<br>
+    #Y9: AGE(BIRTHDAY)&gt;&quot;61&quot;;<br>
+    #Y10: AGE(BIRTHDAY)&gt;&quot;0&quot;;<br>
+    #X1: SEX=1;<br>
+    #X2: SEX=2;<br>
+    #X3: SEX=1||SEX=2;<br>
+    END<br>
+    ACTION warray(&quot;\\TG\\DATA\\CXMAIN.DBF&quot;,fxr)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> Y1为行1条件，Y2为行2条件……</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">X1为列1条件，Y2为列2条件……</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">STATISTICS 数组变量</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">表示后面的对X轴的约束的计算方式为计数，如上例中，表满足X1，X2，X3条件的记录分别对其计数，计数结果放至相应统计数组的相应元素中。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">给出完善的行列行件定义，一张表的条件约束就算完成。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">统计结果通过函数warray()写至DBF文件中去。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>TreeSVR引擎开发规范---机构定义</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>机构定义</strong></p>
+    <p align="left"><strong>　</strong></p>
+    <b><font FACE="宋体" SIZE="3"><p></font><span style="font-size: 12px">数据结构定义：</span></b></p>
+    <p><span style="font-size: 12px">#define MAX_USER 16</span></p>
+    <p><span style="font-size: 12px">#define MAX_PASSWD 16</span></p>
+    <p><span style="font-size: 12px">#define MAX_COMPUTER 15</span></p>
+    <p><span style="font-size: 12px">typedef struct {</span></p>
+    <p><span style="font-size: 12px">CHAR szUser[MAX_USER+1]; </span></p>
+    <blockquote>
+      <blockquote>
+        <p><span style="font-size: 12px">// [IN] User's logon name.</span></p>
+      </blockquote>
+    </blockquote>
+    <p><span style="font-size: 12px">CHAR szPasswd[MAX_PASSWD+1]; </span></p>
+    <blockquote>
+      <blockquote>
+        <p><span style="font-size: 12px">// [IN] User's logon password.</span></p>
+      </blockquote>
+    </blockquote>
+    <p><span style="font-size: 12px">CHAR szComputer[MAX_COMPUTER+1]; </span></p>
+    <blockquote>
+      <blockquote>
+        <p><span style="font-size: 12px">// [IN] Client computer name.</span></p>
+      </blockquote>
+    </blockquote>
+    <p><span style="font-size: 12px">DWORD dwRequestId; </span></p>
+    <blockquote>
+      <blockquote>
+        <p><span style="font-size: 12px">// [IN][RESERVED] Indentfy the current request, use the 
+        threadID.</span></p>
+      </blockquote>
+    </blockquote>
+    <p><span style="font-size: 12px">// [OUT] IF Succrss, return the user's token handle.</span></p>
+    <p><span style="font-size: 12px">DWORD dwRequest; </span></p>
+    <blockquote>
+      <blockquote>
+        <p><span style="font-size: 12px">// [IN][RESERVED]. </span></p>
+      </blockquote>
+    </blockquote>
+    <p><span style="font-size: 12px">// [OUT] Error code.</span></p>
+    <p><span style="font-size: 12px">LPEXCHNG_BUF_INFO lpExchangeBuf; </span></p>
+    <blockquote>
+      <blockquote>
+        <p><span style="font-size: 12px">// [OUT] If success it point to the exchange buffer 
+        information, else is NULL.</span></p>
+      </blockquote>
+    </blockquote>
+    <p><span style="font-size: 12px">SYSTEMTIME Time; </span></p>
+    <blockquote>
+      <blockquote>
+        <p><span style="font-size: 12px">// [RESERVED] Current system time.</span></p>
+      </blockquote>
+    </blockquote>
+    <p><span style="font-size: 12px">} REQUEST, *PREQUEST, *LPREQUEST;</span></p>
+    <p><span style="font-size: 12px">　</span><b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">引擎定义概要说明：</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">// ProcessAttach( void ) 
+    固定的函数名，完成该引擎的初始化。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">_declspec( dllexport ) </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">DWORD ProcessAttach ( </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">void );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">// ProcessDetach( void ) 
+    固定的函数名，完成引擎的拆除。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">_declspec( dllexport )</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">VOID ProcessDetach ( </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">void );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">// EngineEntryPoint(...) 
+    引擎的入口函数原型。 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">// EngineEntryPoint 
+    是一个用户库定义函数名的占位符，</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">// 
+    在编译时一定指定真实的名字。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">_declspec( dllexport )</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">DWORD EngineEntryPoint (</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">LONG id, // [IN] 事务的唯一标识</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">LPSTR lpszSwapMem， // [IN/OUT] 
+    交换空间</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">LPDWORD dwSwapMemSize, //[IN/OUT] 
+    交换空间大小</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">LPREQUEST lpRequest //请求信息</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">)</span></p>
+    <p><span style="font-size: 12px">　</span><b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">EngineEntryPoint（）函数的lpRequest参数的lpExchangeBuf字段指向一个结构，引擎并不能将信息直接放到这里，要通过下面介绍的函数，cbResponse一般为4096，该结构缓冲区的大小。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">一般用户是通过一个称为包的数据结构传信息的，即写出的信息必须组织成这个包的形式。这个包是一个名叫TS_COM_PROPS的结构，后面“TreeSVR应用程序界面（API）”一节有介绍。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">用到的一个数据结构定义：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct tagExchngBufBufInfo {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">LPVOID lpExchBuf;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">HANDLE hEmpEvent;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">DWORD dwCliThreadId;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">DWORD dwSrvThreadId;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR cErrorStat;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR cFlag;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} EXCHNG_BUF_INFO, *PEXCHNG_BUF_INFO, 
+    *LPEXCHNG_BUF_INFO; </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">函数接口是（这些函数在动态连接库TSCOMMON.DLL中）：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">1.写信息</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">DWORD SrvWriteExchngBuf ( </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">LPEXCHNG_BUF_INFO lpExchBufInfo,</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">LPVOID lpBuffer,</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">DWORD dwcbBuffer );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">参数说明：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lpExchBufInfo=lpszResponse；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lpBuffer要写入的内容</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">dwcbBuffer写入的数量</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">2.读信息</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">DWORD SrvReadExchngBuf ( </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">LPEXCHNG_BUF_INFO lpExchBufInfo, </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">LPVOID lpBuffer, </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">DWORD dwcbBuffer );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">3.设置出错，引擎执行完毕，随时退出。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">VOID SrvSetExchBufError ( </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">LPEXCHNG_BUF_INFO lpExchBufInfo );</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>单进程多线程事务服务引擎</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>单进程多线程事务服务引擎</strong></p>
+    <p>　</p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">多线程数据库引擎用不同的方法，但用类似的原理来解决多用户访问这个关键问题。多线程数据库引擎自己负责调度各应用程序占有CPU的方案，而不是依靠多用户操作系统来完成这一任务。从理论上来讲，由于数据库管理单个任务执行，内存和磁盘访问的调度，数据库引擎“保护自己”的能力使其具有更大的灵活性。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">在给定硬件平台的情况下，多线程系统更为有效。多线程数据库为每个用户联接使用500KB至1MB的内存（记住，该内存是受保护的，仅为某个可执行文件服务），然而多线程DBMS只使用50KB至100KB的内存。除此以外，由于数据库可执行程序本身管理这些多个的线程，昂贵而效率低下的进程通信机构是不必要的。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">不同的是，数据库引擎本身协调它必须进行的多个操作，并把这些指令发送给操作系统以最后执行。这样，数据库通过采用单个的进程，每次一个，然后把关于那些进程的指令发送给操作系统来对各操作进行时间分片。和OS对应用程序进行时间分片不同的是，此处DBMS对线程时间分片（见图2.3）.</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">用此方法，数据库用有限的工作单元（线程）来完成各种操作（用户指令锁定数据页磁盘I/O, 
+    高速缓存I/O等），而不是采用多线程DBMS，它对每项任务使用专门化的应用程序。</span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px"><img SRC="Image18.gif"
+    WIDTH="505" HEIGHT="285"></span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">图2.3 
+    多线程数据库引擎为多个用户提供了对数据的访问，这些用户</span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">只有一个单一的数据库引擎进程</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>什么是事务处理</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>什么是事务处理</strong></p>
+    <p align="left"><strong>　</strong></p>
+    <p><font size="3"><span style="font-size: 12px">事务处理是被一次完成的一系列操作，就好像是一个操作一样。事务处理要么做完，要么根本不做。事务处理的标准的例子包括医保个人帐户管理（从个人帐户提出500元，然后往个人帐户上存款500元）和订单输入系统（订好5张从上海至北京的车票，收完费，然后从票库中减掉票额）</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">事实上，由于RAM与硬盘的存取速度的相当差异和RAM内数据的掉电易失性，真正能做到任何时刻掉电系统都是安全的几乎是不可能的。没有相当的硬件可靠运行，单靠软件去解决数据安全性是一种想入非非的事。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">事务处理组织的水平直接关系到事务处理完整性的水平。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">ASQL的语句都是事务处理，它的非过程语句段是一个事务单位。考虑下面的UPDATE例子：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">UPDATE</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">FROM sub0.dbf</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">CONDITION</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">BEGIN</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">1 $ calrec(salary:=salary*1.02)</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">END</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">这一语句修改sub0.dbf中的所有行，不管理sub0.dbf有多大，TreeSVR将尽量保证或者处理所有的行，或者不处理。TreeSVR先将要改娈的行的新值保存在一个临时数据结构中，在整个检索完成后，快速（独占表，最高优先级处理）去刷新表。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">TreeSVR支持的事务描述语言ASQL是一种过程与非过程混合的语言，能在其内部实现事务描述，所以人事务的完整性变成一种新的形式的问题。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">看一下下面的应用，输入一个订票信息，并减少库存。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">UPDATE</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">FROM (SCOPE:CC,&quot;21次&quot;,&quot;21次&quot;)cpxx.dbf</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">BEGIN</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">1 $ calrec(kcs:=kcs-5)</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">END</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">这个看上去很有用的例子实际上没有什么实际意义。它只能说明票库被减了5张票。具体售票系统中，售出5张票可能远没有这样简单。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">(1)接收旅客订票信息</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">(2)查询票库，看是否能给出服务</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">(3)收钱</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">(4)打票</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">(5)结算</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">这其其实不简单是一个事务完成的数据完整性问题，有些应用场合，简单的数据完整意义并不大，它还有一个事务完整性。至少有下列问题需要考虑：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">(1)假如收完旅客的钱后发现票已卖出怎么办。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">(2)打票过程中无票了怎么办。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">(3)如果一边收钱，一边出票，旅客没有钱了怎么办。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">只有这些问题有一个综合考虑，才能称为事务完整性。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">尤其是面向对象模型组织的信息系统，其单点（数据的最小单位）数据往往很大，这时用户已不能忍受写日志带来的开销，这时的日志开销比开正式工作要耗时。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">所以ASQL只提供简单的快速事务提交机制。</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

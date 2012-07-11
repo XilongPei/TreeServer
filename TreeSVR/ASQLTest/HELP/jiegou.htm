@@ -1,0 +1,55 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>ASQL语言结构</title>
+</head>
+
+<body bgcolor="#EAEAFB">
+
+<h2 align="center"><font face="楷体_GB2312">ASQL语言结构</font></h2>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><font SIZE="3"><p ALIGN="JUSTIFY">ASQL</font><font FACE="宋体" SIZE="3">语言是参照关系数据库语言</font><font
+    SIZE="3">SQL(Structure Query Language)</font><font FACE="宋体" SIZE="3">而定义的一种集过程能力与非过程任务描述与一身的结构化语言，它的基本结构为：</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">From /*</font><font FACE="宋体" SIZE="3">源</font><font
+    SIZE="3">*/ </p>
+    <p ALIGN="JUSTIFY">To /*</font><font FACE="宋体" SIZE="3">目标</font><font SIZE="3">*/ 
+    </p>
+    <p ALIGN="JUSTIFY">Condition /*</font><font FACE="宋体" SIZE="3">条件动作</font><font
+    SIZE="3">*/ </p>
+    <p ALIGN="JUSTIFY">Action /*</font><font FACE="宋体" SIZE="3">无条件动作</font><font
+    SIZE="3">*/ </p>
+    </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">其中</font><font SIZE="3">From</font><font
+    FACE="宋体" SIZE="3">是源，就是对哪些数据表进行操作。</font><font
+    SIZE="3">To</font><font FACE="宋体" SIZE="3">是目标，</font><font SIZE="3"> </font><font
+    FACE="宋体" SIZE="3">就是对数据库进行操作完后，将结果放在哪里。</font><font
+    SIZE="3">Condition</font><font FACE="宋体" SIZE="3">是动作，就是对源数据库进行何种操作。</font></p>
+    <font FACE="楷体_GB2312" SIZE="3"><p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15">　ASQL支持注释的写法为：</p>
+    <p ALIGN="JUSTIFY">ASQL支持“/*”和“*/”括起来的隔对表示注释，注释可以出现在ASQL文本的任何地方，在ASQL进行语法解释时将将注释内容作为空格处理。注释不可以嵌套。</font></p>
+    <p ALIGN="JUSTIFY">　</p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">[</font><font FACE="宋体" SIZE="3">例</font><font
+    SIZE="3">1]</p>
+    </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">从人员库\</font><font SIZE="3">TG\DATA\SUB0.DBF</font><font
+    FACE="宋体" SIZE="3">中找出党员放至\</font><font SIZE="3">TG\DATA\CXMAIN.DBF</font><font
+    FACE="宋体" SIZE="3">的</font><font SIZE="3">ASQL </font><font FACE="宋体" SIZE="3">语言描述为：</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">From \TG\DATA\SUB0.DBF</p>
+    <p ALIGN="JUSTIFY">To \TG\DATA\CXMAIN.DBF</p>
+    <p ALIGN="JUSTIFY">CONDITION</p>
+    <p ALIGN="JUSTIFY">Begin</p>
+    <p ALIGN="JUSTIFY">Party_n=&quot;01&quot;||Party_n=&quot;02&quot; $record(@1)</p>
+    <p ALIGN="JUSTIFY">End</p>
+    </font><p ALIGN="JUSTIFY">　</p>
+    <font FACE="楷体_GB2312" SIZE="3"><p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> 为了防止对源数据表的名字的绝对定义，ASQL规定@1表示源数据表的第一个表的第一个域。</font></td>
+  </tr>
+</table>
+</center></div>
+
+<p>　 </p>
+</body>
+</html>

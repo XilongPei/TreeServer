@@ -1,0 +1,232 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>TreeSVR浏览器访问语法定义</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><b><span STYLE="font-size:12px;"><font FACE="黑体" SIZE="4"><p
+    ALIGN="CENTER">TreeSVR浏览器访问语法定义</font></span></p>
+    </b><p>　</p>
+    <span STYLE="font-size:12px;"><p><b><u><i>理解 Sample.htx 文件 </i></u></b></p>
+    <p>要将数据返回到 WWW 客户，.tdc文件将 HTML 扩展.htx 文件与 ASQL 
+    数据合并。这个组合数据附着到标准HTTP 标题中 (200 OK 状态，Content-Type 
+    等) 并传送到 WWW 服务并返回客户。 </p>
+    <p>.htx file 文件是含以&lt;%%&gt;或&lt;!--%%--&gt;括起来的附加标志的 HTML 
+    文档，.tdc文件用此形式将动态数据添加到文档。 .htx 文件中的 HTML 
+    格式典型地将要返回的数据格式化。有六个关键字 (begindetail,enddetail, 
+    if, else, endif, and “%z”) 控制来自数据库的数据如何以 HTML 
+    格式合并入 .htx 文件。数据库列名指定在 HTML 
+    文档中返回什么数据。例如，.htx 
+    文件中下列行合并来自每个已处理报告的Emailname 列的数据： </p>
+    <p>&lt;%begindetail%&gt;&lt;%Emailname%&gt;&lt;%enddetail%&gt; </p>
+    <p>Sample.htx 文件是 HTML 文档，它包含从数据库中返回的数据的 Internet 
+    数据库连接器标志 (为了清晰以粗体显示标志)。已经删除一些 HTML 
+    格式以便高亮显示 TDC标志。为了清晰，已经删除大部分 HTML 
+    格式化。 </p>
+    <p>&lt;HTML&gt;<br>
+    &lt;BODY&gt; <br>
+    &lt;HEAD&gt;<br>
+    &lt;TITLE&gt;Authors and YTD Sales&lt;/TITLE&gt;<br>
+    &lt;/HEAD&gt; <br>
+    <b><br>
+    &lt;%if idc.sales eq &quot;&quot;%&gt; </b><br>
+    <br>
+    &lt;H2&gt;Authors with sales greater than &lt;I&gt;5000&lt;/I&gt;&lt;/H2&gt; <br>
+    <b><br>
+    &lt;%else%&gt; </b><br>
+    <br>
+    &lt;H2&gt;Authors with sales greater than 
+    &lt;I&gt;&lt;%idc.sales%&gt;&lt;/I&gt;&lt;/H2&gt; <br>
+    <b><br>
+    &lt;%endif%&gt; </b><br>
+    <br>
+    &lt;P&gt; </p>
+    <b><p>&lt;%begindetail%&gt; <br>
+    &lt;%if CurrentRecord EQ 0 %&gt; </p>
+    </b><p>查询结果： </p>
+    <p>&lt;B&gt; Author YTD Sales&lt;BR&gt;&lt;/B&gt; <br>
+    &lt;C&gt; <br>
+    <b><br>
+    &lt;%endif%&gt; </b><br>
+    <br>
+    &lt;%au_lname%&gt;&lt;%ytd_sales%&gt; <br>
+    <b><br>
+    &lt;%enddetail%&gt; </b><br>
+    <br>
+    &lt;P&gt; <br>
+    <b><br>
+    &lt;%if CurrentRecord EQ 0 %&gt; </b><br>
+    <br>
+    &lt;D&gt; <br>
+    &lt;I&gt;&lt;B&gt;Sorry, no authors had YTD sales greater than <br>
+    &lt;E&gt; &lt;/I&gt;&lt;%idc.sales%&gt;.&lt;/B&gt; <br>
+    &lt;P&gt; <br>
+    <b><br>
+    &lt;%else%&gt; </b><br>
+    <br>
+    &lt;HR&gt; <br>
+    &lt;I&gt;<br>
+    <br>
+    此处见到的 Web 页面是通过将 ASQL 查询的结果与模板文件 Sample.htx 
+    合并而创建。 <br>
+    <br>
+    &lt;P&gt; <br>
+    <br>
+    由 Microsoft Internet 数据库连接器完成合并，并且结果由 Microsoft Internet 
+    Information Server 返回到 Web 浏览器。 <br>
+    <br>
+    &lt;/I&gt; <br>
+    <b><br>
+    &lt;%endif%&gt; </b><br>
+    <br>
+    &lt;/BODY&gt; <br>
+    &lt;/HTML&gt; </p>
+    <p>&lt;%begindetail%&gt; 与 &lt;%enddetail%&gt; 
+    部分限定了从数据库中返回的行将出现在文档何处。从查询返回的列用&lt;%%&gt;括起来，如此例中的&lt;%au_lname%&gt;与&lt;%ytd_sales%&gt;。</p>
+    <p>　</p>
+    <p><u><i><b>HTML 扩展 (.htx) 文件 </b></i></u></p>
+    <p>HTML 扩展文件包含控制如何构造输出 HTML 
+    文档的大量关键字。在下面小节中将解释这些关键字。 </p>
+    <i><b><p>&lt;%begindetail%&gt;, &lt;%enddetail%&gt; </b></i></p>
+    <p>&lt;%begindetail%&gt;与 &lt;%enddetail%&gt;关键字将 HTML 
+    扩展文件的一部分括起来，其中数据库的数据输出将被合并。在此部分中，以&lt;% 
+    和 %&gt; 或&lt;!--%%--&gt;分界的列名用于标志从查询中返回的数据的位置。例如： 
+    </p>
+    <p>&lt;%begindetail%&gt; </p>
+    <p>&lt;%au_lname%&gt;: &lt;%ytd_sales%&gt; </p>
+    <p>&lt;%enddetail%&gt; </p>
+    <p>将列出列的 au_lname 与 ytd_sales。任何列都可用这种方式被引用。列名也可引用到 
+    HTML 扩展名的其它位置。 </p>
+    <i><b><p>注意</b></i> 如果未从查询中返回记录，将跳过 
+    &lt;%begindetail%&gt; 部分。对于生成结果集的每个 SQL 语句（如SELECT），应该在 
+    .htx 文件中有相应的&lt;%begindetail%&gt; &lt;%enddetail%&gt; 部分。 </p>
+    <i><b><p>&lt;%if%&gt;, &lt;%else%&gt;, &lt;%endif%&gt; </b></i></p>
+    <p>HTML 扩展文件可用 if-then-else 语句包含条件逻辑，以控制如何构造 
+    Web 页面。例如，一个普通的用途是插入条件，以在 &lt;%begindetail%&gt; 
+    部分内的第一行显示查询结果；但是如果未从查询中返回记录，则返回文本“Sorry, 
+    no authors had YTD sales greater than” %idc.sales%。使用 &lt;%if%&gt; 
+    语句与称为“当前记录”的内建变量，您可以处理输出，以便没有记录返回时打印错误消息。这里有个示例显示 
+    &lt;%if%&gt; 语句的使用。 <br>
+    <br>
+    &lt;%begindetail%&gt;&lt;%if CurrentRecord EQ 0 %&gt; <br>
+    <br>
+    查询结果： <br>
+    <br>
+    &lt;B&gt;Author YTD Sales&lt;BR&gt;&lt;/B&gt; <br>
+    <br>
+    &lt;%endif%&gt; <br>
+    &lt;%au_lname%&gt;&lt;%ytd_sales%&gt; <br>
+    &lt;%enddetail%&gt; <br>
+    <br>
+    &lt;P&gt; <br>
+    <br>
+    &lt;%if CurrentRecord EQ 0 %&gt; <br>
+    &lt;I&gt;&lt;B&gt;Sorry, no authors had YTD sales greater than 
+    &lt;/I&gt;&lt;%idc.sales%&gt;.&lt;/B&gt; <br>
+    <br>
+    &lt;P&gt; <br>
+    &lt;%else%&gt; <br>
+    <br>
+    &lt;HR&gt; <br>
+    &lt;I&gt; <br>
+    <br>
+    您在此处看见的 Web 页面是通过合并 ASQL 查询的结果与模板文件 
+    Sample.htx 而创建的。 <br>
+    <br>
+    &lt;P&gt; <br>
+    <br>
+    由 Microsoft Internet 数据库连接器完成此合并，结果由 Microsoft Internet 
+    Information Server 返回此 Web 浏览器。 <br>
+    <br>
+    &lt;/I&gt; <br>
+    <br>
+    &lt;%endif%&gt; <br>
+    <br>
+    &lt;/BODY&gt; <br>
+    &lt;/HTML&gt; </p>
+    <p>通用语法是： <br>
+    <br>
+    &lt;%if condition %&gt; <br>
+    <br>
+    HTML text <br>
+    <br>
+    [&lt;%else%&gt; <br>
+    <br>
+    HTML text] <br>
+    <br>
+    &lt;%endif%&gt; </p>
+    <p>此处 condition 是下列形式之一：<br>
+    <br>
+    value1 operator value2<br>
+    <br>
+    operator 可以是下列各项之一： </p>
+    <table BORDER="1" CELLSPACING="1" CELLPADDING="4" WIDTH="100%">
+      <tr>
+        <td WIDTH="20%" VALIGN="TOP"><span STYLE="font-size:12px;">EQ</span></td>
+        <td WIDTH="80%" VALIGN="TOP"><span STYLE="font-size:12px;">如果 value1 等于 value2</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="20%" VALIGN="TOP"><span STYLE="font-size:12px;">LT</span></td>
+        <td WIDTH="80%" VALIGN="TOP"><span STYLE="font-size:12px;">如果 value1 小于 value2</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="20%" VALIGN="TOP"><span STYLE="font-size:12px;">GT</span></td>
+        <td WIDTH="80%" VALIGN="TOP"><span STYLE="font-size:12px;">如果 value1 大于 value2</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="20%" VALIGN="TOP" HEIGHT="10"><span STYLE="font-size:12px;">CONTAINS</span></td>
+        <td WIDTH="80%" VALIGN="TOP" HEIGHT="10"><span STYLE="font-size:12px;">如果 value1 
+        的任何部分包含着字符串 value2</span></td>
+      </tr>
+    </table>
+    <p>操作数 value1 和 value2 可以是列名称、内置变量之一（CurrentRecord 或 
+    MaxRecords，请参阅下面部分）、HTTP 
+    变量名（参阅下面部分）或常量。当用于 &lt;%if%&gt; 语句中时，不以 
+    &lt;% and %&gt; 
+    定界。例如，要对作者名“绿”做特定处理，请使用条件： </p>
+    <p>&lt;%begindetail%&gt; <br>
+    <br>
+    &lt;%if au_lname EQ &quot;Green&quot;%&gt; <br>
+    <br>
+    this guy is green! <br>
+    <br>
+    &lt;%endif%&gt; <br>
+    <br>
+    &lt;%enddetail%&gt; </p>
+    <p>HTTP 变量信息的基础上 &lt;%if%&gt; 
+    语句还可用于进行特殊处理。例如，在客户 Web 
+    浏览类型的基础上，要有区别地格式化页面，可将下面内容包括在 
+    HTML 扩展文件中。 </p>
+    <p>&lt;%if HTTP_USER_AGENT contains &quot;Mozilla&quot;%&gt; <br>
+    <br>
+    client supports advanced HTML features <br>
+    <br>
+    &lt;%else%&gt; <br>
+    <br>
+    client is &lt;%HTTP_USER_AGENT%&gt; <br>
+    </p>
+    <p>&lt;%endif%&gt; </p>
+    <i><b><p>CurrentRecord，MaxRecords </b></i></p>
+    <p>内置变量 CurrentRecord 包含着处理 &lt;%begindetail%&gt; 
+    部分的次数。第一次通过 &lt;%begindetail%&gt; 部分，值为 0。随后，每次从数据库中获取另一项记录时，CurrentRecord 
+    的值将随之改变。 </p>
+    <p>内置变量 MaxRecords 包含着 Internet 数据库连接器文件中 MaxRecords 
+    字段的值。MaxRecords 与CurrentRecord 只能用于 &lt;%if%&gt; 语句。 </p>
+    <i><b><p>来自 Internet 数据库连接器文件的参数: </b></i></p>
+    <p>通过在参数的名称前加“idc”和句点可以在 HTML 
+    扩展文件中访问来自 Internet 
+    数据库连接器文件的参数。在前面显示的 Sample3.htx 
+    中，通过包括下面这行可以显示参数 %sales% 的值： </p>
+    <p>The value of the sales parameter is: &lt;%idc.sales%&gt; </span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

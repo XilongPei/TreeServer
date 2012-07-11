@@ -1,0 +1,69 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>TreeSVR数据库安全</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>TreeSVR数据库安全</strong></p>
+    <p align="left"><strong>　</strong></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TreeSVR的数据库安全是指用户对TreeSVR数据库的访问安全控制，TreeSVR支持的每张表及其它数据资源都有一个唯一的标识号(Object 
+    ID)，在表安全数据库(ASQLADIT)中，存有该表授权的用户及所授权限表，信息在该数据库中是加密的，除TreeSVR无法访问这里面的信息。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TreeSVR每个资源对象（每张表、数据字典、代码）都有下列权利控制：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">M：数据增、删、改权</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Q：数据检索权</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">如果某个数据资源没有对该用户的授权，则该数据资源对用户是不可见的。</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">ASQL的安全机制包括表级审计和事务级审计。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TreeSVR一般不允许通过ASQL命令修改其表或其它数据资源的结构。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">如下示例：</span></font></p>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">现面的两个ASQL语法描述的事务，提交给TreeSVR，在有用户授权的情况下，正常返回执行结果，若无授权，则返回出错信息。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(1)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">/*本ASQL操作需用户有检索权*/</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DATABASE tg</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">FROM sub0.dbf</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TO cxmain.dbf</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">CONDITION</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BEGIN</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">sex=&quot;1&quot; $ 
+    record(@1)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">END</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(2)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">/*本ASQL操作需用户有数据修改权*/</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">UPDATE</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DATABASE tg</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">FROM sub0.dbf</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TO cxmain.dbf</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">CONDITION</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BEGIN</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">salary&lt;100 $ 
+    calrec(salary:=salary+20)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">END</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(3)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">/*本ASQL操作需用户对每张表有检索权*/</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DATABASE tg</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">FROM 
+    sub0.dbf,sub11.dbf,*code</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TO cxmain.dbf</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">CONDITION</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BEGIN</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">sex=&quot;1&quot; $ 
+    record(@1)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">END</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">出错信息可能是：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">无授权信息：源表打开出错或不存在。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">无需要授权信息：用户没有对该表的足够的操作权利。</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

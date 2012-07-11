@@ -1,0 +1,100 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>TreeSVR的系统设置</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><font face="黑体"><strong>TreeSVR的系统设置</strong></font></p>
+    <p align="left">　</p>
+    <ul style="font-size: 12px">
+      <li><span style="font-size: 12px">创建一个环境变量 
+        TREESVR=&lt;TreeServerInstallDir&gt;。</span></li>
+    </ul>
+    <ul>
+      <li><span style="font-size: 12px">创建一个组名为 &quot;TreeServer Users&quot; 
+        的用户组，并授予该用户组在本机登录的权限。将要访问 TreeServer 
+        服务器的用户设定为 &quot;TreeServer Users&quot; 的用户组的成员。</span></li>
+    </ul>
+    <ul>
+      <li><span style="font-size: 12px">从 &lt;TreeServerInstallDir&gt;/bin 下运行：treesvr.exe 
+        –install 来安装 TreeServer 的服务。</span></li>
+    </ul>
+    <ul>
+      <li><span style="font-size: 12px">通过修改 
+        &lt;TreeServerInstallDir&gt;/Config/TreeSvr.ini 中[Server] 段 Users 
+        变量的值来设定最大并发用户数，默认值为 20。</span></li>
+    </ul>
+    <blockquote>
+      <p><span style="font-size: 12px">TreeSVR.INI 文件的内容如下：</span></p>
+      <p><span style="font-size: 12px">[Directory]</span></p>
+      <p><span style="font-size: 12px">FtpRoot=C:\Users</span></p>
+      <p><span style="font-size: 12px">UserHome=C:\Users</span></p>
+      <p><span style="font-size: 12px">HomeShareName=Users</span></p>
+      <p><span style="font-size: 12px">[Scheduler]</span></p>
+      <p><span style="font-size: 12px">MaxThread=20</span></p>
+      <p><span style="font-size: 12px">[Server]</span></p>
+      <p><span style="font-size: 12px">Users=20</span></p>
+      <p><span style="font-size: 12px">AuthServer=treesvr</span></p>
+      <p><span style="font-size: 12px"><img SRC="Image1.gif" WIDTH="32" HEIGHT="32">用户主目录必须在&lt;UserHome&gt;指定的位置下面，这样TreeSVR才可以向客户端提供该用户的网络路径。否则TreeSVR无法提供用户工作路径。</span></p>
+      <p><span style="font-size: 12px">TreeSVR形成用户工作路径的方法是：</span></p>
+    </blockquote>
+    <ol>
+      <ol>
+        <li><span style="font-size: 12px">取出帐号数据库中相应用户的工作主目录；</span></li>
+        <li><span style="font-size: 12px">比较其前面一部分是否与UserHome相同，不同则返回出错信息；</span></li>
+        <li><span style="font-size: 12px">相同，则铱下面规则产生返回结果：</span></li>
+      </ol>
+    </ol>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <p><span style="font-size: 12px">\\服务器名\ HomeShareName\&lt;用户工作相对路径&gt;</span></p>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+    <p><span style="font-size: 12px">例：</span></p>
+    <p><span style="font-size: 12px">服务器\\OHNT40上的用户DAVID的工作路径设为c:\users\david，c:\users是用户主目录，共享名为TSUSERS,则产生的返回结果为：</span></p>
+    <p><span style="font-size: 12px">\\OHNT40\TSUSERS\DAVID</span></p>
+    <blockquote>
+      <p><span style="font-size: 12px">HomeShareName=用户公共主目录的共享名。</span></p>
+      <p><span style="font-size: 12px">用户公共主目录必须以此名字共享。</span></p>
+      <p><span style="font-size: 12px"><img SRC="Image1.gif" WIDTH="32" HEIGHT="32">如果当前准备登录到TreeSVR的用户多于[Server]Users的设置，将引起后来想登录的用户被挂起，直到当前系统上的用户数少于[Server]Users为止。而这个值设得太大将多消耗系统资源，故应给其一个合理的值。一般为当前系统可用用户数的一倍左右。</span></p>
+      <p>　</p>
+      <p>　</p>
+    </blockquote>
+    <ul>
+      <li><span style="font-size: 12px">通过修改 &lt;TreeServerInstallDir&gt;/Config/ 
+        TENGINE.INI 中相应设置的值来调整TreeSVR的引擎。</span></li>
+    </ul>
+    <blockquote>
+      <p><span style="font-size: 12px">[ASQL]</span></p>
+      <p><span style="font-size: 12px">ThreadNum = 6</span></p>
+      <p><span style="font-size: 12px">ADFUNDLL=</span></p>
+      <p><span style="font-size: 12px">ODBC_CONNECT_NUM = 10</span></p>
+      <p><span style="font-size: 12px">ODBC_DSN = ORACLE_DB</span></p>
+      <p><span style="font-size: 12px">ODBC_USER = P04</span></p>
+      <p><span style="font-size: 12px">ODBC_Password = P04</span></p>
+      <b><p><span style="font-size: 12px">说明：</span></p>
+      </b><p><span style="font-size: 12px">ThreadNum ASQL服务线程数，指ASQL并发服务的线程数，此数缺省为6，即同时可执行的ASQL服务的数量；</span></p>
+      <p><span style="font-size: 12px">ADFUNDLL=ASQL引擎表达式扩充函数动态连接库名称，如果没有这信扩充可以没有此关键字。缺省为没有。详见ASQL文档。</span></p>
+      <p><span style="font-size: 12px">ODBC_CONNECT_NUM=与高档数据库并发连接数</span></p>
+      <p><span style="font-size: 12px">ODBC_DSN = ODBC的DSN名字</span></p>
+      <p><span style="font-size: 12px">ODBC_USER = 高档数据库用户名</span></p>
+      <p><span style="font-size: 12px">ODBC_Password = 高档数据库用户口令</span></p>
+      <p><span style="font-size: 12px"><img SRC="Image1.gif" WIDTH="32" HEIGHT="32">如果ODBC_CONNECT_NUM为0，则表示不与高档数据库连接，TreeSVR在起动时就将这些连接建立起来。</span></p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

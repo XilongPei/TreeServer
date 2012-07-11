@@ -1,0 +1,108 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>ASQL的设置</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><font face="黑体"><strong>ASQL的设置</strong></font></p>
+    <p>　</p>
+    <p><span style="font-size: 12px">ASQL 的数据字典存放在 
+    &lt;TreeServerInstallDir&gt;/Config/asqlwmt.cfg 文件中。示例内容如下：</span></p>
+    <p><span style="font-size: 12px">//ASQL事务服务引擎配置文件</span></p>
+    <p><span style="font-size: 12px">//版权所有: (c)上海中铁高新软件中心 1997，1998</span></p>
+    <p><span style="font-size: 12px">//</span></p>
+    <p><span style="font-size: 12px">//本配置文件每行最长 254 ASCII字符</span></p>
+    <p><span style="font-size: 12px">[MACRO]</span></p>
+    <p><span style="font-size: 12px">PEI=YINZHU</span></p>
+    <p><span style="font-size: 12px">[SYSTEM]</span></p>
+    <p><span style="font-size: 12px">//CODE=e:\wmtasql\code\code.cod</span></p>
+    <p><span style="font-size: 12px">CODE=g:\progra~1\treese~1\code\code.cod</span></p>
+    <p><span style="font-size: 12px">LOGFILE=C:\Progra~1\TreeSe~1\LOG\TreeSvr.Log</span></p>
+    <p><span style="font-size: 12px">LASTTID = 34</span></p>
+    <p><span style="font-size: 12px">[FIELDCTL]</span></p>
+    <p><span style="font-size: 12px">PATH=e:\wmtasql\fieldctl.dbf</span></p>
+    <p><span style="font-size: 12px">[POLICY]</span></p>
+    <p><span style="font-size: 12px">#OPENDBF</span></p>
+    <p><span style="font-size: 12px">//NUM = 2</span></p>
+    <p><span style="font-size: 12px">//F1 = LZ0.DBF</span></p>
+    <p><span style="font-size: 12px">//F2 = LZ1.DBF</span></p>
+    <p><span style="font-size: 12px">[DATABASE]</span></p>
+    <p><span style="font-size: 12px">#Stores</span></p>
+    <p><span style="font-size: 12px">PATH = e:\wmtasql\</span></p>
+    <p><span style="font-size: 12px">#LZ</span></p>
+    <p><span style="font-size: 12px">PATH=C:\Progra~1\TreeSe~1\Data\LZ\</span></p>
+    <p><span style="font-size: 12px">#TG</span></p>
+    <p><span style="font-size: 12px">PATH=C:\Progra~1\TreeSe~1\Data\tg\</span></p>
+    <p><span style="font-size: 12px">#Hospital</span></p>
+    <p><span style="font-size: 12px">PATH = D:\Hospital\</span></p>
+    <p><span style="font-size: 12px">#INSURE</span></p>
+    <p><span style="font-size: 12px">PATH = C:\Progra~1\TreeSe~1\Data\Insure\</span></p>
+    <p><span style="font-size: 12px">[DBROOT]</span></p>
+    <p><span style="font-size: 12px">#People</span></p>
+    <p><span style="font-size: 12px">KEEP_PHYSICAL_ORDER = 1</span></p>
+    <p><span style="font-size: 12px">DPACK_AUTO=0</span></p>
+    <p><span style="font-size: 12px">TID=32</span></p>
+    <p><span style="font-size: 12px">NDX1=People</span></p>
+    <p><span style="font-size: 12px">KEY1=h_i</span></p>
+    <p><span style="font-size: 12px">#Medicine</span></p>
+    <p><span style="font-size: 12px">KEEP_PHYSICAL_ORDER = 1</span></p>
+    <p><span style="font-size: 12px">DPACK_AUTO=0</span></p>
+    <p><span style="font-size: 12px">TID=33</span></p>
+    <p><span style="font-size: 12px">NDX1=code</span></p>
+    <p><span style="font-size: 12px">KEY1=code</span></p>
+    <p><span style="font-size: 12px">NDX2=spell</span></p>
+    <p><span style="font-size: 12px">KEY2=spell</span></p>
+    <p><span style="font-size: 12px">[PATH]</span></p>
+    <p><span style="font-size: 12px">#DBROOT</span></p>
+    <p><span style="font-size: 12px">PATH = C:\Progra~1\TreeSe~1\Data\</span></p>
+    <p><span style="font-size: 12px">[DBROOT]</span></p>
+    <p><span style="font-size: 12px">#LZ0</span></p>
+    <p><span style="font-size: 12px">NDX1=</span></p>
+    <p><span style="font-size: 12px">KEY1=</span></p>
+    <p><b>　</p>
+    <p><span style="font-size: 12px">数据字典段描述：</span></b></p>
+    <p><span style="font-size: 12px">1.[MACRO]</span></p>
+    <p><span style="font-size: 12px">宏定义</span></p>
+    <p><span style="font-size: 12px">2. [SYSTEM]</span></p>
+    <p><span style="font-size: 12px">系统</span></p>
+    <p><span style="font-size: 12px">代码：</span></p>
+    <p><span style="font-size: 12px">CODE=g:\progra~1\treese~1\code\code.cod</span></p>
+    <p><span style="font-size: 12px">日志文件名</span></p>
+    <p><span style="font-size: 12px">LOGFILE=C:\Progra~1\TreeSe~1\LOG\TreeSvr.Log</span></p>
+    <p><span style="font-size: 12px">最大表标识号（内部用）</span></p>
+    <p><span style="font-size: 12px">LASTTID =</span></p>
+    <p><span style="font-size: 12px">3. [FIELDCTL]</span></p>
+    <p><span style="font-size: 12px">域定义表文件名</span></p>
+    <p><span style="font-size: 12px">PATH=e:\wmtasql\fieldctl.dbf</span></p>
+    <p><span style="font-size: 12px">4. [POLICY]</span></p>
+    <p><span style="font-size: 12px">优化</span></p>
+    <p><span style="font-size: 12px">预先打开文件</span></p>
+    <p><span style="font-size: 12px">#OPENDBF</span></p>
+    <p><span style="font-size: 12px">//NUM = 2</span></p>
+    <p><span style="font-size: 12px">//F1 = LZ0.DBF</span></p>
+    <p><span style="font-size: 12px">//F2 = LZ1.DBF</span></p>
+    <p><span style="font-size: 12px">5. [DATABASE]</span></p>
+    <p><span style="font-size: 12px">数据库定义</span></p>
+    <p><span style="font-size: 12px">#Stores //库名</span></p>
+    <p><span style="font-size: 12px">PATH = e:\wmtasql\ //文件目录</span></p>
+    <p>　</p>
+    <p><span style="font-size: 12px">6.[DBROOT]</span></p>
+    <p><span style="font-size: 12px">缺省数据库定义</span></p>
+    <p><span style="font-size: 12px">#People //表名</span></p>
+    <p><span style="font-size: 12px">KEEP_PHYSICAL_ORDER = 1 //保持物理序</span></p>
+    <p><span style="font-size: 12px">DPACK_AUTO=0 //自动紧缩</span></p>
+    <p><span style="font-size: 12px">TID=32 //表标识号</span></p>
+    <p><span style="font-size: 12px">NDX1=People //索引名1</span></p>
+    <p><span style="font-size: 12px">KEY1=h_I //索引关键字2</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+pred
+	long x[10,10]
+from odbc:sybase_stray,spgl,spgl123,select * from TEST_T
+to e:\cx.dbf,*
+cond
+begin
+   1 $ record(@1)
+end

@@ -1,0 +1,36 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>WindowsNT拨号网络建立操作说明---服务器端</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>服务器端</strong></p>
+    <p align="left">　</p>
+    <p ALIGN="CENTER"><span style="font-size: 12px"><img SRC="Image30.gif" WIDTH="435"
+    HEIGHT="214"></span></p>
+    <p ALIGN="CENTER">　</p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">&nbsp;&nbsp;&nbsp; 
+    在内部网络可用的前提下，在控制面板的调制解调器选项中添加合适的调制解调器，在网络配置属性中添加NETBIOS和远程访问服务(RAS)两项服务。NETBIOS服务无须配置，远程访问服务必须配置。在远程访问服务的属性控制面板中将调制解调器和其端口加入文本框，再用鼠标点击配置按钮，将解调器端口设置为“只能接收”或“拨出和接收”，点击确定。</span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px"><img SRC="Image31.gif" WIDTH="317"
+    HEIGHT="407"></span></p>
+    <p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">&nbsp;&nbsp;&nbsp; 
+    然后用鼠标点击网络按钮，在网络配置面板中如图配置：服务器设置的多选框中只允许客户运行TCP/IP协议，加密设置选择请求Microsoft加密验证，再将允许多链路的复选框选中。</span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px"><img SRC="Image32.gif" WIDTH="432"
+    HEIGHT="385"></span></p>
+    <p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">&nbsp;&nbsp;&nbsp; 点击TCP/IP旁的配置按钮，显示如下配置界面，在允许远程TCP/IP客户访问多选框中选择整个网络，选择使用静态地址集分配客户端的IP地址，如下图是允许拨号网络客户使用192.192.2网段的三位数的地址。最后将允许远程客户请求默认的IP地址的复选框选定。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">&nbsp;&nbsp;&nbsp; 
+    网络服务配置完毕，再在网络协议设置面板中添加点对点通道协议，在其属性中任意分配一个虚拟网络号，确认后重新启动机器，服务器端网络设置完毕。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

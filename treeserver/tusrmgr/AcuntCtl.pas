@@ -1,0 +1,1084 @@
+unit AcuntCtl;
+
+interface
+{$A-}
+
+uses windows, dialogs, sysutils, PipeStruct, PipeFunc, TS_Com, tError, Grids, math;
+
+{ NamedPipe handle's data type is THANDLE, on 32 bit OS THANDLE same as DWORD, }
+{ But we should use the THANDLE store the handle value. }
+function OpenNamedPipe( Server : PChar ) : DWORD;
+function CloseTSNamedPipe (hPipe : DWORD) : Boolean;
+function TSLogon (hPipe : DWORD; lpszUser : PChar; lpszPasswd : PChar;
+					lpszComputer : PChar) : DWORD;
+function TSLogoff (hPipe : DWORD) : Boolean;
+
+function UsrAccountAdd ( hPipe : DWORD; UserInfo : TUserInfo ; bAutoCrtHmDir : Boolean ) : Boolean;
+function UsrAccountDelete ( hPipe : DWORD; UserName : PChar; bAutoDelHmDir : Boolean ) : Boolean;
+function ReceiveUsrAccountInfo ( hPipe : DWORD;
+                                 UserName : PChar;
+                                 var UserInfo : TUserInfo ) : Boolean;
+function ModifyUsrAccountInfo ( hPipe : DWORD; UserInfo : TUserInfo ) : Boolean;
+function EnumUsrAccount ( hPipe : DWORD; EnumProc: TEnumProc ) : DWORD;
+function UsrAccountLock ( hPipe : DWORD; szUsrName : PChar ) : Boolean;
+function UsrAccountUnlock ( hPipe : DWORD; UsrName : PChar ) : Boolean;
+function LgnFailNumRefresh ( hPipe : DWORD; UsrName : PChar ) : Boolean;
+function GetUserHmeDir ( hPipe : DWORD; UsrHmeDir : PChar ) : Boolean;
+function ChgUsrName ( hPipe : DWORD; szUserNameOld : PChar; szUserNameNew : PChar ) : Boolean;
+function RcvAcntRule ( hPipe : DWORD; var UserInfoMdl : TUserInfo ) : Boolean;
+function MdfyAcntRule ( hPipe : DWORD; UserInfoMdl : TUserInfo ) : Boolean;
+
+function GetDefForUsrInfo ( hPipe : DWORD; var UserInfo : TUserInfo ) : Boolean;
+
+function TransBinToGrid ( var LogHour : Pointer {var UserInfo : TUserInfo}; var iPRect : TRectInfo; StrGrd : TStringGrid ) : TGridRect;
+
+function TransRectPToBin ( var LogHour : Pointer{UserInfo : TUserInfo}; PGridRect : TGridRect ) : Boolean;
+function TransRectFToBin ( var LogHour : Pointer{UserInfo : TUserInfo}; FGridRect : TGridRect) : Boolean;
+
+function TransGridPToBin ( var LogHour : Pointer{UserInfo : TUserInfo}; PRectInfo : TRectInfo ) : Boolean;
+function TransGridFToBin ( var LogHour : Pointer{UserInfo : TUserInfo}; FRectInfo : TRectInfo ) : Boolean;
+
+function TransVDirToRDirH ( var hPipe : DWORD; MdlHmeDir : PChar ) : PChar;
+function TransVDirToRDirU ( MdlHmeDir : PChar; Value : PChar ) : PChar;
+implementation
+
+function OpenNamedPipe( Server : PChar ) : DWORD;
+begin
+     Result := CliOpenTSNamedPipe( Server );
+end;
+
+function CloseTSNamedPipe (hPipe : DWORD) : Boolean;
+begin
+     Result := CliCloseTSNamedPipe( hPipe );
+end;
+
+function TSLogon (hPipe : DWORD; lpszUser : PChar; lpszPasswd : PChar;
+					lpszComputer : PChar) : DWORD;
+begin
+     Result := CliTSLogon ( hPipe, lpszUser, lpszPasswd, lpszComputer );
+end;
+
+function TSLogoff (hPipe : DWORD) : Boolean;
+begin
+     Result := CliTSLogoff ( hPipe );
+end;
+
+function UsrAccountAdd ( hPipe : DWORD; UserInfo : TUserInfo ; bAutoCrtHmDir : Boolean ) : Boolean;
+var
+   Buffer : array[0 .. PIPE_BUFFER_SIZE - 1] of Char;
+   lpTsComProps : PTTS_COM_PROPS;
+   dwResult : DWORD;
+   dwcbBuffer : DWORD;
+   sErr : array[0 .. 1023] of Char;
+begin
+     Result := True;
+     with UserInfo do
+     begin
+          if ( szUser = '' ) or ( szPassWd = nil ) or
+             ( bLogonHours = nil ) or ( hPipe = INVALID_HANDLE_VALUE ) then
+          begin
+               SetLastError( ERROR_INVALID_PARAMETER );
+               Result := False;
+               exit;
+          end;
+     end;
+
+     ZeroMemory ( @Buffer[0], PIPE_BUFFER_SIZE );
+
+     lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+     lpTsComProps.packetType := pkTS_ACCOUNT_CTL;
+     lpTsComProps.msgType := msgTS_ACCOUNT_CTL_M;
+     lpTsComProps.lp := cmTS_M_ACCOUNT_ADD;
+     lpTsComProps.Len := SizeOf ( TUserInfo ) + 1;
+
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     if bAutoCrtHmDir then Buffer[ SizeOf ( TTS_COM_PROPS ) ] := #1;
+
+     CopyMemory ( Pointer(Longint(@Buffer[0]) + SizeOf ( TTS_COM_PROPS ) + 1), @UserInfo, SizeOf(TUserInfo) );
+     dwResult := CliWriteTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if dwResult <> TERR_SUCCESS then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory( @Buffer[0], PIPE_BUFFER_SIZE );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+     dwResult := CliReadTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if dwResult = TERR_SUCCESS then
+     begin
+          if ( Buffer <> nil ) and ( dwcbBuffer <> 0 ) then
+          begin
+               lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+               if lpTsComProps.lp <> 0 then
+               begin
+                    Result := False;
+                    CopyMemory( @sErr[0],
+                                Pointer( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                                lpTsComProps.len );
+                    ShowMessage( sErr );
+               end;
+          end;
+     end
+     else
+     begin
+          Result := False;
+          exit;
+     end;
+end;
+
+function UsrAccountDelete ( hPipe : DWORD; UserName : PChar; bAutoDelHmDir : Boolean ) : Boolean;
+var
+   Buffer : array[0 .. PIPE_BUFFER_SIZE - 1] of Char;
+   lpTsComProps : PTTS_COM_PROPS;
+   dwResult : DWORD;
+   dwcbBuffer : DWORD;
+   sErr : array[0 .. 1023] of Char;
+begin
+     Result := True;
+
+     if ( hPipe = INVALID_HANDLE_VALUE ) or (UserName = '' ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory ( @Buffer[0], PIPE_BUFFER_SIZE );
+
+     lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+     lpTsComProps.packetType := pkTS_ACCOUNT_CTL;
+     lpTsComProps.msgType := msgTS_ACCOUNT_CTL_M;
+     lpTsComProps.lp := cmTS_M_ACCOUNT_DEL;
+     lpTsComProps.Len := StrLen ( UserName ) + 1 + 1;
+
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+     if bAutoDelHmDir then
+        Buffer[SizeOf(TTS_COM_PROPS)] := #1
+     else
+        Buffer[SizeOf(TTS_COM_PROPS)] := #0;
+
+     CopyMemory ( Pointer(Longint(@Buffer[0]) + SizeOf(TTS_COM_PROPS) + 1),
+                  UserName,
+                  lpTsComProps.len );
+
+     dwResult := CliWriteTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if ( dwResult <> TERR_SUCCESS ) or ( dwcbBuffer = 0 ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory( @Buffer[0], PIPE_BUFFER_SIZE );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+     dwResult := CliReadTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if dwResult = TERR_SUCCESS then
+     begin
+          if ( Buffer <> nil ) and ( dwcbBuffer <> 0 ) then
+          begin
+               lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+               if lpTsComProps.lp <> 0 then
+               begin
+                    Result := False;
+                    CopyMemory( @sErr[0],
+                                Pointer( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                                lpTsComProps.len );
+                    ShowMessage( sErr );
+               end;
+          end;
+     end
+     else
+     begin
+          Result := False;
+          exit;
+     end;
+end;
+
+function ReceiveUsrAccountInfo ( hPipe : DWORD;
+                                 UserName : PChar;
+                                 var UserInfo : TUserInfo ) : Boolean;
+var
+   Buffer : array[0 .. PIPE_BUFFER_SIZE - 1] of Char;
+   lpTsComProps : PTTS_COM_PROPS;
+   dwResult : DWORD;
+   dwcbBuffer : DWORD;
+   sErr : array[0 .. 1023] of Char;
+   InfoIndex : Integer;
+begin
+     Result := True;
+
+     InfoIndex := 0;
+     if ( hPipe = INVALID_HANDLE_VALUE ) or (UserName = '' ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory ( @Buffer[0], PIPE_BUFFER_SIZE );
+
+     lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+     lpTsComProps.packetType := pkTS_ACCOUNT_CTL;
+     lpTsComProps.msgType := msgTS_ACCOUNT_CTL_M;
+     lpTsComProps.lp := cmTS_M_ACCOUNT_RECEIVE;
+     lpTsComProps.Len := SizeOf( Integer ) + StrLen ( UserName ) + 1;
+
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+     CopyMemory ( Pointer(Longint(@Buffer[0]) + SizeOf(TTS_COM_PROPS)),
+                  @InfoIndex,
+                  SizeOf( Integer ) );
+     CopyMemory ( Pointer(Longint(@Buffer[0]) + SizeOf(TTS_COM_PROPS) + SizeOf (Integer)),
+                  UserName,
+                  StrLen ( UserName ) + 1 );
+
+     dwResult := CliWriteTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+
+     if ( dwResult <> TERR_SUCCESS ) or ( dwcbBuffer = 0 ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory( @Buffer[0], PIPE_BUFFER_SIZE );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     dwResult := CliReadTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if dwResult = TERR_SUCCESS then
+     begin
+          if ( Buffer <> nil ) and ( dwcbBuffer <> 0 ) then
+          begin
+               lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+               if lpTsComProps.lp <> 0 then
+               begin
+                    Result := False;
+                    CopyMemory( @sErr[0],
+                                Pointer( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                                lpTsComProps.len );
+                    ShowMessage( sErr );
+               end
+               else
+               begin
+                    CopyMemory (@UserInfo,
+                               Pointer( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                               SizeOf ( TUserInfo ) );
+               end;
+          end;
+     end
+     else
+     begin
+          Result := False;
+          exit;
+     end;
+end;
+
+function ModifyUsrAccountInfo ( hPipe : DWORD; UserInfo : TUserInfo ) : Boolean;
+var
+   Buffer : array[0 .. PIPE_BUFFER_SIZE - 1] of Char;
+   lpTsComProps : PTTS_COM_PROPS;
+   dwResult : DWORD;
+   dwcbBuffer : DWORD;
+   sErr : array[0 .. 1023] of Char;
+   InfoIndex: Integer;
+begin
+     InfoIndex := 0;
+     Result := True;
+     with UserInfo do
+     begin
+          if ( szUser = '' ) or ( szPassWd = '' ) or ( hPipe = INVALID_HANDLE_VALUE ) or
+             ( dwUserID = $FFFFFFFF ) then
+          begin
+               SetLastError( ERROR_INVALID_PARAMETER );
+               Result := False;
+               exit;
+          end;
+     end;
+
+     ZeroMemory ( @Buffer[0], PIPE_BUFFER_SIZE );
+
+     lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+     lpTsComProps.packetType := pkTS_ACCOUNT_CTL;
+     lpTsComProps.msgType := msgTS_ACCOUNT_CTL_M;
+     lpTsComProps.lp := cmTS_M_ACCOUNT_MODIFY;
+     lpTsComProps.Len := SizeOf ( Integer ) + SizeOf ( TUserInfo );
+
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     CopyMemory ( Pointer(Longint(@Buffer[0]) + SizeOf ( TTS_COM_PROPS )),
+                  @InfoIndex, SizeOf ( Integer ) );
+     CopyMemory ( Pointer(Longint(@Buffer[0]) + SizeOf ( TTS_COM_PROPS ) + SizeOf ( Integer )),
+                  @UserInfo.szUser, StrLen ( UserInfo.szUser ) + 1 );
+     CopyMemory ( Pointer({Longint}DWORD(@Buffer[0]) +
+                  SizeOf ( TTS_COM_PROPS ) +
+                  SizeOf ( Integer )+
+                  StrLen ( UserInfo.szUser ) + 1),
+                  @UserInfo, SizeOf(TUserInfo) );
+                  
+     dwResult := CliWriteTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if dwResult <> TERR_SUCCESS then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory( @Buffer[0], PIPE_BUFFER_SIZE );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     dwResult := CliReadTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if dwResult = TERR_SUCCESS then
+     begin
+          if ( Buffer <> nil ) and ( dwcbBuffer <> 0 ) then
+          begin
+               lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+               if lpTsComProps.lp <> 0 then
+               begin
+                    Result := False;
+                    CopyMemory( @sErr[0],
+                                Pointer( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                                lpTsComProps.len );
+                    ShowMessage( sErr );
+               end;
+          end;
+     end
+     else
+     begin
+          Result := False;
+          exit;
+     end;
+end;
+
+function EnumUsrAccount ( hPipe : DWORD; EnumProc: TEnumProc ) : DWORD;
+var
+   Buffer : array[0 .. PIPE_BUFFER_SIZE - 1] of Char;
+   lpTsComProps : PTTS_COM_PROPS;
+   dwResult : DWORD;
+   IsEnd: Boolean;
+   dwcbBuffer : DWORD;
+   lpUserInfo : PTUserInfo;
+begin
+     IsEnd := False;
+
+     if ( hPipe = INVALID_HANDLE_VALUE ) then
+     begin
+          Result := ERROR_INVALID_PARAMETER;
+          exit;
+     end;
+
+     ZeroMemory ( @Buffer[0], PIPE_BUFFER_SIZE );
+
+     lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+
+     lpTsComProps.packetType := pkTS_ACCOUNT_CTL;
+     lpTsComProps.msgType := msgTS_ACCOUNT_CTL_M;
+     lpTsComProps.lp := cmTS_M_ACCOUNT_ENUM;
+     lpTsComProps.Len := 0;
+
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+     dwResult := CliWriteTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if ( dwResult <> TERR_SUCCESS ) or ( dwcbBuffer = 0 ) then
+     begin
+          Result := GetLastError;
+          exit;
+     end;
+
+     ZeroMemory( @Buffer[0], PIPE_BUFFER_SIZE );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     while not IsEnd do
+     begin
+         dwcbBuffer := PIPE_BUFFER_SIZE;
+         dwResult := CliReadTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+         if dwResult <> TERR_SUCCESS then
+         begin
+             Result := GetLastError;
+             exit;
+         end;
+
+         if lpTsComProps.lp <> 0 then
+              continue;
+
+         if ( (lpTsComProps.leftPacket = #0) and (lpTsComProps.endPacket = #0)) then
+             IsEnd := True;
+
+         lpUserInfo := PTUserInfo(@Buffer[sizeof( TTS_COM_PROPS)]);
+
+         { Call the user specfied callback procedure process the user information }
+         EnumProc( lpUserInfo );
+
+     end;
+
+     Result := 0;
+end;
+
+function UsrAccountLock ( hPipe : DWORD; szUsrName : PChar ) : Boolean;
+var
+   Buffer : array[0 .. PIPE_BUFFER_SIZE - 1] of Char;
+   lpTsComProps : PTTS_COM_PROPS;
+   dwResult : DWORD;
+   dwcbBuffer : DWORD;
+   sErr : array[0 .. 1023] of Char;
+begin
+     Result := True;
+
+     if ( hPipe = INVALID_HANDLE_VALUE ) or ( szUsrName = '' ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory ( @Buffer[0], PIPE_BUFFER_SIZE );
+
+     lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+     lpTsComProps.packetType := pkTS_ACCOUNT_CTL;
+     lpTsComProps.msgType := msgTS_ACCOUNT_CTL_M;
+     lpTsComProps.lp := cmTS_M_ACCOUNT_LOCK;
+     lpTsComProps.Len := StrLen ( szUsrName ) + 1;
+
+     CopyMemory ( Pointer ( Longint ( @Buffer[0] ) + SizeOf ( TTS_COM_PROPS ) ),
+                  szUsrName,
+                  lpTsComProps.Len ); 
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+     dwResult := CliWriteTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if ( dwResult <> TERR_SUCCESS ) or ( dwcbBuffer = 0 ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory( @Buffer[0], PIPE_BUFFER_SIZE );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     dwResult := CliReadTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if dwResult = TERR_SUCCESS then
+     begin
+          if ( Buffer <> nil ) and ( dwcbBuffer <> 0 ) then
+          begin
+               lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+               if lpTsComProps.lp <> 0 then
+               begin
+                    Result := False;
+                    CopyMemory( @sErr[0],
+                                Pointer( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                                lpTsComProps.len );
+                    ShowMessage( sErr );
+               end;
+          end
+          else
+          begin
+               Result := False;
+               exit;
+          end;
+     end
+     else
+     begin
+          Result := False;
+          exit;
+     end;
+
+end;
+
+function UsrAccountUnlock ( hPipe : DWORD; UsrName : PChar ) : Boolean;
+var
+   Buffer : array[0 .. PIPE_BUFFER_SIZE - 1] of Char;
+   lpTsComProps : PTTS_COM_PROPS;
+   dwResult : DWORD;
+   dwcbBuffer : DWORD;
+   sErr : array[0 .. 1023] of Char;
+begin
+     Result := True;
+
+     if ( hPipe = INVALID_HANDLE_VALUE ) or ( UsrName = '' ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory ( @Buffer[0], PIPE_BUFFER_SIZE );
+
+     lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+     lpTsComProps.packetType := pkTS_ACCOUNT_CTL;
+     lpTsComProps.msgType := msgTS_ACCOUNT_CTL_M;
+     lpTsComProps.lp := cmTS_M_ACCOUNT_UNLOCK;
+     lpTsComProps.Len := StrLen ( UsrName ) + 1;
+
+     CopyMemory ( Pointer ( Longint ( @Buffer[0] ) + SizeOf ( TTS_COM_PROPS ) ),
+                  UsrName,
+                  lpTsComProps.Len );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+     dwResult := CliWriteTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if ( dwResult <> TERR_SUCCESS ) or ( dwcbBuffer = 0 ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory( @Buffer[0], PIPE_BUFFER_SIZE );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     dwResult := CliReadTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if dwResult = TERR_SUCCESS then
+     begin
+          if ( Buffer <> nil ) and ( dwcbBuffer <> 0 ) then
+          begin
+               lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+               if lpTsComProps.lp <> 0 then
+               begin
+                    Result := False;
+                    CopyMemory( @sErr[0],
+                                Pointer( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                                lpTsComProps.len );
+                    ShowMessage( sErr );
+               end;
+          end
+          else
+          begin
+               Result := False;
+               exit;
+          end;
+     end
+     else
+     begin
+          Result := False;
+          exit;
+     end;
+end;
+
+function LgnFailNumRefresh ( hPipe : DWORD; UsrName : PChar ) : Boolean;
+var
+   Buffer : array[0 .. PIPE_BUFFER_SIZE - 1] of Char;
+   lpTsComProps : PTTS_COM_PROPS;
+   dwResult : DWORD;
+   dwcbBuffer : DWORD;
+   sErr : array[0 .. 1023] of Char;
+begin
+     Result := True;
+
+     if ( hPipe = INVALID_HANDLE_VALUE ) or ( UsrName = '' ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory ( @Buffer[0], PIPE_BUFFER_SIZE );
+
+     lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+     lpTsComProps.packetType := pkTS_ACCOUNT_CTL;
+     lpTsComProps.msgType := msgTS_ACCOUNT_CTL_M;
+     lpTsComProps.lp := cmTS_M_ACCOUNT_CLRFAIL;
+     lpTsComProps.Len := StrLen ( UsrName ) + 1;
+
+     CopyMemory ( Pointer ( Longint ( @Buffer[0] ) + SizeOf ( TTS_COM_PROPS ) ),
+                  UsrName,
+                  lpTsComProps.Len );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+     dwResult := CliWriteTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if ( dwResult <> TERR_SUCCESS ) or ( dwcbBuffer = 0 ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory( @Buffer[0], PIPE_BUFFER_SIZE );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     dwResult := CliReadTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if dwResult = TERR_SUCCESS then
+     begin
+          if ( Buffer <> nil ) and ( dwcbBuffer <> 0 ) then
+          begin
+               lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+               if lpTsComProps.lp <> 0 then
+               begin
+                    Result := False;
+                    CopyMemory( @sErr[0],
+                                Pointer( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                                lpTsComProps.len );
+                    ShowMessage( sErr );
+               end;
+          end
+          else
+          begin
+               Result := False;
+               exit;
+          end;
+     end
+     else
+     begin
+          Result := False;
+          exit;
+     end;
+end;
+
+function ChgUsrName ( hPipe : DWORD; szUserNameOld : PChar; szUserNameNew : PChar ) : Boolean;
+var
+   Buffer : array[0 .. PIPE_BUFFER_SIZE - 1] of Char;
+   lpTsComProps : PTTS_COM_PROPS;
+   dwResult : DWORD;
+   dwcbBuffer : DWORD;
+   sErr : array[0 .. 1023] of Char;
+begin
+     Result := True;
+
+     if ( hPipe = INVALID_HANDLE_VALUE ) or
+        ( szUserNameOld = '' ) or
+        (szUserNameNew = '' ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory ( @Buffer[0], PIPE_BUFFER_SIZE );
+
+     lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+     lpTsComProps.packetType := pkTS_ACCOUNT_CTL;
+     lpTsComProps.msgType := msgTS_ACCOUNT_CTL_M;
+     lpTsComProps.lp := cmTS_M_ACCOUNT_CHGNAME;
+     lpTsComProps.Len := StrLen ( szUserNameOld ) + 1 + Strlen (szUserNameNew ) + 1;
+
+     CopyMemory ( Pointer ( Longint ( @Buffer[0] ) + SizeOf ( TTS_COM_PROPS ) ),
+                  szUserNameOld,
+                  StrLen ( szUserNameOld ) + 1 );
+
+     CopyMemory ( Pointer ( DWORD{Longint} ( @Buffer[0] ) + SizeOf ( TTS_COM_PROPS ) + StrLen ( szUserNameOld ) + 1),
+                  szUserNameNew,
+                  StrLen ( szUserNameNew ) + 1 );
+
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     dwResult := CliWriteTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if ( dwResult <> TERR_SUCCESS ) or ( dwcbBuffer = 0 ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory( @Buffer[0], PIPE_BUFFER_SIZE );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     dwResult := CliReadTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if dwResult = TERR_SUCCESS then
+     begin
+          if ( Buffer <> nil ) and ( dwcbBuffer <> 0 ) then
+          begin
+               lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+               if lpTsComProps.lp <> 0 then
+               begin
+                    Result := False;
+                    CopyMemory( @sErr[0],
+                                Pointer( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                                lpTsComProps.len );
+                    ShowMessage( sErr );
+               end;
+          end
+          else
+          begin
+               Result := False;
+               exit;
+          end;
+     end
+     else
+     begin
+          Result := False;
+          exit;
+     end;
+end;
+
+function RcvAcntRule ( hPipe : DWORD; var UserInfoMdl : TUserInfo ) : Boolean;
+var
+   Buffer : array[0 .. PIPE_BUFFER_SIZE - 1] of Char;
+   lpTsComProps : PTTS_COM_PROPS;
+   dwResult : DWORD;
+   dwcbBuffer : DWORD;
+   sErr : array[0 .. 1023] of Char;
+begin
+     Result := True;
+
+     if ( hPipe = INVALID_HANDLE_VALUE )  then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory ( @Buffer[0], PIPE_BUFFER_SIZE );
+
+     lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+     lpTsComProps.packetType := pkTS_ACCOUNT_CTL;
+     lpTsComProps.msgType := msgTS_ACCOUNT_CTL_M;
+     lpTsComProps.lp := cmTS_M_ACCOUNT_RCVRULE;
+     lpTsComProps.Len := 0;
+
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     dwResult := CliWriteTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if ( dwResult <> TERR_SUCCESS ) or ( dwcbBuffer = 0 ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory( @Buffer[0], PIPE_BUFFER_SIZE );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     dwResult := CliReadTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if dwResult = TERR_SUCCESS then
+     begin
+          if ( Buffer <> nil ) and ( dwcbBuffer <> 0 ) then
+          begin
+               lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+               if lpTsComProps.lp <> 0 then
+               begin
+                    Result := False;
+                    CopyMemory( @sErr[0],
+                                Pointer( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                                lpTsComProps.len );
+                    ShowMessage( sErr );
+               end
+               else
+               begin
+                    CopyMemory ( @UserInfoMdl,
+                                 Pointer ( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                                 { SizeOf ( TTS_COM_PROPS ) ); }
+                                 { This parameter pass SizeOf ( TTS_COM_PROPS ) will cause
+                                    TFrmUsrRule.FormShow(Sender: TObject) error }
+                                 SizeOf ( TUserInfo ) );
+               end;
+          end
+          else
+          begin
+               Result := False;
+               exit;
+          end;
+     end
+     else
+     begin
+          Result := False;
+          exit;
+     end;
+end;
+
+function MdfyAcntRule ( hPipe : DWORD; UserInfoMdl : TUserInfo ) : Boolean;
+var
+   Buffer : array[0 .. PIPE_BUFFER_SIZE - 1] of Char;
+   lpTsComProps : PTTS_COM_PROPS;
+   dwResult : DWORD;
+   dwcbBuffer : DWORD;
+   sErr : array[0 .. 1023] of Char;
+begin
+     Result := True;
+
+     if ( hPipe = INVALID_HANDLE_VALUE )  then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory ( @Buffer[0], PIPE_BUFFER_SIZE );
+
+     lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+     lpTsComProps.packetType := pkTS_ACCOUNT_CTL;
+     lpTsComProps.msgType := msgTS_ACCOUNT_CTL_M;
+     lpTsComProps.lp := cmTS_M_ACCOUNT_MDFYRULE;
+     lpTsComProps.Len := SizeOf ( TUserInfo );
+
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     CopyMemory ( Pointer(Longint(@Buffer[0]) + SizeOf ( TTS_COM_PROPS ) ), @UserInfoMdl, SizeOf(TUserInfo) );
+     dwResult := CliWriteTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if ( dwResult <> TERR_SUCCESS ) or ( dwcbBuffer = 0 ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory( @Buffer[0], PIPE_BUFFER_SIZE );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     dwResult := CliReadTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if dwResult = TERR_SUCCESS then
+     begin
+          if ( Buffer <> nil ) and ( dwcbBuffer <> 0 ) then
+          begin
+               lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+               if lpTsComProps.lp <> 0 then
+               begin
+                    Result := False;
+                    CopyMemory( @sErr[0],
+                                Pointer( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                                lpTsComProps.len );
+                    ShowMessage( sErr );
+               end;
+          end
+          else
+          begin
+               Result := False;
+               exit;
+          end;
+     end
+     else
+     begin
+          Result := False;
+          exit;
+     end;
+end;
+
+function GetDefForUsrInfo ( hPipe : DWORD; var UserInfo : TUserInfo ) : Boolean;
+begin
+     ZeroMemory ( @UserInfo, SizeOf( TUserInfo ) );
+
+     if not RcvAcntRule ( hPipe, UserInfo ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     { Normally the function shuld return TRUE. }
+     Result := True;
+end;
+
+function GetUserHmeDir ( hPipe : DWORD; UsrHmeDir : PChar ) : Boolean;
+var
+   Buffer : array[0 .. PIPE_BUFFER_SIZE - 1] of Char;
+   lpTsComProps : PTTS_COM_PROPS;
+   dwcbBuffer, dwResult : DWORD;
+   sErr : array[0 .. 1023] of Char;
+begin
+     Result := True;
+
+     if ( hPipe = INVALID_HANDLE_VALUE ) or
+        ( UsrHmeDir = '' ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory ( @Buffer[0], PIPE_BUFFER_SIZE );
+
+     lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+     lpTsComProps.packetType := pkTS_ACCOUNT_CTL;
+     lpTsComProps.msgType := msgTS_ACCOUNT_CTL_M;
+     lpTsComProps.lp := cmTS_M_ACCOUNT_GETHMEDIR;
+     lpTsComProps.Len := StrLen ( UsrHmeDir ) + 1;
+
+     CopyMemory ( Pointer ( Longint ( @Buffer[0] ) + SizeOf ( TTS_COM_PROPS ) ),
+                  UsrHmeDir,
+                  StrLen ( UsrHmeDir ) + 1 );
+
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     dwResult := CliWriteTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if ( dwResult <> TERR_SUCCESS ) or ( dwcbBuffer = 0 ) then
+     begin
+          Result := False;
+          exit;
+     end;
+
+     ZeroMemory( @Buffer[0], PIPE_BUFFER_SIZE );
+     dwcbBuffer := PIPE_BUFFER_SIZE;
+
+     dwResult := CliReadTSNamedPipe ( hPipe, Buffer, @dwcbBuffer );
+     if dwResult = TERR_SUCCESS then
+     begin
+          if ( Buffer <> nil ) and ( dwcbBuffer <> 0 ) then
+          begin
+               lpTsComProps := PTTS_COM_PROPS ( @Buffer[0] );
+               if lpTsComProps.lp <> 0 then
+               begin
+                    Result := False;
+                    CopyMemory( @sErr[0],
+                                Pointer( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                                lpTsComProps.len );
+                    ShowMessage( sErr );
+               end
+               else
+                    CopyMemory( UsrHmeDir,
+                                Pointer( Longint(@Buffer[0]) + SizeOf( TTS_COM_PROPS ) ),
+                                lpTsComProps.len );
+          end
+          else
+          begin
+               Result := False;
+               exit;
+          end;
+     end
+     else
+     begin
+          Result := False;
+          exit;
+     end;
+end;
+
+function TransBinToGrid ( {var UserInfo : TUserInfo}var LogHour : Pointer; var iPRect : TRectInfo; StrGrd : TStringGrid ) : TGridRect;
+var
+   i, j : Integer;
+   CheckByte : Byte;
+   Temp : Integer;
+   x, y : Integer;
+   bLogonHours : Array[0..MAX_LOGON_HOURS - 1] of char;
+begin
+     CopyMemory ( @bLogonHours[0], LogHour, MAX_LOGON_HOURS );
+     y := 6;
+
+     ZeroMemory ( @iPRect, SizeOf ( TRectInfo ) );
+
+     StrGrd.Canvas.Brush.Color := RGB ( 255, 255, 0 );
+     for i := 20 downto 0 do
+     begin
+          CopyMemory ( @CheckByte, @bLogonHours[i], 1 );
+          Temp := CheckByte;
+          for j:= 1 to 8 do
+          begin
+               if Odd ( Temp ) then
+               begin
+                    x := ( i mod 3 ) * 8 + j - 1;
+                    iPRect.iNum := iPRect.iNum + 1;
+                    iPRect.CRect[iPRect.iNum].Top := y;
+                    iPRect.CRect[iPRect.iNum].Left := x;
+                    iPRect.CRect[iPRect.iNum].Bottom := y;
+                    iPRect.CRect[iPRect.iNum].Right := x;
+                    iPRect.PRect[iPRect.iNum] := StrGrd.CellRect( x, y );
+               end;
+
+               if ( ( i mod 3 ) = 0 ) and ( j = 8 ) then y := y - 1;
+
+               Temp := CheckByte Shr j;
+          end;
+     end;
+end;
+
+function TransRectPToBin ( var LogHour : Pointer{var UserInfo : TUserInfo}; PGridRect : TGridRect ) : Boolean;
+var
+   i : Integer;
+   j : Integer;
+   RectTop, RectBottom, RectLeft, RectRight : Integer;
+   CheckByte : Byte;
+   bLogonHours : Array[0..MAX_LOGON_HOURS - 1] of char;
+begin
+     CopyMemory ( @bLogonHours[0], LogHour, MAX_LOGON_HOURS );
+     Result := True;
+
+     RectTop := PGridRect.Top;
+     RectBottom := PGridRect.Bottom;
+     RectLeft := PGridRect.Left;
+     RectRight := PGridRect.Right;
+
+     CheckByte := 0;
+
+//     FillMemory ( @UserInfo.bLogonHours[0], MAX_LOGON_HOURS , 0 );
+     for j := RectTop to RectBottom do
+     begin
+          for i :=  RectLeft to  RectRight do
+          begin
+               CopyMemory ( @CheckByte, @bLogonHours[j * 3 + ( i div 8 )], 1 );
+
+               CheckByte := CheckByte or Trunc( IntPower ( 2, i mod 8 ) );
+
+               CopyMemory ( @bLogonHours[j * 3 + ( i div 8 )], @CheckByte, 1 );
+               if ( ( i + 1 ) mod 8 = 0 ) then
+               begin
+                    CheckByte := 0;
+               end;
+          end;
+          CheckByte := 0;
+     end;
+     CopyMemory ( LogHour, @bLogonHours[0], MAX_LOGON_HOURS );
+
+{     for j := FGridRect.Top to FGridRect.Bottom do
+     begin
+          for i :=  FGridRect.Left to  FGridRect.Right do
+          begin
+               CopyMemory ( @CheckByte, @UserInfo.bLogonHours[j * 3 + ( i div 8 )], 1 );
+
+               CheckByte := CheckByte and not ( Trunc( IntPower ( 2, i mod 8 )));
+
+               CopyMemory ( @UserInfo.bLogonHours[j * 3 + ( i div 8 )], @CheckByte, 1 );
+               if ( ( i + 1 ) mod 8 = 0 ) then
+               begin
+                    CheckByte := 0;
+               end;
+          end;
+          CheckByte := 0;
+     end;}
+end;
+
+function TransRectFToBin ( var LogHour : Pointer{var UserInfo : TUserInfo}; FGridRect : TGridRect) : Boolean;
+var
+   i, j : integer;
+   CheckByte : Byte;
+   bLogonHours : Array[0..MAX_LOGON_HOURS - 1] of char;
+begin
+     CopyMemory ( @bLogonHours[0], LogHour, MAX_LOGON_HOURS );
+     for j := FGridRect.Top to FGridRect.Bottom do
+     begin
+          for i :=  {FGridRect.Left to  }FGridRect.Right downto FGridRect.Left do
+          begin
+               CopyMemory ( @CheckByte, @bLogonHours[j * 3 + ( i div 8 )], 1 );
+
+               CheckByte := CheckByte and not ( Trunc( IntPower ( 2, i mod 8 )));
+
+               CopyMemory ( @bLogonHours[j * 3 + ( i div 8 )], @CheckByte, 1 );
+               if ( ( i + 1 ) mod 8 = 0 ) then
+               begin
+                    CheckByte := 0;
+               end;
+          end;
+          CheckByte := 0;
+     end;
+     CopyMemory ( LogHour, @bLogonHours[0], MAX_LOGON_HOURS );
+     Result := True;
+end;
+
+function TransGridPToBin ( var LogHour : Pointer{var UserInfo : TUserInfo}; PRectInfo : TRectInfo ) : Boolean;
+var
+   i : integer;
+begin
+     for i := 1 to PRectInfo.iNum do
+     begin
+          TransRectPToBin ( LogHour, PRectInfo.CRect[i] );
+     end;
+     Result := True;
+end;
+
+function TransGridFToBin ( var LogHour : Pointer{var UserInfo : TUserInfo}; FRectInfo : TRectInfo ) : Boolean;
+begin
+     TransRectFToBin ( LogHour, FRectInfo.CRect[FRectInfo.iNum{i}] );
+     Result := True;
+end;
+
+function TransVDirToRDirH ( var hPipe : DWORD; MdlHmeDir : PChar ) : PChar;
+var
+   szHmeDir, szTmpDir : Array[0..MAX_PATH - 1] of Char;
+   szPos : PChar;
+begin
+     GetUserHmeDir ( hPipe, @szHmeDir[0] );
+     StrCopy ( szTmpDir, MdlHmeDir );
+     szPos := StrPos ( szTmpDir , '%USER_HOME%' );
+     if szPos = nil then
+     begin
+          Result := '';
+          exit;
+     end;
+     StrCopy ( szPos, @szPos[11] );
+     StrCat ( szHmeDir, szPos );
+     Result := szHmeDir;
+end;
+
+function TransVDirToRDirU ( MdlHmeDir : PChar; Value : PChar ) : PChar;
+var
+   szTmpDir : Array[0..MAX_PATH] of Char;
+   szPos : PChar;
+begin
+     szPos := StrPos ( MdlHmeDir, '%USER_NAME%' );
+     if szPos = nil then
+     begin
+          Result := '';
+          exit;
+     end;
+     
+     StrCopy ( szTmpDir, @szPos[11] );
+     szPos[0] := #0;
+     StrCat ( MdlHmeDir, Value );
+     StrCat ( MdlHmeDir, szTmpDir );
+     Result := MdlHmeDir;
+end;
+
+end.

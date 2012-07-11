@@ -1,0 +1,66 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>ASQL综合语法，含变量引用等</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>ASQL综合语法，含变量引用等</strong></p>
+    <p>　</p>
+    <p><font size="3"><span style="font-size: 12px"><b>msgType = 'C'</b></span></font></p>
+    <p><font size="3"><span style="font-size: 12px">ASQL综合语法，含变量引用等。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px"><b>msgType = 'E'</b></span></font></p>
+    <p><font size="3"><span style="font-size: 12px">ASQL语法语句，及变量表</span></font></p>
+    <blockquote>
+      <blockquote>
+        <p><font size="3"><span style="font-size: 12px">请求包格式：</span></font></p>
+      </blockquote>
+    </blockquote>
+    <p><font size="3"><span style="font-size: 12px">ASQL脚本。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">len = 本包信息长度</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">lp = 总长度</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">应答包格式：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">由三部分组成：包头</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">packetType = 'R';</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">msgType = 'D';</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">len = 信息长度，szInstResult，立即结果长度</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">lp = 0，成功，其它各种原因</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">立即结果，最长为一个包长。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">执行结果：多个包，由三部分组成：包头</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">packetType = 'R';</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">msgType = 'X'; //服务器下传数据</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">len = 本包信息长度</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">lp = 0</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">立即结果，最长为一个包长。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">符号表交换信息包：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">packetType = 'R';</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">msgType = 'V'; //服务器下传数据</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">len = 本包信息长度</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">lp = 变量个数</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <i><b><p><font size="3"><span style="font-size: 12px">TreeSVR客户端与服务器端交换的变量若为字符串，则最长只能为31字节（有一尾0），在从客户向服务器端传此信息时，要校验此信息。</span></font></b></i></p>
+    <p><font size="3"><span style="font-size: 12px">……………………………………………………………………………………………</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">msgType = 'D'～'P' 'R'-'Z' 'a'-'z'</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">其它TreeServer事务</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">……………………………………………………………………………………………</span></font></p>
+    <b><p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">获取用户网络工作路径</span></font></b></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">packetType = 'U'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">msgType = 'U'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">lp = 0x4013</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">len = 0</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">包数据无效</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">返回</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">lp = 0 
+    成功，包数据为用户网络工作路径，len 为数据长。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">lp != 0 失败。</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

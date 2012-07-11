@@ -1,0 +1,33 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>子字符串搜索</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+
+<table border="0" cellpadding="2" width="100%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px">子字符串搜索(at)<br>
+    </span></p>
+    <ol>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]LONG_TYPE AT(&lt;子字符串&gt;, 
+      &lt;主字符串&gt;)</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]检测主字符串中是否包含子字符串，如果包含，返回第一次包含的子字符串所在主字符串中的位置，否则返回0。</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*查出身地在黑龙江省的人员*/</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0<br>
+      TO \TG\DATA\CXMAIN, *<br>
+      CONDITION<br>
+      BEGIN<br>
+      at(&quot;23&quot;,b_place)=1 $ record(@1);<br>
+      /*&quot;23&quot;是黑龙江省的代号，省代号是字符串的前两位，故返回值为1。*/<br>
+      END<br>
+      ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</span></p>
+    </ol>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

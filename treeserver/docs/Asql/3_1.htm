@@ -1,0 +1,41 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>ASQL 应用前数据准备</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><strong><span style="font-size: 12px">ASQL 
+    应用前数据准备</span></strong></p>
+    <ol style="font-size: 12px">
+      <li><span style="font-size: 12px">根据应用的不同，需给ASQL准备不同的数据，一般有以下几种情况。<br>
+        </span></li>
+      <li><p ALIGN="JUSTIFY"><span style="font-size: 12px"><a name="3_1_1">只做简单数据运算<br>
+        </a><br>
+        ASQL的源一般操作的是工业标准的DBF文件，所以要通过如foxbase,dbase,database 
+        explore等工具创建数据表。如果需要对这些表进行严格管理，还需将它们登记到数据字典中。</span></p>
+        <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL对BLOB字段的存储格式（DBT文件）进行了重新定义，不支持其它版本的备注字段（DBT），所以如果已经有数据，就不可以有备注或图形等BLOB字段。可以通常工具转换。</span></p>
+        <p ALIGN="JUSTIFY"><span style="font-size: 12px">为了更好地支持数据修改，DBF文件建议有DEL___LINK字段，字符型，4字节长。ASQL将用它来管理删除链，使数据在删除后的空间重用速度提高。</span></p>
+        <p ALIGN="JUSTIFY"><span style="font-size: 12px">如果数据量较大，事务复杂，应将这些数据组织成库的形式，也就是根据应用的不同，将数据分别放在不同的子目录中。不同库间的协同操作比较困难，即一般不能同时操作两个库中的数据，除非指定绝对路径。</span></p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><span style="font-size: 12px"><a name="3_1_2">运用代码</a><br>
+        <br>
+        如果要引用代码性的数据，应建立系统的代码库。</span></p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><span style="font-size: 12px"><a name="3_1_3">访问高档数据库</a><br>
+        <br>
+        如果要处理的是高档数据库上的数据，需组织好高档数据库，使之可以通过客户端的ODBC访问其上的数据。</span></p>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+// TSADO.idl : IDL source for TSADO.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TSADO.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(CD238363-4F88-11D3-BFE1-0000E8E7CE21),
+	version(1.0),
+	helpstring("TreeSVR ActiveX Data Objects 1.0 Type Library")
+]
+library TSADOLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(CD238373-4F88-11D3-BFE1-0000E8E7CE21),
+		helpstring("TreeSVR ActiveX Data Objects 1.0 Command Class")
+	]
+	coclass Command
+	{
+		[default] interface ICommand;
+	};
+
+	typedef [public] struct tagColInfo {
+			BSTR szColName;
+			char iType;
+			int	iSize;
+			int iPrecision;
+	} COL_INFO;
+
+	typedef [public] COL_INFO *PCOL_INFO;
+	typedef [public] COL_INFO *LPCOL_INFO;
+};
+
+	[
+		object,
+		uuid(CD238372-4F88-11D3-BFE1-0000E8E7CE21),
+		dual,
+		helpstring("TreeSVR ActiveX Data Objects 1.0 ICommand Interface"),
+		pointer_default(unique)
+	]
+	interface ICommand : IDispatch
+	{
+		[id(1), helpstring("method Logon")] HRESULT Logon( [in] BSTR szServer, [in] BSTR szUser, [in] BSTR szPasswd, [out, retval] VARIANT_BOOL *bSuccess );
+		[id(2), helpstring("method Logoff")] HRESULT Logoff();
+		[id(3), helpstring("method ASQLClear")] HRESULT ASQLClear();
+		[id(4), helpstring("method ASQLAdd")] HRESULT ASQLAdd( [in] BSTR szASQL );
+		[id(5), helpstring("method ASQLExecute")] HRESULT ASQLExecute( [out,retval] VARIANT_BOOL *bSuccess );
+		[id(6), helpstring("method TableOpen")] HRESULT TableOpen( [in] BSTR szDatabase, [in] BSTR szTable, [out, retval] VARIANT_BOOL *bSuccess );
+		[id(7), helpstring("method TableClose")] HRESULT TableClose();
+		[id(8), helpstring("method First")] HRESULT First();
+		[id(9), helpstring("method Next")] HRESULT Next();
+		[id(10), helpstring("method Prev")] HRESULT Prev();
+		[id(11), helpstring("method Last")] HRESULT Last();
+		[id(12), helpstring("method RowCount")] HRESULT RowCount( [out, retval] long *lRowCnt );
+		[id(13), helpstring("method ColumnCount")] HRESULT ColumnCount( [out, retval] int *iColCnt );
+		[id(14), helpstring("method ColumnById")] HRESULT ColumnById( [in] int iColId, [out, retval] BSTR *pValue );
+		[id(15), helpstring("method ColumnByName")] HRESULT ColumnByName( [in] BSTR szColName, [out, retval] BSTR* pValue );
+		[id(16), helpstring("method AboutBox")] HRESULT AboutBox();
+		[propget, id(17), helpstring("property szASQLString")] HRESULT szASQLString([out, retval] BSTR *pVal);
+		[propput, id(17), helpstring("property szASQLString")] HRESULT szASQLString([in] BSTR newVal);
+		[propget, id(18), helpstring("property EOF")] HRESULT EOF([out, retval] VARIANT_BOOL *pVal);
+		[propget, id(19), helpstring("property BOF")] HRESULT BOF([out, retval] VARIANT_BOOL *pVal);
+		[propget, id(20), helpstring("property ErrorCode")] HRESULT ErrorCode([out, retval] unsigned long *pVal);
+		[propget, id(21), helpstring("property szASQLErrorMsg")] HRESULT szASQLErrorMsg([out, retval] BSTR *pVal);
+		[propget, id(22), helpstring("property ASQLError")] HRESULT ASQLError([out, retval] VARIANT_BOOL *pVal);
+		[propget, id(23), helpstring("property ColumnName")] HRESULT ColumnName([in] int i, [out, retval] BSTR *pVal);
+		[propget, id(24), helpstring("property ColumnSize")] HRESULT ColumnSize([in] int i, [out, retval] int *pVal);
+		[propget, id(25), helpstring("property ColumnPrecision")] HRESULT ColumnPrecision([in] int i, [out, retval] int *pVal);
+		[propget, id(26), helpstring("property ColumnType")] HRESULT ColumnType([in] int i, [out, retval] unsigned char *pVal);
+	};
+

@@ -1,0 +1,26 @@
+HKCR
+{
+	TSADO.Command.1 = s 'Command Class'
+	{
+		CLSID = s '{CD238373-4F88-11D3-BFE1-0000E8E7CE21}'
+	}
+	TSADO.Command = s 'Command Class'
+	{
+		CLSID = s '{CD238373-4F88-11D3-BFE1-0000E8E7CE21}'
+		CurVer = s 'TSADO.Command.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {CD238373-4F88-11D3-BFE1-0000E8E7CE21} = s 'Command Class'
+		{
+			ProgID = s 'TSADO.Command.1'
+			VersionIndependentProgID = s 'TSADO.Command'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{CD238363-4F88-11D3-BFE1-0000E8E7CE21}'
+		}
+	}
+}

@@ -1,0 +1,26 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>TreeSVR操作系统安全</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>TreeSVR操作系统安全</strong></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TreeSVR是通过管道与客户端交换信息(请求、应答、结果、状态)的，所以客户端要开始TreeSVR的操作必须先连接到TreeSVR的管道上。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">管道是用在不同程序之间交换信息的另一种新的、容易使用的机制。与其它通道不同，管道没有正式的标准或协议来支配信息的传递方式。这使管道的使用更加容易和更加灵活。但同时这种机制将信息交换局限于那些彼此认识以及知道如何解析它们同决交换的信息的程序。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">管道是一段共享内存，进程彼此之间在此留下信息。管理象文件，其中一个程序写，另一个程序读。因为管道旨在用于进程间通信，所以Win32 
+    API可以提供一定范围的命令，使信息交换能够顺利地进行。从概念上讲，管道是计算机文件与邮局邮箱之间的交叉点。一个进程在文件中写内容，另一个进程看其身后留下了什么样的内容。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">可以对一个管道命名，在这仲情况下，创建者已经标识了一个标识名串；或者一个管道也可以是匿名管道，这意味着它没有名字串。命名管道可以完成匿名管道所不能完成的几件事情。它们可以在一个管道上从两个方向上传递信息；可以跨越网络连接到一台远程机器的一个进程上去；可以在多个实例中存在；可以使用更多的管道模式。在多个实例中存在的这种能力允许一个命名管道把一个服务器与很多客户连接起来。每个实例是通讯的一个独立通道。当一个或多个服务器把相同的标识传递CreateNamedPipe()函数时，形成单个管道的多个实例。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">管道有完善的Windows NT安全属性，只有可以登录到Windows 
+    NT服务器上的用户才有权连通管道，Windows NT负责这个连接的用户审计。</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

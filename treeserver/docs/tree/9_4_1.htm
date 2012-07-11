@@ -1,0 +1,43 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>历史资料采集</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>历史资料采集</strong></p>
+    <font FACE="宋体" SIZE="3"><p> </font><font size="3"><span style="font-size: 12px"> 
+    &nbsp; TreeSVR的数据仓库是指一个存有HISTCOND.DBF、HISTSREM.DBF、HISTRSUT.DBF并能存放数据仓库计划过程中产生的临时数据的一个Windows 
+    NT子目录</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">TreeSVR支持历史数据的采集，这个采集是指根据历史数据采集要求（HISTCOND.DBF）的描述，算出一个时间点的信息。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">通过向TreeSVR发如下请求的任务包，就可让TreeSVR对当前的静态数据做一遍数据采集。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px"><b>with</b> TS_COM_PROPS {</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char packetType; ='Q'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char msgType; ='D'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">short len; =信息长</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">long lp; =未用</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char leftPacket; ='\0'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char endPacket; ='\0'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char buf[4080] =请求命令串</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">}</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">请求命令串定义：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">数据仓库路径<b>`</b>数据采集点说明</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">如：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">C:\DATAHOSE\LABOR\<b>`</b>劳动力资源统计之1</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">命令执行完后，若成功返回本次采集的内部唯一关键字标识：STAT_ID。记住这个STAT_ID很重要，因为用户给出的“数据采集点说明”一般并不唯一，若不知道这个标识，则只能用到这个数据时通过“数据采集点说明”去寻找。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">如果数据采集点说明没有给，则TreeSVR自动产生一个，格式是“YYYY年MM月DD日HH时NN”，如“1996年01月30日09时00”。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font><i><b></p>
+    <p><font size="3"><span style="font-size: 12px">建议：</span></font></b></i></p>
+    <p><font size="3"><span style="font-size: 12px">历史数据采集运行时间可能很长，最好在进行运算前对数据仓库内的数据做一个备份。</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

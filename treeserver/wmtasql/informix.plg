@@ -1,0 +1,54 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: informix - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\TEMP\RSP19D.tmp" with contents
+[
+/nologo /Zp1 /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /Fp"Debug/informix.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /c 
+"F:\MyProjects\TreeServer\wmtasql\Idbase.c"
+]
+Creating command line "cl.exe @C:\TEMP\RSP19D.tmp" 
+Creating temporary file "C:\TEMP\RSP19E.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/informix.pdb" /debug /machine:I386 /out:"Debug/informix.dll" /implib:"Debug/informix.lib" /pdbtype:sept 
+.\Debug\Idbase.obj
+]
+Creating command line "link.exe @C:\TEMP\RSP19E.tmp"
+<h3>Output Window</h3>
+Compiling...
+Idbase.c
+idbase.ec(348) : warning C4101: 'TmpBuf' : unreferenced local variable
+idbase.ec(433) : warning C4101: 'Field' : unreferenced local variable
+Linking...
+   Creating library Debug/informix.lib and object Debug/informix.exp
+Idbase.obj : error LNK2001: unresolved external symbol _sqlexit@0
+Idbase.obj : error LNK2001: unresolved external symbol _sqlca
+Idbase.obj : error LNK2001: unresolved external symbol __iqdbase@8
+Idbase.obj : error LNK2001: unresolved external symbol _InetLogin
+Idbase.obj : error LNK2001: unresolved external symbol __iqdbclose@0
+Idbase.obj : error LNK2001: unresolved external symbol __iqdcopen@20
+Idbase.obj : error LNK2001: unresolved external symbol __iqcddcl@16
+Idbase.obj : error LNK2001: unresolved external symbol _rtypalign@8
+Idbase.obj : error LNK2001: unresolved external symbol __iqdescribe@12
+Idbase.obj : error LNK2001: unresolved external symbol __iqlocate_cursor@16
+Idbase.obj : error LNK2001: unresolved external symbol __iqnprep@12
+Idbase.obj : error LNK2001: unresolved external symbol __iqclose@4
+Idbase.obj : error LNK2001: unresolved external symbol __iqcftch@20
+Idbase.obj : error LNK2001: unresolved external symbol _bycopy@12
+Idbase.obj : error LNK2001: unresolved external symbol _dectoasc@16
+Idbase.obj : error LNK2001: unresolved external symbol _rtypwidth@8
+Idbase.obj : error LNK2001: unresolved external symbol _rtypmsize@8
+Debug/informix.dll : fatal error LNK1120: 17 unresolved externals
+Error executing link.exe.
+
+
+
+<h3>Results</h3>
+informix.dll - 18 error(s), 2 warning(s)
+</pre>
+</body>
+</html>

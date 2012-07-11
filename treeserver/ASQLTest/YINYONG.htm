@@ -1,0 +1,372 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+
+<title>ASQL应用</title>
+<meta name="Microsoft Border" content="t, default"></head>
+
+<body bgcolor="#B5CAF7"><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>
+
+<table border="0" width="85%" cellspacing="0" cellpadding="0" height="50">
+  <tr>
+    <td width="20%" height="50"><a href="http://tdb.com.cn"><img src="images/crsc.gif" alt="上海中铁高新软件中心" border="0" WIDTH="148" HEIGHT="42"></a></td>
+    <td width="80%" height="50"><img src="_borders/asql.gif" alt="asql.gif (3772 bytes)" WIDTH="500" HEIGHT="40"></td>
+  </tr>
+</table>
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" align="center"><a href="index.htm"><img src="images/intro.gif" alt="产品简介" border="0" WIDTH="93" HEIGHT="19"></a><img src="images/online.gif" alt="联机手册" border="0" WIDTH="93" HEIGHT="19"><img src="images/quote.gif" alt="产品报价" WIDTH="93" HEIGHT="19"><img src="images/back.gif" alt="意见反馈" border="0" WIDTH="93" HEIGHT="19"><img src="images/about.gif" alt="相关产品" WIDTH="93" HEIGHT="19"><a href="mailto:asql@tdb.com.cn"><img src="images/contact.gif" alt="请与我们联系" border="0" WIDTH="93" HEIGHT="19"></a></td>
+  </tr>
+</table>
+</td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><!--msnavigation--><td valign="top">
+
+<hr>
+
+<h2 align="center"><font face="楷体_GB2312">ASQL 应用前数据准备</font></h2>
+
+<p>　</p>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><font FACE="宋体" SIZE="3"><p ALIGN="JUSTIFY">根据应用的不同，需给</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">准备不同的数据，一般有以下几种情况。</p>
+    </font><p ALIGN="JUSTIFY">　</p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">1.</font><font FACE="宋体" SIZE="3">只做简单数据运算</p>
+    </font><p ALIGN="JUSTIFY"><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">的源一般操作的是工业标准的</font><font SIZE="3">DBF</font><font FACE="宋体" SIZE="3">文件，所以要通过如</font><font SIZE="3">foxbase,dbase,database explore</font><font FACE="宋体" SIZE="3">等工具创建数据表。如果需要对这些表进行严格管理，还需将它们登记到数据字典中。</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">ASQL</font><font FACE="宋体" SIZE="3">对</font><font SIZE="3">BLOB</font><font FACE="宋体" SIZE="3">字段的存储格式（</font><font SIZE="3">DBT</font><font FACE="宋体" SIZE="3">文件）进行了重新定义，不支持其它版本的备注字段（</font><font SIZE="3">DBT</font><font FACE="宋体" SIZE="3">），所以如果已经有数据，就不可以有备注或图形等</font><font SIZE="3">BLOB</font><font FACE="宋体" SIZE="3">字段。可以通常工具转换。</p>
+    <p ALIGN="JUSTIFY">为了更好地支持数据修改，</font><font SIZE="3">DBF</font><font FACE="宋体" SIZE="3">文件建议有</font><font SIZE="3">DEL___LINK</font><font FACE="宋体" SIZE="3">字段，字符型，</font><font SIZE="3">4</font><font FACE="宋体" SIZE="3">字节长。</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">将用它来管理删除链，使数据在删除后的空间重用速度提高。</p>
+    </font><p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">如果数据量较大，事务复杂，应将这些数据组织成库的形式，也就是根据应用的不同，将数据分别放在不同的子目录中。不同库间的协同操作比较困难，即一般不能同时操作两个库中的数据，除非指定绝对路径。</p>
+    </font><p ALIGN="JUSTIFY">　</p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">2.</font><font FACE="宋体" SIZE="3">运用代码</p>
+    <p ALIGN="JUSTIFY">如果要引用代码性的数据，应建立系统的代码库。</p>
+    </font><p ALIGN="JUSTIFY">　</p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">3.</font><font FACE="宋体" SIZE="3">访问高档数据库</p>
+    <p ALIGN="JUSTIFY">如果要处理的是高档数据库上的数据，需组织好高档数据库，使之可以通过客户端的</font><font SIZE="3">ODBC</font><font FACE="宋体" SIZE="3">访问其上的数据。</p>
+    </font><p ALIGN="JUSTIFY">　</td>
+  </tr>
+</table>
+</center></div>
+
+<h2 align="center"><font face="楷体_GB2312">查询</font></h2>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%">　<p>　</p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">ASQL</font><font FACE="宋体" SIZE="3">可作为任何查询程序的中间和执行语言，查询程序只要构造好</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">语法，交给</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">解释器，就可完成自己的工作。</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">ViTAB</font><font FACE="宋体" SIZE="3">就是一个构造</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">语法文件的工具。</p>
+    <p ALIGN="JUSTIFY">查询的基本语法结构为：</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">FROM </font><font FACE="宋体" SIZE="3">源</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">TO </font><font FACE="宋体" SIZE="3">目标</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">CONDITION</p>
+    <p ALIGN="JUSTIFY">BEGIN</p>
+    </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">条件</font><font SIZE="3"> $ </font><font FACE="宋体" SIZE="3">获取记录或提取信息动作</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">END</font></p>
+    <font FACE="宋体" SIZE="3"><p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY">获取记录或提取信息的动作函数有：</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">record()</p>
+    <p ALIGN="JUSTIFY">askrec()</p>
+    <p ALIGN="JUSTIFY">insrec()</p>
+    <p ALIGN="JUSTIFY">apprec()</p>
+    <p ALIGN="JUSTIFY">calrec()</p>
+    <p ALIGN="JUSTIFY">webprint()</p>
+    <p ALIGN="JUSTIFY">webstream()</font></td>
+  </tr>
+</table>
+</center></div>
+
+<h2 align="center"><font face="楷体_GB2312">统计</font></h2>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%">　<p>　</p>
+    <p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">统计是查询的一种特例，它相当于满足一定条件的记录的计数或求和。</font></p>
+    <p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">下面通过例子来了解统计条件的写法。</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">[</font><font FACE="宋体" SIZE="3">例</font><font SIZE="3">16]</p>
+    </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">处级以上干部的学位及年龄情况</p>
+    <p ALIGN="JUSTIFY">┌───────┬───────────────────┐</p>
+    <p ALIGN="JUSTIFY">│ │ 处级以上 │</p>
+    <p ALIGN="JUSTIFY">│ ├────┬────┬────┬────┤</p>
+    <p ALIGN="JUSTIFY">│ │ 博 士 │ 硕 士 │ 学 士 │ 无学位 │</p>
+    <p ALIGN="JUSTIFY">├──┬────┼────┼────┼────┼────┤</p>
+    <p ALIGN="JUSTIFY">│ 中 │30~40岁 │ │ │ │ │</p>
+    <p ALIGN="JUSTIFY">│ 年 
+    ├────┼────┼────┼────┼────┤</p>
+    <p ALIGN="JUSTIFY">│ 干 │41~45岁 │ │ │ │ │</p>
+    <p ALIGN="JUSTIFY">│ 部 
+    ├────┼────┼────┼────┼────┤</p>
+    <p ALIGN="JUSTIFY">│ │46~50岁 │ │ │ │ │</p>
+    <p ALIGN="JUSTIFY">└──┴────┴────┴────┴────┴────┘</p>
+    </font><p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">通常的统计表都是分层的，可以利用条件之间的嵌套来表示这种分层。每一个写</font></p>
+    <p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">有文字的地方表示一定的约束，即是一个条件，最终结果是计数。上表利用嵌套方式</font></p>
+    <p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">可写为：</font></p>
+    <p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">行条件：</font></p>
+    <p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">中年干部</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">Begin</p>
+    <p ALIGN="JUSTIFY">#Y1:30~40</font><font FACE="宋体" SIZE="3">岁</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">#Y2:41~45</font><font FACE="宋体" SIZE="3">岁</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">#Y3:46~50</font><font FACE="宋体" SIZE="3">岁</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">End</p>
+    </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">列条件：</font></p>
+    <p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">处级以上干部</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">Begin</p>
+    <p ALIGN="JUSTIFY">#X1:</font><font FACE="宋体" SIZE="3">博士</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">#X2:</font><font FACE="宋体" SIZE="3">硕士</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">#X3:</font><font FACE="宋体" SIZE="3">学士</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">#X4:</font><font FACE="宋体" SIZE="3">无学位</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">End</p>
+    </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">利用这种嵌套可以表示任意多层的表的定义，表示完之后就是将每个文字说明变</font></p>
+    <p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">为条件表达式，在最前面写上</font><font SIZE="3">Statistics statX</font><font FACE="宋体" SIZE="3">即可。</font><font SIZE="3">Statistics</font><font FACE="宋体" SIZE="3">可简写为</font><font SIZE="3">STAT</font><font FACE="宋体" SIZE="3">。</p>
+    </font><p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">完整的统计条件写法如下：</font></p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">Predicate</p>
+    <p ALIGN="JUSTIFY">long statx[3,4]</p>
+    <p ALIGN="JUSTIFY">From \tg\data\sub0.dbbf /*</font><font FACE="宋体" SIZE="3">指定描述变量和源</font><font SIZE="3">*/</p>
+    <p ALIGN="JUSTIFY">CONDITION</p>
+    <p ALIGN="JUSTIFY">Begin</p>
+    <p ALIGN="JUSTIFY">stat statX</p>
+    <p ALIGN="JUSTIFY">age(Birthday)&gt;=30&amp;&amp;age(Birthday)&lt;=50 /*30</font><font FACE="宋体" SIZE="3">岁以上</font><font SIZE="3">50</font><font FACE="宋体" SIZE="3">以下，中级干部</font><font SIZE="3">*/</p>
+    <p ALIGN="JUSTIFY">Begin</p>
+    <p ALIGN="JUSTIFY">age(Birthday)&gt;=30&amp;&amp;age(Birthday)&lt;=40</p>
+    <p ALIGN="JUSTIFY">age(Birthday)&gt;=41&amp;&amp;age(Birthday)&lt;=45</p>
+    <p ALIGN="JUSTIFY">age(Birthday)&gt;=46&amp;&amp;age(Birthday)&lt;=50</p>
+    <p ALIGN="JUSTIFY">End</p>
+    <p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY">Past_Rank&lt;=&quot;08&quot;&amp;&amp;Past_Rank&gt;=&quot;09&quot; /*</font><font FACE="宋体" SIZE="3">处级以上干部</font><font SIZE="3">*/</p>
+    <p ALIGN="JUSTIFY">Begin</p>
+    <p ALIGN="JUSTIFY">DEGREE_N=&quot;2&quot;&amp;&amp;DEGREE_N=&quot;8&quot; /*</font><font FACE="宋体" SIZE="3">博士、副博士</font><font SIZE="3">*/</p>
+    <p ALIGN="JUSTIFY">DEGREE_N=&quot;3&quot; /*</font><font FACE="宋体" SIZE="3">硕士</font><font SIZE="3">*/</p>
+    <p ALIGN="JUSTIFY">DEGREE_N=&quot;4&quot; /*</font><font FACE="宋体" SIZE="3">学士</font><font SIZE="3">*/</p>
+    <p ALIGN="JUSTIFY">DEGREE_N=&quot; &quot; /*</font><font FACE="宋体" SIZE="3">无学位</font><font SIZE="3">*/</p>
+    <p ALIGN="JUSTIFY">End</p>
+    <p ALIGN="JUSTIFY">End</p>
+    <p ALIGN="JUSTIFY">Action warray (&quot;\\tg\\tj\\tbtest.dbf&quot;,statx) </p>
+    <p ALIGN="JUSTIFY">/*</font><font FACE="宋体" SIZE="3">指定统计结果存于何处</font><font SIZE="3">*/</p>
+    <p ALIGN="JUSTIFY">　</p>
+    </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">下面，我们再来介绍一下与统计有关的</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">定义、标识语句。</p>
+    <p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY">　</p>
+    </font><ol>
+      <ol>
+        <ol>
+          <li><b><a NAME="_Toc436658009"><font FACE="宋体" SIZE="5">变量定义语句</font><font SIZE="5">(predicates)</a></li>
+          </font></b><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">它支持</font><font SIZE="3">int</font><font FACE="宋体" SIZE="3">，</font><font SIZE="3">long</font><font FACE="宋体" SIZE="3">，</font><font SIZE="3">float</font><font FACE="宋体" SIZE="3">等类型变量</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">格式：</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">predicates</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">变量类型</font><font SIZE="3"> </font><font FACE="宋体" SIZE="3">变量或数组名</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">[</font><font FACE="宋体" SIZE="3">例</font><font SIZE="3">17]</p>
+          <p ALIGN="JUSTIFY">predicates</p>
+          <p ALIGN="JUSTIFY">long statX[m,n]</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">这里的</font><font SIZE="3">statX[m,n]</font><font FACE="宋体" SIZE="3">为二维数组变量，</font><font SIZE="3">m</font><font FACE="宋体" SIZE="3">为行，</font><font SIZE="3">n</font><font FACE="宋体" SIZE="3">为列。</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">ASQL</font><font FACE="宋体" SIZE="3">的变量是由字母打头，后跟字母和数字的字符序列，最长</font><font SIZE="3">31</font><font FACE="宋体" SIZE="3">个字符。</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">　</p>
+          </font>
+          <li><b><a NAME="_Toc436658010"><font FACE="宋体" SIZE="5">计数标识</font><font SIZE="5">(statistics)</a></li>
+          </font></b><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3"><b>格式：</p>
+          </b></font><font SIZE="3"><p ALIGN="JUSTIFY">statistics </font><font FACE="宋体" SIZE="3">变量数组</font><font SIZE="3">[</font><font FACE="宋体" SIZE="3">，最大行数</font><font SIZE="3">]</p>
+          </font><font FACE="宋体" SIZE="3"><p ALIGN="JUSTIFY"><b>说明：</p>
+          </b><p ALIGN="JUSTIFY">声明后面对</font><font SIZE="3">X</font><font FACE="宋体" SIZE="3">的定义是计数。</font><font SIZE="3">[</font><font FACE="宋体" SIZE="3">最大行数</font><font SIZE="3">]</font><font FACE="宋体" SIZE="3">表示本次统计运算的最大行数，这个行数不只是计数行行数，也包括求程、平均之类，设置它的目标是为了通知</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">设置行逻辑标识区，</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">通常通过</font><font SIZE="3">#Y</font><font FACE="宋体" SIZE="3">后面的最大数来确定行逻辑标识区的大小，但有时用户可能自己用</font><font SIZE="3">staty()</font><font FACE="宋体" SIZE="3">函数来完成行条件的定义，而不用</font><font SIZE="3">#Y</font><font FACE="宋体" SIZE="3">的形式，这时就很有用了。可以省略。</p>
+          </font><b><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">举例：</p>
+          </font></b><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">见例</font><font SIZE="3">16</font><font FACE="宋体" SIZE="3">。</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">　</p>
+          </font>
+          <li><b><a NAME="_Toc436658011"><font FACE="宋体" SIZE="5">求和标识</font><font SIZE="5">(summer)</a></li>
+          </font></b><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3"><b>格式：</p>
+          </b></font><font SIZE="3"><p ALIGN="JUSTIFY">summer </font><font FACE="宋体" SIZE="3">变量数组，数字型表达式</font><font SIZE="3">1[</font><font FACE="宋体" SIZE="3">，数字型表达式</font><font SIZE="3">2</font><font FACE="宋体" SIZE="3">，</font><font SIZE="3">……]</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3"><b>说明：</p>
+          </b><p ALIGN="JUSTIFY">声明后面对</font><font SIZE="3">X</font><font FACE="宋体" SIZE="3">的定义是求和，求和操作是指：</p>
+          <p ALIGN="JUSTIFY">每次引用</font><font SIZE="3">summer</font><font FACE="宋体" SIZE="3">则，数字型表达式</font><font SIZE="3">1+</font><font FACE="宋体" SIZE="3">数字型表达式</font><font SIZE="3">2+……</font><font FACE="宋体" SIZE="3">，将结果与</font><font SIZE="3">summer</font><font FACE="宋体" SIZE="3">所标识的数组的相应元素相加。</p>
+          <p ALIGN="JUSTIFY">通常的统计求和运算只有数字型表达式</font><font SIZE="3">1</font><font FACE="宋体" SIZE="3">。</p>
+          <p ALIGN="JUSTIFY"><b>注意：</p>
+          </b></font><font SIZE="3"><p ALIGN="JUSTIFY">summer</font><font FACE="宋体" SIZE="3">后的求和标识最长为</font><font SIZE="3">4096</font><font FACE="宋体" SIZE="3">个西文字符。</p>
+          <p ALIGN="JUSTIFY"><b>举例：</p>
+          </b></font><font SIZE="3"><p ALIGN="JUSTIFY">[</font><font FACE="宋体" SIZE="3">例</font><font SIZE="3">18]</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">①</font><font SIZE="3">summer 
+          sumX,age(Birthday)</p>
+          <p ALIGN="JUSTIFY">/*</font><font FACE="宋体" SIZE="3">对年龄求和，存入</font><font SIZE="3">sumX</font><font FACE="宋体" SIZE="3">。下面的几列对</font><font SIZE="3">X</font><font FACE="宋体" SIZE="3">的定义都是做的这一运算，即，满足对联样的</font><font SIZE="3">X</font><font FACE="宋体" SIZE="3">条件，视</font><font SIZE="3">Y</font><font FACE="宋体" SIZE="3">的真假决定对其列是否做些求和动作</font><font SIZE="3">*/</p>
+          <p ALIGN="JUSTIFY">X1:……</p>
+          <p ALIGN="JUSTIFY">X2: ……</p>
+          <p ALIGN="JUSTIFY">X3:……</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">②</font><font SIZE="3">summer 
+          sumX,total_s,duty_s</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">对职务岗位工资和技术级别工资求和，存入数组</font><font SIZE="3">sumX</font><font FACE="宋体" SIZE="3">中。</p>
+          <p ALIGN="JUSTIFY">　</p>
+          </font>
+          <li><b><a NAME="_Toc436658012"><font FACE="宋体" SIZE="5">平均值标识</font><font SIZE="5">(average)</a></li>
+          </font></b><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3"><b>格式：</p>
+          </b></font><font SIZE="3"><p ALIGN="JUSTIFY">average </font><font FACE="宋体" SIZE="3">计数用变量数组，存平均值用变量数组，数字型表达式</font><font SIZE="3">[</font><font FACE="宋体" SIZE="3">，数字型表达式，</font><font SIZE="3">……]</p>
+          </font><p ALIGN="JUSTIFY"><font SIZE="3">[</font><font FACE="宋体" SIZE="3">计数用变量数组</font><font SIZE="3">]</font><font FACE="宋体" SIZE="3">和</font><font SIZE="3">[</font><font FACE="宋体" SIZE="3">存平均值用变量数组</font><font SIZE="3">]</font><font FACE="宋体" SIZE="3">必须具有相同的维定义，即都是标准二维数组，第一维、第二维大小都相同。</p>
+          <p ALIGN="JUSTIFY"><b>功能：</p>
+          </b><p ALIGN="JUSTIFY">声明后面对</font><font SIZE="3">X</font><font FACE="宋体" SIZE="3">的定义是求平均，求平均操作是指：</p>
+          <p ALIGN="JUSTIFY">数字型表达式</font><font SIZE="3">1+</font><font FACE="宋体" SIZE="3">数字型表达式</font><font SIZE="3">2+……/</font><font FACE="宋体" SIZE="3">引起</font><font SIZE="3">average</font><font FACE="宋体" SIZE="3">运算的次数</p>
+          <p ALIGN="JUSTIFY">通常的统计求和运算只有数字型表达式</font><font SIZE="3">1</font><font FACE="宋体" SIZE="3">。</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">Average</font><font FACE="宋体" SIZE="3">的副产品是计数结果存于计数用变量数组。</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">average</font><font FACE="宋体" SIZE="3">后的求平均标识最长为</font><font SIZE="3">4096</font><font FACE="宋体" SIZE="3">个西文字符。</p>
+          <b><p ALIGN="JUSTIFY">举例：</p>
+          </b></font><font SIZE="3"><p ALIGN="JUSTIFY">[</font><font FACE="宋体" SIZE="3">例</font><font SIZE="3">19]</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">①</font><font SIZE="3">average 
+          cntX,avgX,age(Birthday)</p>
+          <p ALIGN="JUSTIFY">/*</font><font FACE="宋体" SIZE="3">对年龄平均，存入</font><font SIZE="3">avgX</font><font FACE="宋体" SIZE="3">。下面的几列对</font><font SIZE="3">X</font><font FACE="宋体" SIZE="3">的定义都是做的这一运算，即，满足对联样的</font><font SIZE="3">X</font><font FACE="宋体" SIZE="3">条件，视</font><font SIZE="3">Y</font><font FACE="宋体" SIZE="3">的真假决定对其列是否做些求和动作</font><font SIZE="3">*/</p>
+          <p ALIGN="JUSTIFY">X1:……</p>
+          <p ALIGN="JUSTIFY">X2: ……</p>
+          <p ALIGN="JUSTIFY">X3:……</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">②</font><font SIZE="3">average 
+          cntX,sumX,total_s,duty_s</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">对职务岗位工资和技术级别工资求和，存入数组</font><font SIZE="3">sumX</font><font FACE="宋体" SIZE="3">中。最后除以求了多少次和，算得平均值。</p>
+          <p ALIGN="JUSTIFY">　</p>
+          <p ALIGN="JUSTIFY">　</p>
+          </font>
+          <li><b><a NAME="_Toc436658013"><font FACE="宋体" SIZE="5">求最大值标识</font><font SIZE="5">(max)</a></li>
+          </font></b><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3"><b>格式：</p>
+          </b></font><font SIZE="3"><p ALIGN="JUSTIFY">max </font><font FACE="宋体" SIZE="3">变量数组，数字型表达式</font><font SIZE="3">1[</font><font FACE="宋体" SIZE="3">，数字型表达式</font><font SIZE="3">2</font><font FACE="宋体" SIZE="3">，</font><font SIZE="3">……]</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3"><b>说明：</p>
+          </b><p ALIGN="JUSTIFY">声明后面对</font><font SIZE="3">X</font><font FACE="宋体" SIZE="3">的定义是求和，求和操作是指：</p>
+          <p ALIGN="JUSTIFY">每次引用</font><font SIZE="3">max</font><font FACE="宋体" SIZE="3">则，</font><font SIZE="3">max(</font><font FACE="宋体" SIZE="3">数字型表达式</font><font SIZE="3">1,</font><font FACE="宋体" SIZE="3">数字型表达式</font><font SIZE="3">2+……)</font><font FACE="宋体" SIZE="3">，将结果与</font><font SIZE="3">max</font><font FACE="宋体" SIZE="3">所标识的数组的相应元素比较，用其中较大者更新它。</p>
+          <p ALIGN="JUSTIFY">通常的统计求最大值运算只有数字型表达式</font><font SIZE="3">1</font><font FACE="宋体" SIZE="3">。</p>
+          <p ALIGN="JUSTIFY"><b>注意：</p>
+          </b></font><font SIZE="3"><p ALIGN="JUSTIFY">max</font><font FACE="宋体" SIZE="3">后的求和标识最长为</font><font SIZE="3">4096</font><font FACE="宋体" SIZE="3">个西文字符。</p>
+          <p ALIGN="JUSTIFY"><b>举例：</p>
+          </b></font><font SIZE="3"><p ALIGN="JUSTIFY">[</font><font FACE="宋体" SIZE="3">例</font><font SIZE="3">20]</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">①</font><font SIZE="3">max 
+          maxX,age(Birthday)</p>
+          <p ALIGN="JUSTIFY">/*</font><font FACE="宋体" SIZE="3">对年龄求最大值，存入</font><font SIZE="3">maxX</font><font FACE="宋体" SIZE="3">。下面的几列对</font><font SIZE="3">X</font><font FACE="宋体" SIZE="3">的定义都是做的这一运算，即，满足对联样的</font><font SIZE="3">X</font><font FACE="宋体" SIZE="3">条件，视</font><font SIZE="3">Y</font><font FACE="宋体" SIZE="3">的真假决定对其列是否做些求和动作</font><font SIZE="3">*/</p>
+          <p ALIGN="JUSTIFY">X1:……</p>
+          <p ALIGN="JUSTIFY">X2: ……</p>
+          <p ALIGN="JUSTIFY">X3:……</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">②</font><font SIZE="3">max 
+          maxX,total_s,duty_s</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">对职务岗位工资和技术级别工资求和，存入数组</font><font SIZE="3">maxX</font><font FACE="宋体" SIZE="3">中。</p>
+          <p ALIGN="JUSTIFY">　</p>
+          </font>
+          <li><b><a NAME="_Toc436658014"><font FACE="宋体" SIZE="5">求最小值标识</font><font SIZE="5">(min)</a></li>
+          </font></b><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3"><b>格式：</p>
+          </b></font><font SIZE="3"><p ALIGN="JUSTIFY">min </font><font FACE="宋体" SIZE="3">变量数组，数字型表达式</font><font SIZE="3">1[</font><font FACE="宋体" SIZE="3">，数字型表达式</font><font SIZE="3">2</font><font FACE="宋体" SIZE="3">，</font><font SIZE="3">……]</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3"><b>说明：</p>
+          </b><p ALIGN="JUSTIFY">声明后面对</font><font SIZE="3">X</font><font FACE="宋体" SIZE="3">的定义是求和，求和操作是指：</p>
+          <p ALIGN="JUSTIFY">每次引用</font><font SIZE="3">min</font><font FACE="宋体" SIZE="3">则，</font><font SIZE="3">min(</font><font FACE="宋体" SIZE="3">数字型表达式</font><font SIZE="3">1,</font><font FACE="宋体" SIZE="3">数字型表达式</font><font SIZE="3">2+……)</font><font FACE="宋体" SIZE="3">，将结果与</font><font SIZE="3">max</font><font FACE="宋体" SIZE="3">所标识的数组的相应元素比较，用其中较小者更新它。</p>
+          <p ALIGN="JUSTIFY">通常的统计求最小值运算只有数字型表达式</font><font SIZE="3">1</font><font FACE="宋体" SIZE="3">。</p>
+          <p ALIGN="JUSTIFY"><b>注意：</p>
+          </b></font><font SIZE="3"><p ALIGN="JUSTIFY">min</font><font FACE="宋体" SIZE="3">后的求和标识最长为</font><font SIZE="3">4096</font><font FACE="宋体" SIZE="3">个西文字符。</p>
+          <p ALIGN="JUSTIFY"><b>举例：</p>
+          </b></font><font SIZE="3"><p ALIGN="JUSTIFY">[</font><font FACE="宋体" SIZE="3">例</font><font SIZE="3">21]</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">①</font><font SIZE="3">min 
+          minX,age(Birthday)</p>
+          <p ALIGN="JUSTIFY">/*</font><font FACE="宋体" SIZE="3">对年龄求最小值，存入</font><font SIZE="3">maxX</font><font FACE="宋体" SIZE="3">。下面的几列对</font><font SIZE="3">X</font><font FACE="宋体" SIZE="3">的定义都是做的这一运算，即，满足对联样的</font><font SIZE="3">X</font><font FACE="宋体" SIZE="3">条件，视</font><font SIZE="3">Y</font><font FACE="宋体" SIZE="3">的真假决定对其列是否做些求和动作</font><font SIZE="3">*/</p>
+          <p ALIGN="JUSTIFY">X1:……</p>
+          <p ALIGN="JUSTIFY">X2: ……</p>
+          <p ALIGN="JUSTIFY">X3:……</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">②</font><font SIZE="3">min 
+          minX,total_s,duty_s</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">对职务岗位工资和技术级别工资求和，存入数组</font><font SIZE="3">minX</font><font FACE="宋体" SIZE="3">中。</p>
+          <p ALIGN="JUSTIFY">　</p>
+          </font>
+          <li><b><font FACE="宋体" SIZE="5"><a NAME="_Toc436658015">应用举例</a></li>
+          </font><font FACE="宋体"><p ALIGN="JUSTIFY">例</font>1</p>
+          </b><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">报表格式如下：</p>
+          <p ALIGN="CENTER"><img SRC="images/Image16.gif" WIDTH="308" HEIGHT="261"></p>
+          <p ALIGN="JUSTIFY">其</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">脚本为：</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">PREDICATEs</p>
+          <p ALIGN="JUSTIFY">LONG table[3,3]</p>
+          <p ALIGN="JUSTIFY">FROM L.DBF</p>
+          <p ALIGN="JUSTIFY">CONDITION</p>
+          <p ALIGN="JUSTIFY">BEGIN</p>
+          <p ALIGN="JUSTIFY">#Y1 DEL=&quot; &quot;&amp;&amp;BIRTHDAY&gt;=&quot;1960****&quot; </p>
+          <p ALIGN="JUSTIFY">#Y2 DEL=&quot; 
+          &quot;&amp;&amp;BIRTHDAY&gt;=&quot;1950****&quot;&amp;&amp;BIRTHDAY&lt;&quot;1960****&quot; 
+          </p>
+          <p ALIGN="JUSTIFY">#Y3 DEL=&quot; &quot;&amp;&amp;BIRTHDAY&lt;&quot;1950****&quot; </p>
+          <p ALIGN="JUSTIFY">SUM table,TOTAL_S</p>
+          <p ALIGN="JUSTIFY">#X1</p>
+          <p ALIGN="JUSTIFY">SUM table,DUTY_S</p>
+          <p ALIGN="JUSTIFY">#X2</p>
+          <p ALIGN="JUSTIFY">SUM table,TOTAL_S,DUTY_S</p>
+          <p ALIGN="JUSTIFY">#X3</p>
+          <p ALIGN="JUSTIFY">END</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">以上是一个按年龄段的工资统计报表，在统计库</font><font SIZE="3">L.DBF</font><font FACE="宋体" SIZE="3">中有以下域：</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">DEL </font><font FACE="宋体" SIZE="3">删除域，空为现员</font><font SIZE="3">(</font><font FACE="宋体" SIZE="3">非删除</font><font SIZE="3">)</font><font FACE="宋体" SIZE="3">。</p>
+          <p ALIGN="JUSTIFY">　　</font><font SIZE="3">BIRTHDAY </font><font FACE="宋体" SIZE="3">为出生年月。</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">TOTAL_S </font><font FACE="宋体" SIZE="3">为职务岗位工资</font><font SIZE="3">, DUTY_S </font><font FACE="宋体" SIZE="3">为技能级别工资。</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">注意，</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">语法中规定字符串的比较是一种非精确比较，例如：</font><font SIZE="3">&quot;ab&quot;</font><font FACE="宋体" SIZE="3">等于</font><font SIZE="3">&quot;abc&quot;</font><font FACE="宋体" SIZE="3">，即表达式</font><font SIZE="3">&quot;ab&quot;=&quot;abc&quot;</font><font FACE="宋体" SIZE="3">的运算结果为</font><font SIZE="3">&quot;</font><font FACE="宋体" SIZE="3">真</font><font SIZE="3">&quot;</font><font FACE="宋体" SIZE="3">。比如，</font><font SIZE="3">&quot;*&quot;</font><font FACE="宋体" SIZE="3">可匹配任何字符，所以</font><font SIZE="3">&quot;1960&quot;</font><font FACE="宋体" SIZE="3">与</font><font SIZE="3">&quot;1960****&quot;</font><font FACE="宋体" SIZE="3">是等价的，表达式</font><font SIZE="3">BIRTHDAY&gt;=&quot;1960****&quot;</font><font FACE="宋体" SIZE="3">与表达式</font><font SIZE="3">BIRTHDAY&gt;=&quot;1960&quot;</font><font FACE="宋体" SIZE="3">是等价的。</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">另外，在求年龄上应注意</font><font SIZE="3">AGE()</font><font FACE="宋体" SIZE="3">函数算出的精确年龄。比如，今年是</font><font SIZE="3">1996</font><font FACE="宋体" SIZE="3">年，求</font><font SIZE="3">AGE(&quot;19690713&quot;)</font><font FACE="宋体" SIZE="3">的结果不一定是</font><font SIZE="3">1996-1969=27</font><font FACE="宋体" SIZE="3">，还要看该人出生的月份、天。</font><font SIZE="3">AGE()</font><font FACE="宋体" SIZE="3">函数是算人的生日距当前日期</font><font SIZE="3">(</font><font FACE="宋体" SIZE="3">年、月、日</font><font SIZE="3">)</font><font FACE="宋体" SIZE="3">一共多少天，该天数再除以</font><font SIZE="3">365</font><font FACE="宋体" SIZE="3">而得到的整数。有些情况下不需要如此精确，可采用下面表达式：</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">sysdate('y')-VAL(SUBSTR(BIRTHDAY),1,4)</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">在统计条件的末尾通常要调用函数</font><font SIZE="3">warray()</font><font FACE="宋体" SIZE="3">，将结果存到文件中去。</font><font SIZE="3">warray()</font><font FACE="宋体" SIZE="3">函数还具有拼表能力，即将几张具有相同行数的表合成一个表。</p>
+          </font><b><font FACE="宋体"><p ALIGN="JUSTIFY">　</p>
+          <p ALIGN="JUSTIFY">例</font>2</p>
+          </b><font FACE="宋体" SIZE="3"><p ALIGN="CENTER"><img SRC="images/Image17.gif" WIDTH="401" HEIGHT="198"></font>　<font SIZE="3"> </p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">这张表看起来很简单，但是却包含了两种类型的统计：计数和求值。如何用</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">算出这张表来呢？我们还是按照</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">构造统计条件的指导流程来做。</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">首先将表写为嵌套的语言描述式，将不同性质的统计在列上分开。</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">计数</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">BEGIN</p>
+          <p ALIGN="JUSTIFY">#Y1:</font><font FACE="宋体" SIZE="3">局级</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">#Y2:</font><font FACE="宋体" SIZE="3">处级</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">#Y3:</font><font FACE="宋体" SIZE="3">科级</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">#Y4:</font><font FACE="宋体" SIZE="3">未定级</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">#X1:</font><font FACE="宋体" SIZE="3">所有人</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">END</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">求</font><font SIZE="3">DUTY_S</font><font FACE="宋体" SIZE="3">的和</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">BEGIN</p>
+          <p ALIGN="JUSTIFY">#Y1:</font><font FACE="宋体" SIZE="3">局级</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">#Y2:</font><font FACE="宋体" SIZE="3">处级</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">#Y3:</font><font FACE="宋体" SIZE="3">科级</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">#Y4:</font><font FACE="宋体" SIZE="3">未定级</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">#X1:</font><font FACE="宋体" SIZE="3">所有人</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">END</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">将上面的计数子表和求和子表合并成一个表，然后再将用自然语言表达的条件翻译为</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">表达式。</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">这张表的</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">语言语法描述如下：</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">/*</font><font FACE="宋体" SIZE="3">分级别统计技能工资总和，假定数据库为</font><font SIZE="3">.DBF</font><font FACE="宋体" SIZE="3">，级别域为</font><font SIZE="3">POST_RANK</font><font FACE="宋体" SIZE="3">，技能工资域为</font><font SIZE="3">DUTY_S*/</p>
+          <p ALIGN="JUSTIFY">PREDICATION</p>
+          <p ALIGN="JUSTIFY">LONG L[4,1]</p>
+          <p ALIGN="JUSTIFY">FLOAT F[4,1]</p>
+          <p ALIGN="JUSTIFY">FROM .DBF</p>
+          <p ALIGN="JUSTIFY">CONDITION</p>
+          <p ALIGN="JUSTIFY">BEGIN</p>
+          <p ALIGN="JUSTIFY">STAT L</p>
+          <p ALIGN="JUSTIFY">#Y1:POST_RANK=&quot;</font><font FACE="宋体" SIZE="3">局级</font><font SIZE="3">&quot;</p>
+          <p ALIGN="JUSTIFY">#Y2:POST_RANK=&quot;</font><font FACE="宋体" SIZE="3">处级</font><font SIZE="3">&quot;</p>
+          <p ALIGN="JUSTIFY">#Y3:POST_RANK=&quot;</font><font FACE="宋体" SIZE="3">科级</font><font SIZE="3">&quot;</p>
+          <p ALIGN="JUSTIFY">#Y4:POST_RANK=&quot;</font><font FACE="宋体" SIZE="3">未定级</font><font SIZE="3">&quot;</p>
+          <p ALIGN="JUSTIFY">#X1:</p>
+          <p ALIGN="JUSTIFY">SUM F,DUTY_S</p>
+          <p ALIGN="JUSTIFY">#X1</font><font FACE="宋体" SIZE="3">：</font><font SIZE="3"> </p>
+          <p>/*</font><font FACE="宋体" SIZE="3">注意这里是</font><font SIZE="3">X1</font><font FACE="宋体" SIZE="3">，而不是</font><font SIZE="3">X2</font><font FACE="宋体" SIZE="3">，因为虽然第二张子表与第一张共用了行条件，</font><font SIZE="3"> </font><font FACE="宋体" SIZE="3">但列条件还要从</font><font SIZE="3">1</font><font FACE="宋体" SIZE="3">开始。但是如果求和结果还是放到</font><font SIZE="3">L</font><font FACE="宋体" SIZE="3">中去，此时</font><font SIZE="3">L</font><font FACE="宋体" SIZE="3">被定义为：</font><font SIZE="3"> </p>
+          <p>LONG L[4,2]</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">这时这里写的就是</font><font SIZE="3"> #X2</font><font FACE="宋体" SIZE="3">了，而上一行则被写成：</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">SUM L , DUTY_S </p>
+          <p ALIGN="JUSTIFY">*/</p>
+          <p ALIGN="JUSTIFY">END </p>
+          <p ALIGN="JUSTIFY">ACTION WARRAY(&quot;example.dbf&quot;,L,F)</p>
+          </font><font FACE="宋体" SIZE="3"><p ALIGN="JUSTIFY">　</p>
+          <p ALIGN="JUSTIFY">　</p>
+          </font>
+          <li><font FACE="宋体" SIZE="5"><b><a NAME="_Toc436658016">行列数需通过计算的统计表</a></b></font></li>
+        </ol>
+      </ol>
+    </ol>
+    <p>　</p>
+    <p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">举例说明。如下面一张表所示，其</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">脚本可以写为：</p>
+    <p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="CENTER"><img SRC="images/Image18.gif" WIDTH="372" HEIGHT="358"></p>
+    </font><p ALIGN="CENTER">　</p>
+    <font SIZE="3"><p ALIGN="JUSTIFY">/*</font><font FACE="宋体" SIZE="3">假定表</font><font SIZE="3">ahsjk.dbf </font><font FACE="宋体" SIZE="3">中有域出生年月日</font><font SIZE="3">BIRTHDAY</font><font FACE="宋体" SIZE="3">，字符型，爱好标识</font><font SIZE="3">ENJOY_ID</font><font FACE="宋体" SIZE="3">，数字型</font><font SIZE="3">*/</p>
+    <p ALIGN="JUSTIFY">PREDICATES</p>
+    <p ALIGN="JUSTIFY">LONG x[100,10]</p>
+    <p ALIGN="JUSTIFY">FROM ahsjk.dbf</p>
+    <p ALIGN="JUSTIFY">CONDITION</p>
+    <p ALIGN="JUSTIFY">BEGIN</p>
+    <p ALIGN="JUSTIFY">STATISTICS x,100</p>
+    <p ALIGN="JUSTIFY">age(BIRTHDAY)&lt;100 $ staty(age(BIRTHDAY))</p>
+    <p ALIGN="JUSTIFY">ENJOY_ID&lt;10 $ statx(ENJOY_ID)</p>
+    <p ALIGN="JUSTIFY">END</font></p>
+    <p ALIGN="CENTER">　</td>
+  </tr>
+</table>
+</center></div>　
+<!--msnavigation--></td></tr><!--msnavigation--></table></body>
+</html>

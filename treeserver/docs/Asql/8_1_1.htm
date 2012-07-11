@@ -1,0 +1,188 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>ASQLCLT</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><b><span style="font-size: 12px">ASQLCLT.DLL的函数入口</span></p>
+    <ol style="font-size: 12px">
+      <li><span style="font-size: 12px">表达式分析</span></li>
+      </b><p ALIGN="JUSTIFY"><span style="font-size: 12px"><br>
+      1.表达式翻译<br>
+      MidCodeType * cdecl WordAnalyse( unsigned char *buffer );<br>
+      <b>输入：</b><br>
+      unsigned char *buffer：字符串表达的表达式<br>
+      <b>输出：</b><br>
+      表达式翻译中间结果，出错不NULL</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">2.释放空间<br>
+      short cdecl FreeCode( MidCodeType *m_c_head );<br>
+      <b>输入：</b><br>
+      MidCodeType *m_c_head：内部形式表达的表达式<br>
+      <b>输出：</b>0</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">3.符号登记<br>
+      MidCodeType * cdecl SymbolRegister( MidCodeType *m_c_head, dFILE *tb, \<br>
+      SysVarOFunType *UserSymbol, unsigned short SymbolNum, \<br>
+      SYSDEFINETYPE *DefineTable, unsigned short DefineNum );<br>
+      <b>输入：</b><br>
+      MidCodeType *m_c_head：内部形式表达的表达式<br>
+      dFILE *tb，被运算数据表，可以NULL<br>
+      SysVarOFunType *UserSymbol；符号表，可为NULL<br>
+      unsigned short SymbolNum,：符号数量<br>
+      SYSDEFINETYPE *DefineTable：宏定义符号表，可为NULL<br>
+      unsigned short DefineNum：宏定义符号数量<br>
+      <b>输出：</b><br>
+      NULL表成功，其它出错，</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">4.算表达式</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">long cdecl CalExpr( MidCodeType *m_c_head 
+      );</span></p>
+      <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">输入：</b>MidCodeType *m_c_head：内部形式表达的表达式<br>
+      <b>输出：</b>返回值</span></p>
+      <li><b><span style="font-size: 12px">汉字替换</span></li>
+      </b><p ALIGN="JUSTIFY"><span style="font-size: 12px">1.编译代码库</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">unsigned short hBuildCodeLib( char 
+      *CodeDbfControlName );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+      输出：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">2.打开代码库</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">short hOpen( char *CodeCodControlName );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+      输出：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">3.关闭代码库</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">short hClose( void );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+      输出：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">4.通过名字替换</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">char *hReplaceByName( char *CodeDbfName, 
+      char *Code );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+      输出：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">5.通过标识替换</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">char *hReplaceById( short CodeDbfId, char 
+      *Code );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+      输出：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">6.设缓冲区页数</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">short hSetPageNum( short PageNumber );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+      输出：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">7.取缓冲区页数</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">short hGetPageNum( void );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+      输出：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">8.通过名字取记录 </span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">CODE_STRUCT *hGetCodeRecByName( char 
+      *CodeDbfName, unsigned short BeginPos,\<br>
+      char *ModStr, CODE_STRUCT *CodeStruct, \<br>
+      char FunSel );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* Search for correspond chinese string 
+      with code libriary name.<br>
+      ** ModStr is a module.<br>
+      ** FunSel: 'N': get the BeginPos'th code record<br>
+      ** 'S': get the record which start with ModStr<br>
+      ** (e.g. &quot;12&quot;: &quot;1234&quot;, &quot;1245&quot;...) FROM BeginPos<br>
+      ** 'E': get the record which end with ModStr<br>
+      ** (e.g. &quot;00&quot;: &quot;1200&quot;, &quot;2300&quot;...) FROM BeginPos<br>
+      ** 'M': get the record which is 'equal' to the record.<br>
+      ** (e.g. &quot;0*10&quot;: &quot;0110&quot;, &quot;0210&quot;...) FROM BeginPos.<br>
+      ** 'F': get the record which is fuzzy suit for ModStr<br>
+      ** (e.g. &quot;Inst&quot;: &quot;ShangHai Railway Inst.&quot;,<br>
+      ** &quot;Inst of Intelligent&quot;, ...) FROM BeginPos<br>
+      ** Note: BeginPos begin from 0<br>
+      **----------------------------------------------------------------------*/</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">9.通过标识取记录</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">CODE_STRUCT *hGetCodeRecById( short 
+      CodeDbfId, \<br>
+      unsigned short BeginPos, char *ModStr, \<br>
+      CODE_STRUCT *CodeStruct, char FunSel );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* Search for correspond chinese string 
+      with code libriary id.<br>
+      ** ModStr is a module.<br>
+      ** FunSel: 'N': get the BeginPos'th code record<br>
+      ** 'S': get the record which start with ModStr<br>
+      ** (e.g. &quot;12&quot;: &quot;1234&quot;, &quot;1245&quot;...) FROM BeginPos<br>
+      ** 'E': get the record which end with ModStr<br>
+      ** (e.g. &quot;00&quot;: &quot;1200&quot;, &quot;2300&quot;...) FROM BeginPos<br>
+      ** 'M': get the record which is 'equal' to the record.<br>
+      ** (e.g. &quot;0*10&quot;: &quot;0110&quot;, &quot;0210&quot;...) FROM BeginPos.<br>
+      ** 'F': get the record which is fuzzy suit for ModStr<br>
+      ** (e.g. &quot;Inst&quot;: &quot;ShangHai Railway Inst.&quot;,<br>
+      ** &quot;Inst of Intelligent&quot;, ...) FROM BeginPos<br>
+      ** Note: BeginPos begin from 0<br>
+      ** Return:<br>
+      ** success: the pointer to the struct<br>
+      ** fail : the pointer to the struct, but the CodeStruct-&gt;Position<br>
+      ** is 0xFFFF<br>
+      **-----------------------------------------------------------------------*/</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">10.替换描述串翻译</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">HZTH_METHOD_STRU *hMethodTranslate( char 
+      *sHzthMethod );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* Translate a regular string to a 
+      REGULAR**/</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">11.通过方法替换</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">char *hReplaceByMethod( HZTH_METHOD_STRU 
+      *HzthMethod, char *Code );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* Single field replace with 
+      HzthMethod.**/</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">12.通过方法扩展替换</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">char 
+      *hExtReplaceByMethod(HZTH_METHOD_STRU *HzthMethod, char *Code);</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+      输出：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">13.通过名字扩展替换</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">char *hExtReplaceByName( char 
+      *CodeDbfName, char *Code );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+      输出：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">14.通过标识扩展替换</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">char *hExtReplaceById( short CodeDbfId, 
+      char *Code );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+      输出：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">15.通过名字取标识</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">short hGetCodeDbfId( char *CodeDbfName );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+      输出：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">16.检查代码正确性</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">unsigned short hCheckCodeValid( char 
+      *CodeDbfName, char *Code );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* When you want to check the validity of 
+      the Code in the CodeDbfName,<br>
+      ** but you aren't sure to desided if you should really replace the code,<br>
+      ** herence you might call it for the sure!*/</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">17.取代码数</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">long hGetCodeDbfRecNum( short CodeDbfId 
+      );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* Get code num*/</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">18.取代码段数</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">long hGetSegCodeNum( short CodeDbfId, 
+      char *ModStr );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">19.取汉字长</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">short hGetCexprLen( HZTH_METHOD_STRU 
+      *HzthMethod );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* Get code num*/</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">20.取代码库信息</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">CODE_LIB_MES_STRUCT *hGetCodeLibInfo( 
+      short CodeDbfid );</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">21.当前起动否标识</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">short getHzthInitFlag(void);</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">1：已启动<br>
+      0：未启动</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">22.取汉字替换当前工作状态信息</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">char *getHzthInfoStr(void);</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">23.释放方法所申请空间</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">void freeHzthMethodStru(HZTH_METHOD_STRU 
+      *p);</span></p>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

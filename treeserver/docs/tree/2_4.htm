@@ -1,0 +1,38 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>TreeSVR应用程序界面（API）</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>TreeSVR应用程序界面（API）</strong></p>
+    <blockquote>
+      <ol style="font-size: 12px">
+        <li><font SIZE="2"><a href="2_4_1.htm">API</font><font FACE="宋体" SIZE="2">一般定义</font></a></li>
+        <li><font SIZE="2"><a href="2_4_2.htm">TreeSVR</font><font FACE="宋体" SIZE="2">客户端动态连接库提供的</font><font
+          SIZE="2">API</font><font FACE="宋体" SIZE="2">函数</font></a></li>
+      </ol>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">大多数计算机专业人员都熟悉某种形式的数据库技术，因为如果没有中央数据存储多数商业应用程序就没有了价值。访问事务服务器是程序员的工作，程序员要将用户的问题以TreeSVR可以理解的形式整理出来，交给TreeSVR去运行，还要负责运行结果的反馈，及运行状态的控制等。访问TreeSVR要求有两种截然不同的语言：一种是主机语言，即程序员用来同具体用户打交道的界面语言，如C语言、Delphi开发工具；为了访问数据库，用户需要另外一种可访问数据库的语言，TreeSVR的访问数据库语言为：ASQL。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">下面主要讨论客户引用API，调用级接口。TreeSVR客户访问语言ASQL语言有专门资料介绍。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TreeSVR调用级接口以软件包形式提供。它以Windows的动态连接库形式提供，该动态连接库称为“TreeSVR调用接口库”，它负责：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(1)接收用户请求，传给TreeSVR服务器。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(2)接收TreeSVR服务器传来的结果包，整理成交付用户的形式。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(3)监听TreeSVR服务器状态，必要时返馈给用户。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(4)保持TreeSVR客户请求的暂存数据。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(5)为用户提供部分本地服务。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">ＴreeSVR客户端由两个动态连接库组成：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">NAMEDPIPE.DLL</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TSCLNT.DLL</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

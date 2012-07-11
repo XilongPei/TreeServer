@@ -1,0 +1,37 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>多进程事务服务引擎</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>多进程事务服务引擎</strong></p>
+    <p>　</p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">有些数据库引擎依靠多个可执行应用程序进行用户查询工作。在这种结构中，每次用户登录，这实际上启动了数据库引擎本身的一个独立实例。为了协调许多用户同时并发访问相同的数据集，这些可执行程序会同其他“全局协调员”任务一起调度不同用户之间的操作。这类数据库中的应用程序使用专门的进程间通信（Inter-Process 
+    Communication, IPC)设备进行通信。尽管未必有效，Microsoft Windows下的Dynamic 
+    Data Exchange就是一个IPC。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">多进程数据库引擎的最普通的例子通常并不是在大型机上运行的。Oracle公司的Oracle 
+    Server是一个真正的多进行程数据引擎。Oracle Server加载了16种不同的可执行程序来完成不同的任务。用户联接启动数据库可执行程序。系统可执行程序管理对数据表的多用户访问、事务登录、格式转换和其它特征。比如分布式事务、数据复制等。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">用户每次和Oracle数据库联接，就加载oracle数据库可执行程序的一个不同事例。查询被传给那个可执行程序，它会同服务器上的其他可执行程序一起返回结果集、管理锁定以及其他必要的数据访问功能。图2.2说明了多个数据库引擎是如何需要数据库可执行程序的多个事例的。这要求实际的系统资源把内存资源和处理提供给操作系统资源。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px"><img SRC="Image17.gif"
+    WIDTH="550" HEIGHT="405"></span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">图2.2 
+    多进程数据库引擎启动数据库可执行程序的许多实例，以便为</span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">多个用户提供对数据的访问</span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">大多数多进程数据库引擎是在操作系统支持像线程和抢占式调度这样的特征之前开发出来的。结果是，“分解”某个操作意味着编写特定的可执行程序以处理那个操作。这对数据库处理来说具有两个重要的优点：一是数据库可以支持多个并发用户，实线数据在网络上的集中化；二是它通过增加更多的CPU和物理机器去提供可升线性。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">在多任务操作系统中，操作系统在多个应用程序（任务）之间分配处理时间，方法是给每个任务一“片”CPU可用的工作时间。这样，在某个时刻里只有一个任务在执行。也就是说，各任务共享处理器，因为OS保证把特定百分比的CPU时间分给每个任务。结果，看上去像是多个应用程序同时在一个CPU上运行。但是，这种方法的实际优越性是来自操作系统可使用多个CPU的时候。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">应用程序喜欢支持多任务以及对称化多处理的操作系统。给不同处理器调度不同任务的能力，使应用程序能够真正同时运行。结果是，如今的多进程数据库管理系统比起它们的对等产品更倾向于配备大数目的处理器。许多工业调查和文章确认，Oracle 
+    Server可配置大量的处理器，工作效率很高。也就是说，随着新处理器的加入，Oracle利用那个处理器的优点，于是在数据库处理能力方面获得了净增益。在下面关于多线程DBMS的讨论中，用户可以知道这是不是自己的事务真正需要的。</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

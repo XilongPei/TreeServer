@@ -1,0 +1,44 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>请求服务器状态提示</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>请求服务器状态提示</strong></p>
+    <p align="left"><strong>　</strong></p>
+    <b><p><font size="3"><span style="font-size: 12px">packetType = 'S'</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">请求服务器状态提示</span></font></b></p>
+    <p><font size="3"><span style="font-size: 12px">msgType =状态号‘A’－‘Z’</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">len = 引 擎号(从1开始编号，0为系统调度器)</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">lp 保留</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">应答包格式：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">由二部分组成：包头、提示内容</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">packetType = 'R';</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">msgType = 'D';</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">len = sizeof(TS_COM_PROPS)+信息长度;</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">lp = 0;</span></font></p>
+    <p><font size="3"><span style="font-size: 12px"><u><i><b>提示内容组成：</b></i></u></span></font></p>
+    <p><font size="3"><span style="font-size: 12px">信息1`信息2`信息3`......</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">提示内容与字符串资源“状态号_引擎号?(A_2) 
+    合起来构成真正的提示文字。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">例如：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">提示内容：“2`\nD:\DATA\LZ0.DBF\nD:\DATA\LZ1.DBF`”</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">字符串资源：A_1=“当前已经打开的文件数：`\n具体被打开的文件为：`\n”</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">合成之后的提示文字：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <b><p><font size="3"><span style="font-size: 12px">当前已经打开的文件数：2</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">具体被打开的文件为：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">D:\DATA\LZ0.DBF</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">D:\DATA\LZ1.DBF</span></font></b></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

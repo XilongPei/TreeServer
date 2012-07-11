@@ -1,0 +1,73 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>基本概念</title>
+</head>
+
+<body bgcolor="#EAEAFB">
+
+<h2 align="center"><font face="楷体_GB2312">基本概念</font></h2>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p ALIGN="JUSTIFY"><span style="font-size: 12px">&nbsp;&nbsp;&nbsp; 
+    &nbsp;&nbsp; 虽然关系数据库已有明确的“表-行-列”的结构定义，但各数据库厂商都有其特殊理解，因为数据存储结构的不同直接影响着功能的实现方式和策略。ASQL是按照图1.1所示的架构理解数据的。</span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px"><img SRC="images/Image1.gif" width="404"
+    height="268"></span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px">图1.1 ASQL数据存储架构</span></p>
+    <ol style="font-size: 12px">
+      <li><b><p ALIGN="JUSTIFY"><span style="font-size: 12px">表<br>
+        &nbsp; </b><br>
+        &nbsp;&nbsp;&nbsp; 
+        在一个关系数据库中，所有数据都是以表的形式存放的。表由行和列组成。每个表有一个表名，表内的每一列有一个列名。表中的行之间无次序要求（但是行可以按用户指定的方式去检索。ASQL通常用的是物理序，即这些行物理上存放的次序）。关系数据库中所定义的各种格式的数据，如字符型、整型、浮点型、日期型等都可作为数据库的值存于数据表中。</span></p>
+        <p ALIGN="JUSTIFY"><span style="font-size: 12px">&nbsp;&nbsp;&nbsp; 
+        表的列通常被称为“字段(field)”或“域”。</span></p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><span style="font-size: 12px"><b>库</b><br>
+        <br>
+        &nbsp;&nbsp;&nbsp; 
+        库是表的集合。如存于一个子目录下的所有表就可表现为一个库。ORACLE、DB2等数据库系统中没有明确的库的概念，用限定名(qualfied 
+        name)来对存在一起的表进行归类。而Informix等数据库系统则需在数据库连接时指定具体数据库。xBASE数据库通常将表称为数据库，这是一个不好的概念，因为它与网络上的“域(domain)”相同，但本书也这样称呼。<b><br>
+        </b></span></p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><span style="font-size: 12px"><b>条件函数</b><br>
+        <br>
+        &nbsp;&nbsp;&nbsp; ASQL将可以放在表达式中的用于单一计算的函数称为“条件函数”。条件函数都是纯量(scalar)函数，即只返回单个值的函数，如求字符串长度(len)和子字符串(substr)函数，它们带有一个或多个参数，返回一个纯量结果。</span></p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><span style="font-size: 12px"><b>动作函数</b><br>
+        <br>
+        &nbsp;&nbsp;&nbsp; ASQL将对交过来运算的记录进行处理的函数称为动作函数。IBM文档中称为列函数，在ANSI/ISO标准中，称为集合(set)函数。有时在文字书写中，也称为集合(aggreate)函数。这些函数在一列上操作，汇总成一个纯量值的结果。</span></p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><span style="font-size: 12px"><b>分组</b><br>
+        <br>
+        &nbsp;&nbsp;&nbsp; 分组就是在一个表中，按匹配列(称为分组列grouping 
+        columns)将行分成几个组，匹配列是由GROUPBY子句列出。当一个查询包括有GROUPBY子句时，其分组结果集合的每一行，表示一个组的结果。</span></p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><span style="font-size: 12px"><b>查询块</b><br>
+        <br>
+        &nbsp;&nbsp;&nbsp; 将ASQL的各种子句放在一起，完成一个数据运算成为一个单元时，称为查询块(query 
+        blobk)。查询块是一个基本单元，它在一个或多个数据表上进行操作，包括连接、分组、投影以及从这些表提取后派生的表。</span></p>
+        <p ALIGN="JUSTIFY"><span style="font-size: 12px">&nbsp;&nbsp;&nbsp; 
+        查询块是一段非过程性描述，只有作为整体提交才表示具体查询要求，而其语句没有运算的前后次序之说。</span></p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><span style="font-size: 12px"><b>数据字典</b><br>
+        <br>
+        &nbsp;&nbsp;&nbsp; 用以被ASQL固定支持的表进行描述的一组管理文件。在P-C-D（程序-控制-数据）结构系统中，数据字典被扩充成控制层，本书有时也将表示数据字典的文件称为控制层。</span></p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><span style="font-size: 12px"><b>代码</b><br>
+        <br>
+        &nbsp;&nbsp;&nbsp; 
+        用以描述某个域的内容的实际表示的一组表，此时域中存的是这些信息的代码，而其具体表示需查相应代码表才可获得。</span></p>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>　 </p>
+</body>
+</html>

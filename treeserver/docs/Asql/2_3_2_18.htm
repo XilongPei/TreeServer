@@ -1,0 +1,31 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>放弃子集关联</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>放弃子集关联(nextmrec)</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]nextmrec(表示参与连接运算的数据源表的标识号的数字型表达式：ID)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]如果ID为1，则放弃子集的其它关联，跳至主集的下一条记录进行运算。如果ID为表示其它连接源信息表的数字，则该子集将退出这组关联运算。所谓一组关联是指通过第一个运算表的当前记录，通过关联关系，连带出来的子集等的一组记录（如图2.6所示）。</span></p>
+    <p ALIGN="CENTER"><img src="images/Image14.gif" width="520" height="192"
+    alt="Image14.gif (4536 bytes)"></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px">图2.6 多表运算时的“关联”</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0，\TG\DATA\SUB11,CODE<br>
+    CONDITION<br>
+    BEGIN<br>
+    &nbsp; 1 $ record(@1);nextmrec(1)<br>
+    END</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*源表SUB11既使与SUB0的当前记录可关联的记录有多条，也只有一条起作用*/</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

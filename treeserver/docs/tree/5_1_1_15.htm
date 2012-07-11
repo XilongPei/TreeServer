@@ -1,0 +1,29 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>内存交互写数据库BLOB记录</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>内存交互写数据库BLOB记录</strong></p>
+    <p>　</p>
+    <p><font size="3"><span style="font-size: 12px">lp = 0x2014 内存交互写数据库BLOB记录(cmTS_BLOB_ 
+    MEM_PUT)</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">请求包格式：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">4字节：df，</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">4字节：recNo</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">12字节：Blob字段名</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">客户端以‘B’包的形式向服务器发出BLOB内容。服务器完成请求后返回一个‘D’包，如果中途返回了‘E’包，表示出错。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">‘B’包的第一个包的lp域描述了BLOB信息总长度，其后每个包的len描述了本包的内容长度。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">有写BLOB域时，必须先有记录，即必须在已有记录上写BLOB域</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

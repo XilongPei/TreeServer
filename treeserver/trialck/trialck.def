@@ -1,0 +1,7 @@
+LIBRARY		TRIALCK
+
+DESCRIPTION	"Copy right (c) 1999 Withub vision"
+
+EXPORTS
+		trialbuild		@101	NONAME
+		trialck			@102	NONAME

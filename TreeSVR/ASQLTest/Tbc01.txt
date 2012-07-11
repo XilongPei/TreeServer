@@ -1,0 +1,14 @@
+/*×ÛºÏ±í*/
+
+predicates
+     long x[5,19]
+from    lz0.dbf
+condition
+begin
+statistics      x
+       #y1:   1 
+       #y2:   a04="2"
+       #x1:   1
+       #x2:   1
+end
+act xarray2xml(x,"","",0)

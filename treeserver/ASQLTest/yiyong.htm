@@ -1,0 +1,430 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>ASQL应用</title>
+
+<meta name="Microsoft Border" content="t, default"></head>
+
+<body bgcolor="#EAEAFB"><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>
+
+<table border="0" width="85%" cellspacing="0" cellpadding="0" height="50">
+  <tr>
+    <td width="20%" height="50"><a href="http://tdb.com.cn"><img src="images/crsc.gif" alt="上海中铁高新软件中心" border="0" WIDTH="148" HEIGHT="42"></a></td>
+    <td width="80%" height="50"><img src="_borders/asql.gif" alt="asql.gif (3772 bytes)" WIDTH="500" HEIGHT="40"></td>
+  </tr>
+</table>
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" align="center"><a href="index.htm"><img src="images/intro.gif" alt="产品简介" border="0" WIDTH="93" HEIGHT="19"></a><img src="images/online.gif" alt="联机手册" border="0" WIDTH="93" HEIGHT="19"><img src="images/quote.gif" alt="产品报价" WIDTH="93" HEIGHT="19"><img src="images/back.gif" alt="意见反馈" border="0" WIDTH="93" HEIGHT="19"><img src="images/about.gif" alt="相关产品" WIDTH="93" HEIGHT="19"><a href="mailto:asql@tdb.com.cn"><img src="images/contact.gif" alt="请与我们联系" border="0" WIDTH="93" HEIGHT="19"></a></td>
+  </tr>
+</table>
+</td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><!--msnavigation--><td valign="top">
+
+<hr>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><h2 align="center"><font face="楷体_GB2312">ASQL应用</font></h2>
+    <ol>
+      <li><a name="3_1">ASQL 应用前数据准备</a><br>
+        <br>
+        根据应用的不同，需给ASQL准备不同的数据，一般有以下几种情况。<br>
+      </li>
+      <ol>
+        <li><p ALIGN="JUSTIFY"><a name="3_1_1">只做简单数据运算<br>
+          </a><br>
+          ASQL的源一般操作的是工业标准的DBF文件，所以要通过如foxbase,dbase,database 
+          explore等工具创建数据表。如果需要对这些表进行严格管理，还需将它们登记到数据字典中。</p>
+          <p ALIGN="JUSTIFY">ASQL对BLOB字段的存储格式（DBT文件）进行了重新定义，不支持其它版本的备注字段（DBT），所以如果已经有数据，就不可以有备注或图形等BLOB字段。可以通常工具转换。</p>
+          <p ALIGN="JUSTIFY">为了更好地支持数据修改，DBF文件建议有DEL___LINK字段，字符型，4字节长。ASQL将用它来管理删除链，使数据在删除后的空间重用速度提高。</p>
+          <p ALIGN="JUSTIFY">如果数据量较大，事务复杂，应将这些数据组织成库的形式，也就是根据应用的不同，将数据分别放在不同的子目录中。不同库间的协同操作比较困难，即一般不能同时操作两个库中的数据，除非指定绝对路径。</p>
+        </li>
+        <li><p ALIGN="JUSTIFY"><a name="3_1_2">运用代码</a><br>
+          <br>
+          如果要引用代码性的数据，应建立系统的代码库。</p>
+        </li>
+        <li><p ALIGN="JUSTIFY"><a name="3_1_3">访问高档数据库</a><br>
+          <br>
+          如果要处理的是高档数据库上的数据，需组织好高档数据库，使之可以通过客户端的ODBC访问其上的数据。</p>
+        </li>
+      </ol>
+      <li><p ALIGN="JUSTIFY"><a name="3_2">查询</a><br>
+        <br>
+        ASQL可作为任何查询程序的中间和执行语言，查询程序只要构造好ASQL语法，交给ASQL解释器，就可完成自己的工作。</p>
+        <p ALIGN="JUSTIFY">ViTAB就是一个构造ASQL语法文件的工具。</p>
+        <p ALIGN="JUSTIFY">查询的基本语法结构为：</p>
+        <p ALIGN="JUSTIFY">FROM 源<br>
+        TO 目标<br>
+        CONDITION<br>
+        BEGIN<br>
+        &nbsp; 条件 $ 获取记录或提取信息动作<br>
+        END</p>
+        <p ALIGN="JUSTIFY">获取记录或提取信息的动作函数有：</p>
+        <p ALIGN="JUSTIFY">record()<br>
+        askrec()<br>
+        insrec()<br>
+        apprec()<br>
+        calrec()<br>
+        webprint()<br>
+        webstream()</p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><a name="3_3">统计</a><br>
+        <br>
+        统计是查询的一种特例，它相当于满足一定条件的记录的计数或求和。下面通过例子来了解统计条件的写法。</p>
+        <p ALIGN="JUSTIFY">[例16]处级以上干部的学位及年龄情况</p>
+        <p ALIGN="JUSTIFY">┌───────┬───────────────────┐<br>
+        │ │ 处级以上 │<br>
+        │ ├────┬────┬────┬────┤<br>
+        │ │ 博 士 │ 硕 士 │ 学 士 │ 无学位 │<br>
+        ├──┬────┼────┼────┼────┼────┤<br>
+        │ 中 │30~40岁 │ │ │ │ │<br>
+        │ 年 ├────┼────┼────┼────┼────┤<br>
+        │ 干 │41~45岁 │ │ │ │ │<br>
+        │ 部 ├────┼────┼────┼────┼────┤<br>
+        │ │46~50岁 │ │ │ │ │<br>
+        └──┴────┴────┴────┴────┴────┘</p>
+        <p ALIGN="JUSTIFY">通常的统计表都是分层的，可以利用条件之间的嵌套来表示这种分层。每一个写有文字的地方表示一定的约束，即是一个条件，最终结果是计数。上表利用嵌套方式可写为：</p>
+        <p ALIGN="JUSTIFY">行条件：中年干部</p>
+        <p ALIGN="JUSTIFY">Begin<br>
+        #Y1:30~40岁<br>
+        #Y2:41~45岁<br>
+        #Y3:46~50岁<br>
+        End</p>
+        <p ALIGN="JUSTIFY">列条件：处级以上干部</p>
+        <p ALIGN="JUSTIFY">Begin<br>
+        #X1:博士<br>
+        #X2:硕士<br>
+        #X3:学士<br>
+        #X4:无学位<br>
+        End</p>
+        <p ALIGN="JUSTIFY">利用这种嵌套可以表示任意多层的表的定义，表示完之后就是将每个文字说明变为条件表达式，在最前面写上Statistics 
+        statX即可。Statistics可简写为STAT。</p>
+        <p ALIGN="JUSTIFY">完整的统计条件写法如下：</p>
+        <p ALIGN="JUSTIFY">Predicate<br>
+        long statx[3,4]<br>
+        From \tg\data\sub0.dbbf /*指定描述变量和源*/<br>
+        CONDITION<br>
+        Begin<br>
+        stat statX<br>
+        age(Birthday)&gt;=30&amp;&amp;age(Birthday)&lt;=50 /*30岁以上50以下，中级干部*/<br>
+        Begin<br>
+        &nbsp; age(Birthday)&gt;=30&amp;&amp;age(Birthday)&lt;=40<br>
+        &nbsp; age(Birthday)&gt;=41&amp;&amp;age(Birthday)&lt;=45<br>
+        &nbsp; age(Birthday)&gt;=46&amp;&amp;age(Birthday)&lt;=50<br>
+        End<br>
+        Past_Rank&lt;=&quot;08&quot;&amp;&amp;Past_Rank&gt;=&quot;09&quot; /*处级以上干部*/<br>
+        Begin<br>
+        &nbsp; DEGREE_N=&quot;2&quot;&amp;&amp;DEGREE_N=&quot;8&quot; /*博士、副博士*/<br>
+        DEGREE_N=&quot;3&quot; /*硕士*/<br>
+        DEGREE_N=&quot;4&quot; /*学士*/<br>
+        DEGREE_N=&quot; &quot; /*无学位*/<br>
+        End<br>
+        End<br>
+        Action warray (&quot;\\tg\\tj\\tbtest.dbf&quot;,statx) <br>
+        /*指定统计结果存于何处*/</p>
+        <p ALIGN="JUSTIFY">下面，我们再来介绍一下与统计有关的ASQL定义、标识语句。</p>
+        <ol>
+          <li><a NAME="3_3_1">变量定义语句(predicates)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          它支持int，long，float等类型变量</p>
+          <p ALIGN="JUSTIFY">格式：predicates</p>
+          <p ALIGN="JUSTIFY">变量类型 变量或数组名</p>
+          <p ALIGN="JUSTIFY">[例17]</p>
+          <p ALIGN="JUSTIFY">predicates<br>
+          long statX[m,n]</p>
+          <p ALIGN="JUSTIFY">这里的statX[m,n]为二维数组变量，m为行，n为列。<br>
+          ASQL的变量是由字母打头，后跟字母和数字的字符序列，最长31个字符。</p>
+          <li><a NAME="3_3_2">计数标识(statistics)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          格式：statistics 变量数组[，最大行数]</p>
+          <p ALIGN="JUSTIFY">说明：声明后面对X的定义是计数。[最大行数]表示本次统计运算的最大行数，这个行数不只是计数行行数，也包括求程、平均之类，设置它的目标是为了通知ASQL设置行逻辑标识区，ASQL通常通过#Y后面的最大数来确定行逻辑标识区的大小，但有时用户可能自己用staty()函数来完成行条件的定义，而不用#Y的形式，这时就很有用了。可以省略。</p>
+          <p ALIGN="JUSTIFY">举例：见例16。</p>
+          <li><a NAME="3_3_3">求和标识(summer)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          格式：summer 变量数组，数字型表达式1[，数字型表达式2，……]</p>
+          <p ALIGN="JUSTIFY">说明：声明后面对X的定义是求和，求和操作是指：</p>
+          <p ALIGN="JUSTIFY">每次引用summer则，数字型表达式1+数字型表达式2+……，将结果与summer所标识的数组的相应元素相加。</p>
+          <p ALIGN="JUSTIFY">通常的统计求和运算只有数字型表达式1。</p>
+          <p ALIGN="JUSTIFY">注意：summer后的求和标识最长为4096个西文字符。</p>
+          <p ALIGN="JUSTIFY">举例：[例18]</p>
+          <p ALIGN="JUSTIFY">①summer sumX,age(Birthday)</p>
+          <p ALIGN="JUSTIFY">/*对年龄求和，存入sumX。下面的几列对X的定义都是做的这一运算，即，满足对联样的X条件，视Y的真假决定对其列是否做些求和动作*/</p>
+          <p ALIGN="JUSTIFY">X1:……</p>
+          <p ALIGN="JUSTIFY">X2: ……</p>
+          <p ALIGN="JUSTIFY">X3:……</p>
+          <p ALIGN="JUSTIFY">②summer sumX,total_s,duty_s</p>
+          <p ALIGN="JUSTIFY">对职务岗位工资和技术级别工资求和，存入数组sumX中。</p>
+          <li><a NAME="3_3_4">平均值标识(average)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          格式：average 计数用变量数组，存平均值用变量数组，数字型表达式[，数字型表达式，……][计数用变量数组]和[存平均值用变量数组]必须具有相同的维定义，即都是标准二维数组，第一维、第二维大小都相同。</p>
+          <p ALIGN="JUSTIFY">功能：声明后面对X的定义是求平均，求平均操作是指：数字型表达式1+数字型表达式2+……/引起average运算的次数</p>
+          <p ALIGN="JUSTIFY">通常的统计求和运算只有数字型表达式1。<br>
+          Average的副产品是计数结果存于计数用变量数组。<br>
+          average后的求平均标识最长为4096个西文字符。</p>
+          <p ALIGN="JUSTIFY">举例：</p>
+          <p ALIGN="JUSTIFY">[例19]</p>
+          <p ALIGN="JUSTIFY">①average cntX,avgX,age(Birthday)</p>
+          <p ALIGN="JUSTIFY">/*对年龄平均，存入avgX。下面的几列对X的定义都是做的这一运算，即，满足对联样的X条件，视Y的真假决定对其列是否做些求和动作*/</p>
+          <p ALIGN="JUSTIFY">X1:……</p>
+          <p ALIGN="JUSTIFY">X2: ……</p>
+          <p ALIGN="JUSTIFY">X3:……</p>
+          <p ALIGN="JUSTIFY">②average cntX,sumX,total_s,duty_s</p>
+          <p ALIGN="JUSTIFY">对职务岗位工资和技术级别工资求和，存入数组sumX中。最后除以求了多少次和，算得平均值。</p>
+          <li><a NAME="3_3_5">求最大值标识(max)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          格式：max 变量数组，数字型表达式1[，数字型表达式2，……]</p>
+          <p ALIGN="JUSTIFY">说明：声明后面对X的定义是求和，求和操作是指：</p>
+          <p ALIGN="JUSTIFY">每次引用max则，max(数字型表达式1,数字型表达式2+……)，将结果与max所标识的数组的相应元素比较，用其中较大者更新它。</p>
+          <p ALIGN="JUSTIFY">通常的统计求最大值运算只有数字型表达式1。</p>
+          <p ALIGN="JUSTIFY">注意：max后的求和标识最长为4096个西文字符。</p>
+          <p ALIGN="JUSTIFY">举例：</p>
+          <p ALIGN="JUSTIFY">[例20]</p>
+          <p ALIGN="JUSTIFY">①max maxX,age(Birthday)</p>
+          <p ALIGN="JUSTIFY">/*对年龄求最大值，存入maxX。下面的几列对X的定义都是做的这一运算，即，满足对联样的X条件，视Y的真假决定对其列是否做些求和动作*/</p>
+          <p ALIGN="JUSTIFY">X1:……</p>
+          <p ALIGN="JUSTIFY">X2: ……</p>
+          <p ALIGN="JUSTIFY">X3:……</p>
+          <p ALIGN="JUSTIFY">②max maxX,total_s,duty_s</p>
+          <p ALIGN="JUSTIFY">对职务岗位工资和技术级别工资求和，存入数组maxX中。</p>
+          <p ALIGN="JUSTIFY">　</p>
+          <li><a NAME="3_3_6">求最小值标识(min)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          格式：min 变量数组，数字型表达式1[，数字型表达式2，……]</p>
+          <p ALIGN="JUSTIFY">说明：声明后面对X的定义是求和，求和操作是指：</p>
+          <p ALIGN="JUSTIFY">每次引用min则，min(数字型表达式1,数字型表达式2+……)，将结果与max所标识的数组的相应元素比较，用其中较小者更新它。</p>
+          <p ALIGN="JUSTIFY">通常的统计求最小值运算只有数字型表达式1。</p>
+          <p ALIGN="JUSTIFY">注意：min后的求和标识最长为4096个西文字符。</p>
+          <p ALIGN="JUSTIFY">举例：</p>
+          <p ALIGN="JUSTIFY">[例21]</p>
+          <p ALIGN="JUSTIFY">①min minX,age(Birthday)</p>
+          <p ALIGN="JUSTIFY">/*对年龄求最小值，存入maxX。下面的几列对X的定义都是做的这一运算，即，满足对联样的X条件，视Y的真假决定对其列是否做些求和动作*/</p>
+          <p ALIGN="JUSTIFY">X1:……</p>
+          <p ALIGN="JUSTIFY">X2: ……</p>
+          <p ALIGN="JUSTIFY">X3:……</p>
+          <p ALIGN="JUSTIFY">②min minX,total_s,duty_s</p>
+          <p ALIGN="JUSTIFY">对职务岗位工资和技术级别工资求和，存入数组minX中。</p>
+          <li><a NAME="3_3_7">应用举例</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          例1</p>
+          <p ALIGN="JUSTIFY">报表格式如下：</p>
+          <p ALIGN="CENTER"><img SRC="images/Image16.gif" WIDTH="308" HEIGHT="261"></p>
+          <p ALIGN="JUSTIFY">其ASQL脚本为：</p>
+          <p ALIGN="JUSTIFY">PREDICATEs<br>
+          LONG table[3,3]<br>
+          FROM L.DBF<br>
+          CONDITION<br>
+          BEGIN<br>
+          #Y1 DEL=&quot; &quot;&amp;&amp;BIRTHDAY&gt;=&quot;1960****&quot; <br>
+          #Y2 DEL=&quot; 
+          &quot;&amp;&amp;BIRTHDAY&gt;=&quot;1950****&quot;&amp;&amp;BIRTHDAY&lt;&quot;1960****&quot; 
+          <br>
+          #Y3 DEL=&quot; &quot;&amp;&amp;BIRTHDAY&lt;&quot;1950****&quot; <br>
+          SUM table,TOTAL_S<br>
+          #X1<br>
+          SUM table,DUTY_S<br>
+          #X2<br>
+          SUM table,TOTAL_S,DUTY_S<br>
+          #X3<br>
+          END</p>
+          <p ALIGN="JUSTIFY">以上是一个按年龄段的工资统计报表，在统计库L.DBF中有以下域：</p>
+          <p ALIGN="JUSTIFY">DEL 删除域，空为现员(非删除)。<br>
+          BIRTHDAY 为出生年月。<br>
+          TOTAL_S 为职务岗位工资, DUTY_S 为技能级别工资。</p>
+          <p ALIGN="JUSTIFY">注意，ASQL语法中规定字符串的比较是一种非精确比较，例如：&quot;ab&quot;等于&quot;abc&quot;，即表达式&quot;ab&quot;=&quot;abc&quot;的运算结果为&quot;真&quot;。比如，&quot;*&quot;可匹配任何字符，所以&quot;1960&quot;与&quot;1960****&quot;是等价的，表达式BIRTHDAY&gt;=&quot;1960****&quot;与表达式BIRTHDAY&gt;=&quot;1960&quot;是等价的。</p>
+          <p ALIGN="JUSTIFY">另外，在求年龄上应注意AGE()函数算出的精确年龄。比如，今年是1996年，求AGE(&quot;19690713&quot;)的结果不一定是1996-1969=27，还要看该人出生的月份、天。AGE()函数是算人的生日距当前日期(年、月、日)一共多少天，该天数再除以365而得到的整数。有些情况下不需要如此精确，可采用下面表达式：</p>
+          <p ALIGN="JUSTIFY">sysdate('y')-VAL(SUBSTR(BIRTHDAY),1,4)</p>
+          <p ALIGN="JUSTIFY">在统计条件的末尾通常要调用函数warray()，将结果存到文件中去。warray()函数还具有拼表能力，即将几张具有相同行数的表合成一个表。</p>
+          <p ALIGN="JUSTIFY">例2</p>
+          <p ALIGN="CENTER"><img SRC="images/Image17.gif" WIDTH="401" HEIGHT="198">　 </p>
+          <p ALIGN="JUSTIFY">这张表看起来很简单，但是却包含了两种类型的统计：计数和求值。如何用ASQL算出这张表来呢？我们还是按照ASQL构造统计条件的指导流程来做。</p>
+          <p ALIGN="JUSTIFY">首先将表写为嵌套的语言描述式，将不同性质的统计在列上分开。</p>
+          <p ALIGN="JUSTIFY">计数</p>
+          <p ALIGN="JUSTIFY">BEGIN<br>
+          #Y1:局级<br>
+          #Y2:处级<br>
+          #Y3:科级<br>
+          #Y4:未定级<br>
+          #X1:所有人<br>
+          END</p>
+          <p ALIGN="JUSTIFY">求DUTY_S的和<br>
+          BEGIN<br>
+          #Y1:局级<br>
+          #Y2:处级<br>
+          #Y3:科级<br>
+          #Y4:未定级<br>
+          #X1:所有人<br>
+          END</p>
+          <p ALIGN="JUSTIFY">将上面的计数子表和求和子表合并成一个表，然后再将用自然语言表达的条件翻译为ASQL表达式。</p>
+          <p ALIGN="JUSTIFY">这张表的ASQL语言语法描述如下：</p>
+          <p ALIGN="JUSTIFY">/*分级别统计技能工资总和，假定数据库为.DBF，级别域为POST_RANK，技能工资域为DUTY_S*/</p>
+          <p ALIGN="JUSTIFY">PREDICATION<br>
+          LONG L[4,1]<br>
+          FLOAT F[4,1]<br>
+          FROM .DBF<br>
+          CONDITION<br>
+          BEGIN<br>
+          STAT L<br>
+          #Y1:POST_RANK=&quot;局级&quot;<br>
+          #Y2:POST_RANK=&quot;处级&quot;<br>
+          #Y3:POST_RANK=&quot;科级&quot;<br>
+          #Y4:POST_RANK=&quot;未定级&quot;<br>
+          #X1:<br>
+          SUM F,DUTY_S<br>
+          #X1： </p>
+          <p>/*注意这里是X1，而不是X2，因为虽然第二张子表与第一张共用了行条件， 
+          但列条件还要从1开始。但是如果求和结果还是放到L中去，此时L被定义为： 
+          </p>
+          <p>LONG L[4,2]</p>
+          <p ALIGN="JUSTIFY">这时这里写的就是 #X2了，而上一行则被写成：SUM L , 
+          DUTY_S */</p>
+          <p ALIGN="JUSTIFY">END<br>
+          ACTION WARRAY(&quot;example.dbf&quot;,L,F)</p>
+          <li><a NAME="3_3_8">行列数需通过计算的统计表</a><br>
+            <br>
+            举例说明。如下面一张表所示，其ASQL脚本可以写为：<br>
+            <br>
+            <img SRC="images/Image18.gif" WIDTH="372" HEIGHT="358"><br>
+            <br>
+            /*假定表ahsjk.dbf 中有域出生年月日BIRTHDAY，字符型，爱好标识ENJOY_ID，数字型*/<p ALIGN="JUSTIFY">PREDICATES<br>
+            LONG x[100,10]<br>
+            FROM ahsjk.dbf<br>
+            CONDITION<br>
+            BEGIN<br>
+            STATISTICS x,100<br>
+            age(BIRTHDAY)&lt;100 $ staty(age(BIRTHDAY))<br>
+            ENJOY_ID&lt;10 $ statx(ENJOY_ID)<br>
+            END</p>
+          </li>
+        </ol>
+      </li>
+      <li><p ALIGN="JUSTIFY"><a NAME="3_4">添加数据</a><br>
+        <font SIZE="3"><br>
+        from test.dbf<br>
+        to (append)<br>
+        act initrec(1);apprec(x1:=1,x2:=2,x3:=3)</font></p>
+        <p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">或</p>
+        </font><p ALIGN="JUSTIFY"><font SIZE="3">update<br>
+        from test.dbf<br>
+        act initrec(@1);apprec(x1:=1,x2:=2,x3:=3)</p>
+        </font><font FACE="宋体" SIZE="3"><p ALIGN="JUSTIFY">说明：</p>
+        </font><p ALIGN="JUSTIFY"><font SIZE="3">1.initrec(1)<br>
+        <font FACE="宋体" SIZE="3">清理当前输出记录缓冲区为空值，未清理前输出记录缓冲区内的值不确定；</font></p>
+        </font><p ALIGN="JUSTIFY"><font SIZE="3">2.apprec()<br>
+        <font FACE="宋体" SIZE="3">在当前数据源的尾部添加记录，记录内各字段的值由函数内的赋值语句生成，如上例中，字段</font>x1<font FACE="宋体" SIZE="3">被赋予</font>1<font FACE="宋体" SIZE="3">，</font>x2<font FACE="宋体" SIZE="3">被赋予</font>2<font FACE="宋体" SIZE="3">，</font> x3<font FACE="宋体" SIZE="3">被赋予</font>3<font FACE="宋体" SIZE="3">；</font></p>
+        </font><font FACE="宋体" SIZE="3"><p ALIGN="JUSTIFY">与</font><font SIZE="3">apprec()</font><font FACE="宋体" SIZE="3">功能相当的还有一个动作函数是</font><font SIZE="3">:insrec()</font><font FACE="宋体" SIZE="3">，它与</font><font SIZE="3">apprec()</font><font FACE="宋体" SIZE="3">不同的是要在数据表中找到一空位置，将新记录内容放在那里，若找不到，功能同</font><font SIZE="3">apprec()</font><font FACE="宋体" SIZE="3">，可见</font><font SIZE="3">insrec()</font><font FACE="宋体" SIZE="3">将不保持物理序。</p>
+        </font><p ALIGN="JUSTIFY"><font SIZE="3">3.</font><font FACE="宋体" SIZE="3">声明当前操作为对原始数据的修改两种方式的区别：</p>
+        </font><p ALIGN="JUSTIFY"><font SIZE="3">(1)to (append)<br>
+        <font FACE="宋体" SIZE="3">只适用于对原始数据的添加。</font></p>
+        </font><p ALIGN="JUSTIFY"><font SIZE="3">(2)update<br>
+        <font FACE="宋体" SIZE="3">将产生一个任务提交文件，将要对原始数据的修改先提交到任务提交文件中，在检索完成后，一次快速修改原始数据，提高事务的完整性。</font></p>
+        </font><p ALIGN="JUSTIFY"><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">不使用数据回滚</font><font SIZE="3">(rollback)</font><font FACE="宋体" SIZE="3">方式保证事务的完整性，而采用快速事务提交方式，这种方式较数据回滚方式速度快。</font></p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><a NAME="_Toc437587427">删除记录</a><br>
+        <font FACE="宋体" SIZE="3"><br>
+        删除数据的基本语法结构为：</font></p>
+        <font SIZE="3"><p ALIGN="JUSTIFY">FROM </font><font FACE="宋体" SIZE="3">源<br>
+        <font SIZE="3">TO </font>目标<br>
+        <font SIZE="3">CONDITION<br>
+        BEGIN</font><br>
+        &nbsp; 条件<font SIZE="3"> $ delete()<br>
+        END</font></p>
+        <p ALIGN="JUSTIFY">删除记录的动作函数有：<font SIZE="3">delete()</font></font></p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><a NAME="_Toc437587428">修改数据</a><br>
+        <font FACE="宋体" SIZE="3"><br>
+        修改数据的基本语法结构为：</font></p>
+        <font SIZE="3"><p ALIGN="JUSTIFY">UPDATE<br>
+        FROM <font FACE="宋体" SIZE="3">源</font><br>
+        CONDITION<br>
+        BEGIN<br>
+        </font><font FACE="宋体" SIZE="3">&nbsp; 条件</font><font SIZE="3"> $ calrec()<br>
+        END</p>
+        </font><font FACE="宋体" SIZE="3"><p ALIGN="JUSTIFY">修改记录的动作函数有：</p>
+        </font><font SIZE="3"><p ALIGN="JUSTIFY">calrec()<br>
+        initrec()</font></p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><a NAME="_Toc437587429">其它操作</a></p>
+        <ol type="I">
+          <li type="1"><font face="宋体"><a NAME="_Toc437587430">子集操作</a></font></li>
+          <p ALIGN="JUSTIFY"><font SIZE="3"><br>
+          /*</font><font FACE="宋体" SIZE="3">子集中相关记录多于一条的记录</font><font SIZE="3">,relcnt()</font><font FACE="宋体" SIZE="3">不影响当前运算<font SIZE="3">nextmrec()</font>跳转至主集的下一条记录<font SIZE="3">*/</font></p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">from a,b,*code<br>
+          to ls,*<br>
+          condition<br>
+          begin<br>
+          &nbsp; relcnt(1) &gt; 1 $ record(@1);nextmrec()<br>
+          end</p>
+          </font><font FACE="宋体" SIZE="3"><p ALIGN="JUSTIFY">说明：</p>
+          </font><p ALIGN="JUSTIFY"><font SIZE="3">1.relcnt()</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">求子集中与当前关键字相连接的记录数，参数为</font><font SIZE="3">FROM</font><font FACE="宋体" SIZE="3">后的表序号，</font><font SIZE="3">1</font><font FACE="宋体" SIZE="3">代表第一个参与运算的子表；</p>
+          </font><p ALIGN="JUSTIFY"><font SIZE="3">2.nextmrec()</p>
+          </font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">放弃子集的其它关联，跳至主集的下一条记录进行运算。</p>
+          </font>
+          <li><a NAME="_Toc437587431">索引辅助下的快速查找(SCOPE)</a></li>
+          <font FACE="宋体" SIZE="3"><p ALIGN="JUSTIFY">一般数据字典中有关于一张表的各个索引的描述，包括关键字，文件名等，</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">可以利用这些索引提高自己的运行速度。</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">SCOPE</font><font FACE="宋体" SIZE="3">语句语法：<br>
+          <font SIZE="3">FROM (SCOPE[ ASCEND,DESCEND]</font>：关键字，起始关键字，终止关键字<font SIZE="3">)</font>源表</p>
+          <p ALIGN="JUSTIFY">说明：<br>
+          <font SIZE="3">ASCEND</font>：表示所用索引方式为升序；<br>
+          <font SIZE="3">DESCEND</font>：表示所用索引方式为降序。</p>
+          <p ALIGN="JUSTIFY">设置这两外关键字的目的是为了对数据进行排序。</p>
+          <p ALIGN="JUSTIFY">例如：<font SIZE="3">/*key start, end</font>可以是下面的形式<font SIZE="3">: &quot;</font>字符串<font SIZE="3">&quot;, </font>但字符串中不能包含双引号它们也可以是<font SIZE="3">:</font>只是用逗号分隔开的字符串<font SIZE="3">end</font>可选<font SIZE="3">*/</font></p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">from (scope:key, start, [end])lz0<br>
+          to ls<br>
+          conditioh<br>
+          begin<br>
+          1 $ record(@1)<br>
+          end</p>
+          </font><p ALIGN="JUSTIFY">说明：SCOPE为关键字，key为使用的关键字字段名，可以是用“+”连起来的多个字段，start为起始运算的关键字值。如果没有[end]，则运算至表结束。</p>
+          <p ALIGN="JUSTIFY">SCOPE也支持对记录的定范围运算。</p>
+          <font FACE="宋体" SIZE="3"><p ALIGN="JUSTIFY">如果</font><font SIZE="3">key</font><font FACE="宋体" SIZE="3">为数字（任意数字），则表示本次快速运算是对固定记录进行的运算，这时，</font><font SIZE="3">start</font><font FACE="宋体" SIZE="3">为超始记录号，</font><font SIZE="3">end</font><font FACE="宋体" SIZE="3">为终止记录号（此时</font><font SIZE="3">end</font><font FACE="宋体" SIZE="3">参数不可以省）。</p>
+          <p ALIGN="JUSTIFY">例如：<font SIZE="3">/*</font>将<font SIZE="3">sub0</font>的第<font SIZE="3">8</font>条至第<font SIZE="3">100</font>条记录拷贝如至目标文件<font SIZE="3">*/</font></p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">FROM (SCOPE</font><font FACE="宋体" SIZE="3">：</font><font SIZE="3">1,8,100)sub0<br>
+          TO cxmain.dbf,*<br>
+          CONDITION<br>
+          BEGIN<br>
+          &nbsp; 1 $ RECORD(@1)<br>
+          END</p>
+          </font><font FACE="宋体" SIZE="3"><p ALIGN="JUSTIFY">另例：</p>
+          </font><font SIZE="3"><p ALIGN="JUSTIFY">from (scope descend: code, &quot;&quot;, 
+          &quot;&quot;)sub0,sub1,*code<br>
+          to cx,*<br>
+          cond<br>
+          begin<br>
+          &nbsp; 1 $ record(@1)<br>
+          end</p>
+          </font>
+          <li><a NAME="_Toc437587432">求检索结果的记录号</a></li>
+          <p ALIGN="JUSTIFY"><font SIZE="3"><br>
+          from lz0<br>
+          condition<br>
+          begin<br>
+          a04=“1” $ mvewno(1)<br>
+          end</p>
+          </font><p ALIGN="JUSTIFY">说明：<font FACE="宋体" SIZE="3">本函数只适于客户</font><font SIZE="3">/</font><font FACE="宋体" SIZE="3">服务器方式，此时</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">将检索结果的记录号发送给客户端。</font></p>
+          <li><a NAME="_Toc437587433">Web输出信息</a><br>
+            <font SIZE="3"><br>
+            webprint(</font><font FACE="宋体" SIZE="3">“</font><font SIZE="3">ASQL</font><font FACE="宋体" SIZE="3">字符串”，域名</font><font SIZE="3">……..)</font><p ALIGN="JUSTIFY"><font FACE="宋体" SIZE="3">例：<br>
+            <font SIZE="3">from lz0<br>
+            condition<br>
+            begin<br>
+            a04=“1” $ webprint(</font>“姓名”，<font SIZE="3">name,</font>“性别”，<font SIZE="3">sex)<br>
+            end</font></p>
+            </font><p ALIGN="JUSTIFY">说明：</p>
+            <font FACE="宋体" SIZE="3"><p ALIGN="JUSTIFY">本函数只适用于</font><font SIZE="3">WWW</font><font FACE="宋体" SIZE="3">下的</font><font SIZE="3">CGI</font><font FACE="宋体" SIZE="3">的引用场合。</font></p>
+          </li>
+        </ol>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>　 
+<!--msnavigation--></td></tr><!--msnavigation--></table></body>
+</html>

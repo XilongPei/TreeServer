@@ -1,0 +1,6 @@
+from lz0.dbf
+to e:\cx.dbf,*
+cond
+begin
+  1 $ record(@1)
+end

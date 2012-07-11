@@ -1,0 +1,89 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>TreeSVR软件结构</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>TreeSVR软件结构</strong></p>
+    <p>　</p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TreeSVR采用单进程多线程体系结构。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Windows NT是Microsoft的高级操作系统，是该公司提供的基于Win32平台的最强能力的操作系统。Win32是一种应用程序编程接口(Application 
+    Programming Interface, 简称API)，它象POSIX一样是一个现代的操作系统程序接口标准。Windows 
+    NT有如下特点：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(1)Windows NT上的应用程序是Win32应用程序，支持API提供的所有能力、健壮性和速度；</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(2)Windows NT是一个可移植的操作系统；</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(3)Windows NT支持带多个CPU的机器。因此如果你在包含30个CPU的机器上运行Windows 
+    NT，这个操作系统会同时让30个线程同时运行。这意味着机器在执行一个任务的时间内可执行另外一个任务。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(4)Windows NT综合了系统安全的研究成果，具有较高的可靠性和安全管理机制。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TreeSVR充分利用了Windows 
+    NT的线程调度能力和安全机制，它的架构如图2.5所示。</span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px"><img SRC="Image20.gif"
+    WIDTH="523" HEIGHT="658"></span></font></p>
+    <font FACE="宋体" SIZE="3"><p ALIGN="CENTER">　</p>
+    </font><p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">图2.5 TreeSvr系统架构示意图</span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TreeSVR由一个进程和多个线程组成。进程即Tree 
+    Service所对应的服务进程。线程则视具体配置情况创建，如图2.6所示。</span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px"><img SRC="Image21.gif"
+    WIDTH="480" HEIGHT="334"></span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">图2.6 TreeSvr业务管理线程</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">说明<i>：</i></span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(1)Namedpipe Guard Thread（TH1）</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">管道看守线程，看守管道，一旦有请求，对管道做出反应。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(2)Client Agent Thread（TH2）</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">由TH1创建，管道请求的代言人。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(3)Scheduler Thread（TH3）</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">看守线程，等待客户请求的到来。它看守Request 
+    Queue是否有请求过来，一旦有请求，马上给予反应。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(4)Service Shell（TH4）</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">事务服务引擎外壳。由TH3创建，用以为本连接用户提供服务代理。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">这里面出现了两个数据结构，下面予以说明：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(1)Request Queue</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">任务请求队列</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(2)Exchange Buffer</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">信息交换缓存区。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <blockquote>
+      <b><p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TreeSVR是这样处理事务的：</span></font></b></p>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">直到请求（一般为ASQL语句）通过网络传给服务器后，TreeSVR才处理客户业务。这里有一些隐含的假设：首先，客户应用程序可以描述事务；其次，有网络把这些事务请求传给服务器；再次，服务器能够利用网络返回结果。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">这些假设形成了组成TreeSVR客户/服务器结构的结构。网络计算模式是客户/服务器模式的扩展，只是此时的客户端是那个CGI程序。在执行任何事务时，无论是交互式地通过控制台完成，还是在应用程序内，都会发生下述步骤：</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第一步，TH1接收来自应用程序的管理道连接请求；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第二步，TH2被TH1创建；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第三步，TH2获得用户TreeSVR注册信息，将信息填入结构Request 
+      Queue中；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第四步，TH3得到队列有任务信息；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第五步，TH4被TH3创建；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第六步，TH4审计用户，将审计信息反馈给TH2，由TH2负责将信息回送给客户端；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第七步，TH2获得客户提交事务；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第八步，TH2将事务描述信息放入结构Exchange 
+      Buffer；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第九步，TH4得到事务描述信息；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第十步，TH4寻找事务服务引擎，将事务传给该引擎，同时打通引擎与TH2的通道；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第十一步，引擎开始工作；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第十二步，引擎结果回馈；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第十三步，引擎通知TH4事务执行完毕；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第十四步，TH4等待下一事务请求；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第十五步，TH4等到LOGOFF请求；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第十六步，TH4停止自己的生存；</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第十七步，TH2关闭管道，释放客户连接资源，然后停止自己的生存；</span></font></p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

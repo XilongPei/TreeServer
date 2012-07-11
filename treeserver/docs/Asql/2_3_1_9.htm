@@ -1,0 +1,35 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>记录删除判断</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><strong><span style="font-size: 12px">记录删除判断(isdel)</span></strong></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]LOGIC_TYPE isdel(@1)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]<br>
+    该函数用来判断当前记录是否被逻辑删除。<br>
+    返回值为逻辑型，逻辑删除返回值为1（真），反之为0（假）。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">注：它判断的是xBASE形式的逻辑删除，并非是Del域是否置1。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">该函数是ASQL1.0提供的功能，现已废弃。因已置了删除标记的记录可能将被立即删除，既使不被删除，也不会参加运算。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*查询做过逻辑删除的人员*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">PREDICATES<br>
+    long L<br>
+    FROM \TG\DATA\SUB0<br>
+    TO \TG\DATA\CXMAIN, *<br>
+    CONDITION<br>
+    BEGIN<br>
+    &nbsp; isdel(@1) $ record(@1);askcnt(L)<br>
+    END<br>
+    ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>New Page 11</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+
+<table border="1" width="100%">
+  <tr>
+    <td width="100%">　<p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]calrec([提交源表声明]，&lt;域名&gt;:=&lt;域产生表达式&gt;，……)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]通过运算形式产生目标记录，除一般的书写记录的功能外，还可一次更改域的全部内容。非参数中的域的内容与源库相同。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">此函数也可改变目标的写法，构造新域，并添入适当内容(见示例2)。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">提交源表声明是指本函数是对哪个源表进行修改提交，第一张表为1，其它往下排……。一般情况下，要想修改源中数据，必须指定UPDATE，但是对于源是多表的情况，就不那么简单，在SQL数据库系统中，是不提供对多个检索源进行同步修改的，而在事务应用中，这一要求是很强烈的。在多张表参与源运算时，ASQL是将这些表在内部当作一张表来看待的，从ASQL语法也可以看出这一点，这张表是一张临时性的虚拟内存表，ASQL的运算是通过它来获取数据的，等等原因，造成ASQL在多表运算，同时又要对源表进行修改的要求时，必须做提交源表声明，即给出对哪一张源中的表做提交，否则对源表的赋值无效，因为ASQL要区分某一赋值运算是对源的赋值还是对目标的赋值，所以这时对源中的域赋值必须是下面这种形式：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">表名.域名：=运算表达式</span></p>
+    <i><p ALIGN="JUSTIFY"><span style="font-size: 12px">或者</i>，若域名只在源中出现，在目标表中没有出现</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">域名：=运算表达式</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">如果当前源表数据修改是针对目标表的，则CALREC()的第一个参数[提交源表声明]要省掉。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">例如：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">SUB0.SALARY:=100.23<br>
+    NOTINTO:=3.14159</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">对目标表的赋值不可以用表.域名的方式。[提交源表声明]是一个可选参数。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> 如果是要对源表进行修改，[提交源表声明]不可以省略。只有给了这个参数，ASQL才乔道对哪个源表进行数据修改。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> 如果是要对源表进行修改，则动作中的域赋值必须是库名.域名的形式：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">update<br>
+    from <a href="file:///d:/lz/data/sub0.dbf">d:\lz\data\sub0.dbf</a><br>
+    condition<br>
+    begin<br>
+    sex=&quot;2&quot; $ calrec(sub0.sex:=&quot;2&quot;)<br>
+    end</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> ASQL允许大多表运算时引用calrec()，但每次运算只能对一张表进行修改：目标表或源表中的一张表。calrec()只能处理由第一个参数标识的表。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> 如果ASQL声明当前操作为修改：<b>UPDATE，</b>则calrec()是对源表的运算，并且将要对源的修改支持快速提交棗一种保证数据安全的机制。此时若不指定目标，则源与目标相同。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> 
+    出现在源表中，但没有出现在目标表中的引用了的域被认为其目标也是源表。如下面的这个ASQL角本：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM sub0<br>
+    TO cx,code,name,sex<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ xxx:=&quot;1234&quot;<br>
+    END</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">假定源表中有域xxx，则ASQL认为域xxx的目标结果也是源表。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15">CALREC()是靠赋值语句改变域的内容的，它并不事先清理记录缓冲区，所以如果必要，须先清一下缓冲区：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">INITREC(@1);CALREC(……)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*将所有职工职务岗位工资上调30%存回源库中。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0<br>
+    TO \TG\DATA\SUB0<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ calrec(total_s:=total_s*1.3);<br>
+    END<br>
+    ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例2]/*将序号、姓名和新旧职务岗位工资存入一新库供以后查询。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0.DBF<br>
+    TO \TG\DATA\SUBA.DBF,code,name,total_old 10 2 n,total_s<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ initrec(code);calrec(total_old:=total_s,total_s:=total_s*1.3);<br>
+    END</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*注：这里构造的新域类型必须与所填数据一致。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例3]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">UPDATE<br>
+    FROM \TG\DATA\SUB0.DBF,\TG\DATA\SUB11.DBF,*CODE<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ calrec(1,total_s:=total_s*1.3);calrec(2,sub11.salary1:=sub11.salary1*1.3)END</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*注意：这里将数据修改分在两个calrec函数中完成*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例4]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM 
+    \TG\DATA\SUB0.DBF,\TG\DATA\SUB11.DBF,*CODE<br>
+    TO CXMAIN.DBF,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ calrec(1,total_s:=total_s*1.3)<br>
+    /*强制性修改第一张表：SUB0.DBF*/<br>
+    END</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例5]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">from 
+    temprkdr.dbf,stock2.dbf,medicine.dbf,*code+import_no=code+import_no=code<br>
+    to tempdmxz,name,batching,invalidate,import_no,amount,samount 14 2 N<br>
+    cond<br>
+    begin<br>
+    code=stock2.code&amp;&amp;import_no=stock2.import_no&amp;&amp;amount&gt;stock2.amount $ $\ 
+    <br>
+    initrec(@1);\<br>
+    calrec(name:=medicine.name,batching:=batching,invalidate:=invalidate,\<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; import_no:=import_no,amount:=amount,samount:=stock2.amount)<br>
+    end</span></td>
+  </tr>
+</table>
+</body>
+</html>

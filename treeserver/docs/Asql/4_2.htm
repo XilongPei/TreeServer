@@ -1,0 +1,111 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>代码库结构</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><font size="2"><span style="font-size: 12px"><strong>代码库设计</strong></span></font></p>
+    <ol>
+      <li><font size="2"><span style="font-size: 12px">代码库结构</span></font></li>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px"><br>
+      ASQL的代码库的结构都是一致的。通常ASQL的代码库至少有两个域：</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">E_EXPR 
+      存代码信息，字符型，长度根据代码情况确定。<br>
+      C_BRIF 存替换信息，字符型，长度替换字串情况确定。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">还可再有两个域：</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">C_EXPR 
+      该代码的详细解释，不参与具体汉字替换，字符型， 长度不定。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">RELATION 
+      扩展替换内容， 当汉字替换被置成扩展替换时， 例如利用HZTH()函数做汉字替换，用到的汉字解释，字符型，长度视替换字串情况确定。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">说明：①代码的长度不约束于实际数据库中该域的宽度。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">②代码库必须依E_EXPR排升序，排序可利用系统分组查询，也可借助于</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">foxBASE的下列命令：</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">C:&gt;TYPE SORTCODE.PRG</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">*代码库排序</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">USE EC_M8 &amp;&amp;打开代码库名<br>
+      INDEX ON E_EXPR TO LS &amp;&amp;建索引<br>
+      COPY TO LS &amp;&amp;拷贝到临时库<br>
+      ZAP &amp;&amp;清空自己<br>
+      APPE FROM LS &amp;&amp;添回<br>
+      USE &amp;&amp;关闭代码库</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">需要分级提示能力的代码库组织要求：</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">&nbsp;&nbsp;&nbsp; 
+      用汉字替换来实现代码提示时，经常遇到代码过多的情况，此时除可用代码辅助查找技术代，还可利用代码组织上的技术。客观事物进行代码化是一个理论性很强的工作，既要考虑到码的正确反映客观事物的内在规律、容易使用，又要考虑到代码的扩充能力，其中常用的一种编码方法是“层次编码”。比如行政区划代码，其中包括了省、地、县的三级信息，这就是一个层次关系。通常的信息系统都是将具有层次关系的客观事物编成层次码，然后基于此实现分级提示的，比如行政区划代码，国标里将它编成６位码，前两位表示省级，中间两位表示地市级，后两位表示区县级。为了实现具有层次关系的代码的分级提示，ASQL规定：</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">层次码的每一级必须有一个码，其表示下级的各码位用“０”填满。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">比如行政区划代码，其代码库中有如下码段：</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">110000 北京市 
+      第一级“**0000”<br>
+      110100 北京市市区 第二级“****00”<br>
+      110101 北京市东城区 第三级“******”<br>
+      110102 北京市西城区 第三级“******”</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">上面说明中“＊”表示该位为编码数字。</span></font></p>
+      <li><font size="2"><span style="font-size: 12px">工作代码文件的设计<br>
+        <br>
+        　　在一个信息系统常常有多达几十个代码库，这些代码库主要为国标和行业标准，也有部分用户自定义代码。这些代码通常以xBASE的数据库DBF格式存放。但用数据库组织的代码库在程序运行时的汉字替换效率很低，根本无法做到即时替换。</span></font><p
+        ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">为提高汉字替换的效率，ASQL定义了工作代码文件。工作代码文件由三个统一的文件所构成，即代码段文件、汉字段文件和控制文件。代码段文件将所有代码库中的所有代码按一定规则组织在一起；汉字段文件将所有代码库中的所有汉字信息组织在一起；控制文件登录所有的代码文件名(代码库名)及相应的指针。</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">三个工作代码文件的关系如图3.1所示，具体功能如下：</span></font></p>
+        <p ALIGN="CENTER"><font size="2"><span style="font-size: 12px"><img
+        SRC="../asql/images/Image1.gif" WIDTH="208" HEIGHT="161"></span></font></p>
+        <p ALIGN="CENTER"><font size="2"><span style="font-size: 12px">图3.1 
+        工作代码库文件结构</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">CODE.COD 
+        代码库控制文件.</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">代码库控制文件包含了所有的代码库信息、代码描述串的索引信息、汉字描述串的索引信息、汉字页的情况、以及所采用的压缩方法等信息。在汉字替换模块的运行过程中，为了提高程序运行的效率，代码库控制文件中的内容都要被加载到内存中，映射为一个控制关系二维表，每一个分量描述一个代码库。</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">DCODE.COD 
+        代码段文件。</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">代码段文件是一个按一定规律组织的不定长文件。代码段文件用来把代码库中的代码段一个一个存放在该文件中。在汉字替换程序运行的过程中，代码段文件的内容也要被加载到内存中，它映射为一个线性表，按照代码库控制文件中存放的代码库编号的顺序把各个代码库中的代码描述信息以压缩方式存储在一起。</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">CCODE.COD 
+        汉字段文件。</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">汉字段描述信息文件是按照代码库控制文件中存放的代码库编号的顺序把各个代码库中的汉字段顺序地存放在该文件中。</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">在汉字替换功能实现中，ASQL定义了一个数据表，其名为：CODE.DBF， 
+        它把所有代码库组织在一起，形成一个最底层的关系表，目的是为了把所有的代码库(即原代码库)组织成以上三个文件。</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">它有四个域：E_EXPR，C_EXPR，C_ 
+        BRIF，CODE_TYPE。 它们的含义是：</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">E_EXPR： 
+        代码库编号，相当于赋予代码库一个编号；<br>
+        C_EXPR： 代码库的文件名，如DM8.DBF等，文件名后缀不可省略；</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">这个域也可以这样填：</span></font></p>
+        <p ALIGN="JUSTIFY"><i><font size="2"><span style="font-size: 12px">代码库的文件名｀代码域域名｀代码汉字描述域域名｀代码汉字扩展描 
+        述域域名</span></font></p>
+        </i><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">该描述的四部分中，后面开始的各部分可以省略。这样设计的目的是允 
+        许代码域名或解释域名自定义。｀为键盘左上角的键代表的字符。</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">示例：</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">EC_M8`DM`JS<br>
+        EM_S8`DMY<br>
+        C_BRIF： 代码库的汉字描述(或称中文代码库名)。<br>
+        CODE_TYPE：描述代码的类型，通知系统如何压缩该代码文件。<br>
+        'S'表示不压缩，只能以字符串形式处理。<br>
+        '9'表示该代码为全数字型，可压缩。</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">在将标准代码库转换成工作代码文件时，程序将按CODE.DBF中的记录顺序，将标准代码库一个一个地集成到工作代码文件中，合理地组织好代码库的顺序对存贮空间、运行效率都有很大的好处。</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">下边列出的是CODE.DBF的实例:</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">工作代码库组织文件(CODE.DBF)，同时给出了该代码的码长及最大汉字表示长。</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">代码库编号 
+        代码库名 代码库中文名 码长 汉字表示长 代码类型</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">(E_EXPR) (C_EXPR) (C_BRIF) 
+        (CODE_TYPE）</span></font></p>
+        <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">1 EC_S1 部门名称码 3 
+        12 9<br>
+        2 EC_S2 任职单位标识(12) 1 8 9<br>
+        3 ECM1 股室单位码 2 8 9<br>
+        4 ECM15 任职前身份码 2 10 9<br>
+        5 ECM36 语种熟练程度码 1 4 9<br>
+        6 EC_M1 基层单位码 3 12 9<br>
+        7 EC_M10 民族代码 2 8 9<br>
+        8 EC_M11 独立机构标识码 1 10 9<br>
+        9 EC_M12 党派名称代码 2 8 9<br>
+        10 EC_M14 党政职务级别码 2 4 9</span></font></p>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

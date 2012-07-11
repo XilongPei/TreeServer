@@ -1,0 +1,7 @@
+database lz
+from (scope:bh,"11111111111111","11111111111111")lz1
+to cx,*
+cond
+begin
+  1 $ record(@1)
+end

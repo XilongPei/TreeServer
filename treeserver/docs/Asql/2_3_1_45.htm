@@ -1,0 +1,26 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>字符串加密</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><strong><span style="font-size: 12px">字符串加密(tencrypt)</span></strong></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]STRING_TYPE tencrypt(被加密串&lt;字符串型表达式&gt;，口令字&lt;字符串型表达式&gt;)将被加密串加密，口令字为8个字符长的字符，不足8个字符，ASQL将自动补足。被加密串无长度限制，以尾零结束。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">pred<br>
+    string str[20]<br>
+    let str:=tencrypt(&quot;xilong&quot;, &quot;xilongpe&quot;)<br>
+    let str:=tdecrypt(str, &quot;xilongpe&quot;)<br>
+    let wsymbol(&quot;test&quot;)</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

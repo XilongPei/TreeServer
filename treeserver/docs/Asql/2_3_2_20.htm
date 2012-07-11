@@ -1,0 +1,39 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>中止运行</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>中止运行(errstamp)</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]errstamp(数字型表达式)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]如果条件成立，此函数会中止程序的运行，如果数字型值为1，则彻底停止本ASQL脚本的运算；如果为2，则只停止本查询过程段的运算。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">在本表达式运算完后才决定如何停止运算。如下例中errstamp(1);record(@1)，ASQL是先算完record(@1)后才决定如何停止工作的。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*查询性别代码出错的人员。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0<br>
+    TO \TG\DATA\CXMAIN, *<br>
+    CONDITION<br>
+    BEGIN<br>
+    sex!=&quot;1&quot;&amp;&amp;sex!=&quot;2&quot; $ errstamp(1);record(@1)<br>
+    END<br>
+    ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* errstamp()如果接着做下面的ASQL脚本，这个ACTION也是不执行的，它是非过程段整体的一部分*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*如果errstamp()的参数为1，则下面的FROM-TO-CONDITION也不做，如果为2，则做下面的FROM-TO-CONDITION 
+    */</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM …<br>
+    TO …<br>
+    CONDITION<br>
+    BEGIN<br>
+    ……<br>
+    END</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

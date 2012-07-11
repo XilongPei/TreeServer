@@ -1,0 +1,284 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>表达式常用结构定义头文件</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>表达式常用结构定义头文件</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*****************</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">* ASQLXEXP.H</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">* copyright (c) Shanghai Tiedao 
+    University 1998</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">* CRSC 1998</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">* author: Xilong Pei</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">****************************************************************************/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">#ifndef __ASQLXEXP_H_<br>
+    #define __ASQLXEXP_H_<br>
+    #include &lt;windows.h&gt;<br>
+    #include &lt;stdio.h&gt;<br>
+    #include &lt;limits.h&gt;<br>
+    #define dFILE void<br>
+    #define FIELDNAMELEN 32<br>
+    #define XEXP_FUNCTION_SERVICE<br>
+    #define PD_style cdecl<br>
+    #define MAX_BUFFER_LENGTH 128<br>
+    #define MAX_OPND_NUMBER 256<br>
+    #define MAX_OPND_LENGTH 32 /* middle varable */</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* long double need 10 bytes */</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">#define MAX_ATOM_LENGTH 8 /* 
+    =sizeof(double) atom size in MidCodeType */<br>
+    #define MAX_IDEN_LENGTH (MAX_OPND_LENGTH-1)<br>
+    #define MAX_OPTR_NUMBER 64<br>
+    #define FLOAT_PRECISION 0.00000000000000000001<br>
+    #define FLOAT_MAX 1.7E+300<br>
+    #define FLOAT_MIN -1.7E+300<br>
+    #define _ArrayOrFunNestDeep_ 8</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//first time of action is 0</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">#define LASTWORKTIMEOFACTION -1<br>
+    #define ONE_MODALITY_ACTION -2</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//operator define must consider the 
+    priority table,<br>
+    //for example less than 100</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">#define OR_TYPE 0<br>
+    #define AND_TYPE 1<br>
+    #define NOT_TYPE 2<br>
+    #define EQ_TYPE 3<br>
+    #define ABSOLUTE_EQ 4<br>
+    #define GT_TYPE 5<br>
+    #define LT_TYPE 6<br>
+    #define GE_TYPE 7<br>
+    #define LE_TYPE 8<br>
+    #define NEQ_TYPE 9<br>
+    #define ADD_TYPE 10<br>
+    #define SUB_TYPE 11<br>
+    #define MUL_TYPE 12<br>
+    #define DIV_TYPE 13<br>
+    #define BITL_TYPE 14<br>
+    #define BITR_TYPE 15<br>
+    #define BITAND_TYPE 16<br>
+    #define BITOR_TYPE 17<br>
+    #define BITNOT_TYPE 18<br>
+    #define BITXOR_TYPE 19<br>
+    #define LEFT_TYPE 20<br>
+    #define RIGHT_TYPE 21<br>
+    #define FUNB_TYPE 22 /* function call begin type */<br>
+    #define FUNE_TYPE 23 /* function end type */</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//we change this defination 1995.12.16, 
+    for we deal NEG_TYPE with<br>
+    //data_deal_method in xexp.c<br>
+    //#define NEG_TYPE 24 /* - */</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">#define STORE_TYPE 25 /* := */<br>
+    #define PARAL_TYPE 26 /* ,; */<br>
+    #define QUSTN_TYPE 27 /* ? */<br>
+    #define LABEL_TYPE 28 /* L:*/<br>
+    #define ARRAYB_TYPE 29 /* [ */<br>
+    #define ARRAYE_TYPE 30 /* ] */<br>
+    #define END_TYPE 31<br>
+    #define INSIDE_TYPE 999</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//data type<br>
+    #define IDEN_TYPE 1050<br>
+    #define STRING_IDEN 1051<br>
+    #define DATE_IDEN 1052<br>
+    #define CHR_IDEN 1053<br>
+    #define INT_IDEN 1054<br>
+    #define LONG_IDEN 1055<br>
+    #define FLOAT_IDEN 1056<br>
+    #define FIELD_IDEN 1060<br>
+    #define NFIELD_IDEN 1061 /* dec is 0 and bytes less than 10, long */<br>
+    #define FFIELD_IDEN 1062 /* dec isnot 0, float */<br>
+    #define LFIELD_IDEN 1063 /* logic, short */<br>
+    #define DFIELD_IDEN 1064 /* date, char[8] */<br>
+    #define MFIELD_IDEN 1065 /* memo */<br>
+    #define CFIELD_IDEN 1066 /* chr[n] */<br>
+    #define SFIELD_IDEN 1067 /* recno() */<br>
+    #define CHR_TYPE 1070<br>
+    #define INT_TYPE 1071<br>
+    #define LONG_TYPE 1072<br>
+    #define FLOAT_TYPE 1073<br>
+    #define DATE_TYPE 1074<br>
+    #define STRING_TYPE 1075<br>
+    #define LOGIC_TYPE 1076<br>
+    #define ARRAY_TYPE 1077<br>
+    #define NEG_TYPE 1124 /* - */<br>
+    #define VARADDR_TYPE 1125 /* &amp; */<br>
+    #define VIDEN_TYPE (IDEN_TYPE | 0x1000)<br>
+    #define VSTRING_IDEN (STRING_IDEN| 0x1000)<br>
+    #define VDATE_IDEN (DATE_IDEN | 0x1000)<br>
+    #define VCHR_IDEN (CHR_IDEN | 0x1000)<br>
+    #define VINT_IDEN (INT_IDEN | 0x1000)<br>
+    #define VLONG_IDEN (LONG_IDEN | 0x1000)<br>
+    #define VFLOAT_IDEN (FLOAT_IDEN | 0x1000)<br>
+    #define VFIELD_IDEN (FIELD_IDEN | 0x1000)<br>
+    #define VNFIELD_IDEN (NFIELD_IDEN| 0x1000)<br>
+    #define VFFIELD_IDEN (FFIELD_IDEN| 0x1000)<br>
+    #define VLFIELD_IDEN (LFIELD_IDEN| 0x1000)<br>
+    #define VDFIELD_IDEN (DFIELD_IDEN| 0x1000)<br>
+    #define VMFIELD_IDEN (MFIELD_IDEN| 0x1000)<br>
+    #define VCFIELD_IDEN (CFIELD_IDEN| 0x1000)<br>
+    #define VSFIELD_IDEN (SFIELD_IDEN| 0x1000)<br>
+    #define VCHR_TYPE (CHR_TYPE | 0x1000)<br>
+    #define VINT_TYPE (INT_TYPE | 0x1000)<br>
+    #define VLONG_TYPE (LONG_TYPE | 0x1000)<br>
+    #define VFLOAT_TYPE (FLOAT_TYPE | 0x1000)<br>
+    #define VDATE_TYPE (DATE_TYPE | 0x1000)<br>
+    #define VSTRING_TYPE (STRING_TYPE| 0x1000)<br>
+    #define VLOGIC_TYPE (LOGIC_TYPE | 0x1000)<br>
+    #define VARRAY_TYPE (ARRAY_TYPE | 0x1000)<br>
+    #define VNEG_TYPE (NEG_TYPE | 0x1000)<br>
+    #define ASQLActionFunType 40</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*********</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">* declare data types for programs</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">****************************************************************************/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* NOTICE: the first 3 field cannot be 
+    changed position, it should be the<br>
+    * same order to the OpndType !!!<br>
+    * In C 16 bit type, every malloc at least is 16 byte<br>
+    **/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct tagMidCodeType {<br>
+    short type;<br>
+    short length;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* the string's length or the function's 
+    parameter num<br>
+    * when the type is IDEN_TYPE it stores the IDEN_TYPE's type<br>
+    * when the type is ARRAY the length is the Dimmention<br>
+    */</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">struct tagMidCodeType *next;<br>
+    unsigned char values[MAX_ATOM_LENGTH];</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* length variable item<br>
+    * if it is a string which is longer than 8,<br>
+    * it call for a bigger memory to store the string.<br>
+    */</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} MidCodeType;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">#define OPND_STATIC_LENGTH 
+    (sizeof(MidCodeType)-MAX_ATOM_LENGTH+MAX_OPND_LENGTH)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct {<br>
+    char Mark; /* '@' */<br>
+    char IntervalChar; /* '\0', use for replace current field */<br>
+    unsigned short LibNo;<br>
+    unsigned short FieldNo;<br>
+    } SPECIALFIELDSTRUCT;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct {<br>
+    unsigned char *pSourceStart; /* this must be the first field */<br>
+    unsigned short wSourceid;<br>
+    dFILE *pSourceDfile;<br>
+    unsigned char *pTargetStart;<br>
+    unsigned short wTargetid;<br>
+    dFILE *pTargetDfile;<br>
+    void *ResultMem;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} dFIELDWHENACTION;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* NOTICE: the first 3 field cannot be 
+    changed position, it should be the<br>
+    * same order to the MidCodeType !!!<br>
+    **/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct {<br>
+    short type;<br>
+    unsigned char values[ MAX_OPND_LENGTH ];<br>
+    short length;<br>
+    unsigned char *oval; // fast pointer<br>
+    } OpndType;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef short OptrType;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//xexp error string length</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">#define XES_LENGTH 32</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct {<br>
+    short xERROR; // Error code<br>
+    char string[ MAX_OPND_LENGTH ]; // save the error symbol<br>
+    } ErrorType;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">enum Xexp_errors { /* xexp error codes */<br>
+    XexpOK = 0,<br>
+    iSymbolUsedError,<br>
+    iUndefineVar,<br>
+    iNoMem,<br>
+    iUseTabel,<br>
+    iNoDBF,<br>
+    iNoField,<br>
+    iDBFNoInTabel,<br>
+    iActionParaError,<br>
+    iNoThisDataType,<br>
+    iNestToDepth,<br>
+    iNoMatchArray,<br>
+    iNoAction,<br>
+    iNoMatchFun,<br>
+    iInternalError,<br>
+    iInVaildOpndType,<br>
+    iToManyOPD,<br>
+    iToLittOPD,<br>
+    iToLittOPr,<br>
+    iToManyOPr,<br>
+    iFailFunCall,<br>
+    iOPrNoMatch,<br>
+    iUnExpectEnd,<br>
+    iBadUseOPr,<br>
+    iNoOPr,<br>
+    iToManySymbol,<br>
+    iOPrError,<br>
+    iMathError,<br>
+    iDimError,<br>
+    iFileRead,<br>
+    iFileWrite,<br>
+    iTypeNoCompt,<br>
+    iCircleNoMatch,<br>
+    iBadExp,<br>
+    iQuotoErr</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">};</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef short PD_style (*PFD)(OpndType 
+    *lpOpnd, short ParaNum, short *OpndTop);<br>
+    typedef short PD_style (*ACTIONPFD)(OpndType *lpOpnd, short ParaNum, short *OpndTop, \</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">short *CurState );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">#define MAXARRAYDIM ( MAX_OPND_LENGTH - 
+    12 ) / 2</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct tagArrayType {<br>
+    unsigned short ElementType;<br>
+    unsigned char DimNum;<br>
+    unsigned short ElementNum;<br>
+    unsigned short MemSize;<br>
+    unsigned short ArrayDim[ MAXARRAYDIM ];<br>
+    void *ArrayMem;<br>
+    } ArrayType;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct {<br>
+    short type;<br>
+    char VarOFunName[32];<br>
+    unsigned char values[ MAX_OPND_LENGTH ];</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* (long)values()<br>
+    * when the variable is ARRAY type the values stored as<br>
+    * ArrayType*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">short length;<br>
+    } SysVarOFunType;<br>
+    typedef struct {<br>
+    char DefineName[32];<br>
+    char DefineValues[32];<br>
+    } SYSDEFINETYPE;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct {<br>
+    char FieldName[FIELDNAMELEN];<br>
+    } FIELDNAMETYPE;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct {<br>
+    short type;<br>
+    char VarOFunName[32];<br>
+    short PD_style (*FarProc)(OpndType *lpOpnd, short ParaNum, short *OpndTop);<br>
+    short varnum;<br>
+    } XexpFunType;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct {<br>
+    short type;<br>
+    char VarOFunName[32];<br>
+    short PD_style (*FarProc)(OpndType *lpOpnd, short ParaNum, short *OpndTop, \<br>
+    short *CurState );<br>
+    short varnum;<br>
+    } AskActionType;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">// define the position</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">#define SysVar_RECNO 0<br>
+    #define SysVar_LONGTMP 1<br>
+    #define SysVar_FLOATTMP 2<br>
+    #define SysVar_STRINGTMP 3<br>
+    #define SysVar_BKEY 4<br>
+    #endif</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

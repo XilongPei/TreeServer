@@ -1,0 +1,39 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>添加数据</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><strong><span style="font-size: 12px">添加数据</span></strong></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">from test.dbf<br>
+    to (append)<br>
+    act initrec(1);apprec(x1:=1,x2:=2,x3:=3)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">或</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">update<br>
+    from test.dbf<br>
+    act initrec(@1);apprec(x1:=1,x2:=2,x3:=3)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">1.initrec(1)<br>
+    清理当前输出记录缓冲区为空值，未清理前输出记录缓冲区内的值不确定；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">2.apprec()<br>
+    在当前数据源的尾部添加记录，记录内各字段的值由函数内的赋值语句生成，如上例中，字段x1被赋予1，x2被赋予2， 
+    x3被赋予3；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">与apprec()功能相当的还有一个动作函数是:insrec()，它与apprec()不同的是要在数据表中找到一空位置，将新记录内容放在那里，若找不到，功能同apprec()，可见insrec()将不保持物理序。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">3.声明当前操作为对原始数据的修改两种方式的区别：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(1)to (append)<br>
+    只适用于对原始数据的添加。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(2)update<br>
+    将产生一个任务提交文件，将要对原始数据的修改先提交到任务提交文件中，在检索完成后，一次快速修改原始数据，提高事务的完整性。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL不使用数据回滚(rollback)方式保证事务的完整性，而采用快速事务提交方式，这种方式较数据回滚方式速度快。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>求子集记录数</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><strong><span style="font-size: 12px">求子集记录数(relcnt)</span></strong></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]relcnt()</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">求子集中与当前关键字相连接的记录数，参数为FROM后的表序号，1代表第一个参与运算的子表；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*子集中相关记录多于一条的记录,relcnt()不影响当前运算<br>
+    nextmrec()跳转至主集的下一条记录*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM SUB0,SUB11,*code<br>
+    TO ls,*CONDITIONBEGIN<br>
+    relcnt(1) &gt; 1 $ record(@1);nextmrec()<br>
+    END</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

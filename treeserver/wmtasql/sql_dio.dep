@@ -1,0 +1,10 @@
+# Microsoft Developer Studio Generated Dependency File, included by sql_dio.mak
+
+.\idbase_b.c : \
+	".\Dio.h"\
+	".\idbase_b.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\Wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	

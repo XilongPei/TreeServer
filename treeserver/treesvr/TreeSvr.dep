@@ -1,0 +1,214 @@
+# Microsoft Developer Studio Generated Dependency File, included by TreeSvr.mak
+
+..\src\Conv.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\Conv.h"\
+	"..\src\dbtree.h"\
+	"..\src\ExchBuff.h"\
+	"..\src\S_Proc.h"\
+	"..\src\schedule.h"\
+	"..\src\secapi.H"\
+	"..\src\TAccount.h"\
+	"..\src\TEngine.h"\
+	"..\src\terror.h"\
+	"..\src\tlimits.h"\
+	"..\src\tqueue.h"\
+	"..\src\TREE_TCP.H"\
+	"..\src\TreeSvr.h"\
+	"..\src\ts_com.h"\
+	"..\src\TSCommon.h"\
+	"..\src\tuser.h"\
+	
+
+..\src\des.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\Des.h"\
+	
+
+..\src\ExchBuff.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\ExchBuff.h"\
+	"..\src\terror.h"\
+	"..\src\tlimits.h"\
+	"..\src\ts_com.h"\
+	
+
+..\src\Notify.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\Notify.h"\
+	
+
+..\src\PASSWORD.C : \
+	"..\src\PASSWORD.H"\
+	
+
+"..\src\plug-ins.c" : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\plug-ins.h"\
+	"..\src\tplug-ins.h"\
+	"..\src\TSCommon.h"\
+	
+
+..\src\S_Proc.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\dbtree.h"\
+	"..\src\ExchBuff.h"\
+	"..\src\S_Proc.h"\
+	"..\src\terror.h"\
+	"..\src\tlimits.h"\
+	"..\src\ts_com.h"\
+	
+
+..\src\schedule.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\Conv.h"\
+	"..\src\dbtree.h"\
+	"..\src\ExchBuff.h"\
+	"..\src\S_Proc.h"\
+	"..\src\schedule.h"\
+	"..\src\TAccount.h"\
+	"..\src\TEngine.h"\
+	"..\src\terror.h"\
+	"..\src\tlimits.h"\
+	"..\src\tqueue.h"\
+	"..\src\TreeSvr.h"\
+	"..\src\ts_com.h"\
+	"..\src\TSCommon.h"\
+	
+
+..\src\secapi.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+..\src\Shell.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\Conv.h"\
+	"..\src\dbtree.h"\
+	"..\src\ExchBuff.h"\
+	"..\src\Histdata.h"\
+	"..\src\S_Proc.h"\
+	"..\src\schedule.h"\
+	"..\src\shell.h"\
+	"..\src\TAccount.h"\
+	"..\src\TEngine.h"\
+	"..\src\terror.h"\
+	"..\src\tlimits.h"\
+	"..\src\tqueue.h"\
+	"..\src\TreeSvr.h"\
+	"..\src\ts_com.h"\
+	"..\src\TS_CONST.H"\
+	"..\src\Ts_dict.h"\
+	"..\src\TSCommon.h"\
+	"..\src\Tsdbfutl.h"\
+	"..\src\tsftp.h"\
+	"..\src\tuser.h"\
+	"..\src\Wmtasql.h"\
+	
+
+..\src\TEngine.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\ExchBuff.h"\
+	"..\src\TEngine.h"\
+	"..\src\terror.h"\
+	"..\src\tlimits.h"\
+	"..\src\ts_com.h"\
+	"..\src\TSCommon.h"\
+	"..\src\Wmtasql.h"\
+	
+
+..\src\terror.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\terror.h"\
+	
+
+..\src\tqueue.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\dbtree.h"\
+	"..\src\ExchBuff.h"\
+	"..\src\schedule.h"\
+	"..\src\shell.h"\
+	"..\src\terror.h"\
+	"..\src\tlimits.h"\
+	"..\src\tqueue.h"\
+	"..\src\ts_com.h"\
+	"..\src\tuser.h"\
+	
+
+..\src\Tree_tcp.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\TREE_TCP.H"\
+	
+
+..\src\treesvr.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\Conv.h"\
+	"..\src\dbtree.h"\
+	"..\src\Des.h"\
+	"..\src\ExchBuff.h"\
+	"..\src\Notify.h"\
+	"..\src\plug-ins.h"\
+	"..\src\S_Proc.h"\
+	"..\src\schedule.h"\
+	"..\src\TAccount.h"\
+	"..\src\TEngine.h"\
+	"..\src\terror.h"\
+	"..\src\tlimits.h"\
+	"..\src\tplug-ins.h"\
+	"..\src\tqueue.h"\
+	"..\src\TreeSvr.h"\
+	"..\src\ts_com.h"\
+	"..\src\TSCommon.h"\
+	"..\src\tuser.h"\
+	
+
+..\src\TreeSvr.rc : \
+	"..\res\blank.ico"\
+	"..\res\blankbmp.bmp"\
+	"..\res\pause.ico"\
+	"..\res\pausebmp.bmp"\
+	"..\res\run.ico"\
+	"..\res\runbmp.bmp"\
+	"..\res\stop.ico"\
+	"..\res\stopbmp.bmp"\
+	
+
+..\src\TRunInfo.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\TRunInfo.h"\
+	
+
+..\src\tsftp.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\Conv.h"\
+	"..\src\dbtree.h"\
+	"..\src\ExchBuff.h"\
+	"..\src\S_Proc.h"\
+	"..\src\schedule.h"\
+	"..\src\TAccount.h"\
+	"..\src\TEngine.h"\
+	"..\src\terror.h"\
+	"..\src\tlimits.h"\
+	"..\src\tqueue.h"\
+	"..\src\TreeSvr.h"\
+	"..\src\ts_com.h"\
+	"..\src\TSCommon.h"\
+	
+
+..\src\TUser.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\src\Conv.h"\
+	"..\src\dbtree.h"\
+	"..\src\ExchBuff.h"\
+	"..\src\PASSWORD.H"\
+	"..\src\S_Proc.h"\
+	"..\src\schedule.h"\
+	"..\src\TAccount.h"\
+	"..\src\TEngine.h"\
+	"..\src\terror.h"\
+	"..\src\tlimits.h"\
+	"..\src\tqueue.h"\
+	"..\src\TreeSvr.h"\
+	"..\src\ts_com.h"\
+	"..\src\TSCommon.h"\
+	"..\src\tuser.h"\
+	

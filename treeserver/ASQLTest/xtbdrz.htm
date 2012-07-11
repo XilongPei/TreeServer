@@ -1,0 +1,176 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>系统变动日志</title>
+
+<meta name="Microsoft Border" content="t, default"></head>
+
+<body bgcolor="#EAEAFB" link="#008080"><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>
+
+<table border="0" width="85%" cellspacing="0" cellpadding="0" height="50">
+  <tr>
+    <td width="20%" height="50"><a href="http://tdb.com.cn"><img src="images/crsc.gif" alt="上海中铁高新软件中心" border="0" WIDTH="148" HEIGHT="42"></a></td>
+    <td width="80%" height="50"><img src="_borders/asql.gif" alt="asql.gif (3772 bytes)" WIDTH="500" HEIGHT="40"></td>
+  </tr>
+</table>
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" align="center"><a href="index.htm"><img src="images/intro.gif" alt="产品简介" border="0" WIDTH="93" HEIGHT="19"></a><img src="images/online.gif" alt="联机手册" border="0" WIDTH="93" HEIGHT="19"><img src="images/quote.gif" alt="产品报价" WIDTH="93" HEIGHT="19"><img src="images/back.gif" alt="意见反馈" border="0" WIDTH="93" HEIGHT="19"><img src="images/about.gif" alt="相关产品" WIDTH="93" HEIGHT="19"><a href="mailto:asql@tdb.com.cn"><img src="images/contact.gif" alt="请与我们联系" border="0" WIDTH="93" HEIGHT="19"></a></td>
+  </tr>
+</table>
+</td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><!--msnavigation--><td valign="top">
+
+<hr>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><h2 align="center"><font face="楷体_GB2312">数据变动日志</font></h2>
+    <ol>
+      <li><b><a NAME="6_1">数据变动日志的引入</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      在信息系统中信息是经常变化的，在系统中应把这些数据的变化情况记录下来，并在必要时可以对这些数据进行检索、分析。数据变动日志就是用来记录数据维护过程中对数据的每一步变化情况，利用这种变化情况的记忆，可以实现一个数据内容在多个数据存储上的一致性。例如：分厂数据与总厂数据，分厂数据与总厂数据有交集，这种情况下就可以利用数据变动日志来同步两个数据。</p>
+      <p ALIGN="JUSTIFY">数据变动日志既然记录了数据的变化，就很容易在其中得到数据的变化过程，也就是说将对数据的“静态管理”变为“动态管理”。</p>
+      <p ALIGN="JUSTIFY">例如：</p>
+      <p ALIGN="JUSTIFY">按人事管理的规定，人事信息的采集点在人事所在单位，但人事信息不仅存放在本单位的数据库中，而且按人事管理的规定还应存放于上级单位的人事信息数据库中，而数据修改则仍在基层单位，为了上下级人事管理部门数据库中同一信息的一致性，上级部门必须用其下级部门的数据来修改其自身数据。采用下级部门的整个信息库来替换原有部门的全部数据，不仅效率低，而且可能带来其它的问题，例如上级部门数据库的不稳定和数据的不完整等等。</p>
+      <p ALIGN="JUSTIFY">采用了数据变动日志后，下级部门向上级部门报送数据变动日志，而不是全部数据库文件，上级部门利用下级部门的数据变动日志来修改数据库，从而维护了上级部门数据的稳定性，并且也能提高数据质量。</p>
+      <p ALIGN="JUSTIFY">过去在没有数据变动日志的情况下，一旦现有信息库被破坏时，有两种情况可能发生：一种是没有数据备份，这时整个数据库必须重新录入。第二种情况是存有以前某一时刻的数据备份，我们要得到现在人员数据信息集， 
+      若没有数据变动日志则必须从过去那一时刻开始修改数据， 
+      其工作量大而且出错的概率也大。有了数据变动日志后，在数据库遭到破坏的情况下，只要过去的数据的备份加上这段时间的数据变动日志就可以利用程序很方便地恢复现在人员数据库。这样可以大大减少工作量，同时也可以提高信息库的质量。</p>
+      <li><b><a NAME="6_2">数据变动日志的形成</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      　　数据变动日志是在数据维护模块中撰写的。当数据库中的数据发生变化时，数据变动日志就把这些变动情况记录下来。首先记录下数据的变动类型, 
+      即数据变动码, 
+      接着记录数据变动的情况。先写成一个控制子块，紧接控制子块之后是数据块，由各记录中的有关域组成，包括：</p>
+      <p ALIGN="JUSTIFY">1.被修改记录的主关键字内容(序号CODE)；</p>
+      <p ALIGN="JUSTIFY">2.被修改域修改前的内容；</p>
+      <p ALIGN="JUSTIFY">3.被修改域修改后的内容。</p>
+      <p ALIGN="JUSTIFY">　　数据变动的上报文件是由增加记录和数据变动日志一起构成的，流图6.1所示：</p>
+      <p ALIGN="CENTER"><img SRC="images/Image2.gif" WIDTH="454" HEIGHT="269"></p>
+      <p ALIGN="CENTER">图6.1 数据变动上报文件形成流程图</p>
+      <li><b><a NAME="6_3">数据变动日志撰写规则</a><br>
+        </b><br>
+        1.数据变动码规定<p ALIGN="JUSTIFY">(1)增加操作'A'</p>
+        <p ALIGN="JUSTIFY">DBS=表名<br>
+        FIELD=域列表<br>
+        DATA=新内容`新内容`新内容`......</p>
+        <p ALIGN="JUSTIFY">(2)修改操作'M'</p>
+        <p ALIGN="JUSTIFY">DBS=表名<br>
+        FIELD=主关键字名`被修改过的域名列表<br>
+        DATA=主关键字`域1旧内容`域1新内容`域2......<br>
+        GRADE=主关键字域数<br>
+        修改记录内容</p>
+        <p ALIGN="JUSTIFY">(3)主关键字修改'K'</p>
+        <p ALIGN="JUSTIFY">DBS=表名<br>
+        FIELD=主关键字名<br>
+        DATA=主关键字`新的主关键字<br>
+        对记录的序号修改</p>
+        <p ALIGN="JUSTIFY">(4)物理删除'D'</p>
+        <p ALIGN="JUSTIFY">DBS=表名<br>
+        FIELD=主关键字名<br>
+        DATA=主关键字<br>
+        对记录作物理删除</p>
+        <p ALIGN="JUSTIFY">2.其他说明</p>
+        <p ALIGN="JUSTIFY">(1) 文件标识 “ASQL_LOGv3.0.”</p>
+        <p ALIGN="JUSTIFY">(2) 文件索引性信息段：[SUMMARY]</p>
+        <p ALIGN="JUSTIFY">例:</p>
+        <p ALIGN="JUSTIFY">199501=00000000000000 <br>
+        199502=0000000000000<br>
+        199503=00000000000000<br>
+        199504=00000000000000<br>
+        199505=0000000000000<br>
+        199506=00000000000000<br>
+        199507=00000000000000<br>
+        199508=00000000000362<br>
+        199509=00000000000000<br>
+        199510=00000000000000<br>
+        199511=00000000000000<br>
+        199512=00000000000000</p>
+        <p ALIGN="JUSTIFY">以月为单位，记录信息在日志中的段偏移。</p>
+        <p ALIGN="JUSTIFY">等号前为年月，后边为偏移量，在查找时提高查找速度。</p>
+        <p ALIGN="JUSTIFY">(3) 最后操作时间(年月日) OPTIME=19950817 </p>
+        <p ALIGN="JUSTIFY">(4) 最后写入时间(年月日) ETIME=19950817 </p>
+        <p ALIGN="JUSTIFY">(5) 开始写入时间(年月日) STIME=19950711 </p>
+        <p ALIGN="JUSTIFY">(6) 具体内容,[年月]为段名 [199508] </p>
+        <p ALIGN="JUSTIFY">(7) 操作类型 T=M </p>
+        <p ALIGN="JUSTIFY">(8) 操作者 O=U </p>
+        <p ALIGN="JUSTIFY">(9) 操作时间 H=19958A:3= </p>
+        <p ALIGN="JUSTIFY">时间:4字节年,月日时分秒均为1字节为‘0’开始的数字或符号，即该数字值＋ASCII码的‘０’构成的字符。</p>
+        <p ALIGN="JUSTIFY">(10)操作数据库 B=SUB0</p>
+        <p ALIGN="JUSTIFY">(11)域列表 F=CODE`SEX </p>
+        <p ALIGN="JUSTIFY">域列表:主关键字`域列表</p>
+        <p ALIGN="JUSTIFY">(12)级别 G=1</p>
+        <p ALIGN="JUSTIFY">级别:主半键字域数</p>
+        <p ALIGN="JUSTIFY">数据变动日志是用来维护数据库的，在用来恢复本地数据库时，所有日志内容都是有用的，在用来维护上级数据库时，只需部分日志的内容，凡有G-M 
+        ，则该段日志需上报，就是说，构成日志上报的标记是G=M 
+        。上报标记与基本集的MOD 域的标记相一致。</p>
+        <p ALIGN="JUSTIFY">(13)数据 D=230910000200022`1`2 </p>
+        <p ALIGN="JUSTIFY">数据:主关键字`旧`新</p>
+        <p ALIGN="JUSTIFY">3.数据变动日志撰写实例</p>
+        <p ALIGN="JUSTIFY">(1) 记录添加（Ａ）：</p>
+        <p ALIGN="JUSTIFY">记录啬加记下新增记录的序号及各域的内容。例：</p>
+        <p ALIGN="JUSTIFY">ETIME=19950817 <br>
+        STIME=19950711 </p>
+        <p ALIGN="JUSTIFY">[199508] </p>
+        <p ALIGN="JUSTIFY">T=A <br>
+        O=U <br>
+        H=19958A:3= <br>
+        B=SUB0 <br>
+        F=CODE`NAME`SEX` <br>
+        G=1 <br>
+        D=230910000200022`杨子云`1</p>
+        <p ALIGN="JUSTIFY">(2) 数据项修改（Ｍ）</p>
+        <p ALIGN="JUSTIFY">记录操作日期，操作者，操作类型和操作内容。操作内容包括序号，原</p>
+        <p ALIGN="JUSTIFY">内容和新内容。性别变动数据变动日志的例子如下：</p>
+        <p ALIGN="JUSTIFY">ETIME=19950817 <br>
+        STIME=19950711 </p>
+        <p ALIGN="JUSTIFY">[199508] </p>
+        <p ALIGN="JUSTIFY">T=M <br>
+        O=U <br>
+        H=19958A:3= <br>
+        B=SUB0 <br>
+        F=CODE`SEX <br>
+        G=1 <br>
+        D=230910000200022`1`2 </p>
+        <p ALIGN="JUSTIFY">在D后边是序号，在该序号下，后边是该序号修改前的内容，紧接是修改后的新内容。所对应域的描述在F 
+        关键字后边。</p>
+        <p ALIGN="JUSTIFY">在数据修改中大量的是相关项修改，因此采用以上的描述方法。</p>
+        <p ALIGN="JUSTIFY">(3) 序号修改（Ｋ）</p>
+        <p ALIGN="JUSTIFY">序号修改只需记录操作类型，操作者、原序号和新序号。例子如下所示：</p>
+        <p ALIGN="JUSTIFY">ETIME=19950817 <br>
+        STIME=19950711 </p>
+        <p ALIGN="JUSTIFY">[199508] </p>
+        <p ALIGN="JUSTIFY">T=K <br>
+        O=U <br>
+        H=19958A:3= <br>
+        B=SUB0 <br>
+        F=CODE <br>
+        G=1<br>
+        D=230001011120002`230001011120001;</p>
+        <p ALIGN="JUSTIFY">每组序号用‘`’（即键盘左上角键）分隔</p>
+        <p ALIGN="JUSTIFY">(4) 记录删除（Ｄ）</p>
+        <p ALIGN="JUSTIFY">记录删除只需记下删除记录的序号。例：</p>
+        <p ALIGN="JUSTIFY">ETIME=19950817 <br>
+        STIME=19950711 </p>
+        <p ALIGN="JUSTIFY">[199508] </p>
+        <p ALIGN="JUSTIFY">T=D <br>
+        O=U <br>
+        H=19958A:3= <br>
+        B=SUB0 <br>
+        F=CODE <br>
+        G=1 <br>
+        D=230910000200022 　　　</p>
+        <p ALIGN="JUSTIFY">记录删除的物理过程是先做修改再做删除，并且是先做逻辑删除，做完年统后再做物理删除。做物理删除是就同时把删除记录放到删除库中。因为在做删除时在数据变动日志中只有删除的记录号。</p>
+        <p ALIGN="JUSTIFY">数据变动日志中的删除只作为上报或数据库变动的记录，不作为恢复的依据，如需恢复则和删除库相结合。在作物理删除时写 
+        删除的变动日志, 在作逻辑删除时不做.</p>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>　
+<!--msnavigation--></td></tr><!--msnavigation--></table></body>
+</html>

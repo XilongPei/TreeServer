@@ -1,0 +1,7 @@
+LIBRARY         WMTASQL.DLL
+CODE            PRELOAD MOVEABLE DISCARDABLE
+DATA            PRELOAD MOVEABLE SINGLE
+HEAPSIZE        20480
+EXPORTS
+                AsqlSetEnv              @1
+                AsqlExecFromFile        @2

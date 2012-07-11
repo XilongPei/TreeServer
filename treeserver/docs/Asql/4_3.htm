@@ -1,0 +1,125 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>汉字替换方式</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><strong>汉字替换方式</strong></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">汉字替换有三种：给定域的汉字替换、整库的汉字替换和代码提示。</span></p>
+    <ol style="font-size: 12px">
+      <li><span style="font-size: 12px">给定域的汉字替换<br>
+        </span></li>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">在ASQL中对数据库中的记录进行录入或维护时，要求在输入代码后，或光标所在的数据项能把汉字立即显示出来。因此必须提供给定域的汉字替换功能。</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">在给定域汉字替换中，我们采用了两种替换方法：</span></p>
+      <ol>
+        <li><span style="font-size: 12px">给定代码库名和代码描述串而返回所给代码描述串的中文描述串( 
+          慢速方式)。</span></li>
+        <li><span style="font-size: 12px">给定代码库描述编号和代码描述串而返回所给代码描述串的中文描述串 
+          (快速方式)。</span></li>
+      </ol>
+      <p><span style="font-size: 12px">按汉字替换的功能可以分为以下四种情况：</span><ol
+      style="font-size: 12px">
+        <li><span style="font-size: 12px">完全替换(或一一对应替换)<br>
+          <br>
+          所谓完全替换或一一对应替换是指数据库中某一域的内容与对应代码库中的代码一致，该代码对应代码库中的某一汉字内容。例如：性别域，地区域，职称，文化程度，级别，……，等等。这种形式的汉字替换在管理信息系统中是一种主要的形式。</span></li>
+        <li><span style="font-size: 12px">子串替换<br>
+          <br>
+          所谓子串替换是指数据库中某一域中的字符串中的某固定子串对应某一指定代码库，而该字符串中的其余内容则是另有含义。</span></li>
+        <p ALIGN="JUSTIFY"><span style="font-size: 12px">子串替换的典型形式是党派名称，党派名称域的宽度为4 
+        ，其中的前两位表示是一个党派，后边两位则是表示参加的另一个党派，该域的含义是一个人可以参加两个党派，两个党派的信息放在一个域中表示出来。</span></p>
+        <p ALIGN="JUSTIFY"><span style="font-size: 12px">这种情况在管理信息系统中很多。</span></p>
+        <li><span style="font-size: 12px">混合型替换</span><p ALIGN="JUSTIFY"><span
+          style="font-size: 12px">混合型替换是指在数据库中的某一个域中的内容规定为代码和汉字的混合表示一个完整的内容。例如，某一单位名称可以是代码和汉字的混合，这种替换是将字符串中的某一子串进行汉字替换再和其余的汉字信息合并成一个完整的字符串。</span></p>
+          <p ALIGN="JUSTIFY"><span style="font-size: 12px">严格来说，这种情况在管理信息系统数据库设计中应该避免，但是在现有系统中已经存在，对于汉字替换程序来说，还是作为一种替换方式予以实现。而数据库设计的合理性问题和原则问题放到其它有关方面进行讨论，这里不再赘述。</span></p>
+        </li>
+        <li><span style="font-size: 12px">多代码替换<br>
+          <br>
+          多代码替换是数据库中某一字符串中包含有若干个代码，首先分别对各个代码进行替换，然后将各子串替换的结果合并成一个字符串。</span></li>
+        <p ALIGN="JUSTIFY"><span style="font-size: 12px">例如，党派名称域定义为可填写双党派，这种情况就可以用多代码替换方式将两个党派都替换成汉字。</span></p>
+        <p ALIGN="JUSTIFY"><span style="font-size: 12px">在数据库设计中这是不可取的，应该将各个代码分开为若干个域，但是在实际系统中确有这样的情况存在，所以在这里保留这种替换方式。</span></p>
+      </ol>
+      <li><span style="font-size: 12px">整库汉字替换</span></li>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">对给定条件的查询结果或整个原库要替换成汉字库时，必须调用整库汉字替换。在进行整库替换前，必须要把总控库调入内存。读入总控库后，形成一个结构数组，其结构为：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">在进行整库替换时，其实是二层循环，外层循环是原信息库是否结束，内层循环是以记录域数的循环。在外层循环取出每一条记录，逐域与总控结构数组的efname进行比较，根据替换标记来确定该域是否要进行替换，如果要替换，则把替换后的汉字段写记录，否则把原域内容写域。</span></p>
+      <li><span style="font-size: 12px">汉字替换的控制</span></li>
+    </ol>
+    <p><span style="font-size: 12px">在管理信息系统中，大部分的信息是用代码形式存储的，而每个域的汉字替换都有一定的方式，为了使汉字替换的程序独立于数据，因此汉字替换方式是在数据库字段黄中域总控库中进行描述的。域总控库中与汉字替换方式有关的域是REPDESCRIP, 
+    汉字替换方式域。 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">下边给出在域总控库的REPDESCRIP域中汉字替换方式的描述规则。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">1.汉字替换方式的语法格式</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">2.汉字替换方式描述</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　 (1) 一一对应替换方式</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">方式: 【代码库名】</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　 例如: EC_M8。 EC_M8表示代码库名。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　在用代码库名表示时，必须注意代码库名不能写错，否则得不到正确的结果。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　(2)子串替换</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">方式：【代码库名】(起始位,长度) 
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">例: EC_S176(0,5)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(起始位,长度)表示代码在域中的位置和长度</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　(3) 多代码替换</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">方式：【代码库名】(起始位,长度)【代码库名】(起始位,长度)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　(4) 不需替换的子串表示方式</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">在一个字符串中如果有某一子串不需替换，而是保留在替换的结果中， 
+    可</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">用只有(起始位,长度)信息，而没有代码库信息的方式来表示该几位不替换， 
+    直接</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">放到替换结果中去.</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">如:(1,5) 
+    表示从输入信息串的第一位到第五位无转换输出.</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(5) 在替换结果中加入分隔字符</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">在汉字替时，尤其是在多化码组合替换时。有时想在各替换结果中加入自</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">己的分隔字符。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">方式：('＊')</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">上面的方式表示中“＊”可以用一个或两个西文字符或一个中文字符代替，例</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">如：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">('.')</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">('..')</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">('和')</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(6) 各种替换方式的组合</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">将以上各种情况组合输出转换，可用以下例子来说明：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">如: 方式: (1, 2)EC36(3,3)(3,4)EC36(3, 
+    3)(5, 6) </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">字符串为: '110000'</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">替换后的字符串输出为: '11国际辅助语00国际辅助语00'</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(7) 代码的分级提示控制</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">当代码库中的代码很多时，代码提示需要多次的翻屏，例如地区代码，共有</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">三千多个，要在三千多个代码中找出所需的代码其速度是很慢的，这给操作带来了</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">麻烦，为了提高代码查找的速度，在系统中设计了代码的分级提示，其表示的规则</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">如下：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">代码库名(*起始位1,长度)代码库名(*起始位2,长度)......。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">左括号'('后的'*'表示只用来提示，不参与实际替换。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">下边以地区码为例表示分级提示的表达式：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">EC_M8(*1,2)EC_M8(*3,2)EC_M8(*5,2)EC_M8(1,6)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">3.汉字替换结果控制</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(1) 汉字域宽度控制</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">汉字替换的结果是将原来用代码存放的信息，改写成为汉字信息，因此其结构就会发生变化，原数据库的宽度就不够了。解决的方法是重新构造一个除宽度外和原数据库结构相同的数据库，填入相应的汉字信息。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　在域总控库中有存放代码的数据库结构的宽度(EWIDE) 
+    和存放汉字信息的数据库结构的宽度(CWIDE)，根据该宽度构造汉字数据库，存放替换以后的汉字。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(2) 提示控制</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">在管理信息系统中还有一些特殊情况需要处理，这些问题也可归结到汉字替换这部分内容中来，这里讨论的是提示信息，它要求的处理是这样：该域的子串不需要进行汉字替换，但需满足某一编码的规则，并且要提示出来。例如：组织数据库系统的主关键字序号(或编号)，是按某一规则来编写的，在数据录入或维护时，需要将这规则能提示出来。在人事管理系统中，常常是前几位表示的是单位码，甚至是多个子串表示多个单位或部门码。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　　提示控制的表达式定义如下：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">表达式 = 表达式 | (起始位,长度) 
+    表达式 |【代码库名】(起始位,长度)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　(3) 中文域名提示</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　在编辑查询条件时，其操作的过程是这样的：先选查询条件所在的信息集，再从这些集中选出需构造查询条件的域，所显示的信息集名(人员数据库名)和域名都是汉字，而在系统中数据库名和域名都是英文名，这是一种特殊的汉字替换，汉字信息分别从文件总控(系统主控文件的[FILECTL]段)和域总控库(FIELDCTL.DBF) 
+    中取得。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　 4.代码库维护注意</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　在以下情况时要进行代码库的维护工作：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(1) 
+    系统初建，必须建立自用代码库和维护下发的标准代码库。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　(2) 
+    在代码或者代码库的内容发生变化(需进行代码的增、删、改)时, 
+    必须进行代码库的维护工作。当内部机构发生了变化(需进行部门代码库的维护)，指标体系发生了变化(在系统中增加了新的自用域或改变了原数据集的定义)，以及国家标准发生了变化(下发了新的国家标准代码库)等等。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+Object:
+	TSADO
+
+Interface:
+	Command
+
+Properties:
+	BSTR            szASQLString    	(read/write)
+	BOOL            EOF                     (readonly)
+	BOOL            BOF                     (readonly)
+	unsigned long	ErrorCode               (readonly)
+	BSTR            szASQLErrorMsg          (readonly)
+	BOOL            ASQLError               (readonly)
+	BSTR            ColumnName[i]           (readonly)
+	int             ColumnSize[i]           (readonly)
+	int             ColumnPrecision[i]      (readonly)
+	unsigned char   ColumnType[i]           (readonly)
+
+Methods:
+	BOOL Logon( [in] BSTR szServer, [in] BSTR szUser, [in] BSTR szPasswd )
+	VOID Logoff()
+	VOID ASQLClear()
+	VOID ASQLAdd( [in] BSTR szASQL )
+	BOOL ASQLExecute()
+	BOOL TableOpen( [in] BSTR szDatabase, [in] BSTR szTable )
+	VOID TableClose()
+	VOID First()
+	VOID Next()
+	VOID Prev()
+	VOID Last()
+	long RowCount()
+	int  ColumnCount()		
+	BSTR ColumnById( [in] int iColId )
+	BSTR ColumnByName( [in] BSTR szColName )
+	VOID AboutBox()
+
+Sample Code:
+
+//******************************************************************************
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>Result</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+
+
+<CENTER><H1>Query Result</H1></CENTER>
+<%
+if Request.Form("Script")<>"" then
+    Session.Abandon
+    Set Session("DS") = Server.CreateObject("TSADO.Command")
+    if Session("DS").Logon( "Hello","David","online") then
+        Session("DS").ASQLClear
+        Session("DS").ASQLAdd( Request.Form("Script") )
+        if Session("DS").ASQLExecute then
+            if Session("DS").TableOpen( Request.Form("DB"), Request.Form("Table") ) then
+                RowCount = Session("DS").RowCount
+                ColCount = Session("DS").ColumnCount
+%>
+
+<table border="1" width="465" align="center" bordercolordark="#996600" bordercolorlight="#999933">
+  <tr>
+<%
+                for i = 1 to ColCount
+%>
+    <td nowrap align="center"><% = Session("DS").ColumnName(i) %></td>
+<%
+                Next
+%>
+  </tr>
+  
+<%
+                for i = 1 to RowCount
+%>
+
+  <tr>
+<%
+                    for j = 1 to ColCount
+%>
+    <td nowrap align="left"><% = Session("DS").ColumnById(j) %> </td>
+<%
+                    Next
+%>
+  </tr>
+<%
+                Session("DS").Next
+                Next
+%>
+</table>
+<%
+                Session("DS").TableClose
+            else
+%>
+Open result set error.
+<%
+            end if
+        else
+%>
+Execute ASQL error:<BR><% = Session("DS").szASQLErrorMsg %>
+<%
+        end if
+        Session("DS").Logoff
+    else
+%>
+Logon TreeSVR Failure.
+<%
+    end if
+    Session.Abandon
+end if
+%>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>ASQL语言结构</title>
+</head>
+
+<body bgcolor="#EAEAFB">
+
+<p align="center"><strong>ASQL语言结构</strong></p>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL语言是参照关系数据库语言SQL(Structure 
+    Query Language)而定义的一种集过程能力与非过程任务描述与一身的结构化语言，它的基本结构为：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">From /*源*/ </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">To /*目标*/ </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">Condition /*条件动作*/ </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">Action /*无条件动作*/ </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">其中From是源，就是对哪些数据表进行操作。To是目标， 
+    就是对数据库进行操作完后，将结果放在哪里。Condition是动作，就是对源数据库进行何种操作。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15">　ASQL支持注释的写法为：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL支持“/*”和“*/”括起来的隔对表示注释，注释可以出现在ASQL文本的任何地方，在ASQL进行语法解释时将将注释内容作为空格处理。注释不可以嵌套。</span></p>
+    <p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[例1]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">从人员库\TG\DATA\SUB0.DBF中找出党员放至\TG\DATA\CXMAIN.DBF的ASQL 
+    语言描述为：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">From \TG\DATA\SUB0.DBF</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">To \TG\DATA\CXMAIN.DBF</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CONDITION</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">Begin</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">Party_n=&quot;01&quot;||Party_n=&quot;02&quot; 
+    $record(@1)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">End</span></p>
+    <p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> 为了防止对源数据表的名字的绝对定义，ASQL规定@1表示源数据表的第一个表的第一个域。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

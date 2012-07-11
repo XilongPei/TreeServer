@@ -1,0 +1,904 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>自定义函数</title>
+
+<meta name="Microsoft Border" content="t, default"></head>
+
+<body bgcolor="#EAEAFB" link="#008080"><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>
+
+<table border="0" width="85%" cellspacing="0" cellpadding="0" height="50">
+  <tr>
+    <td width="20%" height="50"><a href="http://tdb.com.cn"><img src="images/crsc.gif" alt="上海中铁高新软件中心" border="0" WIDTH="148" HEIGHT="42"></a></td>
+    <td width="80%" height="50"><img src="_borders/asql.gif" alt="asql.gif (3772 bytes)" WIDTH="500" HEIGHT="40"></td>
+  </tr>
+</table>
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" align="center"><a href="index.htm"><img src="images/intro.gif" alt="产品简介" border="0" WIDTH="93" HEIGHT="19"></a><img src="images/online.gif" alt="联机手册" border="0" WIDTH="93" HEIGHT="19"><img src="images/quote.gif" alt="产品报价" WIDTH="93" HEIGHT="19"><img src="images/back.gif" alt="意见反馈" border="0" WIDTH="93" HEIGHT="19"><img src="images/about.gif" alt="相关产品" WIDTH="93" HEIGHT="19"><a href="mailto:asql@tdb.com.cn"><img src="images/contact.gif" alt="请与我们联系" border="0" WIDTH="93" HEIGHT="19"></a></td>
+  </tr>
+</table>
+</td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><!--msnavigation--><td valign="top">
+
+<hr>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><h2 align="center"><font face="楷体_GB2312">自定义函数</font></h2>
+    <b><ol>
+      <li><a NAME="7_1">参数传递办法</a></li>
+      </b><p ALIGN="JUSTIFY">ASQL与用户自定义函数是通过一种堆栈的数据结构来传递数据的，堆栈的每个元素的结构为：</p>
+      <p ALIGN="JUSTIFY">typedef struct {<br>
+      short type;<br>
+      unsigned char values[ 32 ];<br>
+      short length;<br>
+      unsigned char *oval; // fast pointer<br>
+      } OpndType;</p>
+      <b><p ALIGN="JUSTIFY">说明：</p>
+      </b><p ALIGN="JUSTIFY">(1)type：为数据类型</p>
+      <p ALIGN="JUSTIFY">(2)values：为数据存放数组，有些数据，如字符型、整型、长整型、浮点型及小于32个字符的非常量字符串都是存于values中的，长于32个字节的非常量字符串在其前4个字节中存有字符串空间的指针，ASQL的字符串以尾0结束；</p>
+      <p ALIGN="JUSTIFY">通过下面的示例函数_TypeAlign()、xGetOpndLong()、xGetOpndFloat()、xGetOpndString()可以分析出来这些数据类型的存储方法。</p>
+      <p ALIGN="JUSTIFY">(3)length：为数据长度，若为字符串，长度不包尾0</p>
+      <p ALIGN="JUSTIFY">(4)oval：常量、数组或数据库域类型的快速指针，它指向表达式原子串的values元素。</p>
+      <p ALIGN="JUSTIFY">数组的存储同符号表中的存储，下面有说明。</p>
+      <p ALIGN="JUSTIFY">域类型，它指向一个结构（dFIELDWHENACTION），该结构定义如下：</p>
+      <p ALIGN="JUSTIFY">typedef struct {<br>
+      unsigned char *pSourceStart; <br>
+      unsigned short wSourceid;<br>
+      dFILE *pSourceDfile;<br>
+      unsigned char *pTargetStart;<br>
+      unsigned short wTargetid;<br>
+      dFILE *pTargetDfile;<br>
+      void *ResultMem;<br>
+      } dFIELDWHENACTION;</p>
+      <p ALIGN="JUSTIFY">结构说明：</p>
+      <p ALIGN="JUSTIFY">pSourceStart：指向源中域内容的字符串指针。<br>
+      wSourceid：源中域标识号，一般为域的顺序，从0开始计算。<br>
+      pSourceDfile：源表指针。<br>
+      pTargetStart：指向目标中域内容的字符串指针。<br>
+      wTargetid：目标中域标识号，一般为域的顺序，从0开始计算。<br>
+      pTargetDfile：目标表指针。<br>
+      ResultMem：运算结果指针，主要由ASKMAX，ASKMIN，ASKSUM等关生符号结果的函数使用，一般用户自定义函数无法使用此值。</p>
+      <p ALIGN="JUSTIFY">用户一般通过pSourceStart、pTargetStart及length来获取值，只有BLOB（备注型）才需其它字段帮助。length此时表示此域的长度。BLOB（备注）型的这个值一般无实际意义。</p>
+      <u><b><p ALIGN="CENTER">ASQL支持的内部数据类型定义</p>
+      </b></u><table BORDER="1" CELLSPACING="1" BORDERCOLOR="#000000" CELLPADDING="7" WIDTH="545">
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><b><p ALIGN="CENTER">类 型 说 明</b></td>
+          <td WIDTH="68%" VALIGN="TOP"><b><p ALIGN="CENTER">C 语 言 定 义</b></td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">未明类型变量</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define IDEN_TYPE 1050</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">字符串型变量</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define STRING_IDEN 1051</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">日期型变量(YYYYMMDD)</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define DATE_IDEN 1052</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">字符型变量(-127-127)</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define CHR_IDEN 1053</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">短整型变量(-32767-32767)</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define INT_IDEN 1054</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">长整型变量(-2147583647-2147483600)</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define LONG_IDEN 1055</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">浮点型变量</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define FLOAT_IDEN 1056</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">未知类型字段变量</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define FIELD_IDEN 1060</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">整型数字段变量</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define NFIELD_IDEN 1061 /* dec is 0 and 
+          bytes less than 10, long */</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">浮点数字段变量</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define FFIELD_IDEN 1062 /* dec isnot 0, 
+          float */</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">逻辑字段变量</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define LFIELD_IDEN 1063 /* logic, short 
+          */</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">日期字段变量</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define DFIELD_IDEN 1064 /* date, char[8] 
+          */</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">不定长文本字段变量</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define MFIELD_IDEN 1065 /* memo */</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">字符串字段变量</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define CFIELD_IDEN 1066 /* chr[n] */</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">自用自段变量</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define SFIELD_IDEN 1067 /* recno() */</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">字符型(-127-127)</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define CHR_TYPE 1070</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">短整型(-32767-32767)</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define INT_TYPE 1071</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">长整型(-2147583647-2147483600)</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define LONG_TYPE 1072</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">浮点型</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define FLOAT_TYPE 1073</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">日期型</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define DATE_TYPE 1074</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">字符串型</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define STRING_TYPE 1075</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">逻辑型</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define LOGIC_TYPE 1076</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">数组型</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define ARRAY_TYPE 1077</td>
+        </tr>
+        <tr>
+          <td VALIGN="TOP" COLSPAN="2" HEIGHT="46"><p ALIGN="JUSTIFY">ASQL支持两种数据传递办法，一为传值，另一为传地址。通常都是传值，但遇到下一个运算符为赋值(:=)，或本运算数为强制传地址（通过在变量前加&amp;），例：</p>
+          <p ALIGN="JUSTIFY">&amp;array[x,y]</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">未明类型变量地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VIDEN_TYPE (IDEN_TYPE | 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">字符串类型变量地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VSTRING_IDEN (STRING_IDEN| 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">日期类型变量地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VDATE_IDEN (DATE_IDEN | 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">字符类型变量地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VCHR_IDEN (CHR_IDEN | 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">整型变量地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VINT_IDEN (INT_IDEN | 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">长整型变量地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VLONG_IDEN (LONG_IDEN | 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">浮点型变量地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VFLOAT_IDEN (FLOAT_IDEN | 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">字段类型变量地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VFIELD_IDEN (FIELD_IDEN | 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">整型字段变量地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VNFIELD_IDEN (NFIELD_IDEN| 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">浮点型字段变量地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VFFIELD_IDEN (FFIELD_IDEN| 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">逻辑型字段地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VLFIELD_IDEN (LFIELD_IDEN| 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">日期型字段地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VDFIELD_IDEN (DFIELD_IDEN| 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">不定度文本字段地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VMFIELD_IDEN (MFIELD_IDEN| 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">字符型字段地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VCFIELD_IDEN (CFIELD_IDEN| 0x1000)</td>
+        </tr>
+        <tr>
+          <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY">内部用地址</td>
+          <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY">#define VSFIELD_IDEN (SFIELD_IDEN| 0x1000)</td>
+        </tr>
+      </table>
+      <li><b><a NAME="7_2">函数接口定义</a><br>
+      </li>
+      </b><p ALIGN="JUSTIFY">short _cdecl xexpdlltest( OpndType *lpOpnd, short ParaNum, short 
+      *OpndTop, \</p>
+      <p ALIGN="JUSTIFY">short *CurState )</p>
+      <p ALIGN="JUSTIFY">// OpndType *lpOpnd; pointer of opnd stack<br>
+      // short ParaNum; parameter number for this action<br>
+      // short *OpndTop; system opnd top<br>
+      // short *CurState; the action sequence working state</p>
+      <p ALIGN="JUSTIFY">说明：</p>
+      <p ALIGN="JUSTIFY">1.返回结果为短整型。<br>
+      2.函数调用方式为C语言规范。<br>
+      3.lpOpnd堆栈指针。<br>
+      4.ParaNum参数数量。<br>
+      5.OpndTop栈顶指针。<br>
+      6.CurState动作引用时态。</p>
+      <p ALIGN="JUSTIFY">ASQL的动作函数都具有时态：第一次运算(CurState=0)，最后一次运行(CurState-1)，单态动作引用(CurState-2)，其它运行状态(CurState1)。之所以提供时态，是因为动作在不同情况表表现为不同工作，如求平均值：</p>
+      <p ALIGN="JUSTIFY">第一次运算：初始内存空间，保存初值；<br>
+      第二次运算：累加值，累计加的次数；</p>
+      <p ALIGN="JUSTIFY">最后一次运算：两值相除。</p>
+      <b>
+      <li><a NAME="7_3">ASQL表达式符号表</a><br>
+      </li>
+      </b><p ALIGN="JUSTIFY">ASQL可以与调用者通过交换符号表的形式来交换数据，这个调用者可以是程序的引用者，也可以是客户/服务器模式时的客户端。</p>
+      <p ALIGN="JUSTIFY">调用者将自已要传给ASQL的数据整理成符号表，将这个符号表的基地址和符号数量传给ASQL，在ASQL语法内部，就可以对这些符号通过名字进行引用了。在ASQL内部可以对这些符号象ASQL自己定义的符号一样引用：比较、运算、赋值。在ASQL运算完毕，调用者可能从“自己的”符号表中直接得到想要的信息。</p>
+      <p ALIGN="JUSTIFY"><u>ASQL的符号表是一个结构数组</u>，该结构名为：SysVarOFunType，定义为：</p>
+      <p ALIGN="JUSTIFY">typedef struct {<br>
+      short type;<br>
+      char VarOFunName[32];<br>
+      unsigned char values[32];<br>
+      short length;<br>
+      } SysVarOFunType;</p>
+      <p ALIGN="JUSTIFY">结构字段说明：</p>
+      <p ALIGN="JUSTIFY">type：变量类型，取下列值（具体表示数值在“ASQL支持的内部数据类型定义”表中）之一：</p>
+      <p ALIGN="JUSTIFY"><u>名称 值 </p>
+      </u><p ALIGN="JUSTIFY">CHAR_IDEN 1053<br>
+      INT_IDEN 1054<br>
+      LONG_IDEN 1055<br>
+      FLOAT_IDEN 1056<br>
+      STRING_IDEN 1051<br>
+      ARRAY_TYPE 1077</p>
+      <p ALIGN="JUSTIFY">VarOFunName：变量名称，须符合ASQL变量名称定义，首字符必须为英文字母，然后是字母、数字、下划线组成的字符串。变量名不区分大小写。</p>
+      <p ALIGN="JUSTIFY">values：初始值</p>
+      <p ALIGN="JUSTIFY">CHAR_IDEN、INT_IDEN、LONG_IDEN、FLOAT_IDEN：直接存于其中：</p>
+      <p ALIGN="JUSTIFY">*(char *)work-&gt;values = '1'; //字符初值<br>
+      *(short *)work-&gt;values = 1234; //整型初值<br>
+      *(long *)work-&gt;values = 787656; //长整初值<br>
+      *(float *)workvalues = 3.1415926535; //浮点初值</p>
+      <p ALIGN="JUSTIFY">STRING_IDEN：在其前4个字节中存有申请空间的指针，ASQL的字符串以尾0结束；</p>
+      <p ALIGN="JUSTIFY">ARRAY_TYPE：ASQL数组定义结构。</p>
+      <p ALIGN="JUSTIFY">length：空间长度，数组时该值无意义。定义如下：</p>
+      <p ALIGN="JUSTIFY"><u>类型 值 </p>
+      </u><p ALIGN="JUSTIFY">CHAR_IDEN 1<br>
+      INT_IDEN 2<br>
+      LONG_IDEN 4<br>
+      FLOAT_IDEN 8</p>
+      <p ALIGN="JUSTIFY">STRING_IDEN 视具体情况</p>
+      <p ALIGN="JUSTIFY">ARRAY_TYPE 视具体情况</p>
+      <p ALIGN="JUSTIFY">C语言定义示例：</p>
+      <p ALIGN="JUSTIFY">SysVarOFunType SysVar[] = { <br>
+      {LONG_IDEN, &quot;_RECNO&quot;, &quot;\0\0\0\0&quot;, 4},<br>
+      {LONG_IDEN, &quot;_LONGTMP&quot;, &quot;\0\0\0\0&quot;, 4},<br>
+      {FLOAT_IDEN, &quot;_FLOATTMP&quot;, &quot;\0\0\0\0\0\0\0\0&quot;, sizeof(double)},<br>
+      {STRING_IDEN, &quot;_STRINGTMP&quot;, &quot;&quot;, 0},<br>
+      {STRING_IDEN, &quot;_BKEY&quot;, &quot;&quot;, 0},<br>
+      };</p>
+      <b><p ALIGN="JUSTIFY">ASQL符号表中数组定义办法</p>
+      </b><p ALIGN="JUSTIFY">ASQL符号表的某一项若是数组，则其该衔号的values字段中存的是一个结构。整个结构32字节大小。</p>
+      <p ALIGN="JUSTIFY">ASQL支持的最大数组维数为10维，最大数组空间为65535字节。</p>
+      <p ALIGN="JUSTIFY">#define MAXARRAYDIM (32-12 ) / 2=10<br>
+      typedef struct tagArrayType {<br>
+      unsigned short ElementType;<br>
+      unsigned char DimNum;<br>
+      unsigned short ElementNum;<br>
+      unsigned short MemSize;<br>
+      unsigned short ArrayDim[ MAXARRAYDIM ];<br>
+      void *ArrayMem;<br>
+      } ArrayType;</p>
+      <p ALIGN="JUSTIFY">结构字段说明：</p>
+      <p ALIGN="JUSTIFY">ElementType：数组元素类型，取下列值（具体表示数值在“ASQL支持的内部数据类型定义”表中）之一：</p>
+      <p ALIGN="JUSTIFY"><u>名称 值 </p>
+      </u><p ALIGN="JUSTIFY">CHAR_TYPE 1070<br>
+      INT_TYPE 1071<br>
+      LONG_TYPE 1072<br>
+      FLOAT_TYPE 1073</p>
+      <p ALIGN="JUSTIFY">DimNum：维数，最大值为10。<br>
+      ElementNum：元素数，即所有维数据加起来一共多少个数据。<br>
+      MemSize：空间大小，该数组占多大空间。<br>
+      ArrayDim：数组维定义数组，第一维大小，第二维大小……<br>
+      ArrayMem：数组存储实际空间。</p>
+      <p ALIGN="JUSTIFY">C语言写的数组定义示例：</p>
+      <p ALIGN="JUSTIFY">SysVarOFunType arrayVar[] = { <br>
+      {LONG_IDEN, &quot;Lint&quot;, &quot;\0\0\0\0&quot;, 4},<br>
+      {ARRAY_TYPE, &quot;xfx&quot;, &quot;\0\0\0\0&quot;, 32},<br>
+      };</p>
+      <p ALIGN="JUSTIFY">ArrayType *work;</p>
+      <p ALIGN="JUSTIFY">//给符号表的第一个字号Lint赋初值<br>
+      *(long *)arrayVar[0].values=100;<br>
+      //定义数组 假设该数组是如下定义，6行4列<br>
+      // PREDICATES<br>
+      // float xfr[6,4]</p>
+      <p ALIGN="JUSTIFY">work = arrayVar[1].values;<br>
+      work-&gt;ElementType = FLOAT_TYPE;<br>
+      work-&gt;DimNum=2;<br>
+      work-&gt;ArrayDim[0] = 6;<br>
+      work-&gt;ArrayDim[1] = 4;<br>
+      work-&gt;ElementNum = 24;<br>
+      work-&gt;MemSize = 24*sizeof(double);<br>
+      if( ( (work-&gt;ArrayMem = (char *)malloc(work-&gt;MemSize)) == NULL ) {</p>
+      <p ALIGN="JUSTIFY">//出错处理</p>
+      <p ALIGN="JUSTIFY">}</p>
+      <p ALIGN="JUSTIFY">memset( (work-&gt;ArrayMem, 0, work-&gt;MemSize);</p>
+      <li><b><a NAME="_Toc437587457">表达式常用结构定义头文件</a></li>
+      </b><p ALIGN="JUSTIFY">/*****************</p>
+      <p ALIGN="JUSTIFY">* ASQLXEXP.H</p>
+      <p ALIGN="JUSTIFY">* copyright (c) Shanghai Tiedao University 1998</p>
+      <p ALIGN="JUSTIFY">* CRSC 1998</p>
+      <p ALIGN="JUSTIFY">* author: Xilong Pei</p>
+      <p ALIGN="JUSTIFY">****************************************************************************/</p>
+      <p ALIGN="JUSTIFY">#ifndef __ASQLXEXP_H_<br>
+      #define __ASQLXEXP_H_<br>
+      #include &lt;windows.h&gt;<br>
+      #include &lt;stdio.h&gt;<br>
+      #include &lt;limits.h&gt;<br>
+      #define dFILE void<br>
+      #define FIELDNAMELEN 32<br>
+      #define XEXP_FUNCTION_SERVICE<br>
+      #define PD_style cdecl<br>
+      #define MAX_BUFFER_LENGTH 128<br>
+      #define MAX_OPND_NUMBER 256<br>
+      #define MAX_OPND_LENGTH 32 /* middle varable */</p>
+      <p ALIGN="JUSTIFY">/* long double need 10 bytes */</p>
+      <p ALIGN="JUSTIFY">#define MAX_ATOM_LENGTH 8 /* =sizeof(double) atom size in MidCodeType 
+      */<br>
+      #define MAX_IDEN_LENGTH (MAX_OPND_LENGTH-1)<br>
+      #define MAX_OPTR_NUMBER 64<br>
+      #define FLOAT_PRECISION 0.00000000000000000001<br>
+      #define FLOAT_MAX 1.7E+300<br>
+      #define FLOAT_MIN -1.7E+300<br>
+      #define _ArrayOrFunNestDeep_ 8</p>
+      <p ALIGN="JUSTIFY">//first time of action is 0</p>
+      <p ALIGN="JUSTIFY">#define LASTWORKTIMEOFACTION -1<br>
+      #define ONE_MODALITY_ACTION -2</p>
+      <p ALIGN="JUSTIFY">//operator define must consider the priority table,<br>
+      //for example less than 100</p>
+      <p ALIGN="JUSTIFY">#define OR_TYPE 0<br>
+      #define AND_TYPE 1<br>
+      #define NOT_TYPE 2<br>
+      #define EQ_TYPE 3<br>
+      #define ABSOLUTE_EQ 4<br>
+      #define GT_TYPE 5<br>
+      #define LT_TYPE 6<br>
+      #define GE_TYPE 7<br>
+      #define LE_TYPE 8<br>
+      #define NEQ_TYPE 9<br>
+      #define ADD_TYPE 10<br>
+      #define SUB_TYPE 11<br>
+      #define MUL_TYPE 12<br>
+      #define DIV_TYPE 13<br>
+      #define BITL_TYPE 14<br>
+      #define BITR_TYPE 15<br>
+      #define BITAND_TYPE 16<br>
+      #define BITOR_TYPE 17<br>
+      #define BITNOT_TYPE 18<br>
+      #define BITXOR_TYPE 19<br>
+      #define LEFT_TYPE 20<br>
+      #define RIGHT_TYPE 21<br>
+      #define FUNB_TYPE 22 /* function call begin type */<br>
+      #define FUNE_TYPE 23 /* function end type */</p>
+      <p ALIGN="JUSTIFY">//we change this defination 1995.12.16, for we deal NEG_TYPE with<br>
+      //data_deal_method in xexp.c<br>
+      //#define NEG_TYPE 24 /* - */</p>
+      <p ALIGN="JUSTIFY">#define STORE_TYPE 25 /* := */<br>
+      #define PARAL_TYPE 26 /* ,; */<br>
+      #define QUSTN_TYPE 27 /* ? */<br>
+      #define LABEL_TYPE 28 /* L:*/<br>
+      #define ARRAYB_TYPE 29 /* [ */<br>
+      #define ARRAYE_TYPE 30 /* ] */<br>
+      #define END_TYPE 31<br>
+      #define INSIDE_TYPE 999</p>
+      <p ALIGN="JUSTIFY">//data type<br>
+      #define IDEN_TYPE 1050<br>
+      #define STRING_IDEN 1051<br>
+      #define DATE_IDEN 1052<br>
+      #define CHR_IDEN 1053<br>
+      #define INT_IDEN 1054<br>
+      #define LONG_IDEN 1055<br>
+      #define FLOAT_IDEN 1056<br>
+      #define FIELD_IDEN 1060<br>
+      #define NFIELD_IDEN 1061 /* dec is 0 and bytes less than 10, long */<br>
+      #define FFIELD_IDEN 1062 /* dec isnot 0, float */<br>
+      #define LFIELD_IDEN 1063 /* logic, short */<br>
+      #define DFIELD_IDEN 1064 /* date, char[8] */<br>
+      #define MFIELD_IDEN 1065 /* memo */<br>
+      #define CFIELD_IDEN 1066 /* chr[n] */<br>
+      #define SFIELD_IDEN 1067 /* recno() */<br>
+      #define CHR_TYPE 1070<br>
+      #define INT_TYPE 1071<br>
+      #define LONG_TYPE 1072<br>
+      #define FLOAT_TYPE 1073<br>
+      #define DATE_TYPE 1074<br>
+      #define STRING_TYPE 1075<br>
+      #define LOGIC_TYPE 1076<br>
+      #define ARRAY_TYPE 1077<br>
+      #define NEG_TYPE 1124 /* - */<br>
+      #define VARADDR_TYPE 1125 /* &amp; */<br>
+      #define VIDEN_TYPE (IDEN_TYPE | 0x1000)<br>
+      #define VSTRING_IDEN (STRING_IDEN| 0x1000)<br>
+      #define VDATE_IDEN (DATE_IDEN | 0x1000)<br>
+      #define VCHR_IDEN (CHR_IDEN | 0x1000)<br>
+      #define VINT_IDEN (INT_IDEN | 0x1000)<br>
+      #define VLONG_IDEN (LONG_IDEN | 0x1000)<br>
+      #define VFLOAT_IDEN (FLOAT_IDEN | 0x1000)<br>
+      #define VFIELD_IDEN (FIELD_IDEN | 0x1000)<br>
+      #define VNFIELD_IDEN (NFIELD_IDEN| 0x1000)<br>
+      #define VFFIELD_IDEN (FFIELD_IDEN| 0x1000)<br>
+      #define VLFIELD_IDEN (LFIELD_IDEN| 0x1000)<br>
+      #define VDFIELD_IDEN (DFIELD_IDEN| 0x1000)<br>
+      #define VMFIELD_IDEN (MFIELD_IDEN| 0x1000)<br>
+      #define VCFIELD_IDEN (CFIELD_IDEN| 0x1000)<br>
+      #define VSFIELD_IDEN (SFIELD_IDEN| 0x1000)<br>
+      #define VCHR_TYPE (CHR_TYPE | 0x1000)<br>
+      #define VINT_TYPE (INT_TYPE | 0x1000)<br>
+      #define VLONG_TYPE (LONG_TYPE | 0x1000)<br>
+      #define VFLOAT_TYPE (FLOAT_TYPE | 0x1000)<br>
+      #define VDATE_TYPE (DATE_TYPE | 0x1000)<br>
+      #define VSTRING_TYPE (STRING_TYPE| 0x1000)<br>
+      #define VLOGIC_TYPE (LOGIC_TYPE | 0x1000)<br>
+      #define VARRAY_TYPE (ARRAY_TYPE | 0x1000)<br>
+      #define VNEG_TYPE (NEG_TYPE | 0x1000)<br>
+      #define ASQLActionFunType 40</p>
+      <p ALIGN="JUSTIFY">/*********</p>
+      <p ALIGN="JUSTIFY">* declare data types for programs</p>
+      <p ALIGN="JUSTIFY">****************************************************************************/</p>
+      <p ALIGN="JUSTIFY">/* NOTICE: the first 3 field cannot be changed position, it should be 
+      the<br>
+      * same order to the OpndType !!!<br>
+      * In C 16 bit type, every malloc at least is 16 byte<br>
+      **/</p>
+      <p ALIGN="JUSTIFY">typedef struct tagMidCodeType {<br>
+      short type;<br>
+      short length;</p>
+      <p ALIGN="JUSTIFY">/* the string's length or the function's parameter num<br>
+      * when the type is IDEN_TYPE it stores the IDEN_TYPE's type<br>
+      * when the type is ARRAY the length is the Dimmention<br>
+      */</p>
+      <p ALIGN="JUSTIFY">struct tagMidCodeType *next;<br>
+      unsigned char values[MAX_ATOM_LENGTH];</p>
+      <p ALIGN="JUSTIFY">/* length variable item<br>
+      * if it is a string which is longer than 8,<br>
+      * it call for a bigger memory to store the string.<br>
+      */</p>
+      <p ALIGN="JUSTIFY">} MidCodeType;</p>
+      <p ALIGN="JUSTIFY">#define OPND_STATIC_LENGTH 
+      (sizeof(MidCodeType)-MAX_ATOM_LENGTH+MAX_OPND_LENGTH)</p>
+      <p ALIGN="JUSTIFY">typedef struct {<br>
+      char Mark; /* '@' */<br>
+      char IntervalChar; /* '\0', use for replace current field */<br>
+      unsigned short LibNo;<br>
+      unsigned short FieldNo;<br>
+      } SPECIALFIELDSTRUCT;</p>
+      <p ALIGN="JUSTIFY">typedef struct {<br>
+      unsigned char *pSourceStart; /* this must be the first field */<br>
+      unsigned short wSourceid;<br>
+      dFILE *pSourceDfile;<br>
+      unsigned char *pTargetStart;<br>
+      unsigned short wTargetid;<br>
+      dFILE *pTargetDfile;<br>
+      void *ResultMem;</p>
+      <p ALIGN="JUSTIFY">} dFIELDWHENACTION;</p>
+      <p ALIGN="JUSTIFY">/* NOTICE: the first 3 field cannot be changed position, it should be 
+      the<br>
+      * same order to the MidCodeType !!!<br>
+      **/</p>
+      <p ALIGN="JUSTIFY">typedef struct {<br>
+      short type;<br>
+      unsigned char values[ MAX_OPND_LENGTH ];<br>
+      short length;<br>
+      unsigned char *oval; // fast pointer<br>
+      } OpndType;</p>
+      <p ALIGN="JUSTIFY">typedef short OptrType;</p>
+      <p ALIGN="JUSTIFY">//xexp error string length</p>
+      <p ALIGN="JUSTIFY">#define XES_LENGTH 32</p>
+      <p ALIGN="JUSTIFY">typedef struct {<br>
+      short xERROR; // Error code<br>
+      char string[ MAX_OPND_LENGTH ]; // save the error symbol<br>
+      } ErrorType;</p>
+      <p ALIGN="JUSTIFY">enum Xexp_errors { /* xexp error codes */<br>
+      XexpOK = 0,<br>
+      iSymbolUsedError,<br>
+      iUndefineVar,<br>
+      iNoMem,<br>
+      iUseTabel,<br>
+      iNoDBF,<br>
+      iNoField,<br>
+      iDBFNoInTabel,<br>
+      iActionParaError,<br>
+      iNoThisDataType,<br>
+      iNestToDepth,<br>
+      iNoMatchArray,<br>
+      iNoAction,<br>
+      iNoMatchFun,<br>
+      iInternalError,<br>
+      iInVaildOpndType,<br>
+      iToManyOPD,<br>
+      iToLittOPD,<br>
+      iToLittOPr,<br>
+      iToManyOPr,<br>
+      iFailFunCall,<br>
+      iOPrNoMatch,<br>
+      iUnExpectEnd,<br>
+      iBadUseOPr,<br>
+      iNoOPr,<br>
+      iToManySymbol,<br>
+      iOPrError,<br>
+      iMathError,<br>
+      iDimError,<br>
+      iFileRead,<br>
+      iFileWrite,<br>
+      iTypeNoCompt,<br>
+      iCircleNoMatch,<br>
+      iBadExp,<br>
+      iQuotoErr</p>
+      <p ALIGN="JUSTIFY">};</p>
+      <p ALIGN="JUSTIFY">typedef short PD_style (*PFD)(OpndType *lpOpnd, short ParaNum, short 
+      *OpndTop);<br>
+      typedef short PD_style (*ACTIONPFD)(OpndType *lpOpnd, short ParaNum, short *OpndTop, \</p>
+      <p ALIGN="JUSTIFY">short *CurState );</p>
+      <p ALIGN="JUSTIFY">#define MAXARRAYDIM ( MAX_OPND_LENGTH - 12 ) / 2</p>
+      <p ALIGN="JUSTIFY">typedef struct tagArrayType {<br>
+      unsigned short ElementType;<br>
+      unsigned char DimNum;<br>
+      unsigned short ElementNum;<br>
+      unsigned short MemSize;<br>
+      unsigned short ArrayDim[ MAXARRAYDIM ];<br>
+      void *ArrayMem;<br>
+      } ArrayType;</p>
+      <p ALIGN="JUSTIFY">typedef struct {<br>
+      short type;</p>
+      <p ALIGN="JUSTIFY">char VarOFunName[32];</p>
+      <p ALIGN="JUSTIFY">unsigned char values[ MAX_OPND_LENGTH ];</p>
+      <p ALIGN="JUSTIFY">/* (long)values()</p>
+      <p ALIGN="JUSTIFY">* when the variable is ARRAY type the values stored as</p>
+      <p ALIGN="JUSTIFY">* ArrayType</p>
+      <p ALIGN="JUSTIFY">*/</p>
+      <p ALIGN="JUSTIFY">short length;</p>
+      <p ALIGN="JUSTIFY">} SysVarOFunType;</p>
+      <p ALIGN="JUSTIFY">typedef struct {</p>
+      <p ALIGN="JUSTIFY">char DefineName[32];</p>
+      <p ALIGN="JUSTIFY">char DefineValues[32];</p>
+      <p ALIGN="JUSTIFY">} SYSDEFINETYPE;</p>
+      <p ALIGN="JUSTIFY">typedef struct {</p>
+      <p ALIGN="JUSTIFY">char FieldName[FIELDNAMELEN];</p>
+      <p ALIGN="JUSTIFY">} FIELDNAMETYPE;</p>
+      <p ALIGN="JUSTIFY">typedef struct {</p>
+      <p ALIGN="JUSTIFY">short type;</p>
+      <p ALIGN="JUSTIFY">char VarOFunName[32];</p>
+      <p ALIGN="JUSTIFY">short PD_style (*FarProc)(OpndType *lpOpnd, short ParaNum, short 
+      *OpndTop);</p>
+      <p ALIGN="JUSTIFY">short varnum;</p>
+      <p ALIGN="JUSTIFY">} XexpFunType;</p>
+      <p ALIGN="JUSTIFY">typedef struct {</p>
+      <p ALIGN="JUSTIFY">short type;</p>
+      <p ALIGN="JUSTIFY">char VarOFunName[32];</p>
+      <p ALIGN="JUSTIFY">short PD_style (*FarProc)(OpndType *lpOpnd, short ParaNum, short 
+      *OpndTop, \</p>
+      <p ALIGN="JUSTIFY">short *CurState );</p>
+      <p ALIGN="JUSTIFY">short varnum;</p>
+      <p ALIGN="JUSTIFY">} AskActionType;</p>
+      <p ALIGN="JUSTIFY">// define the position</p>
+      <p ALIGN="JUSTIFY">#define SysVar_RECNO 0</p>
+      <p ALIGN="JUSTIFY">#define SysVar_LONGTMP 1</p>
+      <p ALIGN="JUSTIFY">#define SysVar_FLOATTMP 2</p>
+      <p ALIGN="JUSTIFY">#define SysVar_STRINGTMP 3</p>
+      <p ALIGN="JUSTIFY">#define SysVar_BKEY 4</p>
+      <p ALIGN="JUSTIFY">#endif</p>
+      <b>
+      <li><a NAME="7_5">举例</a><br>
+        </b><p ALIGN="JUSTIFY">/*****************</p>
+        <p ALIGN="JUSTIFY">* xexpdll.c</p>
+        <p ALIGN="JUSTIFY">*</p>
+        <p ALIGN="JUSTIFY">*</p>
+        <p ALIGN="JUSTIFY">* copyright (c) Shanghai Tiedao University 1998</p>
+        <p ALIGN="JUSTIFY">* CRSC 1998</p>
+        <p ALIGN="JUSTIFY">* author: Xilong Pei</p>
+        <p ALIGN="JUSTIFY">****************************************************************************/</p>
+        <p ALIGN="JUSTIFY">　</p>
+        <p ALIGN="JUSTIFY">#include &lt;stdio.h&gt;</p>
+        <p ALIGN="JUSTIFY">#include &lt;stddef.h&gt;</p>
+        <p ALIGN="JUSTIFY">#include &lt;stdlib.h&gt;</p>
+        <p ALIGN="JUSTIFY">#include &lt;string.h&gt;</p>
+        <p ALIGN="JUSTIFY">#include &lt;ctype.h&gt;</p>
+        <p ALIGN="JUSTIFY">#include &lt;limits.h&gt;</p>
+        <p ALIGN="JUSTIFY">#include &lt;math.h&gt;</p>
+        <p ALIGN="JUSTIFY">#include &lt;errno.h&gt;</p>
+        <p ALIGN="JUSTIFY">#include &lt;io.h&gt;</p>
+        <p ALIGN="JUSTIFY">#include &lt;dos.h&gt;</p>
+        <p ALIGN="JUSTIFY">#include &lt;time.h&gt;</p>
+        <p ALIGN="JUSTIFY">　</p>
+        <p ALIGN="JUSTIFY">#include &quot;asqlxexp.h&quot;</p>
+        <p ALIGN="JUSTIFY">　</p>
+        <p ALIGN="JUSTIFY">//public function protocol</p>
+        <p ALIGN="JUSTIFY">char *substr(char *source_string, int start_pos, int length);</p>
+        <p ALIGN="JUSTIFY">short cdecl _TypeAlign( OpndType *lpOpnd, short ParaNum, short 
+        AlignType );</p>
+        <p ALIGN="JUSTIFY">long cdecl xGetOpndLong(OpndType *lpOpnd);</p>
+        <p ALIGN="JUSTIFY">double cdecl xGetOpndFloat(OpndType *lpOpnd);</p>
+        <p ALIGN="JUSTIFY">char * cdecl xGetOpndString(OpndType *lpOpnd);</p>
+        <p ALIGN="JUSTIFY">//唯一化堆栈内数据类型</p>
+        <p ALIGN="JUSTIFY">short cdecl _TypeAlign( OpndType *lpOpnd, short ParaNum, short 
+        AlignType )</p>
+        <p ALIGN="JUSTIFY">{</p>
+        <p ALIGN="JUSTIFY">register short i;</p>
+        <p ALIGN="JUSTIFY">　</p>
+        <p ALIGN="JUSTIFY">switch( AlignType ) {</p>
+        <p ALIGN="JUSTIFY">case LONG_TYPE:</p>
+        <p ALIGN="JUSTIFY">for( i = 0; i &lt; ParaNum; i++ ) {</p>
+        <p ALIGN="JUSTIFY">switch( lpOpnd[i].type ) {</p>
+        <p ALIGN="JUSTIFY">case CHR_TYPE:</p>
+        <p ALIGN="JUSTIFY">case CHR_IDEN:</p>
+        <p ALIGN="JUSTIFY">*(long *)lpOpnd[i].values = *(char *)lpOpnd[i].values;</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case INT_TYPE:</p>
+        <p ALIGN="JUSTIFY">case INT_IDEN:</p>
+        <p ALIGN="JUSTIFY">*(long *)lpOpnd[i].values = *(short *)lpOpnd[i].values;</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case NFIELD_IDEN:</p>
+        <p ALIGN="JUSTIFY">*(long *)lpOpnd[i].values = atol( substr( lpOpnd[i].oval, 0, \</p>
+        <p ALIGN="JUSTIFY">lpOpnd[i].length ) );</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case FFIELD_IDEN:</p>
+        <p ALIGN="JUSTIFY">*(long *)lpOpnd[i].values = (long)atof( substr(lpOpnd[i].oval, 0, \</p>
+        <p ALIGN="JUSTIFY">lpOpnd[i].length ) );</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case LONG_TYPE:</p>
+        <p ALIGN="JUSTIFY">case LONG_IDEN:</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">default:</p>
+        <p ALIGN="JUSTIFY">//ErrorSet.xERROR = iTypeNoCompt; /* type not comptible */</p>
+        <p ALIGN="JUSTIFY">return( 1 );</p>
+        <p ALIGN="JUSTIFY">}</p>
+        <p ALIGN="JUSTIFY">lpOpnd[i].type = LONG_TYPE;</p>
+        <p ALIGN="JUSTIFY">lpOpnd[i].length = 4;</p>
+        <p ALIGN="JUSTIFY">} /* end of for */</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case FLOAT_TYPE:</p>
+        <p ALIGN="JUSTIFY">for( i = 0; i &lt; ParaNum; i++ ) {</p>
+        <p ALIGN="JUSTIFY">switch( lpOpnd[i].type ) {</p>
+        <p ALIGN="JUSTIFY">case CHR_TYPE:</p>
+        <p ALIGN="JUSTIFY">case CHR_IDEN:</p>
+        <p ALIGN="JUSTIFY">*(double *)lpOpnd[i].values = *(char *)lpOpnd[i].values;</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case INT_TYPE:</p>
+        <p ALIGN="JUSTIFY">case INT_IDEN:</p>
+        <p ALIGN="JUSTIFY">*(double *)lpOpnd[i].values = *(short *)lpOpnd[i].values;</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case LONG_TYPE:</p>
+        <p ALIGN="JUSTIFY">case LONG_IDEN:</p>
+        <p ALIGN="JUSTIFY">*(double *)lpOpnd[i].values = *(long *)lpOpnd[i].values;</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case NFIELD_IDEN:</p>
+        <p ALIGN="JUSTIFY">*(double *)lpOpnd[i].values = atol( substr( lpOpnd[i].oval, 0, \</p>
+        <p ALIGN="JUSTIFY">lpOpnd[i].length ) );</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case FFIELD_IDEN:</p>
+        <p ALIGN="JUSTIFY">*(double *)lpOpnd[i].values = atof( substr(lpOpnd[i].oval, 0, \</p>
+        <p ALIGN="JUSTIFY">lpOpnd[i].length ) );</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case FLOAT_TYPE:</p>
+        <p ALIGN="JUSTIFY">case FLOAT_IDEN:</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">default:</p>
+        <p ALIGN="JUSTIFY">//ErrorSet.xERROR = 1;</p>
+        <p ALIGN="JUSTIFY">return( 1 );</p>
+        <p ALIGN="JUSTIFY">}</p>
+        <p ALIGN="JUSTIFY">lpOpnd[i].type = FLOAT_TYPE;</p>
+        <p ALIGN="JUSTIFY">lpOpnd[i].length = sizeof(double);</p>
+        <p ALIGN="JUSTIFY">} /* end of for */</p>
+        <p ALIGN="JUSTIFY">}</p>
+        <p ALIGN="JUSTIFY">return( 0 );</p>
+        <p ALIGN="JUSTIFY">} /* end of function TypeAlign */</p>
+        <p ALIGN="JUSTIFY">　</p>
+        <p ALIGN="JUSTIFY">　</p>
+        <p ALIGN="JUSTIFY">//从堆栈内取出一个长整数</p>
+        <p ALIGN="JUSTIFY">long cdecl xGetOpndLong(OpndType *lpOpnd)</p>
+        <p ALIGN="JUSTIFY">{</p>
+        <p ALIGN="JUSTIFY">switch( lpOpnd-&gt;type ) {</p>
+        <p ALIGN="JUSTIFY">case CHR_TYPE:</p>
+        <p ALIGN="JUSTIFY">case CHR_IDEN:</p>
+        <p ALIGN="JUSTIFY">case LONG_TYPE:</p>
+        <p ALIGN="JUSTIFY">case LONG_IDEN:</p>
+        <p ALIGN="JUSTIFY">return *(long *)lpOpnd-&gt;values;</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case INT_TYPE:</p>
+        <p ALIGN="JUSTIFY">case INT_IDEN:</p>
+        <p ALIGN="JUSTIFY">return (long)*(short *)lpOpnd-&gt;values;</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case NFIELD_IDEN:</p>
+        <p ALIGN="JUSTIFY">return atol( substr(lpOpnd-&gt;oval, 0, lpOpnd-&gt;length) );</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case FFIELD_IDEN:</p>
+        <p ALIGN="JUSTIFY">return (long)atof( substr(lpOpnd-&gt;oval, 0, lpOpnd-&gt;length) );</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">}</p>
+        <p ALIGN="JUSTIFY">　</p>
+        <p ALIGN="JUSTIFY">//ErrorSet.xERROR = iTypeNoCompt;</p>
+        <p ALIGN="JUSTIFY">return LONG_MIN;</p>
+        <p ALIGN="JUSTIFY">} //xGetOpndLong()</p>
+        <p ALIGN="JUSTIFY">//从堆栈内取出一个浮点数</p>
+        <p ALIGN="JUSTIFY">double cdecl xGetOpndFloat(OpndType *lpOpnd)</p>
+        <p ALIGN="JUSTIFY">{</p>
+        <p ALIGN="JUSTIFY">switch( lpOpnd-&gt;type ) {</p>
+        <p ALIGN="JUSTIFY">case CHR_TYPE:</p>
+        <p ALIGN="JUSTIFY">case CHR_IDEN:</p>
+        <p ALIGN="JUSTIFY">case LONG_TYPE:</p>
+        <p ALIGN="JUSTIFY">case LONG_IDEN:</p>
+        <p ALIGN="JUSTIFY">return (float)*(long *)lpOpnd-&gt;values;</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case INT_TYPE:</p>
+        <p ALIGN="JUSTIFY">case INT_IDEN:</p>
+        <p ALIGN="JUSTIFY">return (float)*(short *)lpOpnd-&gt;values;</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case NFIELD_IDEN:</p>
+        <p ALIGN="JUSTIFY">return (float)atol( substr(lpOpnd-&gt;oval, 0, lpOpnd-&gt;length) );</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case FFIELD_IDEN:</p>
+        <p ALIGN="JUSTIFY">return (float)atof( substr(lpOpnd-&gt;oval, 0, lpOpnd-&gt;length) );</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">}</p>
+        <p ALIGN="JUSTIFY">//ErrorSet.xERROR = iTypeNoCompt;</p>
+        <p ALIGN="JUSTIFY">return (float)(long)LONG_MIN;</p>
+        <p ALIGN="JUSTIFY">} //xGetOpndFloat()</p>
+        <p ALIGN="JUSTIFY">//从堆栈内取出一个字符串</p>
+        <p ALIGN="JUSTIFY">char * cdecl xGetOpndString(OpndType *lpOpnd)</p>
+        <p ALIGN="JUSTIFY">{</p>
+        <p ALIGN="JUSTIFY">char *s;</p>
+        <p ALIGN="JUSTIFY">//use substr to hold the temp string</p>
+        <p ALIGN="JUSTIFY">if( lpOpnd-&gt;type &gt;= FIELD_IDEN &amp;&amp; lpOpnd[0].type &lt;= 
+        SFIELD_IDEN ) {</p>
+        <p ALIGN="JUSTIFY">s = substr((char *)*(long *)lpOpnd-&gt;oval, 0, lpOpnd-&gt;length);</p>
+        <p ALIGN="JUSTIFY">} else {</p>
+        <p ALIGN="JUSTIFY">if( lpOpnd-&gt;length &gt;= MAX_OPND_LENGTH ) {</p>
+        <p ALIGN="JUSTIFY">if( lpOpnd-&gt;oval == NULL ) {</p>
+        <p ALIGN="JUSTIFY">s = substr((char *)*(long *)lpOpnd-&gt;values,\</p>
+        <p ALIGN="JUSTIFY">0, lpOpnd-&gt;length );</p>
+        <p ALIGN="JUSTIFY">free((char *)*(long *)lpOpnd-&gt;values);</p>
+        <p ALIGN="JUSTIFY">} else {</p>
+        <p ALIGN="JUSTIFY">s = substr(lpOpnd-&gt;oval,0,lpOpnd-&gt;length);</p>
+        <p ALIGN="JUSTIFY">}</p>
+        <p ALIGN="JUSTIFY">} else {</p>
+        <p ALIGN="JUSTIFY">if( lpOpnd-&gt;oval == NULL ) {</p>
+        <p ALIGN="JUSTIFY">s = lpOpnd-&gt;values;</p>
+        <p ALIGN="JUSTIFY">} else {</p>
+        <p ALIGN="JUSTIFY">s = (char *)lpOpnd-&gt;oval;</p>
+        <p ALIGN="JUSTIFY">}</p>
+        <p ALIGN="JUSTIFY">}</p>
+        <p ALIGN="JUSTIFY">}</p>
+        <p ALIGN="JUSTIFY">return s;</p>
+        <p ALIGN="JUSTIFY">} //xGetOpndString()</p>
+        <p ALIGN="JUSTIFY">static char *substring=NULL;</p>
+        <p ALIGN="JUSTIFY">static char subStaticStr[4096];</p>
+        <p ALIGN="JUSTIFY">/*==============</p>
+        <p ALIGN="JUSTIFY">* function substr（源串，超始位置，长度）</p>
+        <p ALIGN="JUSTIFY">* 求字符子串</p>
+        <p ALIGN="JUSTIFY">*=================================================================*/</p>
+        <p ALIGN="JUSTIFY">char *substr(char *source_string, int start_pos, int length)</p>
+        <p ALIGN="JUSTIFY">{</p>
+        <p ALIGN="JUSTIFY">int i, source_len;</p>
+        <p ALIGN="JUSTIFY">char *szResult;</p>
+        <p ALIGN="JUSTIFY">if( length &lt; 4096 ) {</p>
+        <p ALIGN="JUSTIFY">szResult = subStaticStr;</p>
+        <p ALIGN="JUSTIFY">} else {</p>
+        <p ALIGN="JUSTIFY">if( length == SHRT_MAX ) {</p>
+        <p ALIGN="JUSTIFY">if( substring != NULL ) free( substring );</p>
+        <p ALIGN="JUSTIFY">return substring = NULL;</p>
+        <p ALIGN="JUSTIFY">}</p>
+        <p ALIGN="JUSTIFY">if( (szResult = substring = (char *)realloc(substring, length+1)) == 
+        NULL )</p>
+        <p ALIGN="JUSTIFY">return NULL;</p>
+        <p ALIGN="JUSTIFY">}</p>
+        <p ALIGN="JUSTIFY">if( source_string != NULL )</p>
+        <p ALIGN="JUSTIFY">source_len = strlen( source_string );</p>
+        <p ALIGN="JUSTIFY">else</p>
+        <p ALIGN="JUSTIFY">source_len = 0;</p>
+        <p ALIGN="JUSTIFY">for(i=0; i&lt;length; i++)</p>
+        <p ALIGN="JUSTIFY">if( start_pos &lt; source_len )</p>
+        <p ALIGN="JUSTIFY">szResult[i] = source_string[start_pos++];</p>
+        <p ALIGN="JUSTIFY">else</p>
+        <p ALIGN="JUSTIFY">szResult[i] = ' ';</p>
+        <p ALIGN="JUSTIFY">szResult[i] = '\0';</p>
+        <p ALIGN="JUSTIFY">return szResult;</p>
+        <p ALIGN="JUSTIFY">} // end of substr()</p>
+        <p ALIGN="JUSTIFY">/*------------</p>
+        <p ALIGN="JUSTIFY">! xexpdlltest()</p>
+        <p ALIGN="JUSTIFY">! 
+        这个函数就是一个用户自己提供的函数，上面的几个函数只是一种例子</p>
+        <p ALIGN="JUSTIFY">!-----------------------------------------------------------------------*/</p>
+        <p ALIGN="JUSTIFY">//#pragma argsused</p>
+        <p ALIGN="JUSTIFY">short cdecl _declspec(dllexport) xexpdlltest( OpndType *lpOpnd, short 
+        ParaNum, short *OpndTop, \</p>
+        <p ALIGN="JUSTIFY">short *CurState )</p>
+        <p ALIGN="JUSTIFY">// OpndType *lpOpnd; pointer of opnd stack</p>
+        <p ALIGN="JUSTIFY">// short ParaNum; parameter number for this action</p>
+        <p ALIGN="JUSTIFY">// short *OpndTop; system opnd top</p>
+        <p ALIGN="JUSTIFY">// short *CurState; the action sequence working state</p>
+        <p ALIGN="JUSTIFY">{</p>
+        <p ALIGN="JUSTIFY">char parameter[256];</p>
+        <p ALIGN="JUSTIFY">short sysFunNo;</p>
+        <p ALIGN="JUSTIFY">char *sz;</p>
+        <p ALIGN="JUSTIFY">if( ParaNum &lt; 2 )</p>
+        <p ALIGN="JUSTIFY">return 1;</p>
+        <p ALIGN="JUSTIFY">sz = xGetOpndString(&amp;lpOpnd[0]);</p>
+        <p ALIGN="JUSTIFY">MessageBox(NULL, sz, &quot;hello&quot;, MB_OK);</p>
+        <p ALIGN="JUSTIFY">switch( lpOpnd[0].type ) {</p>
+        <p ALIGN="JUSTIFY">case LONG_TYPE:</p>
+        <p ALIGN="JUSTIFY">sysFunNo = (short)*(long *)lpOpnd[0].values;</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case INT_TYPE:</p>
+        <p ALIGN="JUSTIFY">sysFunNo = *(short *)lpOpnd[0].values;</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">case CHR_TYPE:</p>
+        <p ALIGN="JUSTIFY">sysFunNo = (short)*(char *)lpOpnd[0].values;</p>
+        <p ALIGN="JUSTIFY">break;</p>
+        <p ALIGN="JUSTIFY">default:</p>
+        <p ALIGN="JUSTIFY">sysFunNo = 0;</p>
+        <p ALIGN="JUSTIFY">}</p>
+        <p ALIGN="JUSTIFY">if( lpOpnd[1].length &gt;= MAX_OPND_LENGTH ) {</p>
+        <p ALIGN="JUSTIFY">if( lpOpnd[1].oval == NULL ) {</p>
+        <p ALIGN="JUSTIFY">// temp string</p>
+        <p ALIGN="JUSTIFY">strncpy(parameter, (char *)*(long *)lpOpnd[1].values, 255);</p>
+        <p ALIGN="JUSTIFY">free( (char *)*(long *)lpOpnd[1].values );</p>
+        <p ALIGN="JUSTIFY">} else {</p>
+        <p ALIGN="JUSTIFY">strncpy(parameter, (char *)*(long *)lpOpnd[1].oval, 255 );</p>
+        <p ALIGN="JUSTIFY">}</p>
+        <p ALIGN="JUSTIFY">} else {</p>
+        <p ALIGN="JUSTIFY">if( lpOpnd[1].oval == NULL ) {</p>
+        <p ALIGN="JUSTIFY">strncpy(parameter, (char *)lpOpnd[1].values, 255 );<br>
+        } else {<br>
+        strncpy(parameter, lpOpnd[1].oval, 255 );<br>
+        }<br>
+        }</p>
+        <p ALIGN="JUSTIFY">parameter[255] = '\0';</p>
+        <p ALIGN="JUSTIFY">switch( sysFunNo ) {<br>
+        case 1:<br>
+        break;<br>
+        }</p>
+        <p ALIGN="JUSTIFY">*OpndTop -= ParaNum; /* maintain the opnd stack */<br>
+        return( 0 );</p>
+        <p ALIGN="JUSTIFY">} /* end of function xexpdlltest() */</p>
+        <p ALIGN="JUSTIFY">/*************************&lt; end of xexpdll.c 
+        &gt;*******************************/</p>
+        <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15">　ASQL堆栈使用注意事项：</p>
+        <p ALIGN="JUSTIFY">1.函数结束时一定要处置一下堆栈，留下要传回的数据，减掉不必要椎栈数据：</p>
+        <p ALIGN="JUSTIFY">*OpndTop -= ParaNum;</p>
+        <p ALIGN="JUSTIFY">保留一个返回参数：</p>
+        <p ALIGN="JUSTIFY">*OpndTop -= ParaNum-1;</p>
+        <p ALIGN="JUSTIFY">通常ASQL的动作没有参数返回。</p>
+        <p ALIGN="JUSTIFY">2.函数成功执行，返回0，中止当前表达式后面的运算，返回2，失败返回1；</p>
+        <p ALIGN="JUSTIFY">3.因为字符串处理的特珠性，对不是从oval传来的字符串，要先判断其长度，才可知其存储方法：短于32字节的字符串，直接存于values中，长于或等于32字节的字符串，values的立脚点4个字节存的是其指针，使用后应释放：</p>
+        <p ALIGN="JUSTIFY">free(( (void *)*(long *)lpOpnd[0].values );</p>
+        <p ALIGN="JUSTIFY">同样，函数若想返回字符串给ASQL，也应是malloc申请的。</p>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>　 
+<!--msnavigation--></td></tr><!--msnavigation--></table></body>
+</html>

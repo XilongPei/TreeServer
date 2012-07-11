@@ -1,0 +1,138 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>产品概述</title>
+</head>
+
+<body bgcolor="#EAEAFB">
+
+<p align="center"><strong><font face="楷体_GB2312"><big>产品概述</big></font></strong></p>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><span style="font-size: 12px">&nbsp;&nbsp;&nbsp; ASQL是在总结众多数据库产品的特性，根据具体应用需求，而定制的面向事务处理的数据操作语言。</span><b><p
+    ALIGN="JUSTIFY"><span style="font-size: 12px">1.ASQL与SQL对比</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">&nbsp;&nbsp;&nbsp; SQL是由IBM开发的原型，第一个基于SQL的商品化产品版本是由Oracle公司出品的。80年代，由于关系数据库专业人员对SQL的支持，使它成为当今应用最广的数据库查询语言。在许多SQL的实施中，为了保证移植性，美国国家标准协会(ANSI)承担了开发SQL标准规范的任务。该标准称为SQL数据库查询语言，在1986年被批准为ANSI 
+    X3.135-1986标准。它同样被 国际化标准组织（ISO）在1987年6月批准为ISO9075-1987标准。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">1989年，在数据值约束规范和表间关系方面，附加了完整增强特性，使ANSI/ISO的SQL标准又继续推进了一步。1992年，包括许多新特性的标准被ANSI和ISO采用，称为SQL 
+    92[ANSI 92]。当前ANSI和ISO还正在开发更好的SQL标准，叫SQL3。另一方面，由于ANSI/ISO标准太庞大，标准委员会建议，由一些用户和数据库系统销售商组成一个独立的共同体，现称为X/Open 
+    SQL Access Group，由该组织出版了一个SQL 929X/open 92]子集的标准规范，以供数据库系统生产公司统一使用。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">纵观各家数据库厂商的SQL，有如下特点：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">1) ASQL语言是基于关系模型的，所谓关系模型是建立在关系概念上的模型，关系用非形式语言可以写成笛卡尔乘积D1×D2×…×Dn。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">2)ASQL定义了四种关系模型操作：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">⑴数据查询，对应于关系模型的映象(Mapping)，其基本结构为Select-From-Where（选择－源－条件）组成的查询块，代表着关系数据库中的投影、选取、更新等操作组合，执行查询的结果仍然是一个表（关系）；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">⑵数据操作(DML)，对数据的增、删、改；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">⑶数据定义(DDL)，对基本表、视图、索引、聚集等的定义（类型、长度、约束条件等）和撤消；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">⑷数据控制(DCL)，控制、授予、取消存取数据库的某些权限，控制权限传递、读写锁的定义与取消等。最常见的用户注册、登录口令、授予用户权限等，通常都是由DBA处理的。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">3).ASQL有模块式、嵌入式和交互式，各方式下SQL都以提交数据库处理的任务形式出现，它只管理“干什么”，而不管“怎么干”。一般设定数据获取至游标(CURSOR)中执行较快，然后通过其它语言逐条获取游标中各记录。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">借助于SQL来进行运算是数据库系统提供的唯一方式，对于xBASE数据库则可借助于其提供的语言能力来运算，但无论哪种方式，都有描述(或程序)复杂、运算速度慢等缺点。表1给出了一种对比，</span></p>
+    <p ALIGN="JUSTIFY">　</p>
+    <blockquote>
+      <b><p ALIGN="CENTER"><span style="font-size: 12px">表1.1 SQL与ASQL表格统计能力对比表</span></b></p>
+    </blockquote>
+    <div align="center"><center><table BORDER="1" CELLSPACING="1" BORDERCOLOR="#000000"
+    WIDTH="568">
+      <tr>
+        <td WIDTH="13%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">表格行数</span></td>
+        <td WIDTH="13%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">表格列数</span></td>
+        <td WIDTH="37%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">SQL统计需时</span></td>
+        <td WIDTH="38%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL统计需时</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="13%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">4</span></td>
+        <td WIDTH="13%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">4</span></td>
+        <td WIDTH="37%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">138秒</span></td>
+        <td WIDTH="38%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">55秒</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="13%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">10</span></td>
+        <td WIDTH="13%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">6</span></td>
+        <td WIDTH="37%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">523秒</span></td>
+        <td WIDTH="38%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">65秒</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="13%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">100</span></td>
+        <td WIDTH="13%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">10</span></td>
+        <td WIDTH="37%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">5208秒</span></td>
+        <td WIDTH="38%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">83秒</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="13%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">150</span></td>
+        <td WIDTH="13%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">20</span></td>
+        <td WIDTH="37%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">52000秒</span></td>
+        <td WIDTH="38%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">136秒</span></td>
+      </tr>
+    </table>
+    </center></div><blockquote>
+      <p ALIGN="center"><span style="font-size: 12px">测试环境：CPU:PentiumPro 180MHz</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">RAM:128MB</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">OS:Windows NT v4.0</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">DBS:Informix for NT 7.22</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">数据表记录数：20,000条</span></p>
+      <p ALIGN="JUSTIFY">　</p>
+    </blockquote>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">2.ASQL提出背景</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">汉语言文化中，大部分数据是以表格形式来体现的，传统上，决策者已经习惯于借助各种统计表来进行业务分析，表1.2就是一种典型的统计表。</span></p>
+    <p ALIGN="JUSTIFY">　</p>
+    <b><p ALIGN="CENTER"><span style="font-size: 12px">分 地 区 情 况 统 计 表</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">填报单位: @USERNAME 
+    数据截止时间: 1996年12月31日 第表 [计3]</span></p>
+    <p ALIGN="CENTER">　</p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">能否方便快速地统计出决策所需表格很大程度上决定着一个数据库系统的生产力水平，下面是一个ASQL的一个应用实例：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">在铁路货运计划审批系统中，决策者需根据审批计划批准情况动态统计出各限制口的负荷情况，方可做出决策，而此时赖以决策的是和限制口的统计数据，可见这些统计表的统计速度是相当重要的。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL就是为了满足这些对数据处理的特殊需要提出来的一套数据处理语言。</span></p>
+    <b><p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">3. ASQL特点</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">1.统计速度快，运算时间复杂度与记录数最差时呈线性关系；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">2描述简单，与具体表格具有形式上的联系，用户可以从形式上从表格直接联想到ASQL语法；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">3.具有一定的过程能力，使许多问题易于理解。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[例]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">求工资最高的人的姓名、性别</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">PRED</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FLOAT X</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">STRING NAME[10], SEX[2]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ACT X:=0;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM SUB0</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CONDITION</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">BEGIN</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">SALARY&gt;X $ NAME:=NAME,SEX:=SEX</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">END</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ACT WSYMBOL(&quot;RESULT.DBF&quot;)</span></p>
+    <p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">4.输出形式多样，可以输出给CGI程序；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">5.代码独立处理，即提高了系统的代码处理能力，解决SQL下无法解决的问题，又提高了运算速度。ASQL将系统数据与代码分离，代码被以一种内在高效可访问方式组织，避免了表的过多关联关系</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[例]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">列出某单位人员名单。存有该单位人员名单的表中，性别(sex)、职称(occupy)以代码形式存储。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">SQL描述：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">SELECT code,name,b.c_brif,c.brif</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM sub0 a, sex b, occupy c</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">WHERE unit='0101' and a.sex=b.e_expr and 
+    a.occupy=c.e_expr</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL描述:</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM ODBC:informix,rs,rspwd,select * from 
+    sub0</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">TO cxmain, code,name,sex 2 C,occupy 10 C</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CONDITION</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">BEGIN</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">unit=&quot;0101&quot; $ 
+    calrec(sex:=hzth(sex), occupy:=hzth(occupy))</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">END</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">6.允许用户自定义函数</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL中用户可以通过Windows的动态连接库提供自己的函数。在ASQL语法中引用用户定义的函数与引用ASQL内置函数一样，而且效率一样高；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">7.可定义输出对象</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">SQL的结果只能通过游标获取，而ASQL则可以指定目标表，且目标表定义灵活；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">8.与调用程序的符号表交换</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">调用程序可以将自己的符号表交给ASQL处理，在ASQL运算结束后，符号表中将直接放好执行结果；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">9.广泛的开发工具支持</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL可以以Windows的动态连接库(DLL)形式提供，结果可以是工业标准的DBF文件；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">10.客户/服务器方式支持</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL可以直接在服务器上运行，避免了原始数据的网上传输。客户/服务器方式运行时ASQL自己管理线程和并发处理，运行效率高，是中小规模数据管理的首选。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL在客户/服务器方式方面的产品为TreeSvr事务代理服务器，这时ASQL服务作为TreeSvr的一个引擎。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

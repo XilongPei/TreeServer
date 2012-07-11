@@ -1,0 +1,109 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>ASQL表达式符号表</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><b><span style="font-size: 12px">ASQL表达式符号表</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL可以与调用者通过交换符号表的形式来交换数据，这个调用者可以是程序的引用者，也可以是客户/服务器模式时的客户端。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">调用者将自已要传给ASQL的数据整理成符号表，将这个符号表的基地址和符号数量传给ASQL，在ASQL语法内部，就可以对这些符号通过名字进行引用了。在ASQL内部可以对这些符号象ASQL自己定义的符号一样引用：比较、运算、赋值。在ASQL运算完毕，调用者可能从“自己的”符号表中直接得到想要的信息。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><u>ASQL的符号表是一个结构数组</u>，该结构名为：SysVarOFunType，定义为：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct {<br>
+    short type;<br>
+    char VarOFunName[32];<br>
+    unsigned char values[32];<br>
+    short length;<br>
+    } SysVarOFunType;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">结构字段说明：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">type：变量类型，取下列值（具体表示数值在“ASQL支持的内部数据类型定义”表中）之一：</span></p>
+    <p ALIGN="JUSTIFY"><u><span style="font-size: 12px">名称 值 </span></p>
+    </u><p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR_IDEN 1053<br>
+    INT_IDEN 1054<br>
+    LONG_IDEN 1055<br>
+    FLOAT_IDEN 1056<br>
+    STRING_IDEN 1051<br>
+    ARRAY_TYPE 1077</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">VarOFunName：变量名称，须符合ASQL变量名称定义，首字符必须为英文字母，然后是字母、数字、下划线组成的字符串。变量名不区分大小写。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">values：初始值</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR_IDEN、INT_IDEN、LONG_IDEN、FLOAT_IDEN：直接存于其中：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">*(char *)work-&gt;values = '1'; //字符初值<br>
+    *(short *)work-&gt;values = 1234; //整型初值<br>
+    *(long *)work-&gt;values = 787656; //长整初值<br>
+    *(float *)workvalues = 3.1415926535; //浮点初值</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">STRING_IDEN：在其前4个字节中存有申请空间的指针，ASQL的字符串以尾0结束；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ARRAY_TYPE：ASQL数组定义结构。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">length：空间长度，数组时该值无意义。定义如下：</span></p>
+    <p ALIGN="JUSTIFY"><u><span style="font-size: 12px">类型 值 </span></p>
+    </u><p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR_IDEN 1<br>
+    INT_IDEN 2<br>
+    LONG_IDEN 4<br>
+    FLOAT_IDEN 8</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">STRING_IDEN 视具体情况</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ARRAY_TYPE 视具体情况</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">C语言定义示例：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">SysVarOFunType SysVar[] = { <br>
+    {LONG_IDEN, &quot;_RECNO&quot;, &quot;\0\0\0\0&quot;, 4},<br>
+    {LONG_IDEN, &quot;_LONGTMP&quot;, &quot;\0\0\0\0&quot;, 4},<br>
+    {FLOAT_IDEN, &quot;_FLOATTMP&quot;, &quot;\0\0\0\0\0\0\0\0&quot;, sizeof(double)},<br>
+    {STRING_IDEN, &quot;_STRINGTMP&quot;, &quot;&quot;, 0},<br>
+    {STRING_IDEN, &quot;_BKEY&quot;, &quot;&quot;, 0},<br>
+    };</span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL符号表中数组定义办法</span></p>
+    </b><p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL符号表的某一项若是数组，则其该衔号的values字段中存的是一个结构。整个结构32字节大小。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL支持的最大数组维数为10维，最大数组空间为65535字节。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">#define MAXARRAYDIM (32-12 ) / 2=10<br>
+    typedef struct tagArrayType {<br>
+    unsigned short ElementType;<br>
+    unsigned char DimNum;<br>
+    unsigned short ElementNum;<br>
+    unsigned short MemSize;<br>
+    unsigned short ArrayDim[ MAXARRAYDIM ];<br>
+    void *ArrayMem;<br>
+    } ArrayType;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">结构字段说明：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ElementType：数组元素类型，取下列值（具体表示数值在“ASQL支持的内部数据类型定义”表中）之一：</span></p>
+    <p ALIGN="JUSTIFY"><u><span style="font-size: 12px">名称 值 </span></p>
+    </u><p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR_TYPE 1070<br>
+    INT_TYPE 1071<br>
+    LONG_TYPE 1072<br>
+    FLOAT_TYPE 1073</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">DimNum：维数，最大值为10。<br>
+    ElementNum：元素数，即所有维数据加起来一共多少个数据。<br>
+    MemSize：空间大小，该数组占多大空间。<br>
+    ArrayDim：数组维定义数组，第一维大小，第二维大小……<br>
+    ArrayMem：数组存储实际空间。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">C语言写的数组定义示例：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">SysVarOFunType arrayVar[] = { <br>
+    {LONG_IDEN, &quot;Lint&quot;, &quot;\0\0\0\0&quot;, 4},<br>
+    {ARRAY_TYPE, &quot;xfx&quot;, &quot;\0\0\0\0&quot;, 32},<br>
+    };</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ArrayType *work;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//给符号表的第一个字号Lint赋初值<br>
+    *(long *)arrayVar[0].values=100;<br>
+    //定义数组 假设该数组是如下定义，6行4列<br>
+    // PREDICATES<br>
+    // float xfr[6,4]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">work = arrayVar[1].values;<br>
+    work-&gt;ElementType = FLOAT_TYPE;<br>
+    work-&gt;DimNum=2;<br>
+    work-&gt;ArrayDim[0] = 6;<br>
+    work-&gt;ArrayDim[1] = 4;<br>
+    work-&gt;ElementNum = 24;<br>
+    work-&gt;MemSize = 24*sizeof(double);<br>
+    if( ( (work-&gt;ArrayMem = (char *)malloc(work-&gt;MemSize)) == NULL ) {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//出错处理</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">}</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">memset( (work-&gt;ArrayMem, 0, 
+    work-&gt;MemSize);</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

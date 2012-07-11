@@ -1,0 +1,45 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>TreeSVR的定位</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><b><span STYLE="font-size:12px;"><font FACE="黑体" SIZE="4"><p
+    ALIGN="CENTER">TreeSVR的定位</font></span></p>
+    </b><p><span STYLE="font-size:12px;">&nbsp;&nbsp;&nbsp; 
+    随着业务系统规模的扩大，共享数据越来越多，共享的业务资源也越来越多，于是出现了客户/服务器模型，但赖以在客户/服务器模型中完成服务业务的一般要靠关系数据库系统，如：ORACLE,Informix等来实现，这就带来了以下问题：<ol>
+      <li>系统造价高，一般高档数据库系统价格昂贵；</li>
+      <li>不完全适合作业务模型服务器。数据库界面语言是SQL，而SQL是面向关系运算的，缺少过程能力，长大事务等业务处理所必须的支持。</li>
+      <li>系统开销大，数据库系统对硬件要求较高；</li>
+      <li>数据封闭，数据库系统的数据格式是较难于掌握的，不利于数据进行私有加密，即一旦了解了怎么访问数据库系统内数据，又有一定操作权限，数据库内数据就可随意访问。</li>
+      <li>软件结构封闭，很难进行功能扩充。</li>
+    </ol>
+    <p><br>
+    就是考虑到了上面这些因素，我们从最原始代码开发开始，开发了具有自主版权的TreeSVR——事务代理服务器。<br>
+    TreeSVR的定位是这样的：<ol>
+      <li>中小型数据库；</li>
+      <li>信息系统的事务服务器。由于TreeSVR目前的版本尚缺少分布事务处理能力，所以它还只适用于一台服务器（有别于两台或多台服务器协同工作）的系统。已经或可利用TreeSVR构建的系统如下例：<ul>
+          <li type="disc">企业综合人事劳资系统</li>
+          <li>医院信息系统</li>
+          <li>医保中心办公系统</li>
+          <li>企业综合业务信息交流服务系统</li>
+        </ul>
+      </li>
+      <li>WEB服务器的综合信息管理；TreeSVR具有很强的WEB信息管理和发布能力。</li>
+      <li>操作简单，维护方便；数据格式开放。便于进行深层次开发。</li>
+      <li>支持ASQL语言；</li>
+      <li>运行于Windows NT操作系统。</span></li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

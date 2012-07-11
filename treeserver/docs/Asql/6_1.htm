@@ -1,0 +1,27 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>数据变动日志的引入</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><font size="2"><span style="font-size: 12px"><b>数据变动日志的引入</b></span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">在信息系统中信息是经常变化的，在系统中应把这些数据的变化情况记录下来，并在必要时可以对这些数据进行检索、分析。数据变动日志就是用来记录数据维护过程中对数据的每一步变化情况，利用这种变化情况的记忆，可以实现一个数据内容在多个数据存储上的一致性。例如：分厂数据与总厂数据，分厂数据与总厂数据有交集，这种情况下就可以利用数据变动日志来同步两个数据。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">数据变动日志既然记录了数据的变化，就很容易在其中得到数据的变化过程，也就是说将对数据的“静态管理”变为“动态管理”。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">例如：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">按人事管理的规定，人事信息的采集点在人事所在单位，但人事信息不仅存放在本单位的数据库中，而且按人事管理的规定还应存放于上级单位的人事信息数据库中，而数据修改则仍在基层单位，为了上下级人事管理部门数据库中同一信息的一致性，上级部门必须用其下级部门的数据来修改其自身数据。采用下级部门的整个信息库来替换原有部门的全部数据，不仅效率低，而且可能带来其它的问题，例如上级部门数据库的不稳定和数据的不完整等等。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">采用了数据变动日志后，下级部门向上级部门报送数据变动日志，而不是全部数据库文件，上级部门利用下级部门的数据变动日志来修改数据库，从而维护了上级部门数据的稳定性，并且也能提高数据质量。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">过去在没有数据变动日志的情况下，一旦现有信息库被破坏时，有两种情况可能发生：一种是没有数据备份，这时整个数据库必须重新录入。第二种情况是存有以前某一时刻的数据备份，我们要得到现在人员数据信息集， 
+    若没有数据变动日志则必须从过去那一时刻开始修改数据， 
+    其工作量大而且出错的概率也大。有了数据变动日志后，在数据库遭到破坏的情况下，只要过去的数据的备份加上这段时间的数据变动日志就可以利用程序很方便地恢复现在人员数据库。这样可以大大减少工作量，同时也可以提高信息库的质量。</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

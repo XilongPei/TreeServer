@@ -1,0 +1,1410 @@
+/****************
+*  CFG_FAST.C
+*  author : Richard.J(Jiang Qiangfeng), Xilong Pei
+*
+*  copyright (c) Shanghai Tiedao University MIS Research, 1996
+*		 Shanghai Withub Vision Software Co., Ltd. 1999~2000
+*  Caution:
+*      this program should work with:
+*           FILETOOL.C
+*           MISTRING.C
+*           MEMUTL.C
+*
+*  2001.4.16 support large cache memory which is larger than 64KB
+*
+****************************************************************************/
+
+/*
+  csu->cacheMem memory layout:
+  
+    +--------------------------------+....................+----------------+
+    |content such as: group or lebel |                    |index           |
+    |    [database]		     |			  |		   |
+    |	 #LZ		             |			  |		   |
+    |the string                      |			  |		   |
+    +--------------------------------+....................+----------------+
+    				     ^                    ^		   ^
+    				     |cacheMemTail        |cacheTableHead  |cacheTableTail
+    
+    INDEX:
+    	GROUP(10 bytes):
+    		mark char     = 0
+    		length char   = strlen(group)
+    		char 2,3,4,5  = the length of this group sengment
+    		char 6,7,8,9  = pointer to content for this group name, such as DATABASE
+    	LABEL(10 bytes):
+    		mark char     = 1
+    		length char   = strlen(label)
+    		char 2,3,4,5  = the length of this label sengment
+    		char 6,7,8,9  = pointer to content for this label name, such as: LZ
+    	KEY(6 bytes):
+    		mark char     = 2
+    		length char   = strlen(key)
+    		char 2,3,4,5  = pointer to content for this key name, such as NAME
+
+*/
+
+#define CFG_FAST_DBF_SUPPORT
+
+#include <malloc.h>
+#include <string.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <io.h>
+
+#include "filetool.h"
+#include "mistring.h"
+#include "macro.h"
+#include "cfg_fast.h"
+#include "wst2mt.h"
+#include "strutl.h"
+//#include "ts_dict.h"
+
+#ifdef CFG_FAST_DBF_SUPPORT
+#include "dio.h"
+#endif
+
+//#define TEST
+unsigned short ATOM_CACHE_SIZE = 4096;
+#define CFG_MAX_CHAHE_SIZE	500*1024*1024
+PCFG_STRU csu;
+#ifdef WSToMT
+    WSToMT PCFG_STRU publicCsu;
+#else
+    static PCFG_STRU publicCsu;
+#endif
+
+
+#ifdef WSToMT
+    WSToMT static char retBuf[4096];
+#else
+    static char retBuf[4096];
+#endif
+
+
+#define  MARK_RECNO_VAL	    100*1024*1024
+
+
+#ifdef TEST
+#include <stdlib.h>
+#endif
+
+//----------------protocol---------------------------
+long indexItemInCache( PCFG_STRU csu, unsigned char *szGroup,              \
+				      unsigned char *szLabel,              \
+				      unsigned char *szKey );
+short addGroupToCache( PCFG_STRU csu, unsigned char *szGroup, long offset );
+short addLabelToCache( PCFG_STRU csu, unsigned char *szLabel, long offset );
+short addKeyToCache( PCFG_STRU csu, unsigned char *szKey, long offset );
+short addItemToCache( PCFG_STRU csu, unsigned char *szGroup,               \
+				     unsigned char *szLabel,               \
+				     unsigned char *szKey,                 \
+				     long offset, short flag );
+PCFG_STRU addMemToCache( const PCFG_STRU csu );
+short reAddItemToCache( PCFG_STRU csu, unsigned char *szGroup,             \
+				       unsigned char *szLabel,             \
+				       unsigned char *szKey,               \
+				       long offset, short flag );
+void adjustOffsetInCache( PCFG_STRU csu, long offset, long addOffset );
+long getSecondLabelOffset( PCFG_STRU csu );
+static char *loadMarcoString( char *idString );
+
+
+
+
+//return value define:
+//  -4: empty cache
+//  -3: no group
+//  -2: no label
+//  -1: no key
+//======================================
+long indexItemInCache( PCFG_STRU csu, unsigned char *szGroup,              \
+				      unsigned char *szLabel,              \
+				      unsigned char *szKey )
+{
+    int            groupLen, labelLen, keyLen;
+    unsigned char *tail, *p;
+
+    csu->curGroupOffset = csu->cacheTableHead;
+    if ( csu->cacheTableTail == csu->cacheTableHead ) return -4;
+
+    if ( szGroup != NULL ) groupLen = strlen( szGroup ) + 4;
+    else groupLen = 4;
+    if ( szLabel != NULL ) labelLen = strlen( szLabel ) + 4;
+    else labelLen = 4;
+    if ( szKey != NULL ) keyLen = strlen( szKey ) + 4;
+    else keyLen = 4;
+
+    p = csu->cacheMem + csu->cacheTableHead;
+    tail = csu->cacheMem + csu->cacheTableTail;
+    
+    //skip all group whose length is less than this
+    while ( p <  tail && *p == 0 && *(p+1) < groupLen )
+	p += *(long *)(p+2);
+
+    //while not end (<tail) and not empty group(the smallest of *(p+1) is 4 to store 
+    //the offset of the group in contnet segment
+    //length is 4 "[]\n\r" means the end) 
+    while ( p < tail && (*(p+1) == groupLen && *(p+1) != 4) && *p == 0 )
+    {
+    	//+6 = move the pointer to point content 
+    	//   = mark char+grouplen char+this group segment length 4char
+	if ( strnicmp( szGroup, csu->cacheMem + *(long *)(p+6),   \
+					       groupLen - 4 ) == 0 )
+	/*if ( strnicmp( szGroup, csu->cacheMem + *(long *)(p+6),   \
+					       groupLen - 4 ) == 0 && *(p+1) >= groupLen )
+	*/
+	{
+	    break;
+	}
+
+	p += *(long *)(p+2);		//+= the length of this group's segment
+    }
+
+    csu->curGroupOffset = p - csu->cacheMem;
+    //|| *(p+1) != groupLen
+    //check this in the upper, for the key+index info can same as a new key
+    if ( p >= tail || *(p+1) != groupLen || *p != 0 )  
+    	return -3;		//no group
+
+    if ( labelLen == 4 && keyLen == 4 )
+	return *(long *)(csu->cacheMem + *(long *)(p+6) + *(p+1)-4);
+	//return cacheMem + *(long *)(p+6)   ---> get the content of this group
+	//                + *(p+1)	     ---> skip the content string, get the offset
+	//		  -4		     ---> move back 4 bytes to get the offset long
+
+    tail = p + *(long *)(p+2);		//*(long *)(p+2) is this group's length
+    p += 10;				//a group index has 10 bytes
+
+
+    ///////////////////////////////////////
+    while ( p < tail && *p == 1 && *(p+1) < labelLen )
+	p += *(long *)(p+2);
+
+    while ( p < tail && *(p+1) == labelLen && *p == 1 )
+    {
+	if ( strnicmp( szLabel, csu->cacheMem + *(long *)(p+6),   \
+						labelLen - 4 ) == 0 )
+	/*if ( strnicmp( szLabel, csu->cacheMem + *(long *)(p+6),   \
+						labelLen - 4 ) == 0 && *(p+1) >= labelLen )
+	*/
+	{
+	    break;
+	}
+
+	p += *(long *)(p+2);		//+= the length of this label's segment
+    }
+
+    csu->curLabelOffset = p - csu->cacheMem;
+    if ( p >= tail || *(p+1) != labelLen || *p != 1 )
+	return -2;
+
+    if ( keyLen == 4 )
+	return *(long *)(csu->cacheMem + *(long *)(p+6) + *(p+1)-4);
+	//return cacheMem + *(long *)(p+6)   ---> get the content of this label
+	//                + *(p+1)	     ---> skip the content string, get the offset
+	//		  -4		     ---> move back 4 bytes to get the offset long
+
+    tail = p + *(long *)(p+2);		//*(long *)(p+2) is this label's length
+    p += 10;				//a label index has 10 bytes
+
+
+    ///////////////////////////////////////
+    if( *szGroup == '$' )
+    {
+    	//here we doesn't use the length hush algorithm
+    	//for we should keep the field's order
+    	//
+	//the following 2 statements is for length hush
+    	//while ( p < tail && *p == 2 && *(p+1) < keyLen )
+	//	p += 6;
+    	
+	while ( p < tail && *p == 2 )
+	{
+	    if ( strnicmp( szKey, csu->cacheMem + *(long *)(p+2), keyLen - 4 ) == 0 && \
+	    								*(p+1) == keyLen )
+	    {
+		break;
+	    }
+	    p += 6;		//a key has 6 bytes
+	}
+
+	csu->curKeyOffset = p - csu->cacheMem;
+	if ( p >= tail || /* *(p+1) != keyLen || */ *p != 2 )
+		return -1;
+
+	return  *(long *)(csu->cacheMem + *(long *)(p+2) + *(p+1) - 4);
+
+    } //end of if
+
+    while ( p < tail && *p == 2 && *(p+1) < keyLen )
+	p += 6;
+
+    while ( p < tail && *(p+1) == keyLen && *p == 2 )
+    {
+	if ( strnicmp( szKey, csu->cacheMem + *(long *)(p+2),   \
+							  keyLen - 4 ) == 0 )
+	{
+	    break;
+	}
+
+	p += 6;
+    }
+
+    csu->curKeyOffset = p - csu->cacheMem;
+    if ( p >= tail || *(p+1) != keyLen || *p != 2 )
+	return -1;
+
+    return  *(long *)(csu->cacheMem + *(long *)(p+6) + *(p+1)-4);
+    
+} //indexItemInCache()
+
+
+
+//_____________________
+short addGroupToCache( PCFG_STRU csu, unsigned char *szGroup, long offset )
+{
+    unsigned char *p, *tableHead, *memTail;
+    unsigned char groupLen;
+    short moveLen;
+
+    if ( szGroup != NULL ) groupLen = strlen( szGroup ) + 4;
+    else groupLen = 4;
+
+    //if there is not enough memory, return -1
+    if ( csu->cacheTableHead - csu->cacheMemTail < groupLen + 6 )  return -1;
+
+    memTail = csu->cacheMem + csu->cacheMemTail;
+    memcpy( memTail, szGroup, groupLen - 4 );
+    memcpy( memTail + groupLen - 4, &offset, 4 );
+
+    tableHead = csu->cacheMem + csu->cacheTableHead;
+    moveLen = csu->curGroupOffset - csu->cacheTableHead;
+    memmove( tableHead - 10, tableHead, moveLen );	//a group has 10 bytes
+    csu->cacheTableHead -= 10;
+    csu->curLabelOffset = csu->curGroupOffset;
+    csu->curGroupOffset -= 10;
+    p = csu->cacheMem + csu->curGroupOffset;
+    
+    *p = 0;						//1+1+4+4=10
+    *(p+1) = groupLen;
+    *(long *)(p+2) = 10;
+    *(long *)(p+6) = csu->cacheMemTail;
+    csu->cacheMemTail += groupLen;
+
+    return 0;
+    
+}  //end of the addGroupToCache()
+
+
+//_____________________
+short addLabelToCache( PCFG_STRU csu, unsigned char *szLabel, long offset )
+{
+    unsigned char *p, *tableHead, *memTail;
+    short moveLen;
+	unsigned char labelLen;
+
+    if ( szLabel != NULL ) labelLen = strlen( szLabel ) + 4;
+    else labelLen = 4;
+
+    if ( csu->cacheTableHead - csu->cacheMemTail < labelLen + 6 )  return -1;
+
+    memTail = csu->cacheMem + csu->cacheMemTail;
+    memcpy( memTail, szLabel, labelLen - 4 );
+    memcpy( memTail + labelLen - 4, &offset, 4 );
+
+    tableHead = csu->cacheMem + csu->cacheTableHead;
+    moveLen = csu->curLabelOffset - csu->cacheTableHead;
+    memmove( tableHead - 10, tableHead, moveLen );	//a label has 10 bytes
+    csu->cacheTableHead -= 10;
+    csu->curKeyOffset = csu->curLabelOffset;
+    csu->curLabelOffset -= 10;
+    csu->curGroupOffset -= 10;
+    p = csu->cacheMem + csu->curLabelOffset;
+    
+    *p = 1;
+    *(p+1) = labelLen;
+    *(long *)(p+2) = 10;
+    *(long *)(p+6) = csu->cacheMemTail;
+    
+    //increase this group length
+    *(long *)(csu->cacheMem+csu->curGroupOffset+2) += 6;
+    
+    csu->cacheMemTail += labelLen;
+
+    return 0;
+    
+}  //end of the addLabelToCache()
+
+
+//_____________________
+short addKeyToCache( PCFG_STRU csu, unsigned char *szKey, long offset )
+{
+    unsigned char *p, *tableHead, *memTail;
+    short 	  moveLen;
+    unsigned char keyLen;
+
+    if ( szKey != NULL ) keyLen = strlen( szKey ) + 4;
+    else keyLen = 4;
+
+    if ( csu->cacheTableHead - csu->cacheMemTail < keyLen + 4 )  return -1;
+
+    memTail = csu->cacheMem + csu->cacheMemTail;
+    memcpy( memTail, szKey, keyLen - 4 );
+    memcpy( memTail + keyLen - 4, &offset, 4 );
+
+    //move a space to store the key pointer value
+    tableHead = csu->cacheMem + csu->cacheTableHead;
+    moveLen = csu->curKeyOffset - csu->cacheTableHead;
+    memmove( tableHead - 6, tableHead, moveLen );            //a key has 6 bytes
+    csu->cacheTableHead -= 6;
+    csu->curKeyOffset -= 6;
+    csu->curLabelOffset -= 6;
+    csu->curGroupOffset -= 6;
+    p = csu->cacheMem + csu->curKeyOffset;
+    
+    *p = 2;
+    *(p+1) = keyLen;
+    *(long *)(p+2) = csu->cacheMemTail;
+    
+    //increase this label length
+    *(long *)(csu->cacheMem + csu->curLabelOffset + 2) += 6;
+
+    //increase this group length
+    *(long *)(csu->cacheMem + csu->curGroupOffset + 2) += 6;
+    
+    csu->cacheMemTail += keyLen;
+
+    return 0;
+    
+}  //end of the addKeyToCache()
+
+
+//flag: new keyword or else, has we adjustOffsetInCache()
+//_____________________
+short addItemToCache( PCFG_STRU csu, unsigned char *szGroup,               \
+				     unsigned char *szLabel,               \
+				     unsigned char *szKey,
+				     long offset, short flag )
+{
+    int returnFlag;
+
+    returnFlag = indexItemInCache( csu, szGroup, szLabel, szKey );
+
+    switch ( returnFlag )
+    {
+	case -4 :
+	case -3 :
+	    if ( addGroupToCache( csu, szGroup, offset ) == -1 ) return -1;
+	    
+	    if ( flag && szGroup != NULL && *szGroup != '\0' )
+		offset += strlen( szGroup ) + 4;	//4 means the following 4 bytes []\n\r
+
+	    if ( addLabelToCache( csu, szLabel, offset ) == -1 ) return -1;
+	    if ( flag && szLabel != NULL && *szLabel != '\0' )
+		offset += strlen( szLabel ) + 3;	//3 means  the following 3 bytes #\n\r
+
+	    if ( addKeyToCache( csu, szKey, offset ) == -1 ) return -1;
+	    break;
+
+	case -2 :
+	    if ( addLabelToCache( csu, szLabel, offset ) == -1 ) return -1;
+
+	    if ( flag && szLabel != NULL && *szLabel != '\0' )
+		offset += strlen( szLabel ) + 3;	//3 means #\n\r
+
+	    if ( addKeyToCache( csu, szKey, offset ) == -1 ) return -1;
+	    break;
+
+	case -1 :
+	    if ( addKeyToCache( csu, szKey, offset ) == -1 ) return -1;
+	    break;
+    }
+
+    return 0;
+}  //end of the addItemToCache()
+
+
+//
+//CloseCfgFile()
+//
+void CloseCfgFile( PCFG_STRU csu )
+{
+    if( csu != NULL )  {
+	if ( csu->cacheMem != NULL )
+	    free( csu->cacheMem );
+	if ( csu->fp != NULL )
+	    fclose( csu->fp );
+#ifdef CFG_FAST_DBF_SUPPORT
+	if ( csu->df != NULL )
+	    dclose(csu->df);
+#endif
+
+	free( csu );
+    }
+}  //end of the CloseCfgFile()
+
+
+//_____________________
+PCFG_STRU addMemToCache( const PCFG_STRU csu )
+{
+    unsigned char *tempBuf, *tableHead;
+    long           moveLen;
+
+    if ( csu->memSize > CFG_MAX_CHAHE_SIZE - ATOM_CACHE_SIZE ) return csu;
+    csu->memSize += ATOM_CACHE_SIZE;
+    tempBuf = (unsigned char *)realloc( csu->cacheMem, csu->memSize );
+    if ( tempBuf == NULL ) {
+	csu->memSize -= ATOM_CACHE_SIZE;
+	return csu;
+    }
+
+    csu->cacheMem = tempBuf;
+    tableHead = csu->cacheMem + csu->cacheTableHead;
+    moveLen = csu->cacheTableTail - csu->cacheTableHead;
+    memmove( tableHead + ATOM_CACHE_SIZE, tableHead, moveLen );
+
+    csu->cacheTableTail += ATOM_CACHE_SIZE;
+    csu->cacheTableHead += ATOM_CACHE_SIZE;
+
+    csu->curGroupOffset += ATOM_CACHE_SIZE;
+    csu->curLabelOffset += ATOM_CACHE_SIZE;
+    csu->curKeyOffset += ATOM_CACHE_SIZE;
+
+    return csu;
+}  //end of the addMemToCache()
+
+
+//_____________________
+//flag: new keyword or else, has we adjustOffsetInCache()
+short reAddItemToCache( PCFG_STRU csu, unsigned char *szGroup,             \
+				       unsigned char *szLabel,             \
+				       unsigned char *szKey,
+				       long offset, short flag )
+{
+    long  memSize;
+
+    if ( addItemToCache( csu, szGroup, szLabel, szKey, offset, flag ) == -1 )
+    {
+	memSize = csu->memSize;
+	csu = addMemToCache( csu );
+	if ( memSize == csu->memSize ) {
+	    CloseCfgFile( csu );
+	    return -1;
+	}
+
+	addItemToCache( csu, szGroup, szLabel, szKey, offset, flag );
+    }
+
+    return 0;
+}  //end of the reAddItemToCache()
+
+
+/*
+* OpenCfgFile()
+****************************************************************************/
+PCFG_STRU OpenCfgFile( char *szFileName )
+{
+    //static PCFG_STRU csu;
+    unsigned char   buf[4096], szGroup[256], szLabel[256], *labelTemp, *groupTemp;
+    unsigned long   offset = 0, fileLen;
+    unsigned short  labelFlag = 0, groupFlag = 0;
+    //unsigned short  i;
+    int	    handle;
+    char    *s;
+#ifdef CFG_FAST_DBF_SUPPORT
+    unsigned short i1, i2, i3;
+    dFILE   *df;
+#endif
+
+    if ( (csu = (PCFG_STRU)malloc( sizeof(CFG_STRU) )) == NULL ) return NULL;
+
+    csu->memSize = ATOM_CACHE_SIZE;
+    csu->cacheTableTail = ATOM_CACHE_SIZE;
+    csu->cacheTableHead = ATOM_CACHE_SIZE;
+    csu->cacheMemTail = 0;
+
+    InitializeCriticalSection( &(csu->dCriticalSection) );
+
+    if ( (csu->cacheMem = (unsigned char *)malloc( csu->memSize )) == NULL ){
+	free( csu );
+	return NULL;
+    }
+
+    if ( (handle = open( szFileName, O_RDWR | O_TEXT )) == -1 ) {
+	free( csu->cacheMem );
+	free( csu );
+	return NULL;
+    }
+
+    if ( (csu->fp = fdopen(handle, "r+t")) == NULL )  {
+	close( handle );
+	free( csu->cacheMem );
+	free( csu );
+	return NULL;
+    }
+
+    fseek( csu->fp, 0L, SEEK_END );
+    fileLen = ftell( csu->fp );
+    fseek( csu->fp, 0L, SEEK_SET );
+
+    while ( offset < fileLen )
+    {
+	offset = ftell( csu->fp );
+	fgets( buf, 4096, csu->fp );
+	lrtrim( buf );
+
+	switch( buf[0] )
+	{
+	    case '[' :
+
+		s = strchr(buf, ']');
+		if( s == NULL )
+		    break;
+		*s = '\0';
+
+		/*this algorithm is stupid, so change it as upper
+		for ( i = 1; i < 80 && buf[i] != ']'; i++ );
+
+		if ( i >= 80 ) break;
+		else buf[i] = '\0';
+		*/
+		strcpy( szGroup, buf + 1 );
+
+		if ( reAddItemToCache( csu,szGroup,NULL,NULL,offset,0 ) == -1 )
+		    return NULL;
+
+		labelFlag = 0;
+		groupFlag = 1;
+
+		break;
+
+	    case '#' :
+		strcpy( szLabel, buf + 1 );
+		if ( groupFlag ) groupTemp = szGroup;
+		else groupTemp = NULL;
+
+		if (reAddItemToCache(csu,groupTemp,szLabel,NULL,offset,0) == -1 )
+		    return NULL;
+
+		labelFlag = 1;
+		break;
+
+	    case '/' :
+		if ( buf[1] == '/' )   break;
+
+	    case '\0' :
+		break;
+
+	    default :
+	
+		s = strchr(buf, '=');
+		if ( s == NULL || s == buf )
+		    break;
+
+		*s = '\0';
+		rtrim( buf );
+
+		/*this algorithm is stupid, so change it as upper
+		for ( i = 1; i < 4095 && buf[i] != '=' && buf[i]!='\0'; i++ );
+
+		if ( buf[i] == '\0' || i >= 4095 ) break;
+
+		buf[i] = '\0';
+
+		lrtrim( buf );
+		*/
+
+		if ( labelFlag ) labelTemp = szLabel;
+		else labelTemp = NULL;
+		if ( groupFlag ) groupTemp = szGroup;
+		else groupTemp = NULL;
+		if ( reAddItemToCache( csu,groupTemp,labelTemp, buf, offset,0 ) == -1 )
+		    return NULL;
+
+		break;
+	}
+    }
+
+    _fullpath(csu->szFileName, szFileName, 256);
+    {
+	char *s;
+
+	s = strrchr(csu->szFileName, '\\');
+	if( s != NULL ) {
+	    *s = '\0';
+	    s = strrchr(csu->szFileName, '\\');
+	    if( s != NULL )
+		*(s+1) = '\0';
+	}
+    }
+
+    //add 1998.1.5 Xilong
+#ifdef CFG_FAST_DBF_SUPPORT
+    csu->df = NULL;	//no fieldctl appeared
+    if( GetCfgKey(csu, "FIELDCTL", NULL, "PATH") == NULL ) {
+	if ( reAddItemToCache( csu,NULL,NULL,NULL,0,0 ) == -1 ) {
+		CloseCfgFile( csu );
+		return NULL;
+	}
+	return csu;
+    }
+
+    makeTrimFilename(buf, szFileName, "FIELDCTL.DBF");
+    //df = dopen(buf, (short)(O_RDONLY|O_BINARY), (short)SH_DENYNO, (short)(S_IREAD|S_IWRITE));
+    df = dopen(buf, DOPENPARA);
+    if( df == NULL ) {
+	csu->df = NULL;
+	return  csu;
+    }
+
+    //1999.10.10
+    df->keep_physical_order = 1;
+
+    //1999.9.2 add by Xilong Pei
+    dpack(df);
+    dseek(df, 0, dSEEK_SET);
+
+    i1 = GetFldid(df, "BASENAME");
+    i2 = GetFldid(df, "EFNAME");
+    i3 = GetFldid(df, "TID");
+    if( i1 == 0xFFFF || i2 == 0xFFFF || i3 == 0xFFFF ) {
+	dclose(df);
+	csu->df = NULL;
+	return  csu;
+    }
+    csu->df = (void *)df;
+
+    while( !deof(df) ) {
+	getrec(df);
+	get_fld(df, i3, szGroup);
+
+	if( szGroup[0] == '\0' )
+	{ //if TID is null, use BASENAME
+		get_fld(df, i1, szGroup);
+	}
+
+	get_fld(df, i2, szLabel);
+	reAddItemToCache(csu, "$", szGroup, szLabel, df->rec_no-1+MARK_RECNO_VAL, 0);
+    }
+#endif
+
+    if ( reAddItemToCache( csu,NULL,NULL,NULL,0,0 ) == -1 ) {
+	CloseCfgFile( csu );
+	return NULL;
+    }
+
+    return csu;
+
+}  //end of the OpenCfgFile()
+
+
+static char *loadMarcoString( char *idString )
+{
+    char *seeds[10];
+    char  buf[256];
+    char *s;
+
+    if( stricmp(idString, "TREESVRROOT") == 0 ) {
+	//e:\wmtasql\config\asqlwmt.cfg
+	return  strcpy(retBuf, publicCsu->szFileName);
+	/*s = strrchr(retBuf, '\\');
+	if( s != NULL ) {
+	    *s = '\0';
+	    s = strrchr(retBuf, '\\');
+	    if( s != NULL )
+		*(s+1) = '\0';
+	}
+	return  retBuf;
+	*/
+    } else if( strnicmp(idString, "INI:", 4) == 0 ) {
+	char buff[260];
+
+	strcpy(buf, idString+4);
+	seperateStr(buf, '@', seeds );
+
+	if( seeds[0][0] == '.' && seeds[0][1] == '\\') {
+	    strcpy(buff, publicCsu->szFileName);
+	    strcat(buff, &(seeds[0][2]));
+	} else {
+	    strcpy(buff, seeds[0]);
+	}
+
+	GetPrivateProfileString( seeds[1],	//section
+				 seeds[2],	//key
+				 "",
+				 retBuf,
+				 4096,
+				 buff);
+	return  retBuf;
+    }
+
+    strncpy(buf, idString, 128);
+    buf[127] = '\0';
+
+    seeds[2] = NULL;
+    seeds[1] = NULL;
+    seperateStr(buf, '@', seeds );
+
+    if( seeds[2] == NULL ) {
+	if( seeds[1] == NULL ) {
+		s = GetCfgKey(publicCsu, "MACRO", NULL, seeds[0]);
+	} else {
+		s = GetCfgKey(publicCsu, seeds[0], NULL, seeds[1]);
+	}
+    } else {
+	s = GetCfgKey(publicCsu, seeds[0], seeds[1], seeds[2]);
+    }
+
+    if( s == NULL )	return 	idString;
+    return  s;
+
+} // end of loadMarcoString()
+
+
+//
+//GetCfgKey()
+//
+char *GetCfgKey( PCFG_STRU csu, unsigned char *szGroup,                    \
+				unsigned char *szLabel,                    \
+				unsigned char *szKey )
+{
+    char buf[4096];
+    char *configBuf;
+    long  offset;
+
+    if( csu == NULL )
+	return  NULL;
+
+    EnterCriticalSection( &(csu->dCriticalSection) );
+    publicCsu = csu;
+
+#ifdef CFG_FAST_DBF_SUPPORT
+    if( csu->df != NULL && stricmp(szKey, "TID") != 0 )
+    {	
+	//TID in fieldctl.dbf is treated as special
+
+	unsigned short ui;
+
+	ui = GetFldid(csu->df, szKey);
+	if( ui != 0xFFFF ) {
+	    offset = indexItemInCache(csu, "$", szGroup, szLabel);
+	    if( offset >= 0 ) {
+		dseek(csu->df, offset-MARK_RECNO_VAL, dSEEK_SET);
+		get1rec(csu->df);
+
+		if( ((dFILE *)(csu->df))->field[ui].fieldtype == 'M' ) {
+			get_fld(csu->df, ui, buf);
+			if( atoi(buf) > 0 ) {
+			    *(unsigned char *)buf = 4096/DBTBLOCKSIZE;
+			    GetField(csu->df, ui, buf);
+			} else {
+			    buf[0] = '\0';
+			}
+		} else {
+		    get_fld(csu->df, ui, buf);
+		}
+		macro(retBuf, 4096, buf, loadMarcoString);
+		LeaveCriticalSection( &(csu->dCriticalSection) );
+		return  retBuf;
+	    }
+	}
+    }
+#endif
+
+    offset = indexItemInCache( csu, szGroup, szLabel, szKey );
+    if ( offset < 0 ) {
+	LeaveCriticalSection( &(csu->dCriticalSection) );
+	return NULL;
+    }
+
+    fseek( csu->fp, offset, SEEK_SET );
+    fgets( buf, 4096, csu->fp );
+
+    configBuf = strchr(buf, '=');
+    if( configBuf == NULL ) {
+	LeaveCriticalSection( &(csu->dCriticalSection) );
+	return  NULL;
+    }
+
+    macro(retBuf, 4096, lrtrim(configBuf+1), loadMarcoString);
+
+    LeaveCriticalSection( &(csu->dCriticalSection) );
+    return  retBuf;
+
+} //end of GetCfgKey()
+
+
+//
+//adjustOffsetInCache()
+//
+void adjustOffsetInCache( PCFG_STRU csu, long offset, long addOffset )
+{
+    unsigned char *p, *tail, *curMem;
+    short   itemOff[3] = { 10, 10, 6 };	//in index table
+    					//a group has 10 bytes, a lebel has 10 bytes 
+    					//a key has 6 bytes
+    long    ll;
+
+    p  = csu->cacheMem + csu->cacheTableHead;
+    tail  = csu->cacheMem + csu->cacheTableTail;
+    while ( p < tail )
+    {
+	curMem = csu->cacheMem + *(long *)(p+itemOff[*p]-4);
+
+	ll = *(long *)(curMem + *(p+1) - 4);
+	if ( ll >= offset && ll < MARK_RECNO_VAL )
+	    *(long *)(curMem + *(p+1) - 4) += addOffset;
+	    
+	p += itemOff[*p];
+    }
+    
+}  //end of the adjustOffsetInCache()
+
+
+long getSecondLabelOffset( PCFG_STRU csu )
+{
+    long     offset, groupOffset;
+    unsigned char *p, *curMem, buf[4096];
+    long     labelMemOff;
+
+    p = csu->cacheMem + csu->curGroupOffset;
+    
+    //groupOffset = pointer to content + content length - 4
+    //cacheMem + *(long *)(p+6)   ---> get the content of this label
+    //                + *(p+1)	  ---> skip the content string, get the offset
+    //		      -4	  ---> move back 4 bytes for get the offset long
+    groupOffset = *(long *)(csu->cacheMem + *(long *)(p+6) + *(p+1) - 4);
+    p += 10;		//a group has 10 bytes
+
+    labelMemOff = *(long *)(p+2);
+    
+    //if the following is label and empty, move the file's pointer to the ahead of second label
+    //
+    //[group]
+    //  key = keyValue
+    //
+    //
+    
+    //if there:
+    //	not only 1 label(10 bytes): labelMemOff != 10
+    //	not only 1 label(10 bytes)+key(6 bytes): labelMemOff != 10+6
+    //
+    //  #label          }only one
+    //	key=		}only one
+    //
+    //I will get the last one for sequential storage
+    
+    if ( *p == 1 && *(p+1) == 4 && labelMemOff != 16 && labelMemOff != 10 ) {
+	
+	p += *(long *)(p+2) - 6;
+	curMem =  csu->cacheMem + *(long *)(p+2) + *(p+1) - 4;
+	offset = *(long *)curMem;
+	
+	fseek( csu->fp, offset, SEEK_SET );
+	while ( !feof( csu->fp ) )  {
+	    fgets( buf, 4096, csu->fp );
+	    offset = strlen( buf ) + 1;
+	    lrtrim( buf );
+	    if ( buf[0] == '#' || buf[0] == '[' )   break;
+	}
+	if ( feof( csu->fp ) )  offset = 0;
+	fseek( csu->fp, -1 * offset, SEEK_CUR );
+	offset = ftell( csu->fp );
+	if ( groupOffset >= offset ) {
+	    fgets( buf, 4096, csu->fp );
+	    offset = ftell( csu->fp );
+	}
+    }
+    else  {
+	curMem = csu->cacheMem + *(long *)(p+6) + *(p+1) - 4;
+	offset = *(long *)curMem;		//offset of the next item
+	
+	if ( groupOffset >= offset ) {
+	    fseek( csu->fp, offset, SEEK_SET );
+	    fgets( buf, 4096, csu->fp );
+	    offset = ftell( csu->fp );
+	}
+    }
+
+    return offset;
+    
+}  //end of the getSecondLabelOffset()
+
+//
+//
+//
+short WriteCfgKey( PCFG_STRU csu, unsigned char *szGroup,                  \
+				  unsigned char *szLabel,                  \
+				  unsigned char *szKey,                    \
+				  unsigned char *keyCont )
+{
+    unsigned char *p, *curMem, buf[4096];
+    long    offset;
+    short   changeLen = 0, labelLen = 0, keyLen = 0, contLen = 0, tmpLen, i;
+    char    *s;
+
+    if( csu == NULL )
+	return -1;
+
+    EnterCriticalSection( &(csu->dCriticalSection) );
+
+#ifdef CFG_FAST_DBF_SUPPORT
+    if( csu->df != NULL && stricmp(szKey, "TID") != 0 && stricmp(szKey, "EFNAME") != 0 )
+    {
+	//TID keyword is used in asqlwmt.cfg
+	//in fieldctl.dbf, it can't be writen directly
+
+	unsigned short ui;
+
+	ui = GetFldid(csu->df, szKey);
+	if( ui != 0xFFFF ) {
+	    offset = indexItemInCache(csu, "$", szGroup, szLabel);
+	    if( offset >= 0 ) {
+		dseek(csu->df, offset-MARK_RECNO_VAL, dSEEK_SET);
+		get1rec(csu->df);
+		
+		//2000.10.17
+		//put_fld(csu->df, ui, keyCont);
+		PutField(csu->df, ui, keyCont);
+
+		put1rec(csu->df);
+		
+		dflush(csu->df);
+
+	    } else {
+		short  u1, u2;
+
+		u1 = GetFldid(csu->df, "TID");
+		u2 = GetFldid(csu->df, "EFNAME");
+
+		dseek(csu->df, 0, dSEEK_END);
+		NewRec(csu->df);
+		put_fld(csu->df, ui, keyCont);
+		put_fld(csu->df, u1, szGroup);
+		put_fld(csu->df, u2, szLabel);
+
+		put1rec(csu->df);
+		dflush(csu->df);
+
+		reAddItemToCache(csu, "$", szGroup, szLabel, ((dFILE *)csu->df)->rec_no-1+MARK_RECNO_VAL, 0);
+	    }
+
+	    LeaveCriticalSection( &(csu->dCriticalSection) );
+	    return  0;
+	}
+    }
+#endif
+
+    if ( szLabel != NULL )  labelLen = strlen( szLabel );
+    if ( szKey != NULL )    keyLen = strlen( szKey );
+    if ( keyCont != NULL )  contLen = strlen( keyCont );
+
+    offset = indexItemInCache( csu, szGroup, szLabel, szKey );
+
+    switch ( offset )
+    {
+	case -4 :
+	case -3 :   //new group
+	    fseek( csu->fp, 0L, SEEK_END );
+	    offset = ftell( csu->fp );
+	    if ( szGroup != NULL && *szGroup != '\0' )
+		fprintf( csu->fp, "[%s]\n", szGroup );
+	    if ( szLabel != NULL && *szLabel != '\0' )
+		fprintf( csu->fp, "#%s\n", szLabel );
+	    if ( szKey != NULL && *szKey != '\0' )   {
+		if ( keyCont == NULL )
+		    fprintf( csu->fp, "%s=\n", szKey );
+		else
+		    fprintf( csu->fp, "%s=%s\n", szKey, keyCont );
+	    }
+
+	    //2000.5.20
+	    //if ( reAddItemToCache( csu,szGroup,szLabel,szKey,offset,1 ) == -1 ) {
+
+	    if ( reAddItemToCache( csu,szGroup,szLabel,szKey,offset,1 ) == -1 ) {
+		LeaveCriticalSection( &(csu->dCriticalSection) );
+		return -1;
+	    }
+	    break;
+
+	case -2 :   //new label
+	    offset = getSecondLabelOffset( csu );
+
+	    if   ( !labelLen && !keyLen )  changeLen = 0;
+	    else if ( labelLen && !keyLen ) changeLen = 1 + labelLen + 2;	
+	    				    //#LABEL\n\r ---> label len + 3
+	    else if ( !labelLen && keyLen ) changeLen = keyLen+1+contLen+2;
+	    				    //KEY=cont\n\r ---> +1 +2	
+	    else changeLen = 1 + labelLen + 2 + keyLen + 1 + contLen + 2;
+					    //both label and key is new
+	    fileBytesMove( csu->fp, offset, offset + changeLen );
+
+	    fseek( csu->fp, offset, SEEK_SET );
+	    if ( szLabel != NULL && *szLabel != '\0' )
+		fprintf( csu->fp, "#%s\n", szLabel );
+	    if ( szKey != NULL && *szKey != '\0' )  {
+		if ( keyCont == NULL )
+		    fprintf( csu->fp, "%s=\n", szKey );
+		else
+		    fprintf( csu->fp, "%s=%s\n", szKey, keyCont );
+	    }
+	    adjustOffsetInCache( csu, offset, changeLen );
+	    if ( reAddItemToCache( csu,szGroup,szLabel,szKey,offset,1 ) == -1 ) {
+		LeaveCriticalSection( &(csu->dCriticalSection) );
+		return -1;
+	    }
+	    break;
+
+	case -1 :   //new key
+	    p = csu->cacheMem + csu->curLabelOffset;
+	    curMem = csu->cacheMem + *(long *)(p+6) + *(p+1) - 4;
+	    		//get the position near the label, write the key behind the label
+	    offset = *(long *)curMem;
+	    fseek( csu->fp, offset, SEEK_SET );
+	    fgets( buf, 4096, csu->fp );
+	    offset = ftell( csu->fp );
+	    
+	    changeLen = keyLen + 1 + contLen + 2;
+	    fileBytesMove( csu->fp, offset, offset + changeLen );
+	    fseek( csu->fp, offset, SEEK_SET );
+	    if ( szKey != NULL )  {
+		if ( keyCont == NULL )
+		    fprintf( csu->fp, "%s=\n", szKey );
+		else
+		    fprintf( csu->fp, "%s=%s\n", szKey, keyCont );
+	    }
+	    adjustOffsetInCache( csu, offset, changeLen );
+	    if ( reAddItemToCache( csu,szGroup,szLabel,szKey,offset,1 ) == -1 ) {
+		LeaveCriticalSection( &(csu->dCriticalSection) );
+		return -1;
+	    }
+	    break;
+
+	default :
+	    p = csu->cacheMem + csu->curKeyOffset;
+	    curMem = csu->cacheMem + *(long *)(p+2) + *(p+1) - 4;
+	    offset = *(long *)curMem;
+	    fseek( csu->fp, offset, SEEK_SET );
+	    fgets( buf, 4096, csu->fp );
+	    tmpLen = strlen( buf );
+
+	    s = strchr(buf, '=');
+	    if( s == NULL ) {
+		LeaveCriticalSection( &(csu->dCriticalSection) );
+		return -1;
+	    }
+	    i = s - buf + 1;
+
+	    /*this algorithm is stupid, so change it as upper
+	    for ( i = 0; i < 4095 && buf[i] != '\0'; i++ )
+		if ( buf[i] == '=' ) break;
+
+	    if ( buf[i] != '=' ) {
+		LeaveCriticalSection( &(csu->dCriticalSection) );
+		return -1;
+	    }
+	    i++;
+	    */
+
+	    changeLen = i + contLen + 1 - tmpLen;
+	    offset += tmpLen - 1;
+	    fileBytesMove( csu->fp, offset, offset + changeLen );
+	    offset -= tmpLen - i - 1;
+	    fseek( csu->fp, offset, SEEK_SET );
+	    if ( szKey != NULL && keyCont != NULL )
+		fprintf( csu->fp, "%s", keyCont );
+	    adjustOffsetInCache( csu, offset, changeLen );
+	    if ( reAddItemToCache( csu,szGroup,szLabel,szKey,offset,1 ) == -1 ) {
+		LeaveCriticalSection( &(csu->dCriticalSection) );
+		return -1;
+	    }
+	    break;
+    }
+
+    LeaveCriticalSection( &(csu->dCriticalSection) );
+    return 0;
+
+}  //end of the WriteCfgKey()
+
+
+
+// szGroup == NULL: enum the groups
+// szLabel == NULL: enum the label of a group
+// szKey   == NULL: enum the key of a label of a group
+//
+// empty key should be expressed as: ""
+//
+//======================================
+long enumItemInCache( PCFG_STRU csu, unsigned char *szGroup,              \
+				     unsigned char *szLabel,              \
+				     unsigned char *szKey,   		  \
+				     char          *buf,                  \
+				     int	   *iBufSize )
+{
+    unsigned short groupLen, labelLen, keyLen;
+    unsigned char *tail, *p;
+    int		   i = 0, j;
+    unsigned char *sz;
+
+    if( csu == NULL )
+	return  0;
+
+    //dec for hold tail '\0\0'
+    (*iBufSize)--;
+    *buf = '\0';
+
+    EnterCriticalSection( &(csu->dCriticalSection) );
+
+    csu->curGroupOffset = csu->cacheTableHead;
+    if ( csu->cacheTableTail == csu->cacheTableHead ) {
+	LeaveCriticalSection( &(csu->dCriticalSection) );
+	return -4;
+    }
+
+    if ( szGroup != NULL ) groupLen = strlen( szGroup ) + 4;
+    else groupLen = 4;
+    if ( szLabel != NULL ) labelLen = strlen( szLabel ) + 4;
+    else labelLen = 4;
+    if ( szKey != NULL ) keyLen = strlen( szKey ) + 4;
+    else keyLen = 4;
+
+    p = csu->cacheMem + csu->cacheTableHead;
+    tail = csu->cacheMem + csu->cacheTableTail;
+
+    while ( p < tail && *p == 0 )
+    {
+	sz = csu->cacheMem + *(long *)(p+6);
+	if( szGroup == NULL ) {
+
+	    j = i;
+	    if( *(p+1) == 4 )
+	    {   //
+		//this copy is safe, unless that the memory has just 4 bytes
+		//for this must be the 1st one in cfg_fast
+		//
+		strcpy(buf+j, "`,");
+		i += 2;
+	    } else {
+		i += *(p+1)-4+1;
+		if( i < *iBufSize ) {
+		    strZcpy(buf+j, sz, *(p+1)-4+1);
+                    strcat(buf+j, ",");
+		} else {
+		    *(buf+i) = '\0';
+		    *iBufSize = i + 1;
+		    LeaveCriticalSection( &(csu->dCriticalSection) );
+		    return  i;
+		}
+	    }
+
+	} else if ( strnicmp( szGroup, sz, groupLen - 4 ) == 0 && *(p+1) >= groupLen )
+	{
+	    break;
+	}
+
+	p += *(long *)(p+2);
+    }
+
+    if( szGroup == NULL ) {
+	if( i != 0 )
+	    *(buf+i-1) = '\0';
+
+	*iBufSize = i;
+	LeaveCriticalSection( &(csu->dCriticalSection) );
+	return  1;
+    }
+
+    csu->curGroupOffset = p - csu->cacheMem;
+    if ( p >= tail || *(p+1) != groupLen || *p != 0 ) {
+	LeaveCriticalSection( &(csu->dCriticalSection) );
+	return -3;
+    }
+
+    tail = p + *(long *)(p+2);
+    p += 10;
+
+
+    /*///////////////////////////////////////
+    while ( p < tail && *p == 1 && *(p+1) == 4 )
+	p += *(unsigned short *)(p+2);
+    */
+
+    while ( p < tail && *p == 1 )
+    {
+	sz = csu->cacheMem + *(long *)(p+6);
+	if( szLabel == NULL ) {
+
+	    j = i;
+	    if( *(p+1) == 4 )
+	    {   //
+		//this copy is safe, unless that the memory has just 4 bytes
+		//for this must be the 1st one in cfg_fast
+		//
+		strcpy(buf+j, "`,");
+		i += 2;
+	    } else {
+		i += *(p+1) - 4 + 1;
+		if( i < *iBufSize ) {
+		    strZcpy(buf+j, sz, *(p+1) - 4 + 1);
+		    strcat(buf+j, ",");
+		} else {
+		    *(buf+i) = '\0';
+		    *iBufSize = i + 1;
+		    LeaveCriticalSection( &(csu->dCriticalSection) );
+		    return  i;
+		}
+	    }
+
+	} else if( strnicmp(szLabel, sz, labelLen - 4) == 0 && *(p+1) >= labelLen )
+	{
+	    break;
+	}
+
+	p += *(long *)(p+2);
+    }
+
+    if( szLabel == NULL ) {
+	if( i != 0 )
+	    *(buf+i-1) = '\0';
+
+	*iBufSize = i;
+	LeaveCriticalSection( &(csu->dCriticalSection) );
+	return  1;
+    }
+
+    csu->curLabelOffset = p - csu->cacheMem;
+    if ( p >= tail || *(p+1) != labelLen || *p != 1 ) {
+	LeaveCriticalSection( &(csu->dCriticalSection) );
+	return -2;
+    }
+
+    tail = p + *(long *)(p+2);
+    p += 10;
+
+
+    ///////////////////////////////////////
+    while ( p < tail && *p == 2 && *(p+1) == 4 )
+	p += 6;
+
+    while ( p < tail && *p == 2 )
+    {
+	sz = csu->cacheMem + *(long *)(p+2);
+	if( szKey == NULL ) {
+
+	    j = i;
+
+	    if( *(p+1) == 4 )
+	    {   //
+		//this copy is safe, unless that the memory has just 4 bytes
+		//for this must be the 1st one in cfg_fast
+		//
+		strcpy(buf+j, "`,");
+		i += 2;
+	    } else {
+		i += *(p+1) - 4 + 1;
+		if( i < *iBufSize ) {
+		    strZcpy(buf+j, sz, *(p+1) - 4 + 1);
+		    strcat(buf+j, ",");
+		} else {
+		    *(buf+i) = '\0';
+		    *iBufSize = i + 1;
+		    LeaveCriticalSection( &(csu->dCriticalSection) );
+		    return  0;
+		}
+	    }
+	} else if ( strnicmp(szKey, sz, keyLen - 4) == 0 )
+	{
+	    break;
+	}
+
+	p += 6;
+    }
+
+    if( szKey == NULL ) {
+	if( i != 0 )
+	    *(buf+i-1) = '\0';
+	*iBufSize = i;
+	LeaveCriticalSection( &(csu->dCriticalSection) );
+	return  1;
+    }
+
+    csu->curKeyOffset = p - csu->cacheMem;
+    LeaveCriticalSection( &(csu->dCriticalSection) );
+
+    if ( p >= tail || *(p+1) != keyLen || *p != 2 ) {
+	return -1;
+    }
+
+    return *(long *)(csu->cacheMem + *(long *)(p+6) + *(p+1)-4);
+
+} //end of enumItemInCache()
+
+
+
+#ifdef TEST
+
+void main( void )
+{
+    char szFileName[80] = "asqlwmt.cfg", szGroup[80], szLabel[80], szKey[80];
+    char cont[80];
+    PCFG_STRU csu;
+    long offset;
+
+//    printf( "\nPlease input the file name : " );
+//    gets( szFileName );
+    if ( (csu = OpenCfgFile( szFileName )) == NULL )
+    {
+	printf( "Error in openning config file!!!" );
+	exit( 1 );
+    }
+
+    offset = indexItemInCache( csu, "SUB0","CODE", "");
+    printf("%ld\n", offset);
+    printf( "\nThis is : %s ", GetCfgKey(csu,"LZ0","BH", "CHECK_COND"));
+    return;
+
+    printf( "\nPlease input the group name : " );
+    gets( szGroup );
+    printf( "\nPlease input the Label name : " );
+    gets( szLabel );
+    printf( "\nPlease input the Key name : " );
+    gets( szKey );
+    printf( "\nPlease input the cont : " );
+    gets( cont );
+
+//    if ( !WriteCfgKey(csu, NULL, NULL, szKey, cont ) )
+    if ( !WriteCfgKey(csu, szGroup, szLabel, szKey, cont ) )
+//    if ( !WriteCfgKey(csu, NULL, szLabel, szKey, cont ) )
+	printf( "\n Writing success" );
+
+    printf( "\nPlease input the group name : " );
+    gets( szGroup );
+    printf( "\nPlease input the Label name : " );
+    gets( szLabel );
+    printf( "\nPlease input the Key name : " );
+    gets( szKey );
+
+//    strcpy( szKey, "a1" );
+    offset = indexItemInCache( csu, szGroup, szLabel, szKey );
+//    offset = indexItemInCache( csu, NULL, szLabel, szKey );
+    if ( offset >= 0 )
+    {
+//      printf( "\nThis is : %s ", GetCfgKey(csu,NULL,szLabel,szKey));
+	printf( "\nThis is : %s ", GetCfgKey(csu,szGroup,szLabel,szKey));
+	fseek( csu->fp, offset, SEEK_SET );
+	memset( szGroup, 0, 80 );
+	fgets( szGroup, 80, csu->fp );
+	printf( "\nIt's : %s", szGroup );
+    }
+    else
+	printf( "\nNot found!" );
+
+    CloseCfgFile( csu );
+}
+#endif
+
+
+
+
+/////////////////////////////// end of cfg_fast.c //////////////////////////////

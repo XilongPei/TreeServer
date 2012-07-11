@@ -1,0 +1,12 @@
+#*#ViewDBF#*#
+sub0.dbf
+tgview.dbf
+CODE
+NAME
+SEX
+#from  sub0.dbf
+#to tgview.dbf, R_E_C_N_O_, 10 N
+#cond
+#begin
+#  1 $ viewno(@1)
+#end

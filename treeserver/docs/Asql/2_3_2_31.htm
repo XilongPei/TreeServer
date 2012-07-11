@@ -1,0 +1,30 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>向视图记录号库内写记录号</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>向视图记录号库内写记录号(viewno)</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]viewno(域名)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]将FROM中的当前记录号记录于视图的域名记录文件中。域名起定位的作用，可以是库中的任意域名，如果不知道域名，也可用@1替代。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*将工程师的记录号存于文件TMPVIEW.dbf的Recno中*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">From \TG\DATA\SUB0.dbf<br>
+    To \TG\DATA\TMPVIEW.dbf,R_E_C_N_O_ 10 N<br>
+    Codition<br>
+    Begin<br>
+    post_name=&quot;083&quot;$viewno(@1)<br>
+    End</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> ASQL将记录号信息写在目标表的R_E_C_N_O_域中，该域为数字型。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

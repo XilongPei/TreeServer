@@ -1,0 +1,33 @@
+Microsoft HTML Help Compiler 4.73.8198
+
+Compiling d:\Tree\Tree.chm
+
+HHC5013: Error: TOC Error: URL reference cannot be resolved "TreeSVR的定位.htm"
+HHC3001: Warning: The file "d:\Tree\tree.hhc" has a link to a non-existent file: "d:\Tree\TreeSVR的定位.htm".
+HHC3001: Warning: The file "d:\Tree\tree.hhc" has a link to a non-existent file: "d:\Tree\TreeSVR的定位.htm".
+
+
+The following files were not compiled:
+Microsoft HTML Help Compiler 4.73.8198
+
+Compiling d:\Tree\Tree.chm
+
+HHC5003: Error: Compilation failed while compiling Treesv的定位.htm.
+
+
+The following files were not compiled:
+Treesv的定位.htm
+Microsoft HTML Help Compiler 4.73.8198
+
+Compiling d:\Tree\Tree.chm
+
+
+Compile time: 0 minutes, 4 seconds
+60	Topics
+96	Local links
+0	Internet links
+0	Graphics
+
+
+Created d:\Tree\Tree.chm, 35,598 bytes
+Compression decreased file by 15,451 bytes.

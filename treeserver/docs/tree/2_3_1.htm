@@ -1,0 +1,113 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>TreeSVR引擎开发</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>TreeSVR引擎开发</strong></p>
+    <p>　</p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TreeSVR事务服务引擎是TreeSVR架构中和重要组成部分，如果说TreeSVR的通信机构是信使，调度机构是公司的总经理，那么事务服务引擎则是兢兢业业、安分守己的业务员或部门经理。当这个引擎自身被多个引用并发执行，并且它们（自己的克隆线程）之间还有信息共享的话，这些业务员则要互相之间紧密合作，自己解决好那些公用资源的访问问题。一个业务员在用公司内唯一的一台复印机，另一个业务员则只能等着或想别的办法解决。而它又是怎么知道别人在用复印机的呢？这个部门还得有个管理机制，这个机制是建立在它们之间的共同可访问的资源之上的。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TreeSVR引擎(Engine)是事务的真正完成者，一个引擎自身构成一个独立问题解决环境，ASQL_Server是TreeSVR的内置引擎。TreeSVR的最大开放性是其允许用户自行开发事务引擎。在客户/服务器系统中，最难开发的是通信和业务调度系统，用户完全可以利用TreeSVR的这种特性，取其主干，而具体的事务由自己开发，这样系统的用户亲和性更好。更能满足用户的要求。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">引擎在TreeSVR架构中的位置如图2.7所示。</span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px"><img SRC="Image22.gif"
+    WIDTH="398" HEIGHT="275"></span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">图5.7 
+    事务服务引擎在TreeSVR架构中的位置</span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">开发TreeSVR的事务服务引擎是一项技术性非常高的任务，一般要求程序员具有相当的对操作系统Windows 
+    NT的理解，对WIn32 API编程、对多线程程序的协调和调度、对通信的包概念有一定认识。当然，如果一个引擎是单任务方式运行的，问题可能简单得多。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px"><b>开发TreeSVR事务服务引擎常用到的Windows 
+    NT资源介绍如下：</b></span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">1 临界区</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">临界区是一小段代码，在这段代码可以执行以前要排它在存取这些数据，在所有同步对象中临界区是用起来最简单的，它只能用来同步一个进程中的线程，TreeSVR的所有引擎都工作在一个进程内。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（1）定义临界区</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#include &lt;windows.h&gt;</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">CRITICAL_SECTION 
+    CriticalSection;</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（2）初始化函数</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">InitializeCriticalSection(LPCRITICAL_SECTION 
+    lpCriticalSection);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（3）进入临界区</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EnterCriticalSection(LPCRITICAL_SECTION 
+    lpCriticalSection);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（4）离开临界区</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LeaveCriticalSection(LPCRITICAL_SECTION 
+    lpCriticalSection);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">2 核心对象的互斥量</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">互斥量与临界非常相似，只不过它们可被用来同步多个进程间的数据访问。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（1）创建函数</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">HANDLE 
+    CreateMutex(LPSECURITY_ATTRIBUTES lpsa, BOOL fInitialOwner, LPSTR lpszMutexName);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">HANDLE OpenMutex(DWORD 
+    fdwAccess, BOOL fInherit, LPSTR lpszName);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（2）等待函数</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">WaitForMultipalObjects(DWORD 
+    cObjects, LPHANDLE lpHandle, BOOL hWaitAll, DWORD dwTimout);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">WaitForSingleObjects(DWORD 
+    cObjects, DWORD dwTimout);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（3）释放资源</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">ReleaseMutex(HANDLE 
+    hMutex)；</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">3 核心对象的信号量</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">信号量核心对象用资源计数。它们为线程提供了查询可用资源数目的能力；如果一个或多个资源可用，可用资源计数就减1。信号量自动测试和设置（test-and-set）操作，也就是说，当你从一个信号量请求资源时，操作系统将检查该资源是否可用，并将其计数减1，而在此期间任何别的线程都不能打扰。只有在资源计数减1之后，系统才会让别的线程访问此资源。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（1）创建函数</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">HANDLE 
+    CreateSeamphore(LPSECURITY_ATTRIBUTES lpsa, LONG cSemInital, LONG cSemMax, LPSTR 
+    lpszSemName);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">HANDLE OpenSeamphore(DWORD 
+    fdwAccess, BOOL fInherit, LPSTR lpszName);</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（2）等待函数同互斥量。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（3）释放函数</span></font></p>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">ReleaseSeamphore(HANDLE 
+    hSemaphore, LONG cRelease, LPLONG lplPrevious);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">4 核心对象的事件</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">事件对象是同步对象的最基本形式，它与互斥量和信号量大不相同。互斥量和信号量通常用来控制对数据的访问，但事件是用来发信号以表示某一操作已经完成/有两种不同类型的事件对象：人工重置（manual-reset）事件和自动重置(auto-reset)事件。人工重置事件用于向若干线程同时发信号表明某一操作已经完成，而自动重置事件用于向单个线程发信号表明某一操作已经完成。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（1）创建函数</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">HANDLE 
+    CreateEvent(LPSECURITY_ATTRIBUTES lpsa, BOOL fManualReset, BOOL fInitialiState, LPSTR 
+    lpszEventName);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">HANDLE OpenEvent(DWORD 
+    fdwAccess, BOOL fInherit, LPSTR lpszName);</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（2）等待函数同互斥量。</span></font></p>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（3）重置函数</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BOOL SetEvent(HANDLE 
+    hEvent);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BOOL ResetEvent(HANDLE 
+    hEvent)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BOOL PulseEvent(HANDLE 
+    hEvent);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">5 线程局部存储</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">线程局部存储是一种将数据和对象（线程）相联的存储方案，因为每个线程运行过程中都可能有自己的私有数据，只有靠这些量才更容易管理这些数据。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">线程局部存储有动态线程局部存储与静态线程局部存储两种，由于静态线程存储定义将引起动态连接库装入上的困难所以在开发事务服务引擎时无法使用。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（1）申请函数</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD TlsAlloc(void);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（2）设值</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BOOL TlsSetValue(DWORD 
+    dwTlsIndex, LPVOID lpvTlsValue);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（3）取值</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPVOID TlsGetValue(DWORD 
+    dwTlsIndex);</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">（4）释放</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BOOL TlsFree(DWORD 
+    dwTlsIndex);</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

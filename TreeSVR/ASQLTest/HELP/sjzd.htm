@@ -1,0 +1,280 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>系统数据字典</title>
+</head>
+
+<body bgcolor="#EAEAFB">
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><h2 align="center"><b><font face="楷体_GB2312">系统数据字典</font></h2>
+    </b><p ALIGN="JUSTIFY">ASQL的数据字典由两部分组成，一部分详细说明表级定义，为一个文本文件，另一部分说明域级定义，为一DBF文件。</p>
+    <b><ol>
+      <li><a name="5_1">表级定义</a></li>
+      </b><p ALIGN="JUSTIFY">系 统 ............... [MACRO] </p>
+      <p ALIGN="JUSTIFY">│ </p>
+      <p ALIGN="JUSTIFY">┌──────┐</p>
+      <p ALIGN="JUSTIFY">基本集(sub0) ...... 基本集(main)........ [BASESET] /*基本集构成*/</p>
+      <p ALIGN="JUSTIFY">│ │</p>
+      <p ALIGN="JUSTIFY">┌─────┐ MAIN1 MAIN2..... [FILECTL] /*构成基本集的</p>
+      <p ALIGN="JUSTIFY">各个数据库文</p>
+      <p ALIGN="JUSTIFY">子集sub1 ...... 子集sub21 件的构成*/</p>
+      <p ALIGN="JUSTIFY">│ </p>
+      <p ALIGN="JUSTIFY">│</p>
+      <p ALIGN="JUSTIFY">域...... ..................[FIELDCTL] /*域的构成*/</p>
+      <p ALIGN="JUSTIFY">图1.1 ASQL支持的信息结构及控制层定义</p>
+      <p ALIGN="JUSTIFY">　</p>
+      <p ALIGN="JUSTIFY">系统数据字典文件的结构为：</p>
+      <table BORDER="1" CELLSPACING="2" CELLPADDING="7" WIDTH="111">
+        <tr>
+          <td VALIGN="top"><b><p ALIGN="JUSTIFY">[组]</b></td>
+        </tr>
+        <tr>
+          <td VALIGN="top"><p ALIGN="JUSTIFY">#段</td>
+        </tr>
+        <tr>
+          <td VALIGN="top"><p ALIGN="JUSTIFY">关键字＝内容</td>
+        </tr>
+        <tr>
+          <td VALIGN="top"><p ALIGN="JUSTIFY">//注释</td>
+        </tr>
+      </table>
+      <p ALIGN="JUSTIFY">为了使用数据字典看起来更简洁，ASQL数据字典允许提取字典中的共同串，给它们一个名称，放在[MACRO]段中。</p>
+      <p ALIGN="JUSTIFY">//ASQL事务服务引擎配置文件<br>
+      //版权所有: (c)上海中铁高新软件中心 1997<br>
+      //本配置文件每行最 4096 ASCII字符</p>
+      <p ALIGN="JUSTIFY">[MACRO]<br>
+      PEI=YINZHU<br>
+      [SYSTEM]<br>
+      CODE=c:\tg\code\ccode.cod<br>
+      LOGFILE=<br>
+      LASTTID = 7<br>
+      #DBROOT<br>
+      PATH = <a href="file:///e:/wmtasql/">e:\wmtasql\</a><br>
+      [DATABASE]<br>
+      #LZ<br>
+      PATH=e:\wmtasql\<br>
+      #TG<br>
+      PATH=e:\tg\<br>
+      [POLICY]<br>
+      #OPENDBF<br>
+      NUM = 2<br>
+      F1 = LZ0.DBF<br>
+      F2 = LZ1.DBF<br>
+      [DBROOT]<br>
+      #LZ0<br>
+      TID=1<br>
+      KEEP_PHYSICAL_ORDER = 1<br>
+      DPACK_AUTO=1<br>
+      WLOG=0<br>
+      MAINKEY_NUM=1<br>
+      NDX1=LZ0_1.NDX<br>
+      KEY1=SEX<br>
+      NDX2=LZ0_2.NDX<br>
+      KEY2=NAME<br>
+      #SUB0<br>
+      KEEP_PHYSICAL_ORDER = 1<br>
+      DPACK_AUTO=1<br>
+      TID=2<br>
+      [LZ]<br>
+      [TG]<br>
+      #SUB0<br>
+      KEEP_PHYSICAL_ORDER = 1<br>
+      DPACK_AUTO=1<br>
+      TID=3<br>
+      #SUB1<br>
+      KEEP_PHYSICAL_ORDER = 1<br>
+      DPACK_AUTO=1<br>
+      TID=4<br>
+      #SUB2<br>
+      KEEP_PHYSICAL_ORDER = 1<br>
+      DPACK_AUTO=1<br>
+      TID=5<br>
+      #SUB3<br>
+      KEEP_PHYSICAL_ORDER = 1<br>
+      DPACK_AUTO=1<br>
+      TID=6<br>
+      #SUB4<br>
+      KEEP_PHYSICAL_ORDER = 1<br>
+      DPACK_AUTO=1<br>
+      TID=7</p>
+      <p ALIGN="JUSTIFY">下面对系统主控文件中的各组进行详细说明。</p>
+      <b><p ALIGN="JUSTIFY">1.宏定义[MACRO]</p>
+      </b><p ALIGN="JUSTIFY">宏定义的方法为：宏 = 具体内容</p>
+      <p ALIGN="JUSTIFY">例如：</p>
+      <p ALIGN="JUSTIFY">[MACRO]<br>
+      CODE=\TG\CODE\</p>
+      <p ALIGN="JUSTIFY">引用办法：采用两个%，中间为宏定义。</p>
+      <p ALIGN="JUSTIFY">例如：</p>
+      <p ALIGN="JUSTIFY">引用代码库文件路径：CODE=%CODEPATH%CODE.COD，宏替换后为：CODE=\TG\COD\CODE.COD。</p>
+      <b><p ALIGN="JUSTIFY">2.系统 [SYSTEM]</p>
+      </b><p ALIGN="JUSTIFY">[SYSTEM]//代码库文件名</p>
+      <p ALIGN="JUSTIFY">CODE=c:\tg\code\ccode.cod<br>
+      //日志文件名<br>
+      LOGFILE=//最小可用标标识<br>
+      LASTTID = 7 <br>
+      //临时文件放置路径<br>
+      TEMP_PATH = <a href="file:///c:/temp/">c:\temp\</a><br>
+      //缺省数据库路径<br>
+      #DBROOT<br>
+      PATH = e:\wmtasql\</p>
+      <b><p ALIGN="JUSTIFY">3.数据库 [DATABASE]</p>
+      </b><p ALIGN="JUSTIFY">[DATABASE]<br>
+      //#后为库名<br>
+      #LZ<br>
+      //库所对应的文件系统路径<br>
+      PATH=e:\wmtasql\</p>
+      <b><p ALIGN="JUSTIFY">4..优化[POLICY]</p>
+      </b><p ALIGN="JUSTIFY">//快速打开数据表</p>
+      <p ALIGN="JUSTIFY">#OPENDBF<br>
+      NUM = 2<br>
+      F1 = LZ0.DBF<br>
+      F2 = LZ1.DBF</p>
+      <p ALIGN="JUSTIFY">为了加快某些表的操作，ASQL允许对它们进行特殊管理，快速引用。ASQL在打开这些表时，也会同时打开其在数据字典中描述的索引。</p>
+      <p ALIGN="JUSTIFY">#OPENDBF<br>
+      //数量<br>
+      NUM = 2<br>
+      //Fn （n为1到NUM的整数）为每个表的名字，这此文件名如果没有写名全文件名，则认为是缺省数据库下的表。也可以是这种形式：</p>
+      <p ALIGN="JUSTIFY">库名*表名</p>
+      <p ALIGN="JUSTIFY">来表示具体表</p>
+      <p ALIGN="JUSTIFY">F1 = LZ0.DBF<br>
+      F2 = E:\WMTASQL\DATA\LZ1.DBF</p>
+      <b><p ALIGN="JUSTIFY">5.基本集描述 [BASESET]，<u><i>目前保留使用</p>
+      </i></u></b><p ALIGN="JUSTIFY">ASQL的数据库系统是采用一个基本集(主数据库)、外带若干个子集(子数据库)的结构。如个人基本信息库是一个基本集，个人的主要业务技术工作、奖惩信息、爱人情况等信息则分别存在主要业务技术工作信息库、奖惩信息库、爱人情况信息库等各个数据库中，称为子集，子集对个人基本信息集进行补充。在基本集和子集之间是通过主关键字进行关联，在基本集和子集中都有一个共同的域(字段)，称为主关键字，如人员基本信息集和他的的子集是通过主关键字－－CODE域( 
+      或称人员代码)来联接的。</p>
+      <p ALIGN="JUSTIFY">一个基本集和他的若干个子集我们称为一个数据库系统。在中组部的标准中称为信息群。</p>
+      <p ALIGN="JUSTIFY">在系统参数文件中的[BASESET]部分，对系统基本集和子集情况进行了说明。</p>
+      <p ALIGN="JUSTIFY">(1)数据库系统或基本集的个数</p>
+      <p ALIGN="JUSTIFY">BASESETNUM = 3　 /*共3 个数据库系统（基本集）*/</p>
+      <p ALIGN="JUSTIFY">(2)基本集数据库名</p>
+      <p ALIGN="JUSTIFY">BASESETS = SUB0,MAIN,UNITWORK /*3个基本集为SUB0,MAIN,UNITWORK*/</p>
+      <p ALIGN="JUSTIFY">(3)数据库系统的组成</p>
+      <p ALIGN="JUSTIFY">#SUB0　　 /*基本集数据库库名*/<br>
+      NAME = 个人基本信息　 /*基本集中文名*/<br>
+      SUBSETNUM = 22 /*子集个数*/<br>
+      SUBSETS = SUB1,SUB2,SUB3,SUB4,SUB5,SUB6,SUB7,SUB8,SUB9,SUB10,;<br>
+      SUB11,SUB12,SUB13,SUB14,SUB15,SUB16,SUB17,SUB18, ;<br>
+      SUB19, SUB20, SUB21, SUB22 /*子集名集合*/<br>
+      STATINFONUM=3 /*提示信息描述项数量*/<br>
+      STATINFO=NAME(RAWMODE)|WU_NAME(HZTHMODE)|DEL(FREEMODE,0:|,1:已删除)</p>
+      <p ALIGN="JUSTIFY">/*提示信息，RAWMODE 表示括号前的域直接参与提示；HZTHMODE表示括号前的域经汉字替换后参与提示；FREEMODE表示按后面的描述规则转换后参与提示，本例中DEL=0则提示&quot;|&quot;，若DEL=1，则提示&quot;已删除&quot;。*/</p>
+      <p ALIGN="JUSTIFY">RELATEKEY=CODE /*关联关键字，本基本集与子集联接的关键字*/</p>
+      <p ALIGN="JUSTIFY">RELATIVEPATH=%DATAPATH%RELATIVE.SUB /*相关项管理文件名*/</p>
+      <b><p ALIGN="JUSTIFY">6.表定义</p>
+      </b><p ALIGN="JUSTIFY">[DBROOT]<br>
+      #表名<br>
+      TID=表标识号<br>
+      WLOG=写日志否<br>
+      NAME= 该信息集作为一个独立数据库(如选子集)时用到的名字。<br>
+      PATH=%DATAPATH%SUB0.VEW /*说明视图的路径，SUB0.VEW为视图*/<br>
+      MAINKEY_NUM=1 /*主关键字数*/<br>
+      DEL_LIB=%DELPEH%DSUB0.DBF /*删除库名*/<br>
+      DEL_FLD=DEL /*删除域的域名，在LZMIS中为<br>
+      A39，当该域的数不为0时，<br>
+      表示将该记录放入删除库*/<br>
+      KEEP_PHYSICAL_ORDER=1 /*保持物理序否，1:保持；0:不保持*/<br>
+      DPACK_AUTO=1 /*关闭前自动做PACK操作：1:PACK； 0:不PACK, PACK是指过滤掉置了删除标记的记录*/<br>
+      NDX1=文件名 /*索引1*/<br>
+      KEY1=域名[+域名……] /*索引1用到的关键字*/<br>
+      NDX2=文件名 /*索引2*/<br>
+      KEY2=域名[+域名……] /*索引2用到的关键字*/</p>
+      <p ALIGN="JUSTIFY">……</p>
+      <p ALIGN="JUSTIFY">NDX10=文件名 /*索引10*/<br>
+      KEY10=域名[+域名……] /*索引10用到的关键字*/</p>
+      <p ALIGN="JUSTIFY">文件名是一个没有路径及扩展名的纯文件名，因为TreeSVR认为每个索引都与其表放在一个目录中，并且扩展名因定是“<b>.NDX”。</p>
+      </b><p ALIGN="JUSTIFY">表的定义是针对叫这个名字的表的，它可以存在于这个库的某个子目录中。</p>
+      <p ALIGN="JUSTIFY">在本例中SUB0.VEW是一个视图。</p>
+      <li><b><a NAME="5_2">域级定义</a><br>
+        </b><br>
+        为了简化域的描述，域的描述是放在一张表中的，其表的结构为：<table
+        BORDER="1" CELLSPACING="1" BORDERCOLOR="#000000" CELLPADDING="7" WIDTH="321">
+          <tr>
+            <td VALIGN="top" BGCOLOR="#800000"><i><b><p ALIGN="JUSTIFY"><font color="#FFFFFF">Field 
+            域名 类型 宽度</font></b></i></td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">1 NUM Character 4</td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">2 TID Character 4</td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">3 BASENAME Character 8</td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">4 C_EXPR Character 20</td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">5 EFNAME Character 10</td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">6 CWIDE Character 2</td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">7 EWIDE Character 2</td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">8 DEC Character 2</td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">9 D_TYPE Character 1</td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">10 CFNAME Character 20</td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">11 REPDESCRIP Character 70</td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">12 CHECK_COND Character 150</td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">13 TYPE Character 1</td>
+          </tr>
+          <tr>
+            <td VALIGN="TOP"><p ALIGN="JUSTIFY">** 记录大小 ** 295</td>
+          </tr>
+        </table>
+        <p ALIGN="JUSTIFY">下边对域描述表中每个域的含义作一解释：</p>
+        <p ALIGN="JUSTIFY">1. NUM 信息项编号</p>
+        <p ALIGN="JUSTIFY">NUM 的宽度为四，前两位表示数据库的编号，例如，在TGMIS原始资源中，00表示SUB0， 
+        01表示SUB1...，10表示SUB10...等等。NUM中的后两位表示同一库中域名的编号，也 
+        可自行定义，它没有实际意义。</p>
+        <p ALIGN="JUSTIFY">2.TID 表标识</p>
+        <p ALIGN="JUSTIFY">3. BASENAME 数据库名</p>
+        <p ALIGN="JUSTIFY">信息项所在的数据库（源库）名。</p>
+        <p ALIGN="JUSTIFY">4. EFNAME 域名</p>
+        <p ALIGN="JUSTIFY">信息项在数据库中的域名。</p>
+        <p ALIGN="JUSTIFY">5. C_EXPR 对应的中文域名</p>
+        <p ALIGN="JUSTIFY">信息项的中文自然含义。</p>
+        <p ALIGN="JUSTIFY">6. EWIDE 域宽</p>
+        <p ALIGN="JUSTIFY">数据库(源库)中的信息项的域宽。</p>
+        <p ALIGN="JUSTIFY">7. CWIDE 中文域宽</p>
+        <p ALIGN="JUSTIFY">信息项的中文宽度，对于域中填写的内容是与代码库一一对应的域，&amp;127;即所对崐应的代码库中的C_BRIF字段的宽度。此项也可用 
+        &amp;127;来控制汉字替换以后汉字库中该崐域的宽度。汉字替换的结果是代码库中C_BRIF中的内容。</p>
+        <p ALIGN="JUSTIFY">8.DEC 小数位</p>
+        <p ALIGN="JUSTIFY">9.D_TYPE 数据类型</p>
+        <p ALIGN="JUSTIFY">10. CFNAME 中文域名</p>
+        <p ALIGN="JUSTIFY">它是简化了的中文域名，在查询结果输出时用它来自动构造所选择的输出项的域 
+        名，在屏幕上显示的也是简化了的中文域名。</p>
+        <p ALIGN="JUSTIFY">11. REPDESCRIP 汉字替换方式（代码替换表达式）</p>
+        <p ALIGN="JUSTIFY">用以描述汉字替换方式的表达式，对于域中填写的内容是代码库一一对应的域，此项填写的是该信息项所对应的代码库名，空为不需替换。</p>
+        <p ALIGN="JUSTIFY">通常，数据库中该域的宽度和对应的代码库中的 E_EXPR 
+        的宽度一致，&amp;127;将源崐库中的代码 
+        字符串全部取出，在对应的代码库中找到此代码所对应的汉字，进行替换。</p>
+        <p ALIGN="JUSTIFY">12. CHECK_COND 数据检查条件表达式</p>
+        <p ALIGN="JUSTIFY">填写该项信息必须满足的条件表达式，在进行数据操作时，系统会自动根据此条件对数据进行检查。空为不检查。</p>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>　 </p>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>TreeSVR服务器安全</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>TreeSVR服务器安全</strong></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">对TreeSVR的访问是通过服务器登录和口令来控制的,一般来说,用户一旦通过管理连接到TreeSVR上，TreeSVR将起动一个“事务服务外壳（Transaction 
+    Service Shell）”，用户以后的请求都是通过这个外壳负责归纳整理并提交运行的，这个外壳还是事务服务引擎（Transcation 
+    Service Engineer）与客户端（在网络计算模式中为CGI）交换信息的中间桥梁。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">事务服务外壳在与一个用户产生真正的服务承诺前，首先查证用户及其登录机器（Windows用户的每台机器都有一个独立名字），判断该用户是否可以通过这台机器发出请求。只有本审计通过的用户才可以开始后面的任务请求。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">如“计算机火车票售票系统”中，某一售票员具有售票的资格，他可以引用TreeSVR提供的事务服务，但是他只可以在售票厅中的某台计算机上完成此项业务，而不可以通过网络其它连接方式登录到TreeSVR上执行此项业务。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">（登录办法）</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

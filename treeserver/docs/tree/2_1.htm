@@ -1,0 +1,65 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>服务器系统架构</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>服务器系统架构</strong></p>
+    <blockquote>
+      <ol style="font-size: 12px">
+        <li><a href="2_1_1.htm"><font FACE="宋体" SIZE="2">多进程事务服务引擎</font></a></li>
+        <li><a href="2_1_2.htm"><font FACE="宋体" SIZE="2">单进程多线程事务服务引擎</font></a></li>
+      </ol>
+      <p><font FACE="宋体" SIZE="2">　</font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">在事务服务器在体系结构上可以充分参照数据库服务器，所以这里是借助数据库结构技术讨论事务服务器。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">在当前的客户/服务器世界中，写数据库引擎有两种主要的结构。理解这两种结构有助于用户更好地工作，因而在此先对二者进行叙述。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第一种是多进程结构，其特点是多个可执行程序同时运行。一般来讲，这些引擎消耗的系统资源明显比其他类型多，但要比其相似产品显得更易于同十分大的平台匹配。因为进程间空间是隔离的，所以软件较容易构造可靠运行机制。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">第二种是单进程、多线程结构，这是TreeSVR使用的结构。这种结构依靠在单个应用程序进行多线程的工作，而不是为每一个任务运行不同的可招待程序或应用程序。其优点是在性能水平相当的情况下，硬件需求明显减少。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TreeSVR是在Windows NT上运行的事务代理服务器，所以Windows 
+      NT的特性直接影响着TreeSVR的设计。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Windows NT操作系统一项重要的特征就是它在基本操作系统的结构中继承了的多线程处理，它被称为本地多线程，这是因为线程的特性被内置在操作系统中。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">当一个应用是多线程的，这就意味着在同一时刻同一进程可能会存在着多个逻辑通路或线程。例如，一个独立的多线程应用可以监视用户在一个线程上进行并发输入。与此同时在另一个线程上在网络中传送一个数据流，这时，虽然程序同时并行执行大量的任务，但却只有一个程序的拷贝在运行。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">探讨一下Windows NT的线程对象有助于阐明一些有关多线程的概念。可以从这个对象框中得到大量关于多线程的有意义的统计数字（见图2.1）：</span></font></p>
+      <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">　</span></font></p>
+      <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px"><img SRC="Image16.gif"
+      WIDTH="550" HEIGHT="412"></span></font></p>
+      <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">图2.1 Windows NT性能监视器</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">统计数字解释：</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">特许时间百分数；Windows 
+      NT是一个多进程、多线程环境，这项表明在Windows NT特许方式下一个特定线程所使用时间的百分比。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">信息处理时间百分数：这个统计数字表明一个给定的线程在处理器上是如何工作的时间百分比。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">用户时间百分数：这个统计数字用来测量在Windows 
+      NT用户方式下线程使用了多少时间，用户方式是典型的用户应用和进程最普遍的状态方式。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">每秒范围转换：当一个线程从CPU进出时会发生一个范围转换。这项数字计算这个事件每秒发生的次数。多线程的一个主要优点就是减少了范围转换，因为范围转换的消耗是十分大的。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">流经时间：这个统计数字显示线程运行所需的时间，以秒炎单位。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">ID进程：Windows NT使用这个数值作为一个特定进程的不同的标识。值得注意的是，一旦这个进程结束，操作系统可能重新设置这个数值给日后的另一个进程。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">ID线程：正如我们刚才所购买到的，进程ID代表了Windows 
+      NT分配给一个特定进程的唯一标识。这个统计数字和ID进程执行同一个函数，只不过它是针对线程的。因此，这就意味着一旦原始线程结束，操作系统可以重新应用一个线程ID。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">基本优先级：正如上面的统计数字所示，Windows 
+      NT使用内部算法为线程设定优先级。但是根据线程的活动性，操作系统可以在任何时刻改变这个线程的优先级。这个统计数字向我们展示了线程当前的优先级。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">线程状态：条件或状态均有一个限定的数值，它可以在任何给定的时间描述线程。这个统计数字报告线程的状态，数值可以是：</span></font></p>
+      <ul>
+        <li><font size="3"><span style="font-size: 12px">0棗初始状态。</span></font></li>
+        <li><font size="3"><span style="font-size: 12px">1棗准备状态。当一个线程处于准备状态时，它处于准备工作但不能的状态，直到一个处理器京戏为可用的为止。</span></font></li>
+        <li><font size="3"><span style="font-size: 12px">2棗运行状态。被一个处理器所服务，线程便处于运行状态。</span></font></li>
+        <li><font size="3"><span style="font-size: 12px">3棗终止状态。打算在一个处理器上运行，线程便处于备用状态。</span></font></li>
+        <li><font size="3"><span style="font-size: 12px">4棗中断状态。Windows NT中断一个线程一旦运行结束。</span></font></li>
+        <li><font size="3"><span style="font-size: 12px">5棗等待状态。当一个线程处于I/O请求，而系统还无法满足这一请求时线程所处状态。</span></font></li>
+        <li><font size="3"><span style="font-size: 12px">6棗过渡状态。除了等待系统资源外，线程几乎准备好工作，这时称线程处于过渡状态。</span></font></li>
+        <li><font size="3"><span style="font-size: 12px">7棗未知状态。</span></font></li>
+      </ul>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

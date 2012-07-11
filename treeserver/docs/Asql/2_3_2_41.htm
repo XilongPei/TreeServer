@@ -1,0 +1,45 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>跳转动作</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>跳转动作(goto)</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><br>
+    [原型]goto( &lt;字符型表达式&gt;表示的标号 )</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]该函数决定本动作执行完后的下一动作，标号是由LABEL定义的。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">跳转只能在CONDITION段或过程语句块中进行，而且GOTO也跳不过ENDWHILE或ENDIF语句，即不能从分支体或循环体跳出。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例1]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">PRED<br>
+    FLOAT f1,f2,f3<br>
+    FROM sub0<br>
+    TO cxmain,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    occupy=&quot;081&quot; $ askmax(salary,&quot;f1&quot;);goto(&quot;condend&quot;)<br>
+    occupy=&quot;082&quot; $ askmax(salary,&quot;f2&quot;);goto(&quot;condend&quot;)<br>
+    occupy=&quot;083&quot; $ askmax(salary,&quot;f3&quot;);goto(&quot;condend&quot;)<br>
+    LABEL condend<br>
+    END<br>
+    ACT wsymbol(&quot;symbol.dbf&quot;)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例2]/*出这个例子是借的，它跳过了ENDWHILE*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">PRED<br>
+    INT I<br>
+    LET I:=1<br>
+    WHILE I&lt;100<br>
+    IF I&gt;10<br>
+    goto( &quot;stop&quot;)<br>
+    ENDIF<br>
+    ENDWHILE</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

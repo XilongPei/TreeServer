@@ -1,0 +1,31 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>内存交互读数据库</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>内存交互读数据库</strong></p>
+    <p align="left"><strong>　</strong></p>
+    <p><font size="3"><span style="font-size: 12px">lp = 0x2013 内存交互读数据库BLOB记录(cmTS_ 
+    BLOB_ MEM_FETCH)</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">请求包格式：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">4字节：df，</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">4字节：recNo</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">12字节：Blob字段名</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">应答包格式：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">由三部分组成：包头、信息</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">lp为BLOB长度，后面是否还有数据视leftPacket和endPacket定。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">服务器端以‘B’包的形式返回结果。最后返回一个‘D’包，如果中途返回了‘E’包，表示出错。</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

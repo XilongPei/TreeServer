@@ -1,0 +1,40 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>New Page 12</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+
+<table border="1" width="100%">
+  <tr>
+    <td width="100%">　<p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]delete([提交源表声明]<i>或</i>域名)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]逻辑删除源库中当前记录，即对当前记录置删除标记。 
+    使用此函数时千万要慎重，因为此删除并非在Del域中置1，而是xBASE形式的逻辑删除，它用ASQL语言无法恢复，在xBASE环境下也可能不能取消删除。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL在关闭数据表的时侯，如果数据字典中指定该表可以自动物理删除（AUTO_DPACK），则ASQL要自动删除这些做了逻辑删除的记录。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">一条记录一旦做了逻辑删除标记，在ASQL中就是不可见的了，并且在做插入数据(insrec)时，这条记录通常要被覆盖。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">这里的域名没有什么实际意义，只对删除起定位的作用，它可以是库中的任意域名，如果不知道域名，也可用@1替代。但如果源是由多表组成的，则需为[提交源表声明]，而非域名。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*对人员库中退休人员做逻辑删除。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0<br>
+    CONDITION<br>
+    BEGIN<br>
+    age(BIRTHDAY)&gt;=55;<br>
+    BEGIN<br>
+    sex=&quot;2&quot;||(sex=&quot;1&quot;&amp;&amp;age(BIRTHDAY)&gt;=60) $ delete(CODE);<br>
+    END<br>
+    END</span></p>
+    <p ALIGN="JUSTIFY"><i><span style="font-size: 12px">这个例子也可以这样</span></p>
+    </i><p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0<br>
+    CONDITION<br>
+    BEGIN<br>
+    age(BIRTHDAY)&gt;=55;<br>
+    BEGIN<br>
+    sex=&quot;2&quot;||(sex=&quot;1&quot;&amp;&amp;age(BIRTHDAY)&gt;=60) $ delete(1);<br>
+    END<br>
+    END</span></td>
+  </tr>
+</table>
+</body>
+</html>

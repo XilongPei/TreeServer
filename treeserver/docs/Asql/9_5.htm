@@ -1,0 +1,46 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>举案说法</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>举案说法</b></span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">案1：记录可见性</span></p>
+    </b><p ALIGN="JUSTIFY"><span style="font-size: 12px">插入到表中的记录并不是“立即可见的”，如在本次查询体的表打开期间，它就可能是不可见的。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM SUB0<br>
+    TO CX.DBF,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    A1=1 $ insrec(1,CODE:=”12345”)<br>
+    A1=2 $ askrec(@1)<br>
+    END</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">上例中，新插入源表中的CODE=”12345”的记录就“可能”不被输入出到CX.DBF中去。</span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">案2：数据字典引用</span></p>
+    </b><p ALIGN="JUSTIFY"><span style="font-size: 12px">取数据字典中的信息</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">pred<br>
+    string str[100]<br>
+    let str:=sysvar(&quot;sub0@code:cfname&quot;)<br>
+    let wsymbol(&quot;test&quot;)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">案3：三元“？”表达式</span></p>
+    </b><p ALIGN="JUSTIFY"><span style="font-size: 12px">pred<br>
+    string str[20]<br>
+    let 1=1 ? (2=2 ? str:=(&quot;1&quot;+&quot;2345&quot;)) : str:=&quot;2&quot;+&quot;1&quot;<br>
+    let 1=1 ? str:=&quot;test&quot;<br>
+    let 1=2 ? str:=&quot;test&quot;<br>
+    let 1=2 ? str:=&quot;test&quot; : (1=1 ? str:=&quot;t1&quot;:str:=&quot;t2&quot;)<br>
+    let 1=2 ? str:=&quot;test&quot; : (1=2 ? str:=&quot;t1&quot;:str:=&quot;t2&quot;)<br>
+    let wsymbol(&quot;test&quot;)</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

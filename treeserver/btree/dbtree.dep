@@ -1,0 +1,20 @@
+# Microsoft Developer Studio Generated Dependency File, included by dbtree.mak
+
+.\dbtree.c : \
+	".\dbtree.h"\
+	".\memutl.h"\
+	".\mistring.h"\
+	".\wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\dbtrewmt.c : \
+	".\dbtree.h"\
+	".\wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Mistring.c : \
+	".\dir.h"\
+	".\mistring.h"\
+	

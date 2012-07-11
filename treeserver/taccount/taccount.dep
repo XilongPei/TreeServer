@@ -1,0 +1,6 @@
+# Microsoft Developer Studio Generated Dependency File, included by taccount.mak
+
+.\TAccount.c : \
+	".\taccount.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	

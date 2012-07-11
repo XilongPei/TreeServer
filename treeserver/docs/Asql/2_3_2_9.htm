@@ -1,0 +1,37 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>New Page 9</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+
+<table border="1" width="100%">
+  <tr>
+    <td width="100%">　<p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]record(域名)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]将源库的记录原封不动地写到目标库中。如图2.9所示。</span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px"><img SRC="images/Image12.gif" WIDTH="336"
+    HEIGHT="189"></span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px">图2.9 记录拷贝示意图</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">这个函数要求目标表必须与源表相同，有一点不同也会造成问题。如果没法确认源表与目标表的结构完全相同，可用动作函数：askrec()。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">这里，域名并没有什么实际意义，只对计数起定位的作用，它可以是库中的任意 
+    域名，也可写做@1。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">参数(@1)是一个携带当前源库到目标库的域名，本来应该写为record( 
+    code)之类， 但可能源库没有code域，或者不知道源库中的域名，这就限定了ASQL 
+    语言的通用性，而@1表示源库的第一个域，这样就不用写域名了，增强了语言的灵活性和程序的可移植性。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">如果域名以具体名字形式给出，它必须是源是有的域。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">此函数和下两条函数askrec、calrec格式和用法相近， 
+    且输出与目标库写法也有关系（见2.3节），请用户在使用这三条函数和写目标库时灵活掌握。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*将源库的记录做一备份。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0.DBF<br>
+    TO \TG\DATA\SUB0BAK.DBF<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ record(@1);<br>
+    END</span></td>
+  </tr>
+</table>
+</body>
+</html>

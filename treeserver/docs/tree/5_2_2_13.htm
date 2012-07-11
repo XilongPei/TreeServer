@@ -1,0 +1,46 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>取表的域信息</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>取表的域信息</strong></p>
+    <p>　</p>
+    <p><font size="3"><span style="font-size: 12px">DWORD tsTableGetFieldInfo(HANDLE 
+    hConnect,DWORD dwTableId,LPDIO_FIELD szFieldInfo, DWORD dwFieldLen)</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <b><p><font size="3"><span style="font-size: 12px">参数：</span></font></p>
+    </b><blockquote>
+      <p><font size="3"><span style="font-size: 12px">typedef struct {</span></font></p>
+    </blockquote>
+    <p><font size="3"><span style="font-size: 12px">unsigned char field[32];</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">unsigned char fieldtype;</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">unsigned char fieldlen;</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">unsigned char fielddec;</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">long fieldstart;</span></font></p>
+    <blockquote>
+      <p><font size="3"><span style="font-size: 12px">} DIO_FIELD, *LPDIO_FIELD;</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">数组的最后一个元素的field为&quot;&quot;</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">hConnect:标识本连接。</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">dwTableId：表标识。</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">szFieldInfo：域信息缓冲区</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">dwFieldLen:缓冲区长</span></font></p>
+    </blockquote>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <b><p><font size="3"><span style="font-size: 12px">返回：</span></font></p>
+    </b><blockquote>
+      <p><font size="3"><span style="font-size: 12px">域数量</span></font></p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

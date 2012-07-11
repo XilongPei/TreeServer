@@ -1,0 +1,49 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>历史资料说明信息库</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>历史资料说明信息库</strong></p>
+    <p align="left">　</p>
+    <p>&nbsp;&nbsp;<span style="font-size: 12px"> 历史资料说明信息库为HISTSREM.DBF，用来存放历年统计数据采集时间点的说明。</span></p>
+    <p><span style="font-size: 12px">其存储结构如下：</span></p>
+    <p><span style="font-size: 12px">STAT_ID</span></p>
+    <p><span style="font-size: 12px">数据采集时间点说明信息的编号，宽度为6，数字型，与 
+    HISTRSUT.DBF中 STAT_ID的定义相一致。每采集一次数据，就会自动产生相应的编号。(在原有基础上加 
+    1 得到) HISTRSUT.DBF中数据的时间点说明通过此域与该库相连。</span></p>
+    <p><span style="font-size: 12px">EXPLAIN</span></p>
+    <p><span style="font-size: 12px">时间点的语言说明，宽度为16，字符型，为年月日时分作为历史资料分析结果的纵栏内容和进行历史资料分析时构造条件的时间提示用。这个语言说明在数据采集时由用户自行输入，只是它的初始值格式为“年月日时分”。</span></p>
+    <p><span style="font-size: 12px">DATE</span></p>
+    <p><span style="font-size: 12px">数据采集的时间，为年月日，宽度为8，日期型</span></p>
+    <p><span style="font-size: 12px">TIME</span></p>
+    <p><span style="font-size: 12px">数据时间点，为时分秒，宽度为6，字符型</span></p>
+    <p><span style="font-size: 12px">FLAG</span></p>
+    <p><span style="font-size: 12px">条件被选中的标记(系统自动产生) ，宽度为 
+    1，字符型</span></p>
+    <p><span style="font-size: 12px">例如：</span></p>
+    <p><span style="font-size: 12px">───────────┬──────┬───┬────┬──────</span></p>
+    <p><span style="font-size: 12px">EXPLAIN │ DATE │ TIME │ STAT_ID│ FLAG</span></p>
+    <p><span style="font-size: 12px">───────────┼──────┼───┼────┼──────</span></p>
+    <p><span style="font-size: 12px">1992年12月30日14时30 │19921230 │143002│ 1 │</span></p>
+    <p><span style="font-size: 12px">1993年12月30日08时50 │19931230 │085008│ 2 │</span></p>
+    <p><span style="font-size: 12px">1994年12月30日18时00 │19941230 │180040│ 3 │</span></p>
+    <p><span style="font-size: 12px">1995年12月01日10时23 │19951201 │102323│ 4 │</span></p>
+    <p><span style="font-size: 12px">1996年01月05日11时30 │19960105 │113012│ 5 │</span></p>
+    <p><span style="font-size: 12px">1996年01月30日09时00 │19960130 │090045│ 6 │</span></p>
+    <p><span style="font-size: 12px">...... │...... │.... │ .... │</span></p>
+    <p><span style="font-size: 12px">───────────┸──────┴───┴────┴────── 
+    </span></p>
+    <p><span style="font-size: 12px">说明：历史资料说明信息库通常由系统管理，用户不可轻易修改！</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

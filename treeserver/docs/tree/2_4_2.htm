@@ -1,0 +1,137 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>TreeSVR客户端动态连接库提供的API函数</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>TreeSVR客户端动态连接库提供的API函数</strong></p>
+    <p>　</p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">关于这些函数，这里只是策略性描述，后面将有详细讨论。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">1.打开管道。建立与服务器的通话渠道。</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">HANDLE 
+      CliOpenTSNamedPipe(LPCSTR lpServer);</span></font></p>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">2.关闭管道。撤消与服务器的通话渠道。</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BOOL 
+      CliCloseTSNamedPipe(HANDLE hPipe );</span></font></p>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">3.注册用户。</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD CliTSLogon(HANDLE 
+      hPipe,LPCSTR lpszUser,LPCSTR lpszPasswd, </span></font></p>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <blockquote>
+                <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpszComputer );</span></font></p>
+              </blockquote>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">4.退出注册。</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BOOL CliTSLogoff(HANDLE 
+      hPipe );</span></font></p>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">5.读管道。</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD 
+      CliReadTSNamedPipe(HANDLE hPipe,LPVOID lpBuffer,</span></font></p>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <blockquote>
+                <blockquote>
+                  <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPDWORD lpdwcbBuffer );</span></font></p>
+                </blockquote>
+              </blockquote>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">6.写管道。</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD 
+      CliWriteTSNamedPipe(HANDLE hPipe,LPVOID lpBuffer,</span></font></p>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <blockquote>
+                <blockquote>
+                  <blockquote>
+                    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPDWORD lpdwcbBuffer );</span></font></p>
+                  </blockquote>
+                </blockquote>
+              </blockquote>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">7.简单运行ASQL。</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD justRunASQL(HANDLE 
+      hPipe,LPSTR lpParam,LPSTR lpResponse,</span></font></p>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD dwParam );</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">8.文件送出。</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD 
+      CliTSPipeFTPPut(HANDLE hPipe, LPSTR lpLocalFile, </span></font></p>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPSTR lpRemoteFile );</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">将文件送至用户工作路径。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">9.文件取得。</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD 
+      CliTSPipeFTPGet(HANDLE hPipe, LPSTR lpRemoteFile, </span></font></p>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPSTR lpLocalFile );</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">将文件从用户工作路径取回。从用户工作路径取回的最简单办法是：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(1)拷贝命令：</span></font></p>
+    <blockquote>
+      <blockquote>
+        <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">copy 
+        \\ServerName\path\filename 。</span></font></p>
+      </blockquote>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(2)路径映射。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">10.运行ASQL，并回传结果数据。</span></font></p>
+    <blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD RunASQL(HANDLE 
+      hPipe, LPSTR lpParam, LPSTR szGetFiles, </span></font></p>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPSTR szLocalPath, </span></font></p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPSTR lpResponse, </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD dwParam );</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

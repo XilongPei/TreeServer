@@ -1,0 +1,193 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>表达式</title>
+
+<meta name="Microsoft Border" content="t, default"></head>
+
+<body bgcolor="#EAEAFB"><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>
+
+<table border="0" width="85%" cellspacing="0" cellpadding="0" height="50">
+  <tr>
+    <td width="20%" height="50"><a href="http://tdb.com.cn"><img src="images/crsc.gif" alt="上海中铁高新软件中心" border="0" WIDTH="148" HEIGHT="42"></a></td>
+    <td width="80%" height="50"><img src="_borders/asql.gif" alt="asql.gif (3772 bytes)" WIDTH="500" HEIGHT="40"></td>
+  </tr>
+</table>
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" align="center"><a href="index.htm"><img src="images/intro.gif" alt="产品简介" border="0" WIDTH="93" HEIGHT="19"></a><img src="images/online.gif" alt="联机手册" border="0" WIDTH="93" HEIGHT="19"><img src="images/quote.gif" alt="产品报价" WIDTH="93" HEIGHT="19"><img src="images/back.gif" alt="意见反馈" border="0" WIDTH="93" HEIGHT="19"><img src="images/about.gif" alt="相关产品" WIDTH="93" HEIGHT="19"><a href="mailto:asql@tdb.com.cn"><img src="images/contact.gif" alt="请与我们联系" border="0" WIDTH="93" HEIGHT="19"></a></td>
+  </tr>
+</table>
+</td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><!--msnavigation--><td valign="top">
+
+<hr>
+
+<h2 align="center"><font face="楷体_GB2312">表达式</font></h2>
+<div align="center"><center>
+
+<table border="0" width="75%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p ALIGN="JUSTIFY">&nbsp;&nbsp;&nbsp; 表达式是ASQL语言中的一个重要组成部分，用户的各种要求都是由ASQL 
+    表达式来表示的。ASQL语言的表达式是关系表达式，由变量（包括内存变量）、常数、函数、操作符、括号组成。</p>
+    <ol>
+      <li><b><p ALIGN="JUSTIFY">变量<br>
+        </b><br>
+        ASQL中的变量可分为数字型、字符型和逻辑型等。变量名可以由字母、数字和下划线(_)组成，变量名的第一个字符必须为字母。</p>
+        <p ALIGN="JUSTIFY">变量名最多可以包含32个字符。</p>
+        <p ALIGN="JUSTIFY">变量名可以是数据库的域名，代表数据库中该域的内容：数值或字符串，如：NAME,SEX。当查询涉及到多个表时，有时需支对列名的限定性进行检查，因为此时参与运算的多个表的域名有重复，如SUB0.CODE，SUB11.SALARY。</p>
+        <p ALIGN="JUSTIFY">xBASE中的备注域若其长度不超过4096字节，可以象普通字符型域一样处理，相加、比较、赋值等。</p>
+        <p ALIGN="JUSTIFY">ASQL引用域有两种方式，一种方式称为绝对引用，格式为“@域在源表中的序号”，另一种格式就是上面提到的采用域名的引用方式。</p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><b>常数<br>
+        </b><br>
+        ASQL中的常数可以是数字，也可以是数字、字母、汉字等组成的字符串， 
+        一般为数据库中的信息代码。</p>
+        <p ALIGN="JUSTIFY">下面的任何一种格式都可作为常数表示：</p>
+        <p ALIGN="JUSTIFY">1).整常数由一个字符和几个数字组成。如：28，-5</p>
+        <p ALIGN="JUSTIFY">2).带小数点的十进常数。如：67.11，-70,1013</p>
+        <p ALIGN="JUSTIFY">3).用指数表示的浮点常数，如：1.875E5，-18E-12</p>
+        <p ALIGN="JUSTIFY">4).双引号引起来的字符串，如：&quot;Shanghai&quot;，&quot;中国&quot;</p>
+        <p ALIGN="JUSTIFY">5).日期型常数，如：19981013T。日期表示为4位年2位月2位日(YYYYMMDD)后加字母T</p>
+        <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">　ASQL支持字符串中使用换义符“\”</p>
+        <p ALIGN="JUSTIFY">规则是：\\ 代表 \</p>
+        <p ALIGN="JUSTIFY">\t 代表 TAB键</p>
+        <p ALIGN="JUSTIFY">\n 代表回车</p>
+        <p ALIGN="JUSTIFY">\&quot; 代表引号</p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><b>函数<br>
+        </b><br>
+        ASQL中的函数主要是我们自己定义的函数， 
+        分条件函数和动作函数两大类，是 ASQL语言的重要组成部分。ASQL函数具有许多功能， 
+        我们在2.3节再作详细介绍。</p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><b>运算符<br>
+        </b><br>
+        ┌───┬───┬───┬───┬───┬───┐<br>
+        │符号&nbsp; │&nbsp; +&nbsp;&nbsp; │&nbsp; -&nbsp;&nbsp; │&nbsp; * &nbsp;&nbsp; 
+        │&nbsp; /&nbsp;&nbsp; │&nbsp; %&nbsp;&nbsp; │<br>
+        ├───┼───┼───┼───┼───┼───┤<br>
+        │说明&nbsp; │&nbsp; 加&nbsp; │&nbsp; 减&nbsp; │&nbsp; 乘&nbsp; │&nbsp; 除 
+        &nbsp; │&nbsp; 模&nbsp; │<br>
+        └───┴───┴───┴───┴───┴───┘<br>
+        </p>
+        <p ALIGN="JUSTIFY">运算符分算术运算符(+、-、*、/、%)和关系运算符两种。其中“-”可以作为一元（前缀）或二元（中缀）操作符，例如：</p>
+        <p ALIGN="JUSTIFY">-salary 表示求salary的负</p>
+        <p ALIGN="JUSTIFY">ASQL支持字符串的相加运算，例如：&quot;上海&quot;+&quot;铁大&quot; 
+        结果为：&quot;上海铁大&quot;</p>
+        <p ALIGN="JUSTIFY">算术运算符的计算次序是：先做一元减，之后是乘及除（从左至右），最后做二元加及减（从左至右）。</p>
+        <p ALIGN="JUSTIFY">日期相加减的规则：</p>
+        <p ALIGN="JUSTIFY">日期-日期=天数</p>
+        <p ALIGN="JUSTIFY">日期+天数=日期</p>
+        <p ALIGN="JUSTIFY">例如：</p>
+        <p ALIGN="JUSTIFY">19980131T-19980111T=20<br>
+        19980111T+20=19980131T</p>
+        <p ALIGN="JUSTIFY">整型相加减的规则（整型包括：字符型、整型、长整型）：<br>
+        整型 与 整型运算 结果为 整型<br>
+        整型 与 浮点型运算 结果为 浮点型<br>
+        浮点型 与 浮点型运算 结果为 浮点型</p>
+        <p ALIGN="JUSTIFY">例如：</p>
+        <p ALIGN="JUSTIFY">1+1998 = 1999<br>
+        1.01+1998=1999.01</p>
+        <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">注意，整型与浮点型的表示范围是不同的，要合理选择数据类型，否则可能使运算结果不正确。如下例：</p>
+        <p ALIGN="JUSTIFY">3/4 结果为0</p>
+        <p ALIGN="JUSTIFY">3.0/4结果为0.75</p>
+        <p ALIGN="JUSTIFY">为了得到3/4的精确结果，可以这样做：</p>
+        <p ALIGN="JUSTIFY">（3+0.0）/4 结果为0.75</p>
+        <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">模运算就是两个整数相除，所得的余数，它的两个运算数只能是整数，若是浮点数，则ASQL先将其转成整数，先后运算：</p>
+        <p ALIGN="JUSTIFY">100 % 8 结果为 4<br>
+        100 % 8.0 结果也为 4</p>
+        <p ALIGN="JUSTIFY">ASQL中的运算符主要是比较运算符和逻辑运算符，此外， 
+        还有一个动作运算符$和 一个任意字母替代符*。</p>
+        <p ALIGN="JUSTIFY">关系运算符：</p>
+        <p ALIGN="JUSTIFY">┌───┬───┬────┬───┬────┬──┬───┬───┐<br>
+        │ <b>符号</b> │ &lt; │ &lt;= │ &gt; │ &gt;= │ = │= = │&lt;&gt;或!=│<br>
+        ├───┼───┼────┼───┼────┼──┼───┼───┤<br>
+        │ <b>说明</b> │小于 │小于等于│ 大于 
+        │大于等于│等于│绝对等│不等于│<br>
+        └───┴───┴────┴───┴────┴──┴───┴───┘</p>
+        <p ALIGN="JUSTIFY">逻辑运算符：</p>
+        <p ALIGN="JUSTIFY">┌───┬───┬───┬────┐<br>
+        │ 符号 │&nbsp; &amp;&amp;&nbsp; │&nbsp; |&nbsp; | │ ! │<br>
+        ├───┼───┼───┼────┤<br>
+        │ 说明 │&nbsp; 与&nbsp; │&nbsp; 或 │ 非 │<br>
+        └───┴───┴───┴────┘</p>
+        <p ALIGN="JUSTIFY">赋值运算符(:=)，表示给某一变量或域赋值。</p>
+        <p ALIGN="JUSTIFY">动作运算符($)，表示其后紧跟的是一个动作表达式。动作运算符($)将在2.2节中介绍。</p>
+        <p ALIGN="JUSTIFY">替代符(*)，可以替代常数中的某几位数字，被*替代的地方代表任何数字，也可叫万能符。如：&quot;**1&quot;表示第三位是1的任何三位数。</p>
+        <p ALIGN="JUSTIFY">四种操作符运算的优先级是：</p>
+        <ol>
+          <li>替代 </li>
+          <li>关系运算 </li>
+          <li>逻辑运算 </li>
+          <li>动作运算 </li>
+        </ol>
+        <p ALIGN="JUSTIFY">同一优先级的运算一律按从左到右的顺序执行， </p>
+        <b><p ALIGN="JUSTIFY">字符串的比较规则：</b></p>
+        <p ALIGN="JUSTIFY">等于为非精确比较，且支持零替代符；绝对等于(连续两个等号)为精确比较，且不支持替代符。</p>
+        <p ALIGN="JUSTIFY">&quot;Shanghai&quot;=&quot;Shang&quot; 为真</p>
+        <p ALIGN="JUSTIFY">&quot;Shanghai&quot;=&quot;Sh***h&quot; 为真</p>
+        <p ALIGN="JUSTIFY">&quot;Shanghai&quot;==&quot;Shang&quot; 为假</p>
+        <p ALIGN="JUSTIFY">&quot;Shanghai&quot;==&quot;Sh***h&quot; 为假</p>
+        <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">　&lt;&gt;,&gt;,&lt;,&gt;=,&lt;=都是对应=的非精确比较，所以任意字符串永远=””<br>
+        <br>
+        <img SRC="Image3.gif" WIDTH="15" HEIGHT="15">　ASQL对DBF中的逻辑型是按字符串型看待的。真值对应&quot;T&quot;，假值对应&quot;F&quot;，在比较、运算时请注意这一点。</p>
+        <p ALIGN="JUSTIFY">假设YN是表SUB58的一个逻辑型（Logic）域，可以进行下面的运算：</p>
+        <p ALIGN="JUSTIFY">YN=”T”<br>
+        YN=”F”<br>
+        YN!=”T”<br>
+        YN:=”T”<br>
+        YN:=”F”</p>
+        <b><p ALIGN="JUSTIFY">赋值(:=)规则：</b></p>
+        <ol>
+          <li><p ALIGN="JUSTIFY">字符串可以赋值给字符串，结果串最长为变量允许空间。如：<br>
+            <br>
+            str:=&quot;上海铁大&quot;</p>
+            <p ALIGN="JUSTIFY">如果长度超过变量允许空间，则截断后赋值。</p>
+            <p ALIGN="JUSTIFY">本例及下面给赋值所举的例子中，假定str被定义为ASQL的字符串型：</p>
+            <p ALIGN="JUSTIFY">PREDICATE</p>
+            <p ALIGN="JUSTIFY">STRING str[100]</p>
+            <p ALIGN="JUSTIFY">LONG lint, lint2</p>
+            <p ALIGN="JUSTIFY">LONG xarray[8,10]</p>
+            <p ALIGN="JUSTIFY">LONG yarray[8,10]</p>
+          </li>
+          <li><p ALIGN="JUSTIFY">字符串可以赋值给数字型量，ASQL将自动为其转换。</p>
+            <p ALIGN="JUSTIFY">lint:=str</p>
+          </li>
+          <li><p ALIGN="JUSTIFY">数组可以赋值给BLOB型(备注型)域，即将该数组存在数据表中。这种操作特别适合于分析数据的存取。</p>
+            <p ALIGN="JUSTIFY">memo:=xarray</p>
+          </li>
+          <li><p ALIGN="JUSTIFY">BLOB型(备注型)域可以赋值给数组，ASQL将BLOB的内容读出放至数组的内存区内。</p>
+            <p ALIGN="JUSTIFY">xarray:=memo</p>
+          </li>
+          <li><p ALIGN="JUSTIFY">数组可以赋值给数组，但数组类型必须一致，即使整型数组也只能赋值给整型数组，而不能赋值给长整型数组。数组的维定义必须一致，ASQL只是将两个内存区做简单的内存拷贝。</p>
+            <p ALIGN="JUSTIFY">xarray:=yarray</p>
+          </li>
+          <li><p ALIGN="JUSTIFY">数值型量可以赋值给数值型量。</p>
+            <p ALIGN="JUSTIFY">lint:=lint2;</p>
+          </li>
+          <li><p ALIGN="JUSTIFY">任意类型域可以赋值给字符串，这时字符串内是该域的实际存储内容（ASQL的原始数据都是以ASCII码形式存放的，逻辑型域用T表示“真”，F表示假）。</p>
+            <p ALIGN="JUSTIFY">Str:=nfield</p>
+            <p ALIGN="JUSTIFY">Str:=ffield</p>
+            <p ALIGN="JUSTIFY">Str:=lfield。</p>
+          </li>
+        </ol>
+      </li>
+      <li><p ALIGN="JUSTIFY"><b>括号<br>
+        </b><br>
+        括号可以改变表达式运算次序，高于一切操作符（除动作运算符外）优先使用。</p>
+        <p ALIGN="JUSTIFY">ASQL表达式除符号定义外，与其他语言如Foxbase、Clipper基本一致， 
+        ASQL不区分变量、函数名或关键字的大小写，下面是几个ASQL表达式：</p>
+        <p ALIGN="JUSTIFY">party_n=&quot;01&quot;||party_n=&quot;02&quot;</p>
+        <p ALIGN="JUSTIFY">!NULL(party_d)</p>
+        <p ALIGN="JUSTIFY">age(birthday)&gt;18</p>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>　
+<!--msnavigation--></td></tr><!--msnavigation--></table></body>
+</html>

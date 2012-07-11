@@ -1,0 +1,64 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>系统变量</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><strong><span style="font-size: 12px">系统变量(sysvar)</span></strong></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]sysvar([文件名&lt;字符型表达式&gt;,]变量名&lt;字符型表达式&gt;)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]如果文件名没给定，即只有一个参数，则该函数认为是对系统数据字典的引用。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">取配置文件中某一项的值，配置文件是如下描述形式（与ASQL数据字典格式兼容）的文本文件(如系统控制层文件TGCTL.TXT)：</span></p>
+    <table BORDER="1" CELLSPACING="0" CELLPADDING="3" WIDTH="143">
+      <tr>
+        <td VALIGN="top"><p ALIGN="JUSTIFY"><span style="font-size: 12px">[段]</span></td>
+      </tr>
+      <tr>
+        <td VALIGN="top"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#标识</span></td>
+      </tr>
+      <tr>
+        <td VALIGN="top"><p ALIGN="JUSTIFY"><span style="font-size: 12px">关键字=值</span></td>
+      </tr>
+    </table>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">如:[FILECTL]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">#SUB0<br>
+    PATH=\TG\DATA\SUB0.VEW<br>
+    [SERIALNO]<br>
+    SER1=100</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">变量名写法为:</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[段名@][标识:]关键字</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">段名和标识都可以省略。如果段名为“SERIALNO”，则表示该关键字为序列号，系统返回该值，并把该值加１存回原处。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">sysvar(&quot;tgctl.txt&quot;,&quot;FILECTL@SUB0:PATH&quot;)<br>
+    返回:\TG\DATA\SUB0.VEW<br>
+    sysvar(&quot;EUCFG.CFG&quot;,&quot;SERIALN0@SER1&quot;)--&gt;长整型100</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">predicates<br>
+    float fee[6,15]<br>
+    let &amp;fee[1,1]:=sysvar(&quot;SERIALNO@KK:SER1&quot;)<br>
+    let &amp;fee[1,2]:=sysvar(&quot;SERIALNO@KK:SER1&quot;)<br>
+    let &amp;fee[1,3]:=sysvar(&quot;SERIALNO@KK:SER1&quot;)<br>
+    let sigmax(fee,1,8,15)<br>
+    let sigmax(fee,12,15,15)<br>
+    let warray(&quot;a05.dbf&quot;,fee)<br>
+    //相应的数据字典中就应有如下内容</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[SERIALNO]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">#KK<br>
+    SER1=18</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15">　ASQL数据字典的域定义在一张表中，在数据字典引用时，TID相当于GROUP（如果TID域为空填，则BASENAME相当于GROUP），EFNAME相当于LABEL，FIELDCTL中的域名相当于关键字，帮取域定义表中的信息方法如下：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">sysvar(&quot;BASENAME@EFNAME:FIELD 
+    &quot;)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">例如：sysvar(&quot;SUB0@CODE:CFNAME 
+    &quot;)</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

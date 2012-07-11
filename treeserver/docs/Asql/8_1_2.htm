@@ -1,0 +1,145 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>ASQL引用方法</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>ASQL引用方法</b></span></p>
+    <p><span style="font-size: 12px">下面通过具体开发平台上的引用实例说明 
+    ASQL 的引用方法。</span></p>
+    <b><p><span style="font-size: 12px">1. C语言</span></p>
+    </b><p><span style="font-size: 12px">#include &lt;windows.h&gt;</span></p>
+    <p><span style="font-size: 12px">// Function declaration, 'callAsqlSvr' is export from 
+    'ASQLClt.dll' <br>
+    LPSTR callAsqlSvr( LPSTR szFileName, LPSTR szFromPath, LPSTR szToPath )<br>
+    LPSTR ErrorStr;<br>
+    .<br>
+    .<br>
+    .<br>
+    ErrorStr = callAsqlSvr( 'asqlask', NULL, NULL );<br>
+    if( stricmp( ErrorStr, &quot;ERR:0&quot; ) ) {<br>
+    MessageBox( 0, ErrorStr, &quot;Error&quot;, MB_OK | MB_ICONINFORMATION );<br>
+    ......<br>
+    }<br>
+    ……</span></p>
+    <b><p><span style="font-size: 12px">2.Delphi</span></p>
+    </b><p><span style="font-size: 12px">{ CallASQL sample source code } <br>
+    unit CallASQL;<br>
+    interface<br>
+    uses<br>
+    Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,<br>
+    StdCtrls, Buttons;<br>
+    type<br>
+    TForm1 = class(TForm)<br>
+    BitBtn1: TBitBtn;<br>
+    procedure BitBtn1Click(Sender: TObject);<br>
+    private<br>
+    { Private declarations }<br>
+    public<br>
+    { Public declarations }<br>
+    end;<br>
+    var<br>
+    Form1: TForm1;<br>
+    { Function declaration, 'callAsqlSvr' is export from 'ASQLClt.dll' }<br>
+    Function callAsqlSvr(szFileName, szFromPath, szToPath:LPSTR):LPSTR;<br>
+    cdecl;far;external'AsqlClt.dll' name 'callAsqlSvr';<br>
+    implementation<br>
+    {$R *.DFM}<br>
+    procedure TForm1.BitBtn1Click(Sender: TObject);<br>
+    var<br>
+    ErrorStr:Pchar;<br>
+    begin<br>
+    { Call function 'callAsqlSvr' to Stat. All actions described in the script <br>
+    file 'asqlask' }<br>
+    ErrorStr:=callAsqlSvr('asqlask', nil, nil);<br>
+    if ErrorStr&lt;&gt;'ERR:0' then<br>
+    MessageDlg(ErrorStr,mtinformation,[mbok],0);<br>
+    end;<br>
+    end.</span></p>
+    <b><p><span style="font-size: 12px">3 asqlask 的描述</span></p>
+    </b><p><span style="font-size: 12px">/*铁路货运计划统计的真实应用*/</span></p>
+    <p><span style="font-size: 12px">predicate<br>
+    float x[32,16]<br>
+    FROM ODBC:ORACLE_DB,p04,p04,SELECT * FROM P_YC<br>
+    Condition<br>
+    begin<br>
+    statistics x<br>
+    QSRQ&gt;=&quot;19971201&quot;&amp;&amp;ZZRQ&lt;=&quot;19971228&quot;<br>
+    begin<br>
+    #y1: 0<br>
+    #y2: 0<br>
+    #y3: 0<br>
+    #y4: 0<br>
+    #y5: PM=&quot;01*&quot;<br>
+    #y6: PM=&quot;02*&quot;<br>
+    #y7: PM=&quot;03*&quot;<br>
+    #y8: PM=&quot;04*&quot;<br>
+    #y9: PM=&quot;05*&quot;<br>
+    #y10: PM=&quot;06*&quot;<br>
+    #y11: PM=&quot;07*&quot;<br>
+    #y12: PM=&quot;08*&quot;<br>
+    #y13: PM=&quot;09*&quot;<br>
+    #y14: PM=&quot;10*&quot;<br>
+    #y15: PM=&quot;11*&quot;<br>
+    #y16: PM=&quot;12*&quot;<br>
+    #y17: PM=&quot;13*&quot;<br>
+    #y18: PM=&quot;14*&quot;<br>
+    #y19: PM=&quot;15*&quot;<br>
+    #y20: PM=&quot;16*&quot;<br>
+    #y21: PM=&quot;17*&quot;<br>
+    #y22: PM=&quot;18*&quot;<br>
+    #y23: PM=&quot;19*&quot;<br>
+    #y24: PM=&quot;20*&quot;<br>
+    #y25: PM=&quot;21*&quot;<br>
+    #y26: PM=&quot;22*&quot;<br>
+    #y27: PM=&quot;23*&quot;<br>
+    #y28: PM=&quot;24*&quot;<br>
+    #y29: PM=&quot;25*&quot;<br>
+    #y30: PM=&quot;99*&quot;<br>
+    #y31: PM=&quot;97*&quot;<br>
+    #y32: PM=&quot;98*&quot;<br>
+    #x1: 0<br>
+    #x2: 0<br>
+    summer x ,YTCS<br>
+    #x3: DJ=&quot;B*&quot;<br>
+    summer x ,YTCS<br>
+    #x4: DJ=&quot;T*&quot;<br>
+    summer x ,YTCS<br>
+    #x5: DJ=&quot;P*&quot;<br>
+    summer x ,YTCS<br>
+    #x6: DJ=&quot;C*&quot;<br>
+    summer x ,YTCS<br>
+    #x7: DJ=&quot;F*&quot;<br>
+    summer x ,YTCS<br>
+    #x8: DJ=&quot;K*&quot;<br>
+    summer x ,YTCS<br>
+    #x9: DJ=&quot;H*&quot;<br>
+    summer x ,YTCS<br>
+    #x10: DJ=&quot;G*&quot;<br>
+    summer x ,YTCS<br>
+    #x11: DJ=&quot;Q*&quot;<br>
+    summer x ,YTCS<br>
+    #x12: DJ=&quot;Z*&quot;<br>
+    summer x ,YTCS<br>
+    #x13: DJ=&quot;W*&quot;<br>
+    summer x ,YTCS<br>
+    #x14: DJ=&quot;J*&quot;<br>
+    summer x ,YTCS<br>
+    #x15: DJ=&quot;R*&quot;<br>
+    summer x ,YTCS<br>
+    #x16: DJ=&quot;M*&quot;<br>
+    End<br>
+    End<br>
+    action warray (&quot;c:\\temp\\Tbldbf&quot;,x)</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>Ftp 常用命令参考</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><b><span STYLE="font-size:12px;"><font FACE="黑体" SIZE="4"><p
+    ALIGN="CENTER">Ftp 常用命令参考</font></span></p>
+    </b><span STYLE="font-size:12px;"><p><strong>Ftp: help</strong><br>
+    <br>
+    显示 Ftp 命令的解释。<br>
+    help [command]<br>
+    <br>
+    参数<br>
+    &nbsp;&nbsp; command<br>
+    &nbsp;&nbsp; 指定要解释的命令名称。如果未指定 command ，ftp 
+    将显示包含所有命令的列表。</p>
+    </span><hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: dir</strong><br>
+    <br>
+    显示远程目录的文件及子目录列表。<br>
+    dir [remote-directory] [local-file]<br>
+    <br>
+    参数<br>
+    &nbsp;&nbsp; remote-directory<br>
+    &nbsp;&nbsp; 指定要查看列表的目录。如果没有指定目录，则使用远程计算机上的当前工作目录。<br>
+    &nbsp;&nbsp; local-file<br>
+    &nbsp;&nbsp; 指定保存列表的本地文件。如果未指定文件，则在屏幕上显示输出。</span></p>
+    <hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: binary</strong><br>
+    <br>
+    将文件传输类型设置为二进制。<br>
+    binary<br>
+    <br>
+    注意<br>
+    &nbsp;&nbsp; FTP 支持两种类型文件传输。ASCII 
+    和二进制映象。传输可执行文件时，应该使用二进制类型。在二进制模式中，文件是逐字节传送的。请参阅 
+    Ftp_ascii。</span></p>
+    <hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: ascii</strong><br>
+    <br>
+    默认情况下，将文件传输类型设置为 ASCII。<br>
+    ascii<br>
+    <br>
+    注意<br>
+    &nbsp;&nbsp; FTP 支持两种文件传输类型：ASCII 
+    和二进制映象。传输文本文件时，应该使用ASCII。请参阅 binary。在 
+    ASCII 
+    模式中，执行字符与网络标准字符集之间的转换。例如，要根据目标操作系统的需要转换行结束符。</span></p>
+    <hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: get</strong><br>
+    <br>
+    使用当前文件传输类型，将远程文件复制到本地计算机。<br>
+    get remote-file [local-file]<br>
+    <br>
+    参数<br>
+    &nbsp;&nbsp; remote-file<br>
+    &nbsp;&nbsp; 指定要复制的远程文件。<br>
+    &nbsp;&nbsp; local-file<br>
+    &nbsp;&nbsp; 指定本地计算机上的文件名。如果未指定，则该文件使用remote-file名称。</span></p>
+    <hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: put</strong> <br>
+    <br>
+    使用当前文件传输类型将本地文件复制到远程计算机。<br>
+    put local-file [remote-file]<br>
+    <br>
+    参数<br>
+    &nbsp;&nbsp; local-file<br>
+    &nbsp;&nbsp; 指定要复制的本地文件.<br>
+    &nbsp;&nbsp; remote-file<br>
+    &nbsp;&nbsp; 指定复制到远程计算机上的文件名。如果没有指定，则使用与 
+    local-file 相同的文件名。</span></p>
+    <hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: mget</strong><br>
+    <br>
+    使用当前文件传输类型将多个远程文件复制到本地计算机。<br>
+    mget remote-files [ ...]<br>
+    <br>
+    参数<br>
+    &nbsp;&nbsp; remote-files<br>
+    &nbsp;&nbsp; 指定要复制到本地计算机的远程文件。</span></p>
+    <hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: mput</strong> <br>
+    <br>
+    使用当前文件传输类型，将本地文件复制到远程计算机。<br>
+    mput local-files [ ...]<br>
+    <br>
+    参数<br>
+    &nbsp;&nbsp; local-files<br>
+    &nbsp;&nbsp; 指定要复制到远程计算机的本地文件。</span></p>
+    <hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: pwd</strong><br>
+    <br>
+    显示远程计算机上的当前目录。<br>
+    pwd</span></p>
+    <hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: mkdir</strong> <br>
+    <br>
+    创建远程目录。<br>
+    mkdir directory<br>
+    <br>
+    参数<br>
+    &nbsp;&nbsp; directory<br>
+    &nbsp;&nbsp; 指定新远程目录的名称。</span></p>
+    <hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: delete</strong><br>
+    <br>
+    删除远程计算机文件。<br>
+    delete remote-file<br>
+    <br>
+    参数<br>
+    &nbsp;&nbsp; remote-file <br>
+    &nbsp;&nbsp; 指定要删除的文件。</span></p>
+    <hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: rmdir</strong> <br>
+    <br>
+    删除远程目录。<br>
+    rmdir directory<br>
+    <br>
+    参数<br>
+    &nbsp;&nbsp; directory<br>
+    &nbsp;&nbsp; 指定要删除的远程目录名。</span></p>
+    <hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: cd</strong><br>
+    <br>
+    更改远程计算机上的工作目录。<br>
+    cd remote-directory<br>
+    <br>
+    参数<br>
+    &nbsp;&nbsp; remote-directory<br>
+    &nbsp;&nbsp; 指定要进入的远程计算机目录。</span></p>
+    <hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: rename</strong> <br>
+    <br>
+    更名远程文件。<br>
+    rename filename newfilename<br>
+    <br>
+    参数<br>
+    &nbsp;&nbsp; filename<br>
+    &nbsp;&nbsp; 指定要更名的文件。<br>
+    &nbsp;&nbsp; newfilename<br>
+    &nbsp;&nbsp; 指定新文件名。</span></p>
+    <hr size="1">
+    <p><span STYLE="font-size:12px;"><strong>Ftp: bye</strong><br>
+    <br>
+    结束与远程计算机的 FTP 会话，并退出 ftp。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

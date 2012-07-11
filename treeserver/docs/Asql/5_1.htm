@@ -1,0 +1,192 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>表级定义</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><font size="2"><span style="font-size: 12px"><b>表级定义</b></span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">系 统 ............... 
+    [MACRO] <br>
+    基本集(sub0) ...... 基本集(main)........ [BASESET] /*基本集构成*/<br>
+    MAIN1 MAIN2..... [FILECTL] /*构成基本集的各个数据库文子集sub1 ...... 子集sub21 
+    件的构成*/<br>
+    域...... ..................[FIELDCTL] /*域的构成*/</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">图1.1 ASQL支持的信息结构及控制层定义</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">系统数据字典文件的结构为：</span></font></p>
+    <table BORDER="1" CELLSPACING="0" WIDTH="111" cellpadding="2">
+      <tr>
+        <td VALIGN="top"><b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">[组]</span></font></b></td>
+      </tr>
+      <tr>
+        <td VALIGN="top"><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">#段</span></font></td>
+      </tr>
+      <tr>
+        <td VALIGN="top"><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">关键字＝内容</span></font></td>
+      </tr>
+      <tr>
+        <td VALIGN="top"><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">//注释</span></font></td>
+      </tr>
+    </table>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">为了使用数据字典看起来更简洁，ASQL数据字典允许提取字典中的共同串，给它们一个名称，放在[MACRO]段中。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">//ASQL事务服务引擎配置文件<br>
+    //版权所有: (c)上海中铁高新软件中心 1997<br>
+    //本配置文件每行最 4096 ASCII字符</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">[MACRO]<br>
+    PEI=YINZHU<br>
+    [SYSTEM]<br>
+    CODE=c:\tg\code\ccode.cod<br>
+    LOGFILE=<br>
+    LASTTID = 7<br>
+    #DBROOT<br>
+    PATH = e:\wmtasql\<br>
+    [DATABASE]<br>
+    #LZ<br>
+    PATH=e:\wmtasql\<br>
+    #TG<br>
+    PATH=e:\tg\<br>
+    [POLICY]<br>
+    #OPENDBF<br>
+    NUM = 2<br>
+    F1 = LZ0.DBF<br>
+    F2 = LZ1.DBF<br>
+    [DBROOT]<br>
+    #LZ0<br>
+    TID=1<br>
+    KEEP_PHYSICAL_ORDER = 1<br>
+    DPACK_AUTO=1<br>
+    WLOG=0<br>
+    MAINKEY_NUM=1<br>
+    NDX1=LZ0_1.NDX<br>
+    KEY1=SEX<br>
+    NDX2=LZ0_2.NDX<br>
+    KEY2=NAME<br>
+    #SUB0<br>
+    KEEP_PHYSICAL_ORDER = 1<br>
+    DPACK_AUTO=1<br>
+    TID=2<br>
+    [LZ]<br>
+    [TG]<br>
+    #SUB0<br>
+    KEEP_PHYSICAL_ORDER = 1<br>
+    DPACK_AUTO=1<br>
+    TID=3<br>
+    #SUB1<br>
+    KEEP_PHYSICAL_ORDER = 1<br>
+    DPACK_AUTO=1<br>
+    TID=4<br>
+    #SUB2<br>
+    KEEP_PHYSICAL_ORDER = 1<br>
+    DPACK_AUTO=1<br>
+    TID=5<br>
+    #SUB3<br>
+    KEEP_PHYSICAL_ORDER = 1<br>
+    DPACK_AUTO=1<br>
+    TID=6<br>
+    #SUB4<br>
+    KEEP_PHYSICAL_ORDER = 1<br>
+    DPACK_AUTO=1<br>
+    TID=7</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">下面对系统主控文件中的各组进行详细说明。</span></font></p>
+    <b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">1.宏定义[MACRO]</span></font></p>
+    </b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">宏定义的方法为：宏 
+    = 具体内容</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">例如：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">[MACRO]<br>
+    CODE=\TG\CODE\</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">引用办法：采用两个%，中间为宏定义。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">例如：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">引用代码库文件路径：CODE=%CODEPATH%CODE.COD，宏替换后为：CODE=\TG\COD\CODE.COD。</span></font></p>
+    <b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">2.系统 [SYSTEM]</span></font></p>
+    </b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">[SYSTEM]//代码库文件名</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">CODE=c:\tg\code\ccode.cod<br>
+    //日志文件名<br>
+    LOGFILE=//最小可用标标识<br>
+    LASTTID = 7 <br>
+    //临时文件放置路径<br>
+    TEMP_PATH = c:\temp\<br>
+    //缺省数据库路径<br>
+    #DBROOT<br>
+    PATH = e:\wmtasql\</span></font></p>
+    <b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">3.数据库 [DATABASE]</span></font></p>
+    </b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">[DATABASE]<br>
+    //#后为库名<br>
+    #LZ<br>
+    //库所对应的文件系统路径<br>
+    PATH=e:\wmtasql\</span></font></p>
+    <b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">4..优化[POLICY]</span></font></p>
+    </b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">//快速打开数据表</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">#OPENDBF<br>
+    NUM = 2<br>
+    F1 = LZ0.DBF<br>
+    F2 = LZ1.DBF</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">为了加快某些表的操作，ASQL允许对它们进行特殊管理，快速引用。ASQL在打开这些表时，也会同时打开其在数据字典中描述的索引。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">#OPENDBF<br>
+    //数量<br>
+    NUM = 2<br>
+    //Fn （n为1到NUM的整数）为每个表的名字，这此文件名如果没有写名全文件名，则认为是缺省数据库下的表。也可以是这种形式：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">库名*表名</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">来表示具体表</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">F1 = LZ0.DBF<br>
+    F2 = E:\WMTASQL\DATA\LZ1.DBF</span></font></p>
+    <b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">5.基本集描述 
+    [BASESET]，<u><i>目前保留使用</span></font></p>
+    </i></u></b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">ASQL的数据库系统是采用一个基本集(主数据库)、外带若干个子集(子数据库)的结构。如个人基本信息库是一个基本集，个人的主要业务技术工作、奖惩信息、爱人情况等信息则分别存在主要业务技术工作信息库、奖惩信息库、爱人情况信息库等各个数据库中，称为子集，子集对个人基本信息集进行补充。在基本集和子集之间是通过主关键字进行关联，在基本集和子集中都有一个共同的域(字段)，称为主关键字，如人员基本信息集和他的的子集是通过主关键字－－CODE域( 
+    或称人员代码)来联接的。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">一个基本集和他的若干个子集我们称为一个数据库系统。在中组部的标准中称为信息群。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">在系统参数文件中的[BASESET]部分，对系统基本集和子集情况进行了说明。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">(1)数据库系统或基本集的个数</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">BASESETNUM = 3　 /*共3 
+    个数据库系统（基本集）*/</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">(2)基本集数据库名</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">BASESETS = 
+    SUB0,MAIN,UNITWORK /*3个基本集为SUB0,MAIN,UNITWORK*/</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">(3)数据库系统的组成</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">#SUB0　　 /*基本集数据库库名*/<br>
+    NAME = 个人基本信息　 /*基本集中文名*/<br>
+    SUBSETNUM = 22 /*子集个数*/<br>
+    SUBSETS = SUB1,SUB2,SUB3,SUB4,SUB5,SUB6,SUB7,SUB8,SUB9,SUB10,;<br>
+    SUB11,SUB12,SUB13,SUB14,SUB15,SUB16,SUB17,SUB18, ;<br>
+    SUB19, SUB20, SUB21, SUB22 /*子集名集合*/<br>
+    STATINFONUM=3 /*提示信息描述项数量*/<br>
+    STATINFO=NAME(RAWMODE)|WU_NAME(HZTHMODE)|DEL(FREEMODE,0:|,1:已删除)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">/*提示信息，RAWMODE 
+    表示括号前的域直接参与提示；HZTHMODE表示括号前的域经汉字替换后参与提示；FREEMODE表示按后面的描述规则转换后参与提示，本例中DEL=0则提示&quot;|&quot;，若DEL=1，则提示&quot;已删除&quot;。*/</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">RELATEKEY=CODE /*关联关键字，本基本集与子集联接的关键字*/</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">RELATIVEPATH=%DATAPATH%RELATIVE.SUB 
+    /*相关项管理文件名*/</span></font></p>
+    <b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">6.表定义</span></font></p>
+    </b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">[DBROOT]<br>
+    #表名<br>
+    TID=表标识号<br>
+    WLOG=写日志否<br>
+    NAME= 该信息集作为一个独立数据库(如选子集)时用到的名字。<br>
+    PATH=%DATAPATH%SUB0.VEW /*说明视图的路径，SUB0.VEW为视图*/<br>
+    MAINKEY_NUM=1 /*主关键字数*/<br>
+    DEL_LIB=%DELPEH%DSUB0.DBF /*删除库名*/<br>
+    DEL_FLD=DEL /*删除域的域名，在LZMIS中为<br>
+    A39，当该域的数不为0时，<br>
+    表示将该记录放入删除库*/<br>
+    KEEP_PHYSICAL_ORDER=1 /*保持物理序否，1:保持；0:不保持*/<br>
+    DPACK_AUTO=1 /*关闭前自动做PACK操作：1:PACK； 0:不PACK, PACK是指过滤掉置了删除标记的记录*/<br>
+    NDX1=文件名 /*索引1*/<br>
+    KEY1=域名[+域名……] /*索引1用到的关键字*/<br>
+    NDX2=文件名 /*索引2*/<br>
+    KEY2=域名[+域名……] /*索引2用到的关键字*/</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">……</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">NDX10=文件名 /*索引10*/<br>
+    KEY10=域名[+域名……] /*索引10用到的关键字*/</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">文件名是一个没有路径及扩展名的纯文件名，因为TreeSVR认为每个索引都与其表放在一个目录中，并且扩展名因定是“<b>.NDX”。</span></font></p>
+    </b><p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">表的定义是针对叫这个名字的表的，它可以存在于这个库的某个子目录中。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">在本例中SUB0.VEW是一个视图。</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

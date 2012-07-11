@@ -1,0 +1,177 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>固定事务---服务器端支持函数</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>服务器端支持函数</strong></p>
+    <p>　<font FACE="宋体" SIZE="3"></p>
+    <p ALIGN="JUSTIFY"></font><font size="3"><span style="font-size: 12px">// 
+    创建存储过程文件</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 返回值：TRUE 
+    成功；FASLE 失败，GetLastError() 获取出错号。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BOOL spCreateFile ( </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpFileName ); // 
+    [IN] 文件名</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    删除存储过程文件</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 返回值：TRUE 
+    成功；FASLE 失败，GetLastError() 获取出错号。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BOOL spDeleteFile ( </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpFileName ); // 
+    [IN] 文件名</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    打开存储过程文件</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 返回值：TRUE 
+    成功；FASLE 失败，GetLastError() 获取出错号。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BOOL OpenStoredProcFile ( </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpFileName ); // 
+    [IN] 文件名</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    关闭存储过程文件</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 返回值：TRUE 
+    成功；FASLE 失败，GetLastError() 获取出错号。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BOOL CloseStoredProcFile ( 
+    </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">VOID );</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    审计用户是否有指定权限</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 返回值：TRUE 有；FASLE 
+    无或失败，GetLastError() != 0 则为出错。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">BOOL spAuditUserPrivilege 
+    ( </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpProcName, // [IN] 
+    存储过程名(UserName.ProcName 构成一个完整过程名)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD dwUserId, // [IN] 
+    待审核用户的 ID</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char cPrivilege ); // [IN] 
+    待审核的特权：PRIVILEGE_EXECUTE PRIVILEGE_READ </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// PRIVILEGE_WRITE 
+    的组合</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    授予用户指定权限</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 返回值：0 
+    正确；非 0 失败， 返回值为出错码。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    说明：执行该操作的用户须对目标过程具有写的权限。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD spGrantUserPrivilege 
+    (</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpProcName, // [IN] 
+    存储过程名(UserName.ProcName 构成一个完整过程名)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD dwUserId, // [IN] 
+    待授权用户的 ID</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char cPrivilege ); // [IN] 
+    待授予的特权：PRIVILEGE_EXECUTE PRIVILEGE_READ </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// PRIVILEGE_WRITE 
+    的组合</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    取消用户指定权限</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 返回值：0 
+    正确；非 0 失败， 返回值为出错码。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    说明：执行该操作的用户须对目标过程具有写的权限。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD 
+    spRevokeUserPrivilege ( </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpProcName, // [IN] 
+    存储过程名(UserName.ProcName 构成一个完整过程名)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD dwUserId, // [IN] 
+    待取消授权用户的 ID</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char cPrivilege ); // [IN] 
+    待取消的特权：PRIVILEGE_EXECUTE PRIVILEGE_READ</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// PRIVILEGE_WRITE 
+    的组合</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    构造一个完整的过程名。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 返回值：0 
+    正确；非 0 失败， 返回值为出错码。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD MakeStoredProcName ( 
+    </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpUserName, // [IN] 
+    用户名</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpProcName, // [IN] 
+    部分过程名</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPSTR lpCompleteProcName 
+    ); // [OUT] 完整过程名接收指针</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 新建一个过程</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 返回值：0 
+    正确；非 0 失败， 返回值为出错码。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    说明：初始时创建过程的用户对该过程具有全部的特权。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD NewStoredProc (</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpProcName, // [IN] 
+    存储过程名(UserName.ProcName 构成一个完整过程名)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD dwUserId, // [IN] 
+    创建过程用户的 ID</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPSTR lpBuffer, // [IN] 
+    存储过程的脚本内容缓冲区指针</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD dwcbBuffer ); // 
+    [IN] 存储过程的脚本内容大小</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 删除一个过程</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 返回值：0 
+    正确；非 0 失败， 返回值为出错码。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    说明：执行该操作的用户须对目标过程具有写的权限。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD DeleteStoredProc (</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpProcName, // [IN] 
+    存储过程名(UserName.ProcName 构成一个完整过程名)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD dwUserId ); // [IN] 
+    进行该操作的用户 ID</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    获取指定过程的大小</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 返回值：0xFFFFFFFF 
+    失败， GetLastError() 为出错码; 否则正确，返回值即为大小。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    说明：执行该操作的用户须对目标过程具有读的权限。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD GetStoredProcSize (</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpProcName, // [IN] 
+    存储过程名(UserName.ProcName 构成一个完整过程名)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD dwUserId ); // [IN] 
+    进行该操作的用户 ID</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    获取指定过程的内容</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 返回值：0 
+    正确；非 0 失败， 返回值为出错码。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    说明：执行该操作的用户须对目标过程具有读或执行的权限。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD ReadStoredProc ( </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpProcName, // [IN] 
+    存储过程名(UserName.ProcName 构成一个完整过程名)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD dwUserId, // [IN] 
+    进行该操作的用户 ID</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPSTR lpBuffer, // [IN] 
+    内容接收缓冲区的指针</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPDWORD lpdwcbBuffer ); // 
+    [IN] 内容接收缓冲区的大小</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// [OUT] 
+    内容的实际大小</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    更新指定过程的内容</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 返回值：0 
+    正确；非 0 失败， 返回值为出错码。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 
+    说明：执行该操作的用户须对目标过程具有写的权限。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD UpdateStoredProc (</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPCSTR lpProcName, // [IN] 
+    存储过程名(UserName.ProcName 构成一个完整过程名)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD dwUserId, // [IN] 
+    进行该操作的用户 ID</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">LPSTR lpBuffer, // [IN] 
+    新内容缓冲区的指针</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">DWORD dwcbBuffer ); // 
+    [IN] 存储过程的脚本内容大小</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

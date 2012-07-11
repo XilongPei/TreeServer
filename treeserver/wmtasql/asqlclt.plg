@@ -1,0 +1,152 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: asqlclt - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP21.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/Asqlclt.pdb" /debug /machine:I386 /nodefaultlib:"libc.lib" /out:"Debug/Asqlclt.dll" /implib:"Debug/Asqlclt.lib" 
+.\Debug\Arrayutl.obj
+.\Debug\ascii_1.obj
+.\Debug\ascii_2.obj
+.\Debug\ascii_3.obj
+.\Debug\Ascii_4.obj
+.\Debug\Ascii_5.obj
+.\Debug\Ascii_6.obj
+.\Debug\ascii_7.obj
+.\Debug\Askact.obj
+.\Debug\Askact2.obj
+.\Debug\Askactuv.obj
+.\Debug\Asqlana.obj
+.\Debug\Asqlerr.obj
+.\Debug\Asqlmain.obj
+.\Debug\Asqlpath.obj
+.\Debug\Asqlutl.obj
+.\Debug\Bc2watc.obj
+.\Debug\Btree.obj
+.\Debug\Btreeadd.obj
+.\Debug\Btreeext.obj
+.\Debug\Btreewmt.obj
+.\Debug\Cfg_fast.obj
+.\Debug\charutl.obj
+.\Debug\Db_s_ndx.obj
+.\Debug\dbftotal.obj
+.\Debug\Dbs_util.obj
+.\Debug\des.obj
+.\Debug\Dio.obj
+.\Debug\Diodbt.obj
+.\Debug\Dioext.obj
+.\Debug\Diofile.obj
+.\Debug\ExchBuff.obj
+.\Debug\Filetool.obj
+.\Debug\Histdata.obj
+.\Debug\Hzth.obj
+.\Debug\Macro.obj
+.\Debug\Memutl.obj
+.\Debug\Mistools.obj
+.\Debug\Mistring.obj
+.\Debug\Mxccfg.obj
+.\Debug\Ndx_man.obj
+.\Debug\odbc_dio.obj
+.\Debug\Parabrk.obj
+.\Debug\Rjio.obj
+.\Debug\Str_gram.obj
+.\Debug\Strutl.obj
+.\Debug\Syscall.obj
+.\Debug\t_int64.obj
+.\Debug\T_lock_r.obj
+.\Debug\Tabtools.obj
+.\Debug\treepara.obj
+.\Debug\treevent.obj
+.\Debug\Ts_dict.obj
+.\Debug\Tsdbfutl.obj
+.\Debug\Wmtasql.obj
+.\Debug\wst2mt.obj
+.\Debug\Xexp.obj
+.\Debug\Xexpfun.obj
+.\Debug\Script1.res
+..\btree\Release\dbtree.lib
+.\Release\SQL_DIO.lib
+.\Debug\asql_xml.obj
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP21.tmp"
+<h3>Output Window</h3>
+Linking...
+   Creating library Debug/Asqlclt.lib and object Debug/Asqlclt.exp
+LINK : warning LNK4049: locally defined symbol "_SymbolRegister" imported
+LINK : warning LNK4049: locally defined symbol "_CalExpr" imported
+LINK : warning LNK4049: locally defined symbol "_subcopy" imported
+LINK : warning LNK4049: locally defined symbol "_strZcpy" imported
+LINK : warning LNK4049: locally defined symbol "_FreeCode" imported
+LINK : warning LNK4049: locally defined symbol "_WordAnalyse" imported
+LINK : warning LNK4049: locally defined symbol "_SubstrOutBlank" imported
+LINK : warning LNK4049: locally defined symbol "_makefilename" imported
+LINK : warning LNK4049: locally defined symbol "_dSleep" imported
+LINK : warning LNK4049: locally defined symbol "_IndexClose" imported
+LINK : warning LNK4049: locally defined symbol "_IndexSyncDbf" imported
+LINK : warning LNK4049: locally defined symbol "_IndexSeek" imported
+LINK : warning LNK4049: locally defined symbol "_IndexBuild" imported
+LINK : warning LNK4049: locally defined symbol "_lrtrim" imported
+LINK : warning LNK4049: locally defined symbol "_hOpen" imported
+LINK : warning LNK4049: locally defined symbol "_hBuildCodeLib" imported
+LINK : warning LNK4049: locally defined symbol "_IndexDispose" imported
+LINK : warning LNK4049: locally defined symbol "_IndexRecIns" imported
+LINK : warning LNK4049: locally defined symbol "_BppTreeBuild" imported
+LINK : warning LNK4049: locally defined symbol "_IndexSkip" imported
+LINK : warning LNK4049: locally defined symbol "_substr" imported
+LINK : warning LNK4049: locally defined symbol "_cnStrToStr" imported
+LINK : warning LNK4049: locally defined symbol "_stoUpper" imported
+LINK : warning LNK4049: locally defined symbol "_trim" imported
+LINK : warning LNK4049: locally defined symbol "_ltrim" imported
+LINK : warning LNK4049: locally defined symbol "_shrink" imported
+LINK : warning LNK4049: locally defined symbol "_GetCurrentResult" imported
+LINK : warning LNK4049: locally defined symbol "_TrimFileName" imported
+LINK : warning LNK4049: locally defined symbol "_IndexGetKeyContent" imported
+LINK : warning LNK4049: locally defined symbol "_IndexGoBottom" imported
+LINK : warning LNK4049: locally defined symbol "_IndexLocate" imported
+LINK : warning LNK4049: locally defined symbol "_IndexSleep" imported
+LINK : warning LNK4049: locally defined symbol "_makeTrimFilename" imported
+LINK : warning LNK4049: locally defined symbol "_IndexGoTop" imported
+LINK : warning LNK4049: locally defined symbol "_IndexBAwake" imported
+LINK : warning LNK4049: locally defined symbol "_IndexBuildKeyExpr" imported
+LINK : warning LNK4049: locally defined symbol "_IndexAwake" imported
+LINK : warning LNK4049: locally defined symbol "_seperateStr" imported
+LINK : warning LNK4049: locally defined symbol "_changeFilenameExt" imported
+LINK : warning LNK4049: locally defined symbol "_rtrim" imported
+LINK : warning LNK4049: locally defined symbol "_IndexGetKeyRecNo" imported
+LINK : warning LNK4049: locally defined symbol "_IndexEof" imported
+LINK : warning LNK4049: locally defined symbol "_IndexOpen" imported
+LINK : warning LNK4049: locally defined symbol "_IndexRecMove" imported
+LINK : warning LNK4049: locally defined symbol "_IndexCurRecno" imported
+LINK : warning LNK4049: locally defined symbol "_strToSourceC" imported
+LINK : warning LNK4049: locally defined symbol "_MakeName" imported
+LINK : warning LNK4049: locally defined symbol "_IndexRecDel" imported
+LINK : warning LNK4049: locally defined symbol "_IndexFlush" imported
+LINK : warning LNK4049: locally defined symbol "_IndexEqSkip" imported
+LINK : warning LNK4049: locally defined symbol "_IndexKeyCount" imported
+LINK : warning LNK4049: locally defined symbol "_strnchr" imported
+LINK : warning LNK4049: locally defined symbol "_IndexRelease" imported
+LINK : warning LNK4049: locally defined symbol "_hClose" imported
+LINK : warning LNK4049: locally defined symbol "_hyDataCollect" imported
+LINK : warning LNK4049: locally defined symbol "_stoLower" imported
+LINK : warning LNK4049: locally defined symbol "_hReplaceByMethod" imported
+LINK : warning LNK4049: locally defined symbol "_hExtReplaceByMethod" imported
+LINK : warning LNK4049: locally defined symbol "_hMethodTranslate" imported
+LINK : warning LNK4049: locally defined symbol "_getHzthInitFlag" imported
+LINK : warning LNK4049: locally defined symbol "__DES" imported
+LINK : warning LNK4049: locally defined symbol "_DES" imported
+LINK : warning LNK4049: locally defined symbol "_strNputStr" imported
+Wmtasql.obj : error LNK2001: unresolved external symbol _GetTSProfilePathA
+Debug/Asqlclt.dll : fatal error LNK1120: 1 unresolved externals
+Error executing link.exe.
+
+
+
+<h3>Results</h3>
+Asqlclt.dll - 2 error(s), 63 warning(s)
+</pre>
+</body>
+</html>

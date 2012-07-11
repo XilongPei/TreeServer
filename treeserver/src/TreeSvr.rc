@@ -1,0 +1,257 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 165, 67
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "关于 TreeServer 服务管理器"
+FONT 10, "System"
+BEGIN
+    DEFPUSHBUTTON   "确认",IDOK,65,47,50,13
+    LTEXT           "TBroker 服务管理器 5.0",IDC_STATIC,38,14,97,8
+    LTEXT           "1989-2001 Withub Technology",IDC_STATIC,30,26,100,8
+END
+
+IDD_SERVERDIALOG DIALOGEX 0, 0, 122, 100
+STYLE DS_SYSMODAL | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "TBroker 服务管理器"
+MENU POPUPMENU
+FONT 10, "System"
+BEGIN
+    PUSHBUTTON      "&S 启动",IDC_START,77,13,35,15
+    PUSHBUTTON      "&T 停止",IDC_STOP,77,63,35,15
+    PUSHBUTTON      "&P 暂停",IDC_PAUSE,77,38,35,15
+    LTEXT           "",IDC_STATELINE,0,87,121,10,0,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | WS_DISABLED,0,0,
+                    121,1
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICONBLANK           ICON    DISCARDABLE     "..\\res\\blank.ico"
+IDI_ICONPAUSE           ICON    DISCARDABLE     "..\\res\\pause.ico"
+IDI_ICONRUN             ICON    DISCARDABLE     "..\\res\\run.ico"
+IDI_ICONSTOP            ICON    DISCARDABLE     "..\\res\\stop.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+POPUPMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "服务"
+    BEGIN
+        MENUITEM "显示 TBroker 服务管理器",     IDM_SHOW
+        MENUITEM "关于 TBroker 服务管理器",     IDM_ABOUT
+        MENUITEM SEPARATOR
+        MENUITEM "TBroker 服务  -  启动",       IDC_START
+        MENUITEM "TBroker 服务  -  暂停",       IDC_PAUSE
+        MENUITEM "TBroker 服务  -  停止",       IDC_STOP
+        MENUITEM SEPARATOR
+        MENUITEM "退出 TBroker 服务管理器",     IDM_EXIT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAPRUN           BITMAP  DISCARDABLE     "..\\res\\runbmp.bmp"
+IDB_BITMAPBLANK         BITMAP  DISCARDABLE     "..\\res\\blankbmp.bmp"
+IDB_BITMAPPAUSE         BITMAP  DISCARDABLE     "..\\res\\pausebmp.bmp"
+IDB_BITMAPSTOP          BITMAP  DISCARDABLE     "..\\res\\stopbmp.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        RIGHTMARGIN, 158
+        BOTTOMMARGIN, 60
+    END
+
+    IDD_SERVERDIALOG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 121
+        BOTTOMMARGIN, 97
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    7000                    "未知错误"
+    7001                    "指定请求队列太小，使用系统默认值"
+    7002                    "请求队列内部错误"
+    7003                    "请求队列已空"
+    7004                    "请求队列已满"
+    7005                    "请求队列无响应"
+    7006                    "非法用户"
+    7007                    "无"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    7008                    "非法参数"
+    7009                    "不能识别的命令"
+    7010                    "同名的同步对象已存在，创建失败"
+    7011                    "不能识别的消息类型"
+    7012                    "非法的计算机名"
+    7013                    "不可用的用户引擎"
+    7014                    "非法的引擎命名字"
+    7015                    "非法的引擎动态链接库"
+    7016                    "非法的引擎入口"
+    7017                    "不能识别的引擎性能关键字"
+    7018                    "无"
+    7019                    "无"
+    7020                    "引擎事务超时"
+    7021                    "无"
+    7022                    "无"
+    7023                    "引擎%s加载失败"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    7024                    "无"
+    7025                    "不能识别的请求"
+    7026                    "找不到引擎%s的信息入口"
+    7027                    "无"
+    7028                    "无"
+    7029                    "无"
+    7030                    "无"
+    7031                    "命名管道超时"
+    7032                    "无"
+    7033                    "内存存取错误（内部）"
+    7034                    "非法内存地址（内部）"
+    7035                    "无效的验证服务器"
+    7036                    "分配交换区失败"
+    7037                    "用户没有登录"
+    7038                    "用户进程已关闭"
+    7039                    "服务线程已关闭"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    7040                    "没有正确完成复制"
+    7041                    "脚本太长"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    7501                    "用户帐号数据库内部错误"
+    7502                    "用户帐号数据库已被其它进程独占"
+    7503                    "创建帐号数据库失败"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    7504                    "打开帐号数据库失败"
+    7505                    "关闭帐号数据库失败"
+    7506                    "读取帐号数据库失败"
+    7507                    "写入帐号数据库失败"
+    7508                    "无打开的帐号数据库"
+    7509                    "指定用户已存在"
+    7510                    "指定用户不存在"
+    7511                    "非法用户名"
+    7512                    "非法的密码"
+    7513                    "非法的路迳名"
+    7514                    "非法的计算机名"
+    7515                    "非法的登录时间表"
+    7516                    "非法的权限掩码"
+    7517                    "用户不能在指定的工作站登陆"
+    7518                    "帐号被锁定"
+    7519                    "指定信息不能被读取或修改"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    7520                    "用户帐号规则不存在"
+END
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

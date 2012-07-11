@@ -1,0 +1,139 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>用户帐号的管理级操作</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>用户帐号的管理级操作</strong></p>
+    <p align="left"><strong>　</strong></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">msgType = 'M' </span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">添加用户帐号 </span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lp = 0x4001 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">len = 1 + 户帐号信息结构的大小 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">包数据为 1个Char + 
+    用户帐号信息的结构 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">返回：lp = 0 成功； </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">否则为失败 lp 为出错号，len 
+    为出错信息大小，数据为出错信息 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：Char 
+    为是否自动创建用户主目录的标志， </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">若 Char 为 1，表示自动创建用户主目录； 
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">若 Char 为 0，表示不创建用户主目录。 
+    </span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">删除用户帐号 </span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lp = 0x4002 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">len = 1 + 用户名的长度 + 1 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">包数据为 1个Char + 
+    待删除的用户名 + '\x0' </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">返回：lp = 0 成功； </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">否则 lp 为出错号，len 
+    为出错信息长，数据为出错信息 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：Char 
+    为是否自动删除用户主目录的标志， </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">若 Char 为 1，表示自动删除用户主目录； 
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">若 Char 为 0，表示不删除用户主目录。 
+    </span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">获取用户帐号信息 </span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lp = 0x4003 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">len = sizeof( int ) + 用户名长度 + 1 
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">包数据为帐号信息的索引号(int 
+    类型) + 用户名 + '\x0' </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">返回：lp = 0 成功，len 
+    为帐号信息大小，数据为索引号对应的帐号信息； </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">否则 lp 为出错号，len 
+    为出错信息长，数据为出错信息 </span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">修改用户帐号信息 </span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lp = 0x4004 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">len = sizeof( int ) + 用户名长度 + 1 
+    + 用户帐号信息的数据长度 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">包数据为帐号信息的索引号(int 
+    类型) + 用户名 + '\x0' + 索引号对应的 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">用户帐号信息的数据 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">返回：lp = 0 成功； </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">否则 lp 为出错号，len 
+    为出错信息长，数据为出错信息 </span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">枚举用户帐号 </span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lp = 0x4005 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">len = 0 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">包数据无效 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">返回：lp = 0 成功，len 
+    为当前帐号数据的大小，数据为帐号信息， </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">直到 leftPacket 和 endPacket 为 0 
+    时，帐号数据结束； </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">否则 lp 为出错号，len 
+    为出错信息长，数据为出错信息 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：枚举用户帐号时，客户应用只需发送一次枚举请求，服务器接收到 
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">请求后，会每次发送一个用户的信息结构数据，直到枚举结束为止， 
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">除最后的一个数据包的 leftPacket 
+    和 endPacket 等于 0 之外， </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">其余数据包leftPacket 和 endPacket 
+    均等于 1。 </span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">用户帐号锁定 </span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lp = 0x4006 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">len = 用户名的长度 + 1 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">包数据为待锁定的用户名 + '\x0' 
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">返回：lp = 0 成功； </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">否则 lp 为出错号，len 
+    为出错信息长，数据为出错信息 </span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">用户帐号解锁 </span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lp = 0x4007 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">len = 用户名的长度 + 1 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">包数据为待解锁的用户名 + '\x0' 
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">返回：lp = 0 成功； </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">否则 lp 为出错号，len 
+    为出错信息长，数据为出错信息 </span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">清除帐号登录失败计数 </span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lp = 0x4008 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">len = 用户名的长度 + 1 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">包数据为待操作的用户名 + '\x0' 
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">返回：lp = 0 成功； </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">否则 lp 为出错号，len 
+    为出错信息长，数据为出错信息 </span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">修改帐号用户名 </span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lp = 0x4009 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">len = 旧用户名长度 + 1 + 
+    新用户名长度 + 1 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">包数据为旧用户名 + '\x0' + 
+    新用户名 + '\x0' </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">返回：lp = 0 成功； </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">否则 lp 为出错号，len 
+    为出错信息长，数据为出错信息 </span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">获取帐号规则 </span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lp = 0x4010 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">len = 0 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">包数据无效 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">返回：lp = 0 成功，len 
+    为规则信息大小，规则信息结构与用户信息结构 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">相同，其中 szUser、dwUserId、szPasswd、szLogonComputer、 
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">szDescription 
+    为无效数据，可以忽略； </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">否则 lp 为出错号，len 
+    为出错信息长，数据为出错信息 </span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">修改帐号规则 </span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lp = 0x4011 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">len = 规则信息大小 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">包数据为规则信息 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">返回：lp = 0 成功； </span></p>
+    <p><span style="font-size: 12px">否则 lp 为出错号，len 
+    为出错信息长，数据为出错信息</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

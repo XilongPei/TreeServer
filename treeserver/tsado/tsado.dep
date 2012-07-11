@@ -1,0 +1,74 @@
+# Microsoft Developer Studio Generated Dependency File, included by TSADO.mak
+
+.\AboutBox.cpp : \
+	".\AboutBox.h"\
+	".\StdAfx.h"\
+	
+
+.\Command.cpp : \
+	".\AboutBox.h"\
+	".\Command.h"\
+	".\src\Tscapi.h"\
+	".\StdAfx.h"\
+	".\TSADO.h"\
+	
+
+.\src\des.c : \
+	".\src\Des.h"\
+	
+
+.\src\Lzhuf.c : \
+	".\src\ExchBuff.h"\
+	".\src\namedpipe.h"\
+	".\src\terror.h"\
+	".\src\tlimits.h"\
+	".\src\ts_com.h"\
+	".\src\ts_const.h"\
+	
+
+.\src\MISTRING.C : \
+	".\src\DIR.H"\
+	".\src\Mistring.h"\
+	".\src\Wst2mt.h"\
+	
+
+.\src\namedpipe.c : \
+	".\src\namedpipe.h"\
+	".\src\terror.h"\
+	".\src\tlimits.h"\
+	".\src\TREE_TCP.H"\
+	".\src\ts_com.h"\
+	
+
+.\StdAfx.cpp : \
+	".\StdAfx.h"\
+	
+
+.\src\Tree_tcp.c : \
+	".\src\TREE_TCP.H"\
+	
+
+.\TSADO.cpp : \
+	".\Command.h"\
+	".\dlldatax.h"\
+	".\src\Tscapi.h"\
+	".\StdAfx.h"\
+	".\TSADO.h"\
+	".\TSADO_i.c"\
+	
+
+.\TSADO.rc : \
+	".\adosvr.ico"\
+	".\Command.rgs"\
+	".\TSADO.tlb"\
+	
+
+.\src\Tscapi.c : \
+	".\src\Des.h"\
+	".\src\lzhuf.h"\
+	".\src\namedpipe.h"\
+	".\src\terror.h"\
+	".\src\tlimits.h"\
+	".\src\ts_com.h"\
+	".\src\Tscapi.h"\
+	

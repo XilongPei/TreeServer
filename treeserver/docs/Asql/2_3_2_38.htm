@@ -1,0 +1,31 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>唯一执行</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><b><span style="font-size: 12px">唯一执行(distinct)</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]distinct( 域名 )</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]判断域名中指定的域的内容是否已经存在，若已存在，则略过本动作表达式。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> 一个ASQL过程体中可以有多个distinct()引用，但是域名必须相同，</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*求SUB0中不同级别的毕业于上海的人各一人*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM sub0<br>
+    TO cxmain.dbf,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    at(&quot;上海&quot;,hzth(GRAD_CLLG))!=0 $ distinct(POST_RANK);record(@1)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*找出毕业院校名字中带上海两字的，且按级别区分这些人*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">END</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

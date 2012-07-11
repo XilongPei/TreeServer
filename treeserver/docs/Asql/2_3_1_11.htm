@@ -1,0 +1,36 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>定位查找</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><strong><span style="font-size: 12px">定位查找(locate)</span></strong></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]LONG_TYPE locate(数据库或索引文件名, 
+    &quot;定位表达式字符串&quot;(可有多个))</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]从数据库的第一条记录开始 
+    查找。查找到后，返回定位到的记录号，查询工作结束。若无此记录，则返回0。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">定位表达式字符串是指用来形成表达式的字符串，该函数将拿着这个字符串，将其当作一个表达式，对被定位数据库进行逐条记录计算。若某一字符串需传给该函数，则需再在其前后加引号，而若将一个域、字符串内容传给该函数，该函数将自动识别其类型，决定要否加上双引号。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">数据库或索引文件名是一个与FROM后面的表名写法相同的一个字符串，它可以有路径，但只能是相对于当前数据库的相对路径，如：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CODE\DM1.DBF</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]PREDICATES</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">LONG a<br>
+    ACTION a:=locate(&quot;sub1.dbf&quot;,&quot;name=\&quot;王\&quot;&quot;)<br>
+    /*这相当于告诉locate,用表达式name=&quot;王&quot;去定位数据库*/<br>
+    ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)<br>
+    locate(&quot;LZ0.DBF&quot;, &quot;NAME=\&quot;裴\&quot;&quot;)<br>
+    locate(&quot;SUB0.DBF&quot;,&quot;NATION=&quot;,NATION)<br>
+    /*假设a当前为LONG型*/<br>
+    locate(&quot;SUB0.DBF&quot;,&quot;NATION=&quot;,str(a))<br>
+    locate(&quot;SUB0.DBF&quot;,&quot;NATION=&quot;,19980504T)</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

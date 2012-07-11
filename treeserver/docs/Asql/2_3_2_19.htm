@@ -1,0 +1,40 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>物理删除</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><strong><span style="font-size: 12px">物理删除(packdbf)</span></strong></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]packdbf(域名)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]将已作删除标志的记录物理删除，即从数据库中清除，必须与delete连用。这里 
+    的删除标志仍是xBASE形式的逻辑删除标志，而非指Del域中的1。物理删除了的记录 
+    无法恢复。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">域名起定位作用。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*删除人员库中所有作过删除标记的记录。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0<br>
+    CONDITION<br>
+    BEGIN<br>
+    &nbsp; 1 $ packdbf(@1);<br>
+    END</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> ASQL在关闭表之前自己会判断其是否需删除记录，视数据字典中对该表的定义。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> ASQL在对一张表进行“紧缩”，先判断其是否被二个以上程序打开，若是，则放弃这个打算，所以下面的写法是错的：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0<br>
+    TO \TG\DATA\SUB0<br>
+    CONDITION<br>
+    BEGIN<br>
+    &nbsp; 1 $ packdbf(@1);<br>
+    END</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: dbtree - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP2A.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /Fp"Debug/dbtree.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /c 
+"F:\TreeServer\btree\dbtree.c"
+"F:\TreeServer\btree\dbtrewmt.c"
+"F:\TreeServer\btree\Memutl.c"
+"F:\TreeServer\btree\Mistring.c"
+]
+Creating command line "cl.exe @D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP2A.tmp" 
+Creating temporary file "D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP2B.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/dbtree.pdb" /debug /machine:I386 /out:"Debug/dbtree.dll" /implib:"Debug/dbtree.lib" 
+.\Debug\dbtree.obj
+.\Debug\dbtrewmt.obj
+.\Debug\Memutl.obj
+.\Debug\Mistring.obj
+]
+Creating command line "link.exe @D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP2B.tmp"
+<h3>Output Window</h3>
+Compiling...
+dbtree.c
+dbtrewmt.c
+Memutl.c
+Mistring.c
+Linking...
+   Creating library Debug/dbtree.lib and object Debug/dbtree.exp
+
+
+
+<h3>Results</h3>
+dbtree.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

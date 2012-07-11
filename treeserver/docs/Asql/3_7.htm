@@ -1,0 +1,90 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>其它操作</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><strong><span style="font-size: 12px">其它操作</span></strong></p>
+    <ol type="I" style="font-size: 12px">
+      <li type="1"><span style="font-size: 12px"><a NAME="_Toc437587430">子集操作</a></span></li>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px"><br>
+      /*子集中相关记录多于一条的记录,relcnt()不影响当前运算nextmrec()跳转至主集的下一条记录*/</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">from a,b,*code<br>
+      to ls,*<br>
+      condition<br>
+      begin<br>
+      &nbsp; relcnt(1) &gt; 1 $ record(@1);nextmrec()<br>
+      end</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">1.relcnt()</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">求子集中与当前关键字相连接的记录数，参数为FROM后的表序号，1代表第一个参与运算的子表；</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">2.nextmrec()</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">放弃子集的其它关联，跳至主集的下一条记录进行运算。</span></p>
+      <li><span style="font-size: 12px"><a NAME="_Toc437587431">索引辅助下的快速查找(SCOPE)</a></span></li>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">一般数据字典中有关于一张表的各个索引的描述，包括关键字，文件名等，ASQL可以利用这些索引提高自己的运行速度。</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">SCOPE语句语法：<br>
+      FROM (SCOPE[ ASCEND,DESCEND]：关键字，起始关键字，终止关键字)源表</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：<br>
+      ASCEND：表示所用索引方式为升序；<br>
+      DESCEND：表示所用索引方式为降序。</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">设置这两外关键字的目的是为了对数据进行排序。</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">例如：/*key start, end可以是下面的形式: 
+      &quot;字符串&quot;, 但字符串中不能包含双引号它们也可以是:只是用逗号分隔开的字符串end可选*/</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">from (scope:key, start, [end])lz0<br>
+      to ls<br>
+      conditioh<br>
+      begin<br>
+      1 $ record(@1)<br>
+      end</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：SCOPE为关键字，key为使用的关键字字段名，可以是用“+”连起来的多个字段，start为起始运算的关键字值。如果没有[end]，则运算至表结束。</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">SCOPE也支持对记录的定范围运算。</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">如果key为数字（任意数字），则表示本次快速运算是对固定记录进行的运算，这时，start为超始记录号，end为终止记录号（此时end参数不可以省）。</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">例如：/*将sub0的第8条至第100条记录拷贝如至目标文件*/</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM (SCOPE：1,8,100)sub0<br>
+      TO cxmain.dbf,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      &nbsp; 1 $ RECORD(@1)<br>
+      END</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">另例：</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">from (scope descend: code, &quot;&quot;, 
+      &quot;&quot;)sub0,sub1,*code<br>
+      to cx,*<br>
+      cond<br>
+      begin<br>
+      &nbsp; 1 $ record(@1)<br>
+      end</span></p>
+      <li><span style="font-size: 12px"><a NAME="_Toc437587432">求检索结果的记录号</a></span></li>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px"><br>
+      from lz0<br>
+      condition<br>
+      begin<br>
+      a04=“1” $ mvewno(1)<br>
+      end</span></p>
+      <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：本函数只适于客户/服务器方式，此时ASQL将检索结果的记录号发送给客户端。</span></p>
+      <li><span style="font-size: 12px"><a NAME="_Toc437587433">Web输出信息</a><br>
+        <br>
+        webprint(“ASQL字符串”，域名……..)</span><p ALIGN="JUSTIFY"><span
+        style="font-size: 12px">例：<br>
+        from lz0<br>
+        condition<br>
+        begin<br>
+        a04=“1” $ webprint(“姓名”，name,“性别”，sex)<br>
+        end</span></p>
+        <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：</span></p>
+        <p ALIGN="JUSTIFY"><span style="font-size: 12px">本函数只适用于WWW下的CGI的引用场合。</span></p>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

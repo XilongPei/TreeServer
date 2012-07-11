@@ -1,0 +1,182 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>历史数据采集与分析的机制</title>
+</head>
+
+<body style="font-size: 12px">
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><strong>历史数据采集与分析的机制</strong></span></p>
+    <p><span style="font-size: 12px">&nbsp;&nbsp; 
+    历史资料分析是对系统所采集的历年信息资料按日期及时间和一定的要求进行分析，便让用户对资料有一个纵向比较的概念。用户操作时，先选取分析条件，再确定分析的间。用户从历史资料分析条件库HISTCOND.DBF 
+    中取得分析条件，再从历史资料说明信息库HISTSREM.DBF中取得时间点（时间点就是数据采集的时刻及说明），程序对历史资料数据库HISTRSUT.DBF 
+    中的数据进行分析后，得到用户需要的结果。</span></p>
+    <p><span style="font-size: 12px">历史资料分析是动态保存数据变化情况的一个有效手段。对一个信息系统应用部门来说，不对系统中数据做动态保留是一件不可想象的事，因为很多决策是靠历史数据和现时数据的总和分析来获得的。</span></p>
+    <p><span style="font-size: 12px">从软件使用者来看，历史资料分析是按一定规则提取历史资料，反映出数据变化的过程。</span></p>
+    <p><span style="font-size: 12px">从软件系统内部看，历史资料分析是一个对历史数据进行采集、选择、提取的过程。</span></p>
+    <p><span style="font-size: 12px">为了使历史资料分析得以实现，在历史资料分析中设计了以下几个文件：历史资料分析条件库、历史资料数据库、历史资料说明信息库。</span></p>
+    <p><span style="font-size: 12px">一个历史数据是统计结果，它需要有以下描述信息：</span></p>
+    <p><span style="font-size: 12px">(1)该数据的统计条件及其说明；</span></p>
+    <p><span style="font-size: 12px">(2)数据的采集时间；</span></p>
+    <p><span style="font-size: 12px">(3)数据的采集结果。</span></p>
+    <p><span style="font-size: 12px">一个历史数据分析过程是对下面这种表格的计算过程，如表5.1，5.2所示。</span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px">表5.1 <u><b>一个历史分析样本表示样</b></u></span></p>
+    <table BORDER="1" CELLSPACING="2" BORDERCOLOR="#000000" CELLPADDING="7" WIDTH="568">
+      <tr>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">统计指标1</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">统计指标2</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">统计指标3</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">统计指标….</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">统计指标N</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">样本点1</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">样本点2</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">样本点……</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">样本点M</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="17%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+    </table>
+    <p><span style="font-size: 12px">　</span></p>
+    <p><span style="font-size: 12px">说明：</span></p>
+    <p><span style="font-size: 12px">样本点即采集数据样本的时刻，即数据采集点。</span></p>
+    <p><span style="font-size: 12px">　</span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px">表5.2 <u><b>某集团公司干部情况变化表</b></u></span></p>
+    <p ALIGN="RIGHT"><span style="font-size: 12px">　</span></p>
+    <table border="0" width="462" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="100%" align="right"><span style="font-size: 12px">单位：人</span></td>
+      </tr>
+      <tr>
+        <td width="100%" align="right"><span style="font-size: 12px">&nbsp; </span></td>
+      </tr>
+    </table>
+    <table BORDER="1" CELLSPACING="2" BORDERCOLOR="#000000" CELLPADDING="7" WIDTH="462">
+      <tr>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="50" VALIGN="TOP"><span style="font-size: 12px">干部总数</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">干部增加数</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">干部减少数</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">技术干部数</span></td>
+        <td WIDTH="60" VALIGN="TOP"><span style="font-size: 12px">政工干部数</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">一九九零年</span></td>
+        <td WIDTH="50" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="60" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">一九九一年</span></td>
+        <td WIDTH="50" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="60" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">一九九二年</span></td>
+        <td WIDTH="50" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="60" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">一九九三年</span></td>
+        <td WIDTH="50" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="60" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">一九九四年</span></td>
+        <td WIDTH="50" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="60" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">一九九五年</span></td>
+        <td WIDTH="50" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="60" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">一九九六年</span></td>
+        <td WIDTH="50" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="60" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">一九九七年</span></td>
+        <td WIDTH="50" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="60" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">一九九八年</span></td>
+        <td WIDTH="50" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="60" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">一九九九年</span></td>
+        <td WIDTH="50" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="61" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="60" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+      </tr>
+    </table>
+    <p><span style="font-size: 12px">　</span></p>
+    <p><span style="font-size: 12px">说明：</span></p>
+    <p><span style="font-size: 12px">这个表的数据来源于历年该公司的干部统计报表，该公司将其历年的干部统计报表以数据仓库存起来，形成一个分析决策支持系统，通过这个数据仓库该公司很容易地分析出了历年来不同经营情况的人员配备。通过对不可变数据项（如出生年月，民族、性别等）的统计形历的未来几年的干部退休情况，该公司给出了可靠的预测数据，基于这个数据的决策，比人为想象的决策要科学得多。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

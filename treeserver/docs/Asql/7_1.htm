@@ -1,0 +1,256 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>参数传递办法</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p ALIGN="center"><span style="font-size: 12px"><b>参数传递办法</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL与用户自定义函数是通过一种堆栈的数据结构来传递数据的，堆栈的每个元素的结构为：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct {<br>
+    short type;<br>
+    unsigned char values[ 32 ];<br>
+    short length;<br>
+    unsigned char *oval; // fast pointer<br>
+    } OpndType;</span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：</span></p>
+    </b><p ALIGN="JUSTIFY"><span style="font-size: 12px">(1)type：为数据类型</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(2)values：为数据存放数组，有些数据，如字符型、整型、长整型、浮点型及小于32个字符的非常量字符串都是存于values中的，长于32个字节的非常量字符串在其前4个字节中存有字符串空间的指针，ASQL的字符串以尾0结束；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">通过下面的示例函数_TypeAlign()、xGetOpndLong()、xGetOpndFloat()、xGetOpndString()可以分析出来这些数据类型的存储方法。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(3)length：为数据长度，若为字符串，长度不包尾0</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(4)oval：常量、数组或数据库域类型的快速指针，它指向表达式原子串的values元素。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">数组的存储同符号表中的存储，下面有说明。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">域类型，它指向一个结构（dFIELDWHENACTION），该结构定义如下：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct {<br>
+    unsigned char *pSourceStart; <br>
+    unsigned short wSourceid;<br>
+    dFILE *pSourceDfile;<br>
+    unsigned char *pTargetStart;<br>
+    unsigned short wTargetid;<br>
+    dFILE *pTargetDfile;<br>
+    void *ResultMem;<br>
+    } dFIELDWHENACTION;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">结构说明：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">pSourceStart：指向源中域内容的字符串指针。<br>
+    wSourceid：源中域标识号，一般为域的顺序，从0开始计算。<br>
+    pSourceDfile：源表指针。<br>
+    pTargetStart：指向目标中域内容的字符串指针。<br>
+    wTargetid：目标中域标识号，一般为域的顺序，从0开始计算。<br>
+    pTargetDfile：目标表指针。<br>
+    ResultMem：运算结果指针，主要由ASKMAX，ASKMIN，ASKSUM等关生符号结果的函数使用，一般用户自定义函数无法使用此值。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">用户一般通过pSourceStart、pTargetStart及length来获取值，只有BLOB（备注型）才需其它字段帮助。length此时表示此域的长度。BLOB（备注）型的这个值一般无实际意义。</span></p>
+    <u><b><p ALIGN="CENTER"><span style="font-size: 12px">ASQL支持的内部数据类型定义</span></p>
+    </b></u><table BORDER="1" CELLSPACING="0" BORDERCOLOR="#000000" CELLPADDING="2"
+    WIDTH="545">
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><b><p ALIGN="CENTER"><span style="font-size: 12px">类 型 
+        说 明</span></b></td>
+        <td WIDTH="68%" VALIGN="TOP"><b><p ALIGN="CENTER"><span style="font-size: 12px">C 语 言 
+        定 义</span></b></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">未明类型变量</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        IDEN_TYPE 1050</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">字符串型变量</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        STRING_IDEN 1051</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">日期型变量(YYYYMMDD)</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        DATE_IDEN 1052</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">字符型变量(-127-127)</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        CHR_IDEN 1053</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">短整型变量(-32767-32767)</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        INT_IDEN 1054</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">长整型变量(-2147583647-2147483600)</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        LONG_IDEN 1055</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">浮点型变量</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        FLOAT_IDEN 1056</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">未知类型字段变量</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        FIELD_IDEN 1060</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">整型数字段变量</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        NFIELD_IDEN 1061 /* dec is 0 and bytes less than 10, long */</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">浮点数字段变量</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        FFIELD_IDEN 1062 /* dec isnot 0, float */</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">逻辑字段变量</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        LFIELD_IDEN 1063 /* logic, short */</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">日期字段变量</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        DFIELD_IDEN 1064 /* date, char[8] */</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">不定长文本字段变量</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        MFIELD_IDEN 1065 /* memo */</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">字符串字段变量</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        CFIELD_IDEN 1066 /* chr[n] */</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">自用自段变量</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        SFIELD_IDEN 1067 /* recno() */</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">字符型(-127-127)</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        CHR_TYPE 1070</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">短整型(-32767-32767)</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        INT_TYPE 1071</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">长整型(-2147583647-2147483600)</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        LONG_TYPE 1072</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">浮点型</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        FLOAT_TYPE 1073</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">日期型</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        DATE_TYPE 1074</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">字符串型</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        STRING_TYPE 1075</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">逻辑型</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        LOGIC_TYPE 1076</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">数组型</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        ARRAY_TYPE 1077</span></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP" COLSPAN="2" HEIGHT="46"><p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL支持两种数据传递办法，一为传值，另一为传地址。通常都是传值，但遇到下一个运算符为赋值(:=)，或本运算数为强制传地址（通过在变量前加&amp;），例：&amp;array[x,y]</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">未明类型变量地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VIDEN_TYPE (IDEN_TYPE | 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">字符串类型变量地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VSTRING_IDEN (STRING_IDEN| 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">日期类型变量地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VDATE_IDEN (DATE_IDEN | 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">字符类型变量地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VCHR_IDEN (CHR_IDEN | 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">整型变量地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VINT_IDEN (INT_IDEN | 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">长整型变量地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VLONG_IDEN (LONG_IDEN | 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">浮点型变量地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VFLOAT_IDEN (FLOAT_IDEN | 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">字段类型变量地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VFIELD_IDEN (FIELD_IDEN | 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">整型字段变量地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VNFIELD_IDEN (NFIELD_IDEN| 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">浮点型字段变量地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VFFIELD_IDEN (FFIELD_IDEN| 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">逻辑型字段地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VLFIELD_IDEN (LFIELD_IDEN| 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">日期型字段地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VDFIELD_IDEN (DFIELD_IDEN| 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">不定度文本字段地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VMFIELD_IDEN (MFIELD_IDEN| 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">字符型字段地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VCFIELD_IDEN (CFIELD_IDEN| 0x1000)</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="32%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">内部用地址</span></td>
+        <td WIDTH="68%" VALIGN="TOP"><p ALIGN="JUSTIFY"><span style="font-size: 12px">#define 
+        VSFIELD_IDEN (SFIELD_IDEN| 0x1000)</span></td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

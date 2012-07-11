@@ -1,0 +1,46 @@
+/*增加减少情况统计表    1996表2*/
+predicates
+     long x[7,21]
+     long y[7,21]
+from tg.dbf
+condition
+begin
+stat x
+          1$staty(1)
+          /*
+      #Y1: 1
+      #y2: wu_princip="2"
+      #Y3: WU_PRINCIP="2"&&WU_RELATE="7"
+      #Y4: WU_PRINCIP="2"&&WU_RELATE<>"7"
+      #Y5: WU_PRINCIP="1"||WU_PRINCIP="4"
+      #Y6: (WU_PRINCIP="1"||WU_PRINCIP="4")&&WU_RELATE="7"
+      #y7: (wu_princip="1"||wu_princip="4")&&WU_RELATE<>"7"
+          */
+      #X1: (POST_METHD>="*20"&&POST_METHD<"*57"&&POST_DATEB>"199511")||(CS_METHD>="*20"&&CS_METHD<"*57"&&CS_DATE>"199511")||IDENT1="57"||IDENT1="53"
+      #X2: (POST_METHD="*41"||POST_METHD="*51")&&POST_DATEB>"199511"||CS_DATE>"199511"&&(CS_METHD="*41"||CS_METHD="*51")
+      #X3: (POST_METHD="*42"||POST_METHD="*52")&&POST_DATEB>"199511"||CS_DATE>"199511"&&(CS_METHD="*42"||CS_METHD="*52")
+      #X4: (POST_METHD="*31"&&POST_DATEB>"199511")||(CS_DATE>"199511"&&CS_METHD="*31")
+      #X5: (POST_METHD="*53"&&POST_DATEB>"199511")||(CS_DATE>"199511"&&CS_METHD="*53")
+      #X6: (POST_METHD="*21"&&POST_DATEB>"199511")||(CS_METHD="*21"&&CS_DATE>"199511")||IDENT1="53"
+      #X7: (POST_METHD="*22"&&POST_DATEB>"199511")||(CS_METHD="*22"&&CS_DATE>"199511")||IDENT1="57"
+      #X8: (POST_DATEB>"199511"&&POST_METHD="*54")||(CS_METHD="*54"&&CS_DATE>"199511")      
+      #X9: (POST_DATEB>"199511"&&POST_METHD="*55")||(CS_METHD="*55"&&CS_DATE>"199511")      
+      #X10: (POST_METHD="*56"&&POST_DATEB>"199511")||(CS_DATE>"199511"&&CS_METHD="*56")
+      DEL=1
+      BEGIN
+      #X11: ((IDENT1>"00"&&IDENT1<"22")||IDENT1="31"||IDENT1="32"||IDENT1="33")
+      #X12: IDENT1="01"
+      #X13: IDENT1="02"||IDENT1="11" /*退职如何统计??????*/
+      #X14: IDENT1="15"
+      #X15: IDENT1="12"
+      #X16: IDENT1="18"
+      #X17: IDENT1="03"
+      #X18: IDENT1="31"||ident1="33"||ident1="13"
+      #X19: 0 /*转当农民*/
+      #X20: IDENT1="32"
+      #X21: IDENT1="04"||IDENT1="06"||IDENT1="14"||IDENT1="16"||IDENT1="21"
+      END
+end
+act warray("tb02", x)
+act rarray("tb02", y)
+act warray("tb99", y)

@@ -1,0 +1,935 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>动作函数</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+
+<meta name="Microsoft Border" content="t, default"></head>
+
+<body bgcolor="#EAEAFB"><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>
+
+<table border="0" width="85%" cellspacing="0" cellpadding="0" height="50">
+  <tr>
+    <td width="20%" height="50"><a href="http://tdb.com.cn"><img src="images/crsc.gif" alt="上海中铁高新软件中心" border="0" WIDTH="148" HEIGHT="42"></a></td>
+    <td width="80%" height="50"><img src="_borders/asql.gif" alt="asql.gif (3772 bytes)" WIDTH="500" HEIGHT="40"></td>
+  </tr>
+</table>
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" align="center"><a href="index.htm"><img src="images/intro.gif" alt="产品简介" border="0" WIDTH="93" HEIGHT="19"></a><img src="images/online.gif" alt="联机手册" border="0" WIDTH="93" HEIGHT="19"><img src="images/quote.gif" alt="产品报价" WIDTH="93" HEIGHT="19"><img src="images/back.gif" alt="意见反馈" border="0" WIDTH="93" HEIGHT="19"><img src="images/about.gif" alt="相关产品" WIDTH="93" HEIGHT="19"><a href="mailto:asql@tdb.com.cn"><img src="images/contact.gif" alt="请与我们联系" border="0" WIDTH="93" HEIGHT="19"></a></td>
+  </tr>
+</table>
+</td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><!--msnavigation--><td valign="top">
+
+<hr>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><h2 ALIGN="center"><font face="楷体_GB2312"><a NAME="_Toc436657958"><b>动作函数</b></a></font></h2>
+    <p ALIGN="JUSTIFY">&nbsp;&nbsp;&nbsp;&nbsp; 动作函数是ASQL语言中专供动作表达式使用的一类函数。动作函数编号如下：</p>
+    <ol>
+      <li><p ALIGN="JUSTIFY">askavg 求平均</p>
+      </li>
+      <li><p ALIGN="JUSTIFY">askcnt 计数</p>
+      </li>
+      <li><p ALIGN="JUSTIFY">askmax 最大</p>
+      </li>
+      <li><p ALIGN="JUSTIFY">askmin 最小</p>
+      </li>
+    </ol>
+    <p ALIGN="JUSTIFY">&nbsp;&nbsp;&nbsp; ASQL的动作函数定义、功能及使用方法如下：</p>
+    <ol>
+      <li><b><a NAME="2_3_2_1">求平均(askavg)</a><br>
+      </li>
+      </b><p ALIGN="JUSTIFY">[原型]askavg(&lt;数字型域名&gt;,[结果变量名称&lt;字符串型表达式&gt;].…..)</p>
+      <p ALIGN="JUSTIFY">[功能]对各数字型域中的值分别求平均值。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> 
+      本函数运算前，系统将自动创建娈量（如果该名称的变量不存在），而变量的名称由第二个参数给出，若第二个参数没给，系统自动产生一个名称，产生名称的规则为：</p>
+      <p ALIGN="JUSTIFY">域名,动作编号</p>
+      <p ALIGN="JUSTIFY">函数askmax,askmin,asksum与此定义相同。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> 
+      结果变量名称应符合ASQL变量名规范。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> 
+      因为域名与变量名区分的困难。一个函数中又可支持多个相同运算，结果变量名称给的方式必须为字符串，而不是一个具体的变量名。</p>
+      <p ALIGN="JUSTIFY">如果结果变量名称给出，结果为：变量名=平均值</p>
+      <p ALIGN="JUSTIFY">否则结果为：域名.1=平均值（1为平均的代码）。</p>
+      <p ALIGN="JUSTIFY">操作时，在第一条记录处使用此函数，返回值为第一条纪录的数值；在中间执行， 
+      返回值为第一条记录到当前记录的和；在最后执行，返回值为整个域的平均值。</p>
+      <p ALIGN="JUSTIFY">[示例]/*求全体人员的平均职能岗位工资和平均级别技能工资。*/</p>
+      <p ALIGN="JUSTIFY">解法1：</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+      TO \TG\DATA\CXMAIN,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ askavg(TOTAL_S,DUTY_S);<br>
+      END<br>
+      ACT wsymbol(&quot;\\DATA\\CXMAIN.DAT&quot;)/*将结果写入CXMAIN.DAT文件中*/</p>
+      <p ALIGN="JUSTIFY">解法2：</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+      TO \TG\DATA\CXMAIN,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ askavg(TOTAL_S,&quot;MTOTALS&quot;,DUTY_S,&quot;MDUTYS&quot;);<br>
+      END<br>
+      ACTION wsymbol(&quot;\\DATA\\CXMAIN.DAT&quot;)/*将结果写入CXMAIN.DAT文件中*/</p>
+      <p ALIGN="JUSTIFY">解法3：</p>
+      <p ALIGN="JUSTIFY">PREDICATES<br>
+      FLOAT MTOTALS,MDUTYS<br>
+      FROM \TG\DATA\SUB0<br>
+      TO \TG\DATA\CXMAIN,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ askavg(TOTAL_S,&quot;MTOTALS&quot;,DUTY_S,&quot;MDUTYS&quot;);<br>
+      END<br>
+      ACTION wsymbol(&quot;\\DATA\\CXMAIN.DAT&quot;)/*将结果写入CXMAIN.DAT文件中*/</p>
+      <li><b><a NAME="2_3_2_2">计数(askcnt)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]askcnt(变量或结果变量名称&lt;字符串型表达式&gt;)</p>
+      <p ALIGN="JUSTIFY">[功能]对符合条件记录进行统计。</p>
+      <p ALIGN="JUSTIFY">结果输出：结果变量=计数值</p>
+      <p ALIGN="JUSTIFY">这里之所以允许参数给一个表示结果变量名称的&lt;字符串型表达式&gt;，是因为ASQL可以为此自动创建一个变量，如晨本身已经是一个变量也可以。</p>
+      <p ALIGN="JUSTIFY">wsymbol()的输出结果为DBF格式，变量名为域名。</p>
+      <p ALIGN="JUSTIFY">[示例1]/*统计现员库中小于30岁的人数。*/</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+      TO \TG\DATA\CXMAIN,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      age(BIRTHDAY)&lt;30 $ askcnt(&quot;NS&quot;);<br>
+      END<br>
+      ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DBF&quot;)</p>
+      <p ALIGN="JUSTIFY">[示例2]/*统计现员库中小于30岁的人数。*/</p>
+      <p ALIGN="JUSTIFY">PREDICATE<br>
+      long x<br>
+      FROM \TG\DATA\SUB0<br>
+      TO \TG\DATA\CXMAIN,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      age(BIRTHDAY)&lt;30 $ askcnt(x);<br>
+      END<br>
+      ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DBF&quot;)</p>
+      <li><b><a NAME="2_3_2_3">求最大(askmax)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]askmax(&lt;数字型域名&gt;,结果变量名称&lt;字符串型表达式&gt;...)</p>
+      <p ALIGN="JUSTIFY">[功能]对各数字型域中的值分别求最大值。</p>
+      <p ALIGN="JUSTIFY">如果结果变量名称给出，结果为：变量名=最大值</p>
+      <p ALIGN="JUSTIFY">否则结果为：域名.3=最大值（3为最大值的代码）。</p>
+      <p ALIGN="JUSTIFY">操作时，在第一条记录处使用此函数，返回值为第一条纪录的数值；在中间执行， 
+      返回值为第一条记录到当前记录中的最大值；在最后执行，返回值为整个域中的最大值。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> 
+      因为域名与变量名区分的困难。一个函数中又可支持多个相同运算，结果变量名称给的方式必须为字符串，而不是一个具体的变量名。</p>
+      <p ALIGN="JUSTIFY">[示例]/*求全体人员中的最高职能岗位工资和最高级别技能工资。*/</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+      TO \TG\DATA\CXMAIN,*CONDITION<br>
+      BEGIN<br>
+      1 $ askmax(TOTAL_S,DUTY_S);<br>
+      END<br>
+      ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</p>
+      <li><b><a NAME="2_3_2_4">求最小(askmin)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]askmin(&lt;数字型域名&gt;,[结果变量名称&lt;字符串型表达式&gt;]...)</p>
+      <p ALIGN="JUSTIFY">[功能]对各数字型域中的值分别求最小值。</p>
+      <p ALIGN="JUSTIFY">如果结果变量名称给出，结果为：变量名=最小值</p>
+      <p ALIGN="JUSTIFY">否则结果为：结果输出：域名.4=最小值（4为最小值的代码）。</p>
+      <p ALIGN="JUSTIFY">操作时，在第一条记录处使用此函数，返回值为第一条纪录的数值；在中间执行，返回值为第一条记录到当前记录中的最小值；在最后执行，返回值为整个域中的最小值。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> 
+      因为域名与变量名区分的困难。一个函数中又可支持多个相同运算，结果变量名称给的方式必须为字符串，而不是一个具体的变量名。</p>
+      <p ALIGN="JUSTIFY">[示例]/*求全体人员中的最低职能岗位工资和最低级别技能工资。*/</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+      TO \TG\DATA\CXMAIN,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ askmin(TOTAL_S,DUTY_S);<br>
+      END<br>
+      ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</p>
+      <li><b><a NAME="2_3_2_5">求和(asksum)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]sksum(&lt;数字型域名&gt;,结果变量名称&lt;字符串型表达式&gt;...)</p>
+      <p ALIGN="JUSTIFY">[功能]对各数字型域中的值分别求和。</p>
+      <p ALIGN="JUSTIFY">如果结果变量名称给出，结果为：变量名=求和值</p>
+      <p ALIGN="JUSTIFY">否则结果为：结果输出：域名.6=和（6为和代码）。</p>
+      <p ALIGN="JUSTIFY">操作时，在第一条记录处使用此函数，返回值为第一条纪录的数值；在中间执行， 
+      返回值为第一条记录到当前记录所有值的和；在最后执行，返回值为整个域的和。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> 
+      因为域名与变量名区分的困难。一个函数中又可支持多个相同运算，结果变量名称给的方式必须为字符串，而不是一个具体的变量名。</p>
+      <p ALIGN="JUSTIFY">[示例]/*求全体人员的职能岗位工资总和和级别技能工资总和。*/</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+      TO \TG\DATA\CXMAIN,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ asksum(TOTAL_S,DUTY_S);<br>
+      END<br>
+      ACTION wsymbol(<a href="file://TG//DATA//CXMAIN.DAT">&quot;\\TG\\DATA\\CXMAIN.DAT&quot;</a>)</p>
+      <i><p ALIGN="JUSTIFY">也可以这样：</p>
+      </i><p ALIGN="JUSTIFY"><i>FROM \TG\DATA\SUB0</i><br>
+      TO \TG\DATA\CXMAIN,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ asksum(TOTAL_S,&quot;TOTAL_S&quot;,DUTY_S,&quot;DUTY_S&quot;);<br>
+      END<br>
+      ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</p>
+      <li><b><a NAME="2_3_2_6">统计求和(askxsum)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]askxsum(&lt;数字型域名&gt;,&lt;数字型域名&gt;...&lt;数字型变量&gt;)</p>
+      <p ALIGN="JUSTIFY">[功能]将参量所列出的所有数字型域中的全部值迭加起来，放入&lt;数字型变量&gt;中。该&lt;数字型变量&gt;必须是传地址方式，即变量引用的前面要有符号&amp;。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15">ASQL对变量引用有两种办法，通常是传值方式，但有些时侯需要变量从函数中将值带回来，这在程序语言中叫传地址，即我告诉你我的信息放在什么地方，向ASQL函数传地址的方法是在变量名前加&amp;，如：&amp;num</p>
+      <p ALIGN="JUSTIFY">[示例]/*求全体人员的职能岗位工资和级别技能工的总和，存入l。*/</p>
+      <p ALIGN="JUSTIFY">PREDICATES<br>
+      float l<br>
+      FROM \TG\DATA\SUB0.DBF<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ askxsum(TOTAL_S,DUTY_S,&amp;l);<br>
+      END<br>
+      ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DBF&quot;)</p>
+      <li><b><a NAME="2_3_2_7">BLOB由文件填(bfromfile)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]bFromFile(域名, 文件名&lt;字符串型表达式&gt;)</p>
+      <p ALIGN="JUSTIFY">[功能]将文件内容填写至目标结果的域名所指示的域中。</p>
+      <p ALIGN="JUSTIFY">[示例]/*将某人的履历填入数据库，该履历现存于MEMO.TXT文件中。*/</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0.DBF<br>
+      CONDITION<br>
+      BEGIN<br>
+      CODE=&quot;123456789012345&quot; $ bfromfile(memo, &quot;MEMO.TXT&quot;);<br>
+      END</p>
+      <li><b><a NAME="2_3_2_8">BLOB写至文件(btofile)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]bToFile(域名, 文件名&lt;字符串型表达式&gt;)</p>
+      <p ALIGN="JUSTIFY">[功能]将文件内容填写至目标结果的域名所指示的域中。</p>
+      <p ALIGN="JUSTIFY">[示例]/* 将某人的履历写成文件。利用SCOPE语法提高执行速度*/</p>
+      <p>FROM (SCOPE: CODE, &quot;123456789012345&quot;, &quot;123456789012345&quot;) 
+      \TG\DATA\SUB0.DBF<br>
+      TO \TG\DATA\CXMAIN.DBF<br>
+      CONDITION<br>
+      BEGIN<br>
+      CODE=&quot;123456789012345&quot; $ btofile(memo, &quot;MEMO.TXT&quot;);<br>
+      END</p>
+      <li><b><a NAME="2_3_2_9">拷贝记录(record)</a><br>
+      </li>
+      </b><p ALIGN="JUSTIFY">[原型]record(域名)</p>
+      <p ALIGN="JUSTIFY">[功能]将源库的记录原封不动地写到目标库中。如图2.9所示。</p>
+      <p ALIGN="CENTER"><img SRC="images/Image12.gif" WIDTH="336" HEIGHT="189"></p>
+      <p ALIGN="CENTER">图2.9 记录拷贝示意图</p>
+      <p ALIGN="JUSTIFY">这个函数要求目标表必须与源表相同，有一点不同也会造成问题。如果没法确认源表与目标表的结构完全相同，可用动作函数：askrec()。</p>
+      <p ALIGN="JUSTIFY">这里，域名并没有什么实际意义，只对计数起定位的作用，它可以是库中的任意 
+      域名，也可写做@1。</p>
+      <p ALIGN="JUSTIFY">参数(@1)是一个携带当前源库到目标库的域名，本来应该写为record( 
+      code)之类， 但可能源库没有code域，或者不知道源库中的域名，这就限定了ASQL 
+      语言的通用性，而@1表示源库的第一个域，这样就不用写域名了，增强了语言的灵活性和程序的可移植性。</p>
+      <p ALIGN="JUSTIFY">如果域名以具体名字形式给出，它必须是源是有的域。</p>
+      <p ALIGN="JUSTIFY">此函数和下两条函数askrec、calrec格式和用法相近， 
+      且输出与目标库写法也有关系（见2.3节），请用户在使用这三条函数和写目标库时灵活掌握。</p>
+      <p ALIGN="JUSTIFY">[示例]/*将源库的记录做一备份。*/</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0.DBF<br>
+      TO \TG\DATA\SUB0BAK.DBF<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ record(@1);<br>
+      END</p>
+      <li><b><a NAME="2_3_2_10">求记录(askrec)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]askrec(域名[，1])</p>
+      <p ALIGN="JUSTIFY">[功能]依照域从源中将每个域的值放至目标中，同时目标中增加一条记录。如图2.10所示。</p>
+      <p ALIGN="CENTER"><img SRC="images/Image13.gif" WIDTH="336" HEIGHT="189"></p>
+      <p ALIGN="CENTER">图2.10 记录按域复制示意图</p>
+      <p ALIGN="JUSTIFY">如果域名以具体名字形式给出，它必须是源中有的域。</p>
+      <p ALIGN="JUSTIFY">如果第二个参数存在，则表示用源中的域的内容去填目标表中的相应域（名字相同），但是不在目标表中增加记录。</p>
+      <p ALIGN="JUSTIFY">[示例1]/*新建一个只有序号、姓名、生日的子数据库。*/</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0.DBF<br>
+      TO \TG\DATA\SUBA, code,name,birthday<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ askrec(code);<br>
+      END</p>
+      <p ALIGN="JUSTIFY">[示例2]/*新建一个只有序号、姓名、生日的子数据库。*/</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0.DBF<br>
+      TO \TG\DATA\SUBA, code,name,birthday,salary<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ askrec(@1,1);calrec(salary:=salary)</p>
+      <p ALIGN="JUSTIFY">/* askrec()负责从源中提取相应的域，calrec()负责重新记录salary域，同时向目标表中增加一条记录*/</p>
+      <p ALIGN="JUSTIFY">END</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15">askrec()在填域内容前并不先清空记录缓冲区，这带来两个问题：</p>
+      <p ALIGN="JUSTIFY">(1)真正新记录，需主动清一下。例如：1 $ 
+      initrec(@1);askrec(@1)</p>
+      <p ALIGN="JUSTIFY">(2)利用事先赋值。例如：1 $ fld1:=value;askrec(@1)</p>
+      <p ALIGN="JUSTIFY">　</p>
+      <li><b><a NAME="2_3_2_11">算记录（calrec）</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]calrec([提交源表声明]，&lt;域名&gt;:=&lt;域产生表达式&gt;，……)</p>
+      <p ALIGN="JUSTIFY">[功能]通过运算形式产生目标记录，除一般的书写记录的功能外，还可一次更改域的全部内容。非参数中的域的内容与源库相同。</p>
+      <p ALIGN="JUSTIFY">此函数也可改变目标的写法，构造新域，并添入适当内容(见示例2)。</p>
+      <p ALIGN="JUSTIFY">提交源表声明是指本函数是对哪个源表进行修改提交，第一张表为1，其它往下排……。一般情况下，要想修改源中数据，必须指定UPDATE，但是对于源是多表的情况，就不那么简单，在SQL数据库系统中，是不提供对多个检索源进行同步修改的，而在事务应用中，这一要求是很强烈的。在多张表参与源运算时，ASQL是将这些表在内部当作一张表来看待的，从ASQL语法也可以看出这一点，这张表是一张临时性的虚拟内存表，ASQL的运算是通过它来获取数据的，等等原因，造成ASQL在多表运算，同时又要对源表进行修改的要求时，必须做提交源表声明，即给出对哪一张源中的表做提交，否则对源表的赋值无效，因为ASQL要区分某一赋值运算是对源的赋值还是对目标的赋值，所以这时对源中的域赋值必须是下面这种形式：</p>
+      <p ALIGN="JUSTIFY">表名.域名：=运算表达式</p>
+      <i><p ALIGN="JUSTIFY">或者</i>，若域名只在源中出现，在目标表中没有出现</p>
+      <p ALIGN="JUSTIFY">域名：=运算表达式</p>
+      <p ALIGN="JUSTIFY">如果当前源表数据修改是针对目标表的，则CALREC()的第一个参数[提交源表声明]要省掉。</p>
+      <p ALIGN="JUSTIFY">例如：</p>
+      <p ALIGN="JUSTIFY">SUB0.SALARY:=100.23<br>
+      NOTINTO:=3.14159</p>
+      <p ALIGN="JUSTIFY">对目标表的赋值不可以用表.域名的方式。[提交源表声明]是一个可选参数。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> 
+      如果是要对源表进行修改，[提交源表声明]不可以省略。只有给了这个参数，ASQL才乔道对哪个源表进行数据修改。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> 
+      如果是要对源表进行修改，则动作中的域赋值必须是库名.域名的形式：</p>
+      <p ALIGN="JUSTIFY">update<br>
+      from <a href="file:///d:/lz/data/sub0.dbf">d:\lz\data\sub0.dbf</a><br>
+      condition<br>
+      begin<br>
+      sex=&quot;2&quot; $ calrec(sub0.sex:=&quot;2&quot;)<br>
+      end</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> ASQL允许大多表运算时引用calrec()，但每次运算只能对一张表进行修改：目标表或源表中的一张表。calrec()只能处理由第一个参数标识的表。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> 如果ASQL声明当前操作为修改：<b>UPDATE，</b>则calrec()是对源表的运算，并且将要对源的修改支持快速提交棗一种保证数据安全的机制。此时若不指定目标，则源与目标相同。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> 
+      出现在源表中，但没有出现在目标表中的引用了的域被认为其目标也是源表。如下面的这个ASQL角本：</p>
+      <p ALIGN="JUSTIFY">FROM sub0<br>
+      TO cx,code,name,sex<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ xxx:=&quot;1234&quot;<br>
+      END</p>
+      <p ALIGN="JUSTIFY">假定源表中有域xxx，则ASQL认为域xxx的目标结果也是源表。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15">CALREC()是靠赋值语句改变域的内容的，它并不事先清理记录缓冲区，所以如果必要，须先清一下缓冲区：</p>
+      <p ALIGN="JUSTIFY">INITREC(@1);CALREC(……)</p>
+      <p ALIGN="JUSTIFY">[示例]/*将所有职工职务岗位工资上调30%存回源库中。*/</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+      TO \TG\DATA\SUB0<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ calrec(total_s:=total_s*1.3);<br>
+      END<br>
+      ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</p>
+      <p ALIGN="JUSTIFY">[示例2]/*将序号、姓名和新旧职务岗位工资存入一新库供以后查询。*/</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0.DBF<br>
+      TO \TG\DATA\SUBA.DBF,code,name,total_old 10 2 n,total_s<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ initrec(code);calrec(total_old:=total_s,total_s:=total_s*1.3);<br>
+      END</p>
+      <p ALIGN="JUSTIFY">/*注：这里构造的新域类型必须与所填数据一致。*/</p>
+      <p ALIGN="JUSTIFY">[示例3]</p>
+      <p ALIGN="JUSTIFY">UPDATE<br>
+      FROM \TG\DATA\SUB0.DBF,\TG\DATA\SUB11.DBF,*CODE<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ calrec(1,total_s:=total_s*1.3);calrec(2,sub11.salary1:=sub11.salary1*1.3)END</p>
+      <p ALIGN="JUSTIFY">/*注意：这里将数据修改分在两个calrec函数中完成*/</p>
+      <p ALIGN="JUSTIFY">[示例4]</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0.DBF,\TG\DATA\SUB11.DBF,*CODE<br>
+      TO CXMAIN.DBF,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ calrec(1,total_s:=total_s*1.3)<br>
+      /*强制性修改第一张表：SUB0.DBF*/<br>
+      END</p>
+      <p ALIGN="JUSTIFY">[示例5]</p>
+      <p ALIGN="JUSTIFY">from 
+      temprkdr.dbf,stock2.dbf,medicine.dbf,*code+import_no=code+import_no=code<br>
+      to tempdmxz,name,batching,invalidate,import_no,amount,samount 14 2 N<br>
+      cond<br>
+      begin<br>
+      code=stock2.code&amp;&amp;import_no=stock2.import_no&amp;&amp;amount&gt;stock2.amount $ $\ 
+      <br>
+      initrec(@1);\<br>
+      calrec(name:=medicine.name,batching:=batching,invalidate:=invalidate,\<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; import_no:=import_no,amount:=amount,samount:=stock2.amount)<br>
+      end</p>
+      <li><b><a NAME="2_3_2_12">逻辑删除(delete)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]delete([提交源表声明]<i>或</i>域名)</p>
+      <p ALIGN="JUSTIFY">[功能]逻辑删除源库中当前记录，即对当前记录置删除标记。 
+      使用此函数时千万要慎重，因为此删除并非在Del域中置1，而是xBASE形式的逻辑删除，它用ASQL语言无法恢复，在xBASE环境下也可能不能取消删除。</p>
+      <p ALIGN="JUSTIFY">ASQL在关闭数据表的时侯，如果数据字典中指定该表可以自动物理删除（AUTO_DPACK），则ASQL要自动删除这些做了逻辑删除的记录。</p>
+      <p ALIGN="JUSTIFY">一条记录一旦做了逻辑删除标记，在ASQL中就是不可见的了，并且在做插入数据(insrec)时，这条记录通常要被覆盖。</p>
+      <p ALIGN="JUSTIFY">这里的域名没有什么实际意义，只对删除起定位的作用，它可以是库中的任意域名，如果不知道域名，也可用@1替代。但如果源是由多表组成的，则需为[提交源表声明]，而非域名。</p>
+      <p ALIGN="JUSTIFY">[示例]/*对人员库中退休人员做逻辑删除。*/</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+      CONDITION<br>
+      BEGIN<br>
+      age(BIRTHDAY)&gt;=55;<br>
+      BEGIN<br>
+      sex=&quot;2&quot;||(sex=&quot;1&quot;&amp;&amp;age(BIRTHDAY)&gt;=60) $ delete(CODE);<br>
+      END<br>
+      END</p>
+      <p ALIGN="JUSTIFY"><i>这个例子也可以这样</p>
+      </i><p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+      CONDITION<br>
+      BEGIN<br>
+      age(BIRTHDAY)&gt;=55;<br>
+      BEGIN<br>
+      sex=&quot;2&quot;||(sex=&quot;1&quot;&amp;&amp;age(BIRTHDAY)&gt;=60) $ delete(1);<br>
+      END<br>
+      END</p>
+      <li><b><a NAME="2_3_2_13">添加记录(apprec)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]apprec([提交源表声明]，&lt;域名&gt;:=&lt;域产生表达式&gt;)</p>
+      <p ALIGN="JUSTIFY">[功能]通过运算形式产生目标记录，并放到源表的尾部。至于是哪一个源表，视第一个参数的类型和值，如果为域名，即没有[提交源表声明]，则在源中的第一张表的尾部添加数据。如果为数字，即有[提交源表声明]，则视[提交源表声明]的值，决定在哪个源表的尾部添加记录。</p>
+      <p ALIGN="JUSTIFY">[提交源表声明]的说明见calrec()的定义，表示对源表的哪张表进行添加操作。</p>
+      <p ALIGN="JUSTIFY">[示例]</p>
+      <p ALIGN="JUSTIFY">UPDATE<br>
+      FROM \TG\DATA\SUB0.DBF,\TG\DATA\SUB11.DBF,*CODE<br>
+      CONDITION<br>
+      BEGIN<br>
+      1 $ initrec(2);apprec(2,sub11.code:=code,sub11.salary1:=sub11.salary1*1.3)<br>
+      END</p>
+      <li><b><a NAME="2_3_2_14">插入记录(insrec)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]insrec([提交源表声明]，&lt;域名&gt;:=&lt;域产生表达式&gt;)</p>
+      <p ALIGN="JUSTIFY">[功能]通过运算形式产生目标记录，并放到源表中的空余位置(置了删除标记的记录)或数据表的尾部。</p>
+      <p ALIGN="JUSTIFY">至于是哪一个源表，视第一个参数的类型和值，如果为域名，即没有[提交源表声明]，则在源中的第一张表的尾部添加数据。如果为数字，即有[提交源表声明]，则视[提交源表声明]的值，决定在哪个源表的尾部添加记录。</p>
+      <p ALIGN="JUSTIFY">[提交源表声明]的说明见calrec()的定义，表示对源表的哪张表进行添加操作。</p>
+      <p ALIGN="JUSTIFY">[示例1]/*修改第二张表的数据*/</p>
+      <p ALIGN="JUSTIFY">UPDATE<br>
+      FROM \TG\DATA\SUB0.DBF,\TG\DATA\SUB11.DBF,*CODE<br>
+      CONDITION<br>
+      BEGIN<br>
+      &nbsp; 1 $ initrec(2);insrec(sub11.code:=code,sub11.salary1:=sub11.salary1*1.3)<br>
+      END</p>
+      <p ALIGN="JUSTIFY">[示例2]/*看sub0.dbf中是否有一个编号为&quot;123456789012345&quot;的人，若没有，插入*/</p>
+      <p ALIGN="JUSTIFY">PREDICATES<br>
+      INT r<br>
+      ACTION r:=0<br>
+      FROM (SCOPE:CODE,&quot;123456789012345&quot;,&quot;123456789012345&quot;) 
+      \TG\DATA\SUB0.DBF<br>
+      CONDITION<br>
+      BEGIN<br>
+      &nbsp; code=&quot;123456789012345&quot; $ r = 1;errstamp(1)<br>
+      END<br>
+      IF r = 1<br>
+      LET initrec(2);insrec(sub11.code:=code,sub11.salary1:=sub11.salary1*1.3)<br>
+      ENDIF</p>
+      <p ALIGN="JUSTIFY">[示例3]/*看SUB0中的每个人，在SUB11中是否都存在，若不存在，则插入*/</p>
+      <p ALIGN="JUSTIFY">UPDATE<br>
+      FROM \TG\DATA\SUB0.DBF,\TG\DATA\SUB11.DBF,*CODE<br>
+      CONDITION<br>
+      BEGIN<br>
+      null(sub11.code) $ initrec(2); \<br>
+      &nbsp;&nbsp;&nbsp; insrec(sub11.code:=code, sub11.salary1:= sub11.salary1*1.3)<br>
+      END</p>
+      <li><b><a NAME="2_3_2_15">删除记录并立即压缩无用记录(recpack)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]recpack()</p>
+      <p ALIGN="JUSTIFY">[功能]本函数无参数，但括号不可以省略。强行删除源中的本条记录并立即压缩无用记录</p>
+      <p ALIGN="JUSTIFY">[示例]recpack()</p>
+      <li><b><a NAME="2_3_2_16">数据列求和(sigmax)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]sigmax(数组，开始列&lt;数字型变量&gt;，终止列&lt;数字型变量&gt;，目标列&lt;数字型变量&gt;)</p>
+      <p ALIGN="JUSTIFY">[功能]将数组中从开始列到终止列的列相加加至目标列中。</p>
+      <p ALIGN="JUSTIFY">[示例]</p>
+      <p ALIGN="JUSTIFY">sigmax(x,1,5,6)<br>
+      sigmax(x,1,7,6)</p>
+      <li><b><a NAME="2_3_2_17">数据行求和(sigmay)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]sigmay(数组，开始行&lt;数字型变量&gt;，终止行&lt;数字型变量&gt;，目标行&lt;数字型变量&gt;)</p>
+      <p ALIGN="JUSTIFY">[功能]将数组中从开始行到终止行的行相加加至目标行中。</p>
+      <p ALIGN="JUSTIFY">[示例]</p>
+      <p ALIGN="JUSTIFY">sigmay(x,1,5,6)<br>
+      sigmay(x,1,7,6)</p>
+      <li><b><a NAME="2_3_2_18">放弃子集关联(nextmrec)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]nextmrec(表示参与连接运算的数据源表的标识号的数字型表达式：ID)</p>
+      <p ALIGN="JUSTIFY">[功能]如果ID为1，则放弃子集的其它关联，跳至主集的下一条记录进行运算。如果ID为表示其它连接源信息表的数字，则该子集将退出这组关联运算。所谓一组关联是指通过第一个运算表的当前记录，通过关联关系，连带出来的子集等的一组记录（如图2.6所示）。</p>
+      <p ALIGN="CENTER"><img SRC="images/Image14.gif" WIDTH="518" HEIGHT="190"></p>
+      <p ALIGN="CENTER">图2.6 多表运算时的“关联”</p>
+      <p ALIGN="JUSTIFY">[示例]</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0，\TG\DATA\SUB11,CODE<br>
+      CONDITION<br>
+      BEGIN<br>
+      &nbsp; 1 $ record(@1);nextmrec(1)<br>
+      END</p>
+      <p ALIGN="JUSTIFY">/*源表SUB11既使与SUB0的当前记录可关联的记录有多条，也只有一条起作用*/</p>
+      <li><b><a NAME="2_3_2_19">物理删除(packdbf)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]packdbf(域名)</p>
+      <p ALIGN="JUSTIFY">[功能]将已作删除标志的记录物理删除，即从数据库中清除，必须与delete连用。这里 
+      的删除标志仍是xBASE形式的逻辑删除标志，而非指Del域中的1。物理删除了的记录 
+      无法恢复。</p>
+      <p ALIGN="JUSTIFY">域名起定位作用。</p>
+      <p ALIGN="JUSTIFY">[示例]/*删除人员库中所有作过删除标记的记录。*/</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+      CONDITION<br>
+      BEGIN<br>
+      &nbsp; 1 $ packdbf(@1);<br>
+      END</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> ASQL在关闭表之前自己会判断其是否需删除记录，视数据字典中对该表的定义。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> ASQL在对一张表进行“紧缩”，先判断其是否被二个以上程序打开，若是，则放弃这个打算，所以下面的写法是错的：</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+      TO \TG\DATA\SUB0<br>
+      CONDITION<br>
+      BEGIN<br>
+      &nbsp; 1 $ packdbf(@1);<br>
+      END</p>
+      <li><b><a NAME="2_3_2_20">中止运行(errstamp)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]errstamp(数字型表达式)</p>
+      <p ALIGN="JUSTIFY">[功能]如果条件成立，此函数会中止程序的运行，如果数字型值为1，则彻底停止本ASQL脚本的运算；如果为2，则只停止本查询过程段的运算。</p>
+      <p ALIGN="JUSTIFY">在本表达式运算完后才决定如何停止运算。如下例中errstamp(1);record(@1)，ASQL是先算完record(@1)后才决定如何停止工作的。</p>
+      <p ALIGN="JUSTIFY">[示例]/*查询性别代码出错的人员。*/</p>
+      <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+      TO \TG\DATA\CXMAIN, *<br>
+      CONDITION<br>
+      BEGIN<br>
+      sex!=&quot;1&quot;&amp;&amp;sex!=&quot;2&quot; $ errstamp(1);record(@1)<br>
+      END<br>
+      ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</p>
+      <p ALIGN="JUSTIFY">/* errstamp()如果接着做下面的ASQL脚本，这个ACTION也是不执行的，它是非过程段整体的一部分*/</p>
+      <p ALIGN="JUSTIFY">/*如果errstamp()的参数为1，则下面的FROM-TO-CONDITION也不做，如果为2，则做下面的FROM-TO-CONDITION 
+      */</p>
+      <p ALIGN="JUSTIFY">FROM …<br>
+      TO …<br>
+      CONDITION<br>
+      BEGIN<br>
+      ……<br>
+      END</p>
+      <li><b><a NAME="2_3_2_21">填表函数(filltable)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]filltable(&lt;关键字&gt;,&lt;数据域名&gt;,&lt;数据&gt;,……)</p>
+      <p ALIGN="JUSTIFY">[功能]依照关键字，把从源库中提取的数据存入目标库中的相应域中，其中&lt;数据域名&gt;和&lt;数据&gt;可有多组，但须一一对应。其实质就是利用源库中的数据，按照用户的格式和要求，重新建立数据库。</p>
+      <p ALIGN="JUSTIFY">要求：目标库已存在，即域已建好。若目标库中无函数中的域名，则系统将试图找域名为&quot;T______&quot;的域（域名前七位为T和6个下划线），将其改名为新的域名。如果利用KEY找不到目标库的相应记录，则在该表尾部添加一个记录。</p>
+      <p ALIGN="JUSTIFY">[示例]/*将学生成绩库Lesson1改写成Tab1的形式，以利操作（设只有三门课）。*/</p>
+      <p ALIGN="JUSTIFY">Lesson1: Tab1:</p>
+      <p ALIGN="JUSTIFY">┌────┬───┬───┐ 
+      ┌────┬───┬───┬───┐<br>
+      │ 学号 │ 课程 │ 成绩 │ │ 学号 │ 课程1│ 课程2│ 课程3│<br>
+      │ code │lesson│ score│ │ code │ T001 │ T002 │ T003 │<br>
+      ├────┼───┼───┤ 
+      ├────┼───┼───┼───┤<br>
+      │960001 │ 001 │76.0 │ │960001 │76.0 │ 87.5 │ 97.0 │<br>
+      │960001 │ 002 │87.5 │ │960002 │64.0 │ 73.0 │ ... │<br>
+      │960001 │ 003 │97.0 │ │960003 │... │ ... │ │<br>
+      │960002 │ 001 │64.0 │ │ ... │ │ │ │<br>
+      │960002 │ 002 │73.0 │ └────┴───┴───┴───┘<br>
+      │ ... │ ... │... │<br>
+      └────┴───┴───┘</p>
+      <p ALIGN="JUSTIFY">FROM Lesson1<br>
+      TO Tab1，*<br>
+      CONDITION<br>
+      BEGIN<br>
+      &nbsp; 1 $ filltable(code, &quot;T&quot;+lesson,score)<br>
+      END</p>
+      <li><b><a NAME="2_3_2_22">生成表(gentable)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]gentable(&lt;关键字&gt;,&lt;数据域&gt;,&lt;数据&gt;)</p>
+      <p ALIGN="JUSTIFY">[功能]与filltable()相似，对目标库起作用，只是目标库中若无函数中的域名，系统将忽略此域，不作添加。</p>
+      <li><b><a NAME="2_3_2_23">多库相交(idbf)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]idbf(&lt;目标库名&gt;,&lt;连接关键字&gt;,&lt;库名1&gt;,&lt;库名2&gt;...)</p>
+      <p ALIGN="JUSTIFY">[功能]把多个数据库中相同的域提取出来放入目标库中。&lt;连接关键字&gt;为各库中都有的任意域名。</p>
+      <p ALIGN="JUSTIFY">[示例]/*将sub1,sub2库中相同的域提取出来放入cxmain库中。*/</p>
+      <p ALIGN="JUSTIFY">ACTION 
+      idbf(&quot;cxmain.dbf&quot;,&quot;code&quot;,&quot;sub1.dbf&quot;,&quot;sub2.dbf&quot;)</p>
+      <li><b><a NAME="2_3_2_24">数据库联合(udbf)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]udbf(&lt;目标库名&gt;,&lt;连接关键字&gt;,&lt;库名1&gt;,&lt;库名2&gt;...)</p>
+      <p ALIGN="JUSTIFY">[功能]把多个数据库按一定的顺序合并成一个数据库。&lt;连接关键字&gt;为各库中都有的任意域名。类似idbf，只是这是数据库的并集。</p>
+      <p ALIGN="JUSTIFY">[示例]/*将sub1,sub2库合并放入cxmain库中。*/</p>
+      <p ALIGN="JUSTIFY">ACTION udbf(cxmain.dbf,code,sub1.dbf,sub2.dbf)</p>
+      <li><b><a NAME="2_3_2_25">读数组(rarray)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]rarray(库名&lt;字符串表达式1&gt;,数组&lt;字符串表达式2&gt;)</p>
+      <p ALIGN="JUSTIFY">[功能]把数据库中的数据按域存放到数组中。以数组大小为基准，即：既使表比数组大，也只读入数组大小的一个二维数据。</p>
+      <p ALIGN="JUSTIFY">[示例]/*将sub0库中的数据存放到二维数组fx中。*/</p>
+      <p ALIGN="JUSTIFY">ACTION rarray(sub0.dbf,fx)</p>
+      <li><b><a NAME="2_3_2_26">统计Y轴运算(staty)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]staty(行号)</p>
+      <p ALIGN="JUSTIFY">[功能]行号，从0开始计。</p>
+      <p ALIGN="JUSTIFY">做统计运算时，此函数相当于给一个一维逻辑数组，通过行号对应不同的行条件。行条件成立，在相应的位置置1，否则置0。一条记录运算完毕，自动清零。</p>
+      <p ALIGN="JUSTIFY">此函数必须与statx()或sumx()连用。</p>
+      <p ALIGN="JUSTIFY">注意：ASQL内部缺省认为一个表最多可为0行（即没有统计），要想改变此值，可通过#y设定。例如：#y4096 
+      .... 表示自动调整系统最大可处理表行数为4096。一旦ASQL中有#Y定义，则取#Y后有最大值作为当前处理表的最大行数。</p>
+      <p ALIGN="JUSTIFY">也可通过“STATISTICS 变量，最大统计行数（参STATISTICS的定义）”形式指定最大统计行数。</p>
+      <p ALIGN="JUSTIFY">[示例]见统计X轴运算statx()。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> ASQL认为一张统计表其行只能是统计约束，只有列上才可决定当前是对什么进行求和还是一种计数。</p>
+      <li><b><a NAME="2_3_2_27">统计X轴运算(statx)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]statx(列号,数组）</p>
+      <p ALIGN="JUSTIFY">[功能]列号，从0开始计。</p>
+      <p ALIGN="JUSTIFY">做统计运算时，此函数和staty()连用，对staty()置1的行进行列运算。它通过列号和staty()的行号与二维数组一一对应。列条件成立，则在二维数组相应位置+1，否则不动。最后数组中的数据即是相应的统计计数结果。</p>
+      <p ALIGN="JUSTIFY">[示例]/*求全员的年龄层次及相应的性别比例。*/</p>
+      <p ALIGN="JUSTIFY">PREDICATES<br>
+      LONG fxr(3,10)<br>
+      FROM \TG\DATA\SUB0.DBF<br>
+      CONDITION<br>
+      BEGIN<br>
+      STATISTICS fxr</p>
+      <p ALIGN="JUSTIFY">/*行条件*/</p>
+      <p ALIGN="JUSTIFY">AGE(BIRTHDAY)&lt;=&quot;25&quot; $ staty(1);<br>
+      AGE(BIRTHDAY)&lt;=&quot;30&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;26&quot; $ staty(2);<br>
+      AGE(BIRTHDAY)&lt;=&quot;35&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;31&quot; $ staty(3);<br>
+      AGE(BIRTHDAY)&lt;=&quot;40&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;36&quot; $ staty(4);<br>
+      AGE(BIRTHDAY)&lt;=&quot;45&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;41&quot; $ staty(5);<br>
+      AGE(BIRTHDAY)&lt;=&quot;50&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;46&quot; $ staty(6);<br>
+      AGE(BIRTHDAY)&lt;=&quot;55&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;51&quot; $ staty(7);<br>
+      AGE(BIRTHDAY)&lt;=&quot;60&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;56&quot; $ staty(8);<br>
+      AGE(BIRTHDAY)&gt;&quot;61&quot; $ staty(9);<br>
+      AGE(BIRTHDAY)&gt;&quot;0&quot; $ staty(10);</p>
+      <p ALIGN="JUSTIFY">/*列条件*/</p>
+      <p ALIGN="JUSTIFY">SEX=1 $ statx(1,fxr);<br>
+      SEX=2 $ statx(2,fxr);<br>
+      SEX=1||SEX=2 $ statx(3,fxr);<br>
+      END<br>
+      ACTION warray(&quot;\\TG\\DATA\\CXMAIN.DBF&quot;,fxr)</p>
+      <p ALIGN="JUSTIFY">此程序完全可简化写成如下形式：</p>
+      <p ALIGN="JUSTIFY">PREDICATES<br>
+      LONG fxr(3,10)</p>
+      <p ALIGN="JUSTIFY">FROM \TG\SUB0<br>
+      CONDITION<br>
+      BEGIN<br>
+      STATISTICS fxr<br>
+      #Y1: AGE(BIRTHDAY)&lt;=&quot;25&quot;;<br>
+      #Y2: AGE(BIRTHDAY)&lt;=&quot;30&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;26&quot;;<br>
+      #Y3: AGE(BIRTHDAY)&lt;=&quot;35&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;31&quot;;<br>
+      #Y4: AGE(BIRTHDAY)&lt;=&quot;40&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;36&quot;;<br>
+      #Y5: AGE(BIRTHDAY)&lt;=&quot;45&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;41&quot;;<br>
+      #Y6: AGE(BIRTHDAY)&lt;=&quot;50&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;46&quot;;<br>
+      #Y7: AGE(BIRTHDAY)&lt;=&quot;55&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;51&quot;;<br>
+      #Y8: AGE(BIRTHDAY)&lt;=&quot;60&quot;&amp;&amp;AGE(BIRTHDAY)&gt;&quot;56&quot;;<br>
+      #Y9: AGE(BIRTHDAY)&gt;&quot;61&quot;;<br>
+      #Y10: AGE(BIRTHDAY)&gt;&quot;0&quot;;<br>
+      #X1: SEX=1;<br>
+      #X2: SEX=2;<br>
+      #X3: SEX=1||SEX=2;<br>
+      END<br>
+      ACTION warray(&quot;\\TG\\DATA\\CXMAIN.DBF&quot;,fxr)</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> Y1为行1条件，Y2为行2条件……</p>
+      <p ALIGN="JUSTIFY">X1为列1条件，Y2为列2条件……</p>
+      <p ALIGN="JUSTIFY">STATISTICS 数组变量</p>
+      <p ALIGN="JUSTIFY">表示后面的对X轴的约束的计算方式为计数，如上例中，表满足X1，X2，X3条件的记录分别对其计数，计数结果放至相应统计数组的相应元素中。</p>
+      <p ALIGN="JUSTIFY">给出完善的行列行件定义，一张表的条件约束就算完成。</p>
+      <p ALIGN="JUSTIFY">统计结果通过函数warray()写至DBF文件中去。</p>
+      <li><b><a NAME="2_3_2_28">求和X运算(sumx)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]sumx(列号,数组,数值表达式)</p>
+      <p ALIGN="JUSTIFY">[功能]要求与statx()基本一致，必须与staty()连用。只是当列条件成立时， 
+      它通过列号在数组相应位置加上表达式的数值，最后数组中的数据即是相应的统计求和结果。</p>
+      <p ALIGN="JUSTIFY">这里的表达式只能有一个数值，即一个sumx()只能对一个数据求和。</p>
+      <p ALIGN="JUSTIFY">[示例]下面是各学历层次的职务岗位工资和技能工资总和表。</p>
+      <p ALIGN="JUSTIFY">┌───┬────────┬────────┐<br>
+      │ │ 工资总和 │ 技能工资 │<br>
+      │ ├──┬──┬──┼──┬──┬──┤ <br>
+      │ │ 男 │ 女 │合计│ 男 │ 女 │合计│ <br>
+      ├───┼──┼──┼──┼──┼──┼──┤<br>
+      │研究生│ │ │ │ │ │ │<br>
+      ├───┼──┼──┼──┼──┼──┼──┤ <br>
+      │本科 │ │ │ │ │ │ │<br>
+      ├───┼──┼──┼──┼──┼──┼──┤<br>
+      │大专 │ │ │ │ │ │ │<br>
+      ├───┼──┼──┼──┼──┼──┼──┤ <br>
+      │中专 │ │ │ │ │ │ │<br>
+      ├───┼──┼──┼──┼──┼──┼──┤ <br>
+      │技校 │ │ │ │ │ │ │<br>
+      └───┴──┴──┴──┴──┴──┴──┘ </p>
+      <p ALIGN="JUSTIFY">/*下面是完成各学历层次的职务岗位工资和技术级别工资总表的ASQL语句*/</p>
+      <p ALIGN="JUSTIFY">PREDICATES<br>
+      LONG fxr(6,10)<br>
+      FROM \TG\SUB0<br>
+      CONDITION<br>
+      BEGIN<br>
+      SUMMER fxr<br>
+      EDUCATION=&quot;0&quot; $ staty(1); /*研究生*/<br>
+      EDUCATION=&quot;1&quot; $ staty(2); /*大学本科*/<br>
+      EDUCATION=&quot;2&quot; $ staty(3); /*大学专科*/<br>
+      EDUCATION=&quot;3&quot; $ staty(4); /*中专*/<br>
+      EDUCATION=&quot;4&quot; $ staty(5); /*技校*/<br>
+      EDUCATION=&quot;5&quot; $ staty(6); /*高中*/<br>
+      EDUCATION=&quot;6&quot; $ staty(7); /*初中*/<br>
+      EDUCATION=&quot;7&quot; $ staty(8); /*小学*/<br>
+      EDUCATION=&quot;8&quot; $ staty(9); /*文盲半文盲*/<br>
+      EDUCATION&lt;&gt;&quot; &quot; $ staty(10); /*总计*/<br>
+      SEX=1 $ sumx(1,fxr,total_s);<br>
+      SEX=2 $ sumx(2,fxr,total_s);<br>
+      SEX=1||SEX=2 $ sumx(3,fxr,total_s);<br>
+      SEX=1 $ sumx(4,fxr,duty_s);<br>
+      SEX=2 $ sumx(5,fxr,duty_s));<br>
+      SEX=1||SEX=2 $ sumx(6,fxr,duty_s);<br>
+      END<br>
+      ACTION warray(\\TG\DATA\CXMAIN.DBF,fxr)</p>
+      <p ALIGN="JUSTIFY">此ASQL语法也可简化如下：</p>
+      <p ALIGN="JUSTIFY">PREDICATES<br>
+      LONG fxr(6,10)<br>
+      FROM \TG\SUB0<br>
+      CONDITION<br>
+      BEGIN<br>
+      SUMMER fxr,total_s<br>
+      #Y1: EDUCATION=&quot;0&quot;;<br>
+      #Y2: EDUCATION=&quot;1&quot; ;<br>
+      #Y3: EDUCATION=&quot;2&quot; ;<br>
+      #Y4: EDUCATION=&quot;3&quot; ;<br>
+      #Y5: EDUCATION=&quot;4&quot; ;<br>
+      #Y6: EDUCATION=&quot;5&quot; ;<br>
+      #Y7: EDUCATION=&quot;6&quot; ;<br>
+      #Y8: EDUCATION=&quot;7&quot; ;<br>
+      #Y9: EDUCATION=&quot;8&quot; ;<br>
+      #Y10: EDUCATION&lt;&gt;&quot; &quot;;<br>
+      #X1: SEX=1;<br>
+      #X2: SEX=2;<br>
+      #X3: SEX=1||SEX=2;<br>
+      SUMMER fxr,duty_s<br>
+      #X4: SEX=1;<br>
+      #X5: SEX=2;<br>
+      #X6: SEX=1||SEX=2;<br>
+      END<br>
+      ACTION warray(&quot;\\TG\DATA\\CXMAIN.DBF&quot;,fxr)</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> SUMMER 
+      数组变量,数字型表达式</p>
+      <p ALIGN="JUSTIFY">表示后面对X轴的约束是一种累计,上例中表示符合X1，X2，X3条件的记录分别对total_s做累计运算，符合X4，X5，X6条件的记录每别对duty_s做累计运算，累计结果放在数组fxr的相应元素中。</p>
+      <p ALIGN="JUSTIFY">SUMMER在遇到下一个SUMMER时失效，新的SUMMER生效。</p>
+      <li><b><a NAME="2_3_2_29">ASQL功能引用(sys)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]sys(功能号, ...)</p>
+      <p ALIGN="JUSTIFY">[功能]功能号若为：</p>
+      <p ALIGN="JUSTIFY">1:表示引用操作系统功能，第二个参数为系统命令，如:&quot;dir 
+      c:\\&gt;c:\\abc.txt&quot;。</p>
+      <p ALIGN="JUSTIFY">2:表示创建目录，第二个参数为目录，一次可以创建多层目录，如&quot;c:\\tg\\data\\rs&quot;</p>
+      <p ALIGN="JUSTIFY">3:表示删除文件，第二个参数为文件名，一次只能删除一个文件，所以文件名中不能有通配符。示例如&quot;c:\\tg\\data\\rs.dat&quot;</p>
+      <li><b><a NAME="2_3_2_30">数组运算(tarray)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]tarray(数组1，数组2，运算要求代码，数组1的起始行Y1，数组1的起始列X1，数组2的起始行Y2，数组2的起始列X2，宽度W，高度H)</p>
+      <p ALIGN="JUSTIFY">[功能]两个数组运算。如图2.5所示。运算代码定义为：</p>
+      <p ALIGN="JUSTIFY">1 加</p>
+      <p ALIGN="JUSTIFY">2 减</p>
+      <p ALIGN="JUSTIFY">3 乘</p>
+      <p ALIGN="JUSTIFY">4 除</p>
+      <p ALIGN="JUSTIFY">5 赋值</p>
+      <p ALIGN="CENTER"><img SRC="images/Image15.gif" WIDTH="398" HEIGHT="275"></p>
+      <p ALIGN="CENTER">图2.5 数组运算示意图</p>
+      <p ALIGN="JUSTIFY">[示例]/*将统计结果文件D1和D2相加，D1从第2行第1列， 
+      D2从第3行第4列，加4个宽，6个高*/</p>
+      <p ALIGN="JUSTIFY">PREDICATES<br>
+      FLOAT d1[8,8]<br>
+      FLOAT d2[10,8]<br>
+      ACTION rarray(&quot;d1.dbf&quot;, d1)<br>
+      ACTION rarray(&quot;d2.dbf&quot;, d2)<br>
+      ACTION tarray(d1,d2,1,2,1,3,4,4,6)<br>
+      ACTION warray(&quot;R.DBF&quot;, d1)</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> ASQL可以对不同大小的数组相运算，只要选择范围不超出数组定义。</p>
+      <li><b><a NAME="2_3_2_31">向视图记录号库内写记录号(viewno)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]viewno(域名)</p>
+      <p ALIGN="JUSTIFY">[功能]将FROM中的当前记录号记录于视图的域名记录文件中。域名起定位的作用，可以是库中的任意域名，如果不知道域名，也可用@1替代。</p>
+      <p ALIGN="JUSTIFY">[示例]/*将工程师的记录号存于文件TMPVIEW.dbf的Recno中*/</p>
+      <p ALIGN="JUSTIFY">From \TG\DATA\SUB0.dbf<br>
+      To \TG\DATA\TMPVIEW.dbf,R_E_C_N_O_ 10 N<br>
+      Codition<br>
+      Begin<br>
+      post_name=&quot;083&quot;$viewno(@1)<br>
+      End</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> ASQL将记录号信息写在目标表的R_E_C_N_O_域中，该域为数字型。</p>
+      <li><b><a NAME="2_3_2_32">写数组(warray)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]warray(数据库文件名， [小数位数，]数组……)</p>
+      <p ALIGN="JUSTIFY">[功能]将数组中的数据依次写入数据库中。结果域名为X!~Xn。利用warray()能将多个数组存成一个文件的特性，可以实现一个统计表的分着统计，统计完成后再合成一张表。</p>
+      <p ALIGN="JUSTIFY">[要求]所有数组必须为二维,且为相同行数。</p>
+      <p ALIGN="JUSTIFY">[示例]</p>
+      <p ALIGN="JUSTIFY">(1)warray(&quot;filename&quot;, 3, xarray)</p>
+      <p ALIGN="JUSTIFY">(2)warray(&quot;filename&quot;, 3, xarray,yarray)</p>
+      <p ALIGN="JUSTIFY">(3)见统计X运算或求和X运算的示例。</p>
+      <p ALIGN="JUSTIFY">　</p>
+      <li><b><a NAME="2_3_2_33">写符号表(wsymbol)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]wsymbol(符号表文件名[，小数位数])</p>
+      <p ALIGN="JUSTIFY">[功能]将操作完毕产生的符号、结果写入符号表文件中。</p>
+      <p ALIGN="JUSTIFY">[小数位数]表示写出的浮点型量的小数位数，设此值可以满足输出精度要求，可以省略，缺省为4。</p>
+      <p ALIGN="JUSTIFY">符号表文件也是一个DBF文件，其域名为变量名，若变量名长于10个字符，可能引起重名，所以若想将符号表写出去，最好定义的变量名字少于10个字符，县城符号数量一般不超过256个。</p>
+      <p ALIGN="JUSTIFY">可以被写出去的变量限于简单变量，即不可以是数组。</p>
+      <p ALIGN="JUSTIFY">[示例1]wsymbol(“file.dbf”,6)</p>
+      <p ALIGN="JUSTIFY">[示例2]见计数或求和的示例。</p>
+      <li><b><a NAME="2_3_2_34">清数据库(zap)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]zap(数据库文件名字表)</p>
+      <p ALIGN="JUSTIFY">[功能]将数据库内数据全部删除，属不可逆操作。</p>
+      <p ALIGN="JUSTIFY">[示例]zap(&quot;c:\\lz\\del\\lz0.dbf&quot;, 
+      &quot;c\\lz\\del\\dlz0.dbf&quot;)</p>
+      <li><b><a NAME="2_3_2_35">记录号传回客户端(mvewno)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]mvewno(表示源标记的整数或域名)</p>
+      <p ALIGN="JUSTIFY">[功能]将当前源中由源标记或域名（源中的第一张表）指示的表的当前记录号打成包传给客户端。源标记为1表示第一个源表，为2不第二个源表……</p>
+      <p ALIGN="JUSTIFY">包的格式为TreeSVR网络传输包。</p>
+      <p ALIGN="JUSTIFY">包的内容部分为：为长整数数组。</p>
+      <p ALIGN="JUSTIFY">[示例]</p>
+      <p ALIGN="JUSTIFY">FROM sub0<br>
+      TO cxmain.dbf,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      at(&quot;上海&quot;,hzth(GRAD_CLLG))!=0 $ distinct(POST_RANK);mvewno(1)<br>
+      END</p>
+      <li><b><a NAME="2_3_2_36">浏览器输出(webprint)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]webprint(&lt;字符串表达式1&gt;，&lt;字符串表达式2&gt;……)</p>
+      <p ALIGN="JUSTIFY">[功能]将要送到浏览器客户端的信息直接传给浏览器。</p>
+      <p ALIGN="JUSTIFY">[示例]ACTION webprint(&quot;NAME&quot;, &quot;SEX&quot;, 
+      &quot;\n&quot;);</p>
+      <b>
+      <li><a NAME="2_3_2_37">客户端流输出(webstream)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]webstream(&lt;数组名&gt;或&lt;域名&gt;或&lt;字符串表达式1&gt;，&lt;字符串表达式2&gt;……)</p>
+      <p ALIGN="JUSTIFY">[功能]将要送到浏览器客户端的信息打成包形式传送。此函数一般由CGI程序负责接收，对信息整理后再传给浏览器。</p>
+      <p ALIGN="JUSTIFY">如果当前客户端工作在非CGI方式，这个传送工作是由TreeSVR客户端负责传递给上层客户程序的，客户端可以通过这种方式将自己需要的数据传回来。</p>
+      <p ALIGN="JUSTIFY">可传送的内容为任意ASQL数据类型。</p>
+      <p ALIGN="JUSTIFY">[示例1]ACTION webstream(&quot;NAME&quot;, &quot;SEX&quot;, 
+      &quot;\n&quot;);</p>
+      <p ALIGN="JUSTIFY">[示例2]如下面的ASQL角本所示，统计职一张表在数组fee中，通过webstream()发回客户端去。</p>
+      <p ALIGN="JUSTIFY">predicates <br>
+      float fee[13,12]<br>
+      date d1<br>
+      date d2<br>
+      action d1 := dbfval(&quot;datedb&quot;, &quot;date1&quot;, &quot;1&quot;)<br>
+      action d2 := dbfval(&quot;datedb&quot;, &quot;date2&quot;, &quot;1&quot;)<br>
+      FROM drugbook,refre,*medi_no=billno<br>
+      to rblow.dbf, a01 c 8 ,a02 c 8 ,a03 c 8 ,a04 c 8 ,a05 c 8 ,\<br>
+      a06 c 4 ,a07 c 2 ,a08 c 2 , a09 c 4 ,a10 c 2 ,a11 c 2 <br>
+      condition<br>
+      begin<br>
+      drugbook.indate&gt;= d1 &amp;&amp; drugbook.indate&lt;=d2<br>
+      begin<br>
+      #y1:del_flag=&quot;MHJA&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+      #y2:del_flag=&quot;MHJB&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+      #y3:del_flag=&quot;MHJV&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+      #y4:(del_flag=&quot;MHJE&quot;||del_flag=&quot;MHJC&quot;&amp;&amp;sumfy&lt;100)&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;********<br>
+      1&quot;||h_i=&quot;*********4&quot;)<br>
+      #y5:(del_flag=&quot;MHJJ&quot;||del_flag=&quot;MHJC&quot;&amp;&amp;sumfy&gt;=100)&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;********<br>
+      1&quot;||h_i=&quot;*********4&quot;<br>
+      #y6:del_flag=&quot;MHJF&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+      #y7:del_flag=&quot;MHJ0&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+      #y8:(del_flag=&quot;MHJD&quot;||del_flag=&quot;MHJR&quot;)&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+      #y9:del_flag=&quot;MHJ0&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+      #y10:del_flag=&quot;MHJI&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+      #y11:del_flag=&quot;MHJM&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;<br>
+      #y12:(del_flag=&quot;MHJG&quot;||del_flag=&quot;MHJH&quot;)&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+      #y13:in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+      summer fee,drugbook.sumfy<br>
+      #x2: 1<br>
+      summer fee,drugbook.ybfy<br>
+      #x3: 1<br>
+      summer fee,drugbook.zjfy<br>
+      #x4: 1<br>
+      summer fee,drugbook.gtfy<br>
+      #x5:1<br>
+      summer fee,drugbook.jzfy<br>
+      #x6:1<br>
+      summer fee,drugbook.g1<br>
+      #x7:1<br>
+      summer fee,drugbook.t1<br>
+      #x8:1<br>
+      summer fee,drugbook.g2<br>
+      #x9:1<br>
+      summer fee,drugbook.t2<br>
+      #x10:1<br>
+      summer fee,drugbook.g3<br>
+      #x11:1<br>
+      summer fee,drugbook.t3<br>
+      #x12:1<br>
+      end<br>
+      end<br>
+      ACTION webstream(fee)</p>
+      <b>
+      <li><a NAME="2_3_2_38">唯一执行(distinct)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]distinct( 域名 )</p>
+      <p ALIGN="JUSTIFY">[功能]判断域名中指定的域的内容是否已经存在，若已存在，则略过本动作表达式。</p>
+      <p ALIGN="JUSTIFY"><img SRC="images/Image3.gif" WIDTH="15" HEIGHT="15"> 一个ASQL过程体中可以有多个distinct()引用，但是域名必须相同，</p>
+      <p ALIGN="JUSTIFY">[示例]/*求SUB0中不同级别的毕业于上海的人各一人*/</p>
+      <p ALIGN="JUSTIFY">FROM sub0<br>
+      TO cxmain.dbf,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      at(&quot;上海&quot;,hzth(GRAD_CLLG))!=0 $ distinct(POST_RANK);record(@1)</p>
+      <p ALIGN="JUSTIFY">/*找出毕业院校名字中带上海两字的，且按级别区分这些人*/</p>
+      <p ALIGN="JUSTIFY">END</p>
+      <b>
+      <li><a NAME="2_3_2_39">输出(print)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]print()</p>
+      <p ALIGN="JUSTIFY">[功能]通过打印服务器打印输出。</p>
+      <b>
+      <li><a NAME="2_3_2_40">初始化记录缓冲区(initrec)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]initrec([提交源表声明]或域名)</p>
+      <p ALIGN="JUSTIFY">[功能]将目标数据表的当前记录缓冲区清空。</p>
+      <p ALIGN="JUSTIFY">[提交源表声明]的说明见calrec()的定义，如果有这个参数的话，表示对源表的哪张表进行这个操作。</p>
+      <p ALIGN="JUSTIFY">[示例]</p>
+      <p ALIGN="JUSTIFY">FROM \tg\data\sub0.dbf<br>
+      TO cxmain.dbf,code,name,sex,s2 7 2 N<br>
+      CONDITION<br>
+      BEGIN<br>
+      sex=&quot;1&quot; $ initrec(CODE);calrec(CODE)<br>
+      END</p>
+      <li><b><a NAME="2_3_2_41">跳转动作(goto)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]goto( &lt;字符型表达式&gt;表示的标号 )</p>
+      <p ALIGN="JUSTIFY">[功能]该函数决定本动作执行完后的下一动作，标号是由LABEL定义的。</p>
+      <p ALIGN="JUSTIFY">跳转只能在CONDITION段或过程语句块中进行，而且GOTO也跳不过ENDWHILE或ENDIF语句，即不能从分支体或循环体跳出。</p>
+      <p ALIGN="JUSTIFY">[示例1]</p>
+      <p ALIGN="JUSTIFY">PRED<br>
+      FLOAT f1,f2,f3<br>
+      FROM sub0<br>
+      TO cxmain,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      occupy=&quot;081&quot; $ askmax(salary,&quot;f1&quot;);goto(&quot;condend&quot;)<br>
+      occupy=&quot;082&quot; $ askmax(salary,&quot;f2&quot;);goto(&quot;condend&quot;)<br>
+      occupy=&quot;083&quot; $ askmax(salary,&quot;f3&quot;);goto(&quot;condend&quot;)<br>
+      LABEL condend<br>
+      END<br>
+      ACT wsymbol(&quot;symbol.dbf&quot;)</p>
+      <p ALIGN="JUSTIFY">[示例2]/*出这个例子是借的，它跳过了ENDWHILE*/</p>
+      <p ALIGN="JUSTIFY">PRED<br>
+      INT I<br>
+      LET I:=1<br>
+      WHILE I&lt;100<br>
+      IF I&gt;10<br>
+      goto( &quot;stop&quot;)<br>
+      ENDIF<br>
+      ENDWHILE</p>
+      <li><b><a NAME="2_3_2_42">请求ASQL运算(calasql)</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      [原型]calasql( &lt;字符型表达式&gt;表示的ASQL角本 )</p>
+      <p ALIGN="JUSTIFY">[功能]该函数将将ASQL角本提交给另一ASQL事务服务引擎，待其算完结果后再返回。</p>
+      <p ALIGN="JUSTIFY">本函数在数据仓库应用中特点有用。数据仓库中可以记述本历史数据构成的表，如由学生信息1996级信息级、学生信息1997级信息级、学生信息1998级信息级组成。想一次从这三个信息集中检索出某一信息，就可以将这些表的名字存在一个数据表中，在运算时，再从这些表中取出真正数据。</p>
+      <p ALIGN="JUSTIFY">[示例]FROM \tg\data\sub0.dbf</p>
+      <p ALIGN="JUSTIFY">TO cxmain.dbf,*<br>
+      CONDITION<br>
+      BEGIN<br>
+      name=&quot;宋氏三雄&quot; $ callasql(&quot;FROM &quot;+storetable+&quot;\nTO 
+      cxmain1.dbf,*\nCONDITION\nBEGIN\nrecord(@1)\nEND\n&quot;)<br>
+      END</p>
+      <li><b><a NAME="2_3_2_43">请求SQL运算(sql)</a><br>
+        </b><br>
+        [原型]sql( &lt;字符型表达式&gt;表示的SQL角本，&lt;字符型表达式&gt;表示的SQL角本，……)<p ALIGN="JUSTIFY">[功能]该函数将将SQL角本片段组合成一个角本提交给关系数据库服务引擎（以ODBC连接，如Informix、Oracle等），待其算完结果后再返回。</p>
+        <p ALIGN="JUSTIFY">[示例]</p>
+        <p ALIGN="JUSTIFY">FROM \tg\data\sub0.dbf<br>
+        TO cxmain.dbf,*<br>
+        CONDITION<br>
+        BEGIN<br>
+        name=&quot;宋氏三雄&quot; $ sql(&quot;INSERT INTO TABLE RSGL VALUES ( ‘ &quot;,code,”’, 
+        “’,’ “,name, “’,’”, sex,”)”<br>
+        END</p>
+        <p ALIGN="JUSTIFY">/*执行这个SQL角本就相当于向数据库服务器请求了insert 
+        into table (‘code’,’name’,’sex’)*/</p>
+      </li>
+    </ol>
+    <p ALIGN="JUSTIFY">　</p>
+    <h2 align="center"><b><a NAME="2_4"><font face="楷体_GB2312">内部变量</font></a></h2>
+    </b><ol>
+      <li><b><a NAME="2_4_1">_ASQLUSER</a></li>
+      </b><p ALIGN="JUSTIFY"><br>
+      字符串型只读变量。用户名，ASQL当前角本的引用者。</p>
+      <p ALIGN="JUSTIFY">引用示例：LET WEBPRINT(_asqluser)</p>
+      <li><a NAME="2_4_2"><b>_ASQLTO</b></a></li>
+      <p ALIGN="JUSTIFY"><br>
+      字符串型只读变量。目标文件名，ASQL生成文件的具体文件名。</p>
+      <p ALIGN="JUSTIFY">引用示例：</p>
+      <p ALIGN="JUSTIFY">TO cx.dbf,name 10 C<br>
+      LET WEBPRINT(_asqlto)</p>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>　 
+<!--msnavigation--></td></tr><!--msnavigation--></table></body>
+</html>

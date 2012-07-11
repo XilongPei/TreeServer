@@ -1,0 +1,163 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>asql过程语句</title>
+</head>
+
+<body bgcolor="#EAEAFB">
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><h2 ALIGN="center"><font face="楷体_GB2312">ASQL过程语句</font></h2>
+    <p ALIGN="JUSTIFY">ASQL支持简单的过程能力，提供的过程语句有：LET、IF、WHILE、CALL。这些过程性语句不可以出现在查询块中，即可以在CONDITION段使用。</p>
+    <p ALIGN="JUSTIFY">下面分别介绍这几个语句的使用。</p>
+    <ol>
+      <li><p ALIGN="JUSTIFY"><a name="2_2_11_1">LET 语句<br>
+        </a><br>
+        LET语句除与ACTION写法上不一样且被归类到过程语法中外，没有其它特殊性，也是简单执行其引导的表达式。</p>
+        <p ALIGN="JUSTIFY">[示例]</p>
+        <p ALIGN="JUSTIFY">LET pi:=3.1415925</p>
+        <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> ASQL中不可以只出现ACTION而没有FROM这个表示数据源的关键字，否则ASQL可能不报告出错，但实际上没有运行，因为这时调用的ASQL过程语法。</p>
+        <p ALIGN="JUSTIFY">下例是错的：</p>
+        <p ALIGN="JUSTIFY">PREDICATE<br>
+        STRING var[30]<br>
+        ACTION var:=”Shanghai”<br>
+        ACTION wsymbol(“test.dbf”)</p>
+        <p ALIGN="JUSTIFY">它应写成：</p>
+        <p ALIGN="JUSTIFY">PREDICATE<br>
+        STRING var[30]<br>
+        LET var:=”Shanghai”<br>
+        LET wsymbol(“test.dbf”)</p>
+        <p ALIGN="JUSTIFY">但下例是对的，虽然这时的数据源定义是没意义的：</p>
+        <p ALIGN="JUSTIFY">PREDICATE<br>
+        STRING var[30]<br>
+        FROM c:\tg\data\sub0.dbf<br>
+        LET var:=”Shanghai”<br>
+        LET wsymbol(“test.dbf”)</p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><a name="2_2_11_2">IF 语句</a><br>
+        <br>
+        IF语句即判断分支执行语句。它计算并判断所引导的表达式的逻辑值，为真则执行后面的引句，为假则执行ELSE后面的语句（若存在）或ENDIF后面的语句。</p>
+        <p ALIGN="JUSTIFY">语句形式为：</p>
+        <p ALIGN="JUSTIFY">(1)</p>
+        <p ALIGN="JUSTIFY">IF （逻辑表达式）<br>
+        &nbsp; 其它ASQL语句，包括IF语句<br>
+        ENDIF</p>
+        <p ALIGN="JUSTIFY">(2)</p>
+        <p ALIGN="JUSTIFY">IF （逻辑表达式）<br>
+        &nbsp; 其它ASQL语句，包括IF语句<br>
+        ELSE<br>
+        其它ASQL语句，包括IF语句<br>
+        ENDIF<b> </b></p>
+        <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> ELSE必须跟在IF后面，IF和ENDIF必须配对。</p>
+        <p ALIGN="JUSTIFY">[示例1]/*判断某一个登录者是否合合法用户。并向用户浏览器上反馈信息*/</p>
+        <p ALIGN="JUSTIFY">PRED<br>
+        INT I<br>
+        LET I：=LOCATE（&quot;users.dbf&quot;, &quot;USERNAME=\&quot;用户名\&quot;&quot;)<br>
+        IF I != 0<br>
+        webprint(‘用户非法&quot;);<br>
+        ELSE<br>
+        　webprint(‘用户合法&quot;);<br>
+        ENDIF</p>
+        <p ALIGN="JUSTIFY">[示例2]/*求单位工资最高的人的级别，若级别为&quot;1&quot;，提出提示*/</p>
+        <p ALIGN="JUSTIFY">PRED<br>
+        STRING str[10]<br>
+        FLOAT f1<br>
+        LET f1:=0.0<br>
+        FROM sub0.dbf<br>
+        BEGIN<br>
+        &nbsp; salary&gt;is1 $ f1:=salary;str:=post_rank<br>
+        END<br>
+        IF str=&quot;1&quot;<br>
+        LET webprint(&quot;果然如此&quot;)<br>
+        ENDIF</p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><a name="2_2_11_3">WHILE 语句</a><br>
+        <br>
+        WHILE语句即判断循环语句。它计算并判断后面的逻辑表达式的真假，为真则执行本循环体，为假则跳过本循环体。</p>
+        <p ALIGN="JUSTIFY">LOOP语句：跳过本循环其余部分，继续下一执行轮回。<br>
+        EXIT语句：跳出本循环，继续执行循环后面（ENDWHILE后）的语句。</p>
+        <p ALIGN="JUSTIFY">语句形式：</p>
+        <p ALIGN="JUSTIFY">WHILE 逻辑表达式</p>
+        <p ALIGN="JUSTIFY">其它ASQL过程语句</p>
+        <p ALIGN="JUSTIFY">[LOOP语句]</p>
+        <p ALIGN="JUSTIFY">[EXIT语句]</p>
+        <p ALIGN="JUSTIFY">ENDWHILE</p>
+        <p ALIGN="JUSTIFY">[示例]</p>
+        <p ALIGN="JUSTIFY">问题要求与WHILE中示例的要求相同。</p>
+        <p ALIGN="JUSTIFY">利用函数，该问题的ASQL解法为：</p>
+        <p ALIGN="JUSTIFY">PRED<br>
+        FLOAT x[5,4]<br>
+        INT i<br>
+        LET rarray(&quot;tbtest.dbf&quot;,x)<br>
+        WHILE i&lt;=5<br>
+        IF x[i,1]+x[i,2]!=x[i,4]<br>
+        webprint(&quot;该表不平&quot;)<br>
+        EXIT /*此处若用LOOP将引起死循环*/<br>
+        ENDIF<br>
+        i:=i+1<br>
+        ENDWHILE</p>
+      </li>
+      <li><p ALIGN="JUSTIFY"><a name="2_2_11_4">CALL 语句</a><br>
+        <br>
+        ASQL允许将一些频繁出现的语句集中成一组，这个组称为函数（或称文法级函数），它与ASQL语句级函数不同，没有ASQL语句级函数功能那么强大、效率那么高。它是在ASQL文法内定义，同时也只能在一个文法内引用。</p>
+        <p ALIGN="JUSTIFY">文法级函数对变量的识别是在其第一次被引用时进行的，所以它可以利用第一次引用时其它ASQL过程语句可以引用的变量等数据资源。</p>
+        <p ALIGN="JUSTIFY">ASQL函数定义方法：</p>
+        <p ALIGN="JUSTIFY">FUNCTION 函数名称</p>
+        <p ALIGN="JUSTIFY">函数体，可以出现任何ASQL过程语句</p>
+        <p ALIGN="JUSTIFY">END</p>
+        <p ALIGN="JUSTIFY">ASQL函数引用方法：</p>
+        <p ALIGN="JUSTIFY">CALL 函数名</p>
+        <p ALIGN="JUSTIFY">ASQL函数名称最长不超过32字符，语法规则与变量定义相同。</p>
+        <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> ASQL允许一个语法体内最多有32个函数定义。</p>
+        <p ALIGN="JUSTIFY">[示例]</p>
+        <p ALIGN="JUSTIFY">检查表tbtest.dbf的合法性。tbtest.dbf的内容如下：</p>
+        <p ALIGN="JUSTIFY">Record# X1 X2 X3 X4<br>
+        1 1.00 2.00 3.00 4.00<br>
+        2 5.00 6.00 7.00 8.00<br>
+        3 9.00 10.00 11.00 12.00<br>
+        4 13.00 14.00 15.00 16.00<br>
+        5 17.00 18.00 19.00 20.00<br>
+        PRED<br>
+        FLOAT x[5,4]<br>
+        INT i,j<br>
+        STRING s[100]<br>
+        LET rarray(&quot;tbtest.dbf&quot;,x)<br>
+        LET s:=&quot;该表不平&quot;<br>
+        WHILE i&lt;=5<br>
+        &nbsp; j:=x[i,1]+x[i,2]-x[i,4]<br>
+        CALL webmsg<br>
+        i:=i+1<br>
+        ENDWHILE<br>
+        FUNCTION webmsg<br>
+        IF j!=0<br>
+        &nbsp; webprint(s)<br>
+        ENDIF<br>
+        END</p>
+        <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> ASQL允许的一个运算单位是一包含FROM-TO-CONDITION的语句段，除此，其它语句都是依附于这个语句段而存在的。所以若想执行此一次性动作，必须有一个FROM-TO-CONDITION的语句段，但一个角本中如果只有ACTION及过程性语句，可以没有FROM-TO-CONDITION的语句段。</p>
+        <p ALIGN="JUSTIFY">下面的写法是正确的：</p>
+        <p ALIGN="JUSTIFY">ACTION /*这个ACTION可以引用源及目标中的数据，它属于下面的语句段*/</p>
+        <p ALIGN="JUSTIFY">FROM ……<br>
+        TO ….<br>
+        /*这个CONDITION段是只有BEGIN和END的空语句*/<br>
+        CONDITION<br>
+        BEGIN</p>
+        <p ALIGN="JUSTIFY">END<br>
+        ACTION /*这个ACTION可以引用源及目标中的数据*/</p>
+        <p ALIGN="JUSTIFY">这样的角本也是对的：</p>
+        <p ALIGN="JUSTIFY">ACTION ………<br>
+        ACTION ………<br>
+        ACTION ………</p>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>　 </p>
+</body>
+</html>

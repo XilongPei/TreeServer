@@ -1,0 +1,244 @@
+/*事业单位各类人员基本情况统计表  1996表04*/
+predicates
+     long x[135,22]
+from tg.dbf
+condition
+begin
+statistics x
+    DEL<>1&&WU_PRINCIP="2"     /*统计在职人员*/
+    BEGIN
+       #Y1:
+       #Y2: WU_RELATE="7"
+       #Y3: WU_RELATE<>"7"
+       #Y4: 0
+       #Y5: 0
+       #Y6: 0
+       #Y7: 0
+       #Y8: CS_TITLE>"001" /*技术干部总数*/
+       #Y9: CS_TITLE>"001"&&POST_RANK>="03"&&POST_RANK<="08"&&POST_NAME<>"***2" /*中层以上领导*/
+       #Y10: CS_TITLE="**1"||CS_TITLE="**2"
+       #Y11: cs_title="**1"&&cs_title<>"081"
+       #Y12: CS_TITLE="**3"
+       #Y13: CS_TITLE="**4"||CS_TITLE="**5"||CS_TITLE="**6"
+       #Y14: CS_TITLE>"001"&&WU_RELATE="7"
+       #Y15: CS_TITLE>"001"&&WU_RELATE<>"7"
+       #Y16: 0
+       #Y17: 0
+       #Y18: 0
+       #Y19: 0
+       CS_TITLE="08"||CS_TITLE="07"        /*工程技术人员*/
+       BEGIN
+           #Y20:
+           #Y21: CS_TITLE="**1"||CS_TITLE="**2"   /*高工*/
+           #Y22: CS_TITLE="**3"  /*工程师*/
+           #Y23: CS_TITLE="**4"||CS_TITLE="**5"  /*助工*/
+           #Y24: CS_TITLE="**9"  /*无职务*/
+       END
+       CS_TITLE="09"||CS_TITLE="10"||CS_TITLE="11"  /*农业*/
+       BEGIN
+           #Y25:
+           #y26: CS_TITLE="**1"
+           #Y27: CS_TITLE="**2"
+           #Y28: CS_TITLE="**3"
+           #Y29: CS_TITLE="**4"||CS_TITLE="**5"
+           #Y30: CS_TITLE="**9"
+       END
+       CS_TITLE="06"       /*科研*/
+       BEGIN
+           #Y31:
+           #y32: CS_TITLE="**1"
+           #Y33: CS_TITLE="**2"
+           #Y34: CS_TITLE="**3"
+           #Y35: CS_TITLE="**4"||CS_TITLE="**5"
+           #Y36: CS_TITLE="**9"
+       END
+       CS_TITLE>"230"&&CS_TITLE<"270"  /*卫生*/
+       BEGIN
+           #Y37:
+           #Y38: cs_title="**1"
+           #Y39: CS_TITLE="**2"
+           #Y40: CS_TITLE="**3"
+           #Y41: CS_TITLE>="**4"&&CS_TITLE<="**6"
+           #Y42: CS_TITLE="**9"
+       END
+       CS_TITLE>"001"&&CS_TITLE<"060"||CS_TITLE="41"||CS_TITLE="60" /*教学*/
+       BEGIN
+           #Y43:
+           #Y44: CS_TITLE="011"
+           #Y45: CS_TITLE="012"
+           #Y46: CS_TITLE="013"
+           #Y47: CS_TITLE="014"
+           #Y48: CS_TITLE="019"
+           #Y49: CS_TITLE="042"||CS_TITLE="022"||CS_TITLE="032"
+           #Y50: CS_TITLE="043"||CS_TITLE="023"||CS_TITLE="033"
+           #Y51: CS_TITLE="044"||CS_TITLE="024"||CS_TITLE="034"||CS_TITLE="045"||CS_TITLE="025"||CS_TITLE="035"
+           #Y52: CS_TITLE="049"||CS_TITLE="029"||CS_TITLE="039"
+           #Y53: CS_TITLE="052"
+           #Y54: CS_TITLE="053"
+           #Y55: CS_TITLE="054"||CS_TITLE="055"
+           #Y56: CS_TITLE="059"
+           #Y57: CS_TITLE="413"||CS_TITLE="603"
+           #Y58: CS_TITLE="414"||CS_TITLE="604"||CS_TITLE="415"||CS_TITLE="416"||CS_TITLE="605"||CS_TITLE="606"
+           #Y59: CS_TITLE="419"||CS_TITLE="609"
+       END
+       CS_TITLE>"460"&&CS_TITLE<"499"  /*飞行*/
+       BEGIN
+           #Y60:
+           #Y61: CS_TITLE="**2"
+           #Y62: CS_TITLE="**3"
+           #Y63: CS_TITLE="**4"||CS_TITLE="**5"
+           #Y64: CS_TITLE="**9"
+       END
+       CS_TITLE>"429"&&CS_TITLE<"460"  /*船舶*/
+       BEGIN
+           #Y65:
+           #Y66: CS_TITLE="**2"
+           #Y67: CS_TITLE="**3"
+           #Y68: CS_TITLE="**4"||CS_TITLE="**5"
+           #Y69: CS_TITLE="**9"
+       END
+       CS_TITLE="12"  /*经济*/
+       BEGIN
+           #Y70:
+           #Y71: CS_TITLE="**2"
+           #Y72: CS_TITLE="**3"
+           #Y73: CS_TITLE="**4"||CS_TITLE="**5"
+           #Y74: CS_TITLE="**9"
+       END
+       CS_TITLE="13" /*会计*/
+       BEGIN
+           #Y75:
+           #Y76: CS_TITLE="**2"
+           #Y77: CS_TITLE="**3"
+           #Y78: CS_TITLE="**4"||CS_TITLE="**5"
+           #Y79: CS_TITLE="**9"
+       END
+       CS_TITLE="14" /*统计*/
+       BEGIN
+           #Y80:
+           #Y81: CS_TITLE="**2"
+           #Y82: CS_TITLE="**3"
+           #Y83: CS_TITLE="**4"||CS_TITLE="**5"
+           #Y84: CS_TITLE="**9"
+       END
+       CS_TITLE="18" /*翻译*/
+       BEGIN
+           #Y85:
+           #Y86: CS_TITLE="**1"
+           #y87: CS_TITLE="**2"
+           #Y88: CS_TITLE="**3"
+           #Y89: CS_TITLE="**4"
+           #Y90: CS_TITLE="**9"
+       END
+       CS_TITLE="21" /*图书*/
+       BEGIN
+           #Y91:
+           #Y92: CS_TITLE="**1"
+           #Y93: CS_TITLE="**2"
+           #Y94: CS_TITLE="**3"
+           #Y95: CS_TITLE="**4"||CS_TITLE="**5"
+           #Y96: CS_TITLE="**9"
+       END
+       CS_TITLE="15"||CS_TITLE="17"||CS_TITLE="16"||CS_TITLE="19"||CS_TITLE="20" /*新闻*/
+       BEGIN
+           #Y97:
+           #Y98: CS_TITLE="151"||cs_title="191"||cs_title="201"
+           #Y99: CS_TITLE="152"||CS_TITLE="192"||CS_TITLE="202"
+           #Y100: CS_TITLE="**3"
+           #Y101: CS_TITLE="**4"||CS_TITLE="**5"
+           #Y102: CS_TITLE="**9"
+       END
+       CS_TITLE>"389"&&CS_TITLE<"410" /*法律*/
+       BEGIN
+           #Y103:
+           #Y104: CS_TITLE="**1"
+           #y105: CS_TITLE="**2"
+           #Y106: CS_TITLE="**3"
+           #Y107: CS_TITLE="**4"||CS_TITLE="**5"
+           #Y108: CS_TITLE="**9"
+       END
+       CS_TITLE="22*"  /*播音*/
+       BEGIN
+           #Y109:
+           #Y110: CS_TITLE="**1"
+           #y111: CS_TITLE="**2"
+           #Y112: CS_TITLE="**3"
+           #Y113: CS_TITLE="**4"||CS_TITLE="**5"
+           #Y114: CS_TITLE="**9"
+       END
+       CS_TITLE="27" /*工美*/
+       BEGIN
+           #Y115:
+           #Y116: CS_TITLE="**2"
+           #Y117: CS_TITLE="**3"
+           #Y118: CS_TITLE="**4"||CS_TITLE="**5"
+           #Y119: CS_TITLE="**9"
+       END
+       CS_TITLE="37" /*体育*/
+       BEGIN
+           #Y120:
+           #Y121: CS_TITLE="**1"
+           #Y122: CS_TITLE="**2"
+           #Y123: CS_TITLE="**3"
+           #Y124: CS_TITLE="**4"
+           #Y125: CS_TITLE="**9"
+       END
+       CS_TITLE>"280"&&CS_TITLE<"370" /*艺术*/
+       BEGIN
+           #Y126:
+           #Y127: CS_TITLE="**1"
+           #Y128: CS_TITLE="**2"
+           #Y129: CS_TITLE="**3"
+           #Y130: CS_TITLE="**4"
+           #Y131: CS_TITLE="**9"
+       END
+       CS_TITLE="80"  /*政工*/
+       BEGIN
+           #Y132:
+           #Y133: CS_TITLE="**2"
+           #Y134: CS_TITLE="**3"
+           #Y135: CS_TITLE="**4"||CS_TITLE="**5"
+       END
+       #X1: CODE>"0"
+       #X2: SEX="2"
+       #X3: NATION<>"01"
+       #X4: EDUCATION="0"&&EDUCATION<>"09"
+       #X5: EDUCATION="1"&&education<>"19"||EDUCATION="09"
+       #X6: EDUCATION="2"&&education<>"29"||EDUCATION="19"
+       #X7: EDUCATION="3"&&education<>"39"||EDUCATION="29"
+       #X8: (EDUCATION="4"||education="5")&&EDUCATION<>"*9"||EDUCATION="39"
+       #X9: EDUCATION>="60"||EDUCATION="49"||EDUCATION="59"
+       #X10: PARTY_N<"03"
+       #X11: PARTY_N="03"
+       #X12: PARTY_N>"03"&&PARTY_N<"12"||PARTY_N="15"
+       #X13: PARTY_N="12"||PARTY_N="13"
+       #X14: BIRTHDAY>="1966"
+       #X15: BIRTHDAY>="1961"&&BIRTHDAY<"1966"
+       #X16: BIRTHDAY>="1956"&&BIRTHDAY<"1961"
+       #X17: BIRTHDAY>="1951"&&BIRTHDAY<"1956"
+       #X18: BIRTHDAY>="1946"&&BIRTHDAY<"1951"
+       #X19: BIRTHDAY>="1942"&&BIRTHDAY<"1946"
+       #X20: BIRTHDAY>="1937"&&BIRTHDAY<"1942"
+       #X21: BIRTHDAY>="1937"&&BIRTHDAY<"1942"&&SEX="2"
+       #X22: BIRTHDAY<"1937"
+    END
+end
+action warray("tb04",x)
+#X8: (EDUCATION="4"||education="5")&&EDUCATION<>"*9"||EDUCATION="39"
+       #X9: EDUCATION>="60"||EDUCATION="49"||EDUCATION="59"
+       #X10: PARTY_N<"03"
+       #X11: PARTY_N="03"
+       #X12: PARTY_N>"03"&&PARTY_N<"12"||PARTY_N="15"
+       #X13: PARTY_N="12"||PARTY_N="13"
+       #X14: BIRTHDAY>="1966"
+       #X15: BIRTHDAY>="1961"&&BIRTHDAY<"1966"
+       #X16: BIRTHDAY>="1956"&&BIRTHDAY<"1961"
+       #X17: BIRTHDAY>="1951"&&BIRTHDAY<"1956"
+       #X18: BIRTHDAY>="1946"&&BIRTHDAY<"1951"
+       #X19: BIRTHDAY>="1942"&&BIRTHDAY<"1946"
+       #X20: BIRTHDAY>="1937"&&BIRTHDAY<"1942"
+       #X21: BIRTHDAY>="1937"&&BIRTHDAY<"1942"&&SEX="2"
+       #X22: BIRTHDAY<"1937"
+    END
+end
+action warray("tb04",x)

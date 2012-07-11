@@ -1,0 +1,64 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>关于配置Tdc.dll中环境的几点问题</title>
+</head>
+
+<body style="font-size: 12px">
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>关于配置Tdc.dll中环境的几点问题</strong></p>
+    <b><p></b><strong>一．www服务中的安全性</strong></p>
+    <p>打开IIS中的INTERNET服务管理器，双击WWW服务标签，可打开WWW服务属性窗体，其中服务标签的设置情况如下：<ol>
+      <li><b>TCP端口</b>，缺省值为80。如果选择了不同的端口号，必须重新启动计算机。</li>
+      <li><b>超时连接(C)</b>,关闭无效用户连接之前允许的时间长度。</li>
+      <li><b>最大连接数(M).</b> 
+        网络上可以同时使用这个服务的最大计算机个数。</li>
+      <li><b>匿名登录</b></li>
+    </ol>
+    <b><p></b>生成所有匿名连接的NT用户帐号权限。缺省情况下，IIS生成和使用用户名IUSR_<i>computername.</i>缺省情况下，这个帐号具有<u><i>本地登录</i></u>的用户权限。如果要保证匿名用户能登录访问你的服务器，该帐号要有这种权限匿名用户也是这样。该用户必须有<u><i>本地登录</i></u>的权限。如果IIS安装在独立服务器上，则IUSR_<i>computername</i>,为本地帐号，域中的其他计算机无法验证传统服务器上建立的用户帐号。如果要访问传统服务器上的IIS服务，以及域中的其他服务器信息，则必须将IUSR_<i>computername</i>帐号变成具有整个域权限的帐号。</p>
+    <p><i><b><u>注意：</u> </p>
+    </b></i><p>匿名帐号指定随机密码，在<i>域用户管理器</i>和IIS中应当相同。可以改密码，但要记住同时改变两处才能保证密码口令一致。如果密码不一致，则谁也无法访问你的IIS，包括管理员。另外，应确保选中“用户不得更改密码(s)”<font
+    FACE="宋体">和“密码永久有效(w)”。（这些复选框在用户属性对话框中，可以双击<i>域用户管理器</i>中的IUSR_<i>computername</i>帐号找到。）如果没有选中，则下一个登录到服务器的用户可以改变口令。一旦改变的口令与IIS中的口令不一致，这样，谁也别想访问这个服务器。同时，<b>这个帐号不允许使用空口令</b>。<ol
+    start="5">
+      <li><b>密码验证</b></li>
+    </ol>
+    <b><p></b>在允许匿名访问时，选择本选项。这样当远程客户机请求认证时，启动认证过程。至少应选择下列选项中的一个：</p>
+    <p>A.<b>允许匿名 </p>
+    </b><p>允许通过匿名登录用户名、IUSR_<i>computername</i>和口令访问。如果不选复选框，则拒绝所有匿名用户登录。匿名登录时，用户并不实际使用这个用户名和口令，他们只用于NT内部。实际上，就象用户和口令被越过了一样。如果不想限制用户对Web站点的访问，可以用这个选项。</p>
+    <p>B．<b>基本（明文文本）（B）</p>
+    </b><p>表示传送完成加密，且常用于与安全套接层(SSI)的组合以加密用户名和口令。大多数INTERNET浏览器支持这种认证。如果不与SSI组合，则<b>基本（明文文本）</b>认证不机密文本（明文）发送口令。缺省情况下，出于安全考虑，不要选此框。</p>
+    <b><p></b>C<b>．Windows NT请求/响应（N）</p>
+    <p></b>表示用户名和口令自动加密。IE2.0以上支持这种认证。</p>
+    <i><b><p>注意：<ol>
+      <ol>
+        </b></i>
+        <li>如果选择了<i>允许匿名</i>选项，同时选择了<i>基本（明文文本）</i>或<i>Windows 
+          NT请求/响应</i>选项，则只要不允许IUSR_<i>computername</i>帐号访问，则访问位于Windows 
+          NT文件系统（NTFS）盘上的资源时，要求输入用户名和口令。</li>
+        <li>如果选择了<i>允许匿名</i>选项，并取消了<i>基本（明文文本）和Windows 
+          NT请求/响应</i>选项，则所有向服务器的请求均被当做匿名访问。这就是说，即使用户提供有效用户名和口令，IIS也采用匿名状态下的用户名。</li>
+      </ol>
+    </ol>
+    <p></font><strong>二、Tdc.ini文件</strong> </p>
+    <p>Tdc.ini中包含了几个信息：服务器名, TreeServer所在计算机名。</p>
+    <p>Tdc.ini应放在Winnt目录下。 </p>
+    <p><strong>三、数据库设置</strong></p>
+    <p>1.可用TreeServer服务的缺省目录：<br>
+    <br>
+    &nbsp; c:\programfiles\treeServer\data\root\Lz0.dbf<br>
+    &nbsp; 用此目录时，在TDC脚本中对数据库的引用可以不用指明路径。</p>
+    <p>2．也可以另外再设置目录用来专门存放数据库，如：c:\data\Lz0.dbf<br>
+    &nbsp;&nbsp; 此时，在TDC脚本中对数据库的引用应指明路径：&nbsp; From 
+    c:\data\Lz0</p>
+    <p><strong>四．Tdc.dll的使用示例</strong></p>
+    <p>http://ohnt40/InetPub/hello.htm</td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

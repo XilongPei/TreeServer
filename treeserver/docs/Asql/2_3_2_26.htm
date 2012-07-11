@@ -1,0 +1,30 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>统计Y轴运算</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>统计Y轴运算(staty)</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]staty(行号)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]行号，从0开始计。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">做统计运算时，此函数相当于给一个一维逻辑数组，通过行号对应不同的行条件。行条件成立，在相应的位置置1，否则置0。一条记录运算完毕，自动清零。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">此函数必须与statx()或sumx()连用。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">注意：ASQL内部缺省认为一个表最多可为0行（即没有统计），要想改变此值，可通过#y设定。例如：#y4096 
+    .... 表示自动调整系统最大可处理表行数为4096。一旦ASQL中有#Y定义，则取#Y后有最大值作为当前处理表的最大行数。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">也可通过“STATISTICS 
+    变量，最大统计行数（参STATISTICS的定义）”形式指定最大统计行数。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]见统计X轴运算statx()。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> ASQL认为一张统计表其行只能是统计约束，只有列上才可决定当前是对什么进行求和还是一种计数。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

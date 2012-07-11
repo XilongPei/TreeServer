@@ -1,0 +1,58 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>历史资料说明信息库</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>历史资料说明信息库</strong></p>
+    <b><p></b><span style="font-size: 12px">&nbsp; 历史资料数据集为 HISTRSUT.DBF，用来存放历年的统计结果资料，即每次根据历史资料分析条件库所采集的数据。</span></p>
+    <blockquote>
+      <p><span style="font-size: 12px">其结构如下：</span></p>
+    </blockquote>
+    <p><span style="font-size: 12px">COND_CODE 分析条件代码(与 HISTCOND.DBF中的对应域的定</span></p>
+    <p><span style="font-size: 12px">义相同)，宽度为6，字符型</span></p>
+    <blockquote>
+      <p><span style="font-size: 12px">STAT_ID 数据时间点说明(与 HISTSREM.DBF中的对应域的</span></p>
+    </blockquote>
+    <p>　</p>
+    <p><span style="font-size: 12px">定义相同)，宽度为6，数字型</span></p>
+    <blockquote>
+      <p><span style="font-size: 12px">RESULT 历史资料数据，宽度为32，字符型</span></p>
+      <p><span style="font-size: 12px">RESULT_TYPE 分析结果数据类型，宽度为1，字符型</span></p>
+    </blockquote>
+    <p>　</p>
+    <p><span style="font-size: 12px">RESULT_TYPE= N 整型结果</span></p>
+    <p><span style="font-size: 12px">RESULT_TYPE= F 浮点型结果</span></p>
+    <p><span style="font-size: 12px">RESULT_TYPE= C 字符串型结果</span></p>
+    <p><span style="font-size: 12px">例如：</span></p>
+    <p><span style="font-size: 12px">──────┬─────┬────┬───────</span></p>
+    <p><span style="font-size: 12px">COND_CODE│ STAT_ID │ RESULT │ RESULT_TYPE</span></p>
+    <p><span style="font-size: 12px">──────┼─────┼────┼───────</span></p>
+    <p><span style="font-size: 12px">..... │ │ │</span></p>
+    <p><span style="font-size: 12px">001001 │ 1 │ 0 │ N</span></p>
+    <p><span style="font-size: 12px">001002 │ 1 │ 5 │ N</span></p>
+    <p><span style="font-size: 12px">001003 │ 1 │ 5 │ N</span></p>
+    <p><span style="font-size: 12px">001004 │ 1 │ 20 │ N</span></p>
+    <p><span style="font-size: 12px">001005 │ 1 │ 21 │ N</span></p>
+    <p><span style="font-size: 12px">001006 │ 1 │ 51 │ N</span></p>
+    <p><span style="font-size: 12px">..... │ │ │</span></p>
+    <p><span style="font-size: 12px">001001 │ 2 │ 2 │ N</span></p>
+    <p><span style="font-size: 12px">001002 │ 2 │ 7 │ N</span></p>
+    <p><span style="font-size: 12px">001003 │ 2 │ 8 │ N</span></p>
+    <p><span style="font-size: 12px">001004 │ 2 │ 29 │ N</span></p>
+    <p><span style="font-size: 12px">001005 │ 2 │ 28 │ N</span></p>
+    <p><span style="font-size: 12px">001006 │ 2 │ 74 │ N</span></p>
+    <p><span style="font-size: 12px">..... │ ... │ ... │ ...</span></p>
+    <p><span style="font-size: 12px">──────┴─────┴────┴───────</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

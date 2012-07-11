@@ -1,0 +1,509 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>ASQL运行环境</title>
+</head>
+
+<body bgcolor="#EAEAFB" link="#008080">
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><h2 align="center"><a NAME="8"><font face="楷体_GB2312">ASQL运行环境</font></a></h2>
+    <p>ASQL在最初开发时就充分考虑到了它在使用上（与具体应用程序的集成）的灵活性，它是用标准C语言开发的，它的第一个版本只能在 
+    DOS 下运行，这个版本的 ASQL 支撑了以下系统的运行：</p>
+    <p>(1) 铁道部人事管理信息系统（铁道部二等奖）</p>
+    <p>(2) 劳动部劳资人事管理系统（国家三等奖、劳动部二等奖）</p>
+    <p>(3) 中组部高级知识分子管理系统</p>
+    <p>(4) 铁道部车辆管理系统（TMIS 的一部分）</p>
+    <p>(5) 铁路公安干警管理系统</p>
+    <p>随着应用的深入和计算技术的发展，客户/服务器模式、网络计算模式逐渐得到应用。信息系统，尤其是管理信息系统的规模越来越大，出现了数据仓库，数据集市等数据库上层的技术。ASQL 
+    在其设计的最初就确定了广泛的面向对象的模型，对象技术渗透到它的各个部分，无论是定义还是具体程序实现。它是面向解决应用中的事务设计的事务服务器的任务描述语言。在事物处理模型中，它可以用来描述方法，同时利用这些方法很方便的创建起解决问题的模型。</p>
+    <p>本书中描述的是 ASQL 2.0 版的语法定义，ASQL 2.0 版除继续提供 DOS 
+    版引用外，注意到了 Windows 版的开发，同时开发了固定事务容器。<ol>
+      <li><b><a NAME="8_1">ASQL 单机版</a></li>
+      </b><p>主要文件：ASQLCLT.DLL</p>
+      <p>DBTREE.DLL</p>
+      <p>基于此版本已开发的产品：可视化报表(ViTAB)，Windows95支持。<ol>
+        <li><b><a NAME="8_1_1">ASQLCLT.DLL的函数入口</a></li>
+        <ol>
+          <li><a NAME="8_1_1_1">表达式分析</a></li>
+          </b><p ALIGN="JUSTIFY"><br>
+          1.表达式翻译<br>
+          MidCodeType * cdecl WordAnalyse( unsigned char *buffer );<br>
+          <b>输入：</b><br>
+          unsigned char *buffer：字符串表达的表达式<br>
+          <b>输出：</b><br>
+          表达式翻译中间结果，出错不NULL</p>
+          <p ALIGN="JUSTIFY">2.释放空间<br>
+          short cdecl FreeCode( MidCodeType *m_c_head );<br>
+          <b>输入：</b><br>
+          MidCodeType *m_c_head：内部形式表达的表达式<br>
+          <b>输出：</b>0</p>
+          <p ALIGN="JUSTIFY">3.符号登记<br>
+          MidCodeType * cdecl SymbolRegister( MidCodeType *m_c_head, dFILE *tb, \<br>
+          SysVarOFunType *UserSymbol, unsigned short SymbolNum, \<br>
+          SYSDEFINETYPE *DefineTable, unsigned short DefineNum );<br>
+          <b>输入：</b><br>
+          MidCodeType *m_c_head：内部形式表达的表达式<br>
+          dFILE *tb，被运算数据表，可以NULL<br>
+          SysVarOFunType *UserSymbol；符号表，可为NULL<br>
+          unsigned short SymbolNum,：符号数量<br>
+          SYSDEFINETYPE *DefineTable：宏定义符号表，可为NULL<br>
+          unsigned short DefineNum：宏定义符号数量<br>
+          <b>输出：</b><br>
+          NULL表成功，其它出错，</p>
+          <p ALIGN="JUSTIFY">4.算表达式</p>
+          <p ALIGN="JUSTIFY">long cdecl CalExpr( MidCodeType *m_c_head );</p>
+          <b><p ALIGN="JUSTIFY">输入：</b>MidCodeType *m_c_head：内部形式表达的表达式<br>
+          <b>输出：</b>返回值</p>
+          <li><b><a NAME="8_1_1_2">汉字替换</a></li>
+        </ol>
+        </b><p ALIGN="JUSTIFY">1.编译代码库</p>
+        <p ALIGN="JUSTIFY">unsigned short hBuildCodeLib( char *CodeDbfControlName );</p>
+        <p ALIGN="JUSTIFY">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+        输出：</p>
+        <p ALIGN="JUSTIFY">2.打开代码库</p>
+        <p ALIGN="JUSTIFY">short hOpen( char *CodeCodControlName );</p>
+        <p ALIGN="JUSTIFY">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+        输出：</p>
+        <p ALIGN="JUSTIFY">3.关闭代码库</p>
+        <p ALIGN="JUSTIFY">short hClose( void );</p>
+        <p ALIGN="JUSTIFY">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+        输出：</p>
+        <p ALIGN="JUSTIFY">4.通过名字替换</p>
+        <p ALIGN="JUSTIFY">char *hReplaceByName( char *CodeDbfName, char *Code );</p>
+        <p ALIGN="JUSTIFY">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+        输出：</p>
+        <p ALIGN="JUSTIFY">5.通过标识替换</p>
+        <p ALIGN="JUSTIFY">char *hReplaceById( short CodeDbfId, char *Code );</p>
+        <p ALIGN="JUSTIFY">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+        输出：</p>
+        <p ALIGN="JUSTIFY">6.设缓冲区页数</p>
+        <p ALIGN="JUSTIFY">short hSetPageNum( short PageNumber );</p>
+        <p ALIGN="JUSTIFY">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+        输出：</p>
+        <p ALIGN="JUSTIFY">7.取缓冲区页数</p>
+        <p ALIGN="JUSTIFY">short hGetPageNum( void );</p>
+        <p ALIGN="JUSTIFY">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+        输出：</p>
+        <p ALIGN="JUSTIFY">8.通过名字取记录 </p>
+        <p ALIGN="JUSTIFY">CODE_STRUCT *hGetCodeRecByName( char *CodeDbfName, unsigned short 
+        BeginPos,\<br>
+        char *ModStr, CODE_STRUCT *CodeStruct, \<br>
+        char FunSel );</p>
+        <p ALIGN="JUSTIFY">/* Search for correspond chinese string with code libriary name.<br>
+        ** ModStr is a module.<br>
+        ** FunSel: 'N': get the BeginPos'th code record<br>
+        ** 'S': get the record which start with ModStr<br>
+        ** (e.g. &quot;12&quot;: &quot;1234&quot;, &quot;1245&quot;...) FROM BeginPos<br>
+        ** 'E': get the record which end with ModStr<br>
+        ** (e.g. &quot;00&quot;: &quot;1200&quot;, &quot;2300&quot;...) FROM BeginPos<br>
+        ** 'M': get the record which is 'equal' to the record.<br>
+        ** (e.g. &quot;0*10&quot;: &quot;0110&quot;, &quot;0210&quot;...) FROM BeginPos.<br>
+        ** 'F': get the record which is fuzzy suit for ModStr<br>
+        ** (e.g. &quot;Inst&quot;: &quot;ShangHai Railway Inst.&quot;,<br>
+        ** &quot;Inst of Intelligent&quot;, ...) FROM BeginPos<br>
+        ** Note: BeginPos begin from 0<br>
+        **----------------------------------------------------------------------*/</p>
+        <p ALIGN="JUSTIFY">9.通过标识取记录</p>
+        <p ALIGN="JUSTIFY">CODE_STRUCT *hGetCodeRecById( short CodeDbfId, \<br>
+        unsigned short BeginPos, char *ModStr, \<br>
+        CODE_STRUCT *CodeStruct, char FunSel );</p>
+        <p ALIGN="JUSTIFY">/* Search for correspond chinese string with code libriary id.<br>
+        ** ModStr is a module.<br>
+        ** FunSel: 'N': get the BeginPos'th code record<br>
+        ** 'S': get the record which start with ModStr<br>
+        ** (e.g. &quot;12&quot;: &quot;1234&quot;, &quot;1245&quot;...) FROM BeginPos<br>
+        ** 'E': get the record which end with ModStr<br>
+        ** (e.g. &quot;00&quot;: &quot;1200&quot;, &quot;2300&quot;...) FROM BeginPos<br>
+        ** 'M': get the record which is 'equal' to the record.<br>
+        ** (e.g. &quot;0*10&quot;: &quot;0110&quot;, &quot;0210&quot;...) FROM BeginPos.<br>
+        ** 'F': get the record which is fuzzy suit for ModStr<br>
+        ** (e.g. &quot;Inst&quot;: &quot;ShangHai Railway Inst.&quot;,<br>
+        ** &quot;Inst of Intelligent&quot;, ...) FROM BeginPos<br>
+        ** Note: BeginPos begin from 0<br>
+        ** Return:<br>
+        ** success: the pointer to the struct<br>
+        ** fail : the pointer to the struct, but the CodeStruct-&gt;Position<br>
+        ** is 0xFFFF<br>
+        **-----------------------------------------------------------------------*/</p>
+        <p ALIGN="JUSTIFY">10.替换描述串翻译</p>
+        <p ALIGN="JUSTIFY">HZTH_METHOD_STRU *hMethodTranslate( char *sHzthMethod );</p>
+        <p ALIGN="JUSTIFY">/* Translate a regular string to a REGULAR**/</p>
+        <p ALIGN="JUSTIFY">11.通过方法替换</p>
+        <p ALIGN="JUSTIFY">char *hReplaceByMethod( HZTH_METHOD_STRU *HzthMethod, char *Code );</p>
+        <p ALIGN="JUSTIFY">/* Single field replace with HzthMethod.**/</p>
+        <p ALIGN="JUSTIFY">12.通过方法扩展替换</p>
+        <p ALIGN="JUSTIFY">char *hExtReplaceByMethod(HZTH_METHOD_STRU *HzthMethod, char *Code);</p>
+        <p ALIGN="JUSTIFY">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+        输出：</p>
+        <p ALIGN="JUSTIFY">13.通过名字扩展替换</p>
+        <p ALIGN="JUSTIFY">char *hExtReplaceByName( char *CodeDbfName, char *Code );</p>
+        <p ALIGN="JUSTIFY">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+        输出：</p>
+        <p ALIGN="JUSTIFY">14.通过标识扩展替换</p>
+        <p ALIGN="JUSTIFY">char *hExtReplaceById( short CodeDbfId, char *Code );</p>
+        <p ALIGN="JUSTIFY">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+        输出：</p>
+        <p ALIGN="JUSTIFY">15.通过名字取标识</p>
+        <p ALIGN="JUSTIFY">short hGetCodeDbfId( char *CodeDbfName );</p>
+        <p ALIGN="JUSTIFY">输入：char *CodeDbfControlName：代码库管理文件文件名<br>
+        输出：</p>
+        <p ALIGN="JUSTIFY">16.检查代码正确性</p>
+        <p ALIGN="JUSTIFY">unsigned short hCheckCodeValid( char *CodeDbfName, char *Code );</p>
+        <p ALIGN="JUSTIFY">/* When you want to check the validity of the Code in the CodeDbfName,<br>
+        ** but you aren't sure to desided if you should really replace the code,<br>
+        ** herence you might call it for the sure!*/</p>
+        <p ALIGN="JUSTIFY">17.取代码数</p>
+        <p ALIGN="JUSTIFY">long hGetCodeDbfRecNum( short CodeDbfId );</p>
+        <p ALIGN="JUSTIFY">/* Get code num*/</p>
+        <p ALIGN="JUSTIFY">18.取代码段数</p>
+        <p ALIGN="JUSTIFY">long hGetSegCodeNum( short CodeDbfId, char *ModStr );</p>
+        <p ALIGN="JUSTIFY">19.取汉字长</p>
+        <p ALIGN="JUSTIFY">short hGetCexprLen( HZTH_METHOD_STRU *HzthMethod );</p>
+        <p ALIGN="JUSTIFY">/* Get code num*/</p>
+        <p ALIGN="JUSTIFY">20.取代码库信息</p>
+        <p ALIGN="JUSTIFY">CODE_LIB_MES_STRUCT *hGetCodeLibInfo( short CodeDbfid );</p>
+        <p ALIGN="JUSTIFY">21.当前起动否标识</p>
+        <p ALIGN="JUSTIFY">short getHzthInitFlag(void);</p>
+        <p ALIGN="JUSTIFY">1：已启动<br>
+        0：未启动</p>
+        <p ALIGN="JUSTIFY">22.取汉字替换当前工作状态信息</p>
+        <p ALIGN="JUSTIFY">char *getHzthInfoStr(void);</p>
+        <p ALIGN="JUSTIFY">23.释放方法所申请空间</p>
+        <p ALIGN="JUSTIFY">void freeHzthMethodStru(HZTH_METHOD_STRU *p);</p>
+        <li><b><a NAME="8_1_2">ASQL引用方法</a></li>
+        </b><p>下面通过具体开发平台上的引用实例说明 ASQL 的引用方法。</p>
+        <b><p>1. C语言</p>
+        </b><p>#include &lt;windows.h&gt;</p>
+        <p>// Function declaration, 'callAsqlSvr' is export from 'ASQLClt.dll' <br>
+        LPSTR callAsqlSvr( LPSTR szFileName, LPSTR szFromPath, LPSTR szToPath )<br>
+        LPSTR ErrorStr;<br>
+        .<br>
+        .<br>
+        .<br>
+        ErrorStr = callAsqlSvr( 'asqlask', NULL, NULL );<br>
+        if( stricmp( ErrorStr, &quot;ERR:0&quot; ) ) {<br>
+        MessageBox( 0, ErrorStr, &quot;Error&quot;, MB_OK | MB_ICONINFORMATION );<br>
+        ......<br>
+        }<br>
+        ……</p>
+        <b><p>2.Delphi</p>
+        </b><p>{ CallASQL sample source code } <br>
+        unit CallASQL;<br>
+        interface<br>
+        uses<br>
+        Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,<br>
+        StdCtrls, Buttons;<br>
+        type<br>
+        TForm1 = class(TForm)<br>
+        BitBtn1: TBitBtn;<br>
+        procedure BitBtn1Click(Sender: TObject);<br>
+        private<br>
+        { Private declarations }<br>
+        public<br>
+        { Public declarations }<br>
+        end;<br>
+        var<br>
+        Form1: TForm1;<br>
+        { Function declaration, 'callAsqlSvr' is export from 'ASQLClt.dll' }<br>
+        Function callAsqlSvr(szFileName, szFromPath, szToPath:LPSTR):LPSTR;<br>
+        cdecl;far;external'AsqlClt.dll' name 'callAsqlSvr';<br>
+        implementation<br>
+        {$R *.DFM}<br>
+        procedure TForm1.BitBtn1Click(Sender: TObject);<br>
+        var<br>
+        ErrorStr:Pchar;<br>
+        begin<br>
+        { Call function 'callAsqlSvr' to Stat. All actions described in the script <br>
+        file 'asqlask' }<br>
+        ErrorStr:=callAsqlSvr('asqlask', nil, nil);<br>
+        if ErrorStr&lt;&gt;'ERR:0' then<br>
+        MessageDlg(ErrorStr,mtinformation,[mbok],0);<br>
+        end;<br>
+        end.</p>
+        <b><p>3 asqlask 的描述</p>
+        </b><p>/*铁路货运计划统计的真实应用*/</p>
+        <p>predicate<br>
+        float x[32,16]<br>
+        FROM ODBC:ORACLE_DB,p04,p04,SELECT * FROM P_YC<br>
+        Condition<br>
+        begin<br>
+        statistics x<br>
+        QSRQ&gt;=&quot;19971201&quot;&amp;&amp;ZZRQ&lt;=&quot;19971228&quot;<br>
+        begin<br>
+        #y1: 0<br>
+        #y2: 0<br>
+        #y3: 0<br>
+        #y4: 0<br>
+        #y5: PM=&quot;01*&quot;<br>
+        #y6: PM=&quot;02*&quot;<br>
+        #y7: PM=&quot;03*&quot;<br>
+        #y8: PM=&quot;04*&quot;<br>
+        #y9: PM=&quot;05*&quot;<br>
+        #y10: PM=&quot;06*&quot;<br>
+        #y11: PM=&quot;07*&quot;<br>
+        #y12: PM=&quot;08*&quot;<br>
+        #y13: PM=&quot;09*&quot;<br>
+        #y14: PM=&quot;10*&quot;<br>
+        #y15: PM=&quot;11*&quot;<br>
+        #y16: PM=&quot;12*&quot;<br>
+        #y17: PM=&quot;13*&quot;<br>
+        #y18: PM=&quot;14*&quot;<br>
+        #y19: PM=&quot;15*&quot;<br>
+        #y20: PM=&quot;16*&quot;<br>
+        #y21: PM=&quot;17*&quot;<br>
+        #y22: PM=&quot;18*&quot;<br>
+        #y23: PM=&quot;19*&quot;<br>
+        #y24: PM=&quot;20*&quot;<br>
+        #y25: PM=&quot;21*&quot;<br>
+        #y26: PM=&quot;22*&quot;<br>
+        #y27: PM=&quot;23*&quot;<br>
+        #y28: PM=&quot;24*&quot;<br>
+        #y29: PM=&quot;25*&quot;<br>
+        #y30: PM=&quot;99*&quot;<br>
+        #y31: PM=&quot;97*&quot;<br>
+        #y32: PM=&quot;98*&quot;<br>
+        #x1: 0<br>
+        #x2: 0<br>
+        summer x ,YTCS<br>
+        #x3: DJ=&quot;B*&quot;<br>
+        summer x ,YTCS<br>
+        #x4: DJ=&quot;T*&quot;<br>
+        summer x ,YTCS<br>
+        #x5: DJ=&quot;P*&quot;<br>
+        summer x ,YTCS<br>
+        #x6: DJ=&quot;C*&quot;<br>
+        summer x ,YTCS<br>
+        #x7: DJ=&quot;F*&quot;<br>
+        summer x ,YTCS<br>
+        #x8: DJ=&quot;K*&quot;<br>
+        summer x ,YTCS<br>
+        #x9: DJ=&quot;H*&quot;<br>
+        summer x ,YTCS<br>
+        #x10: DJ=&quot;G*&quot;<br>
+        summer x ,YTCS<br>
+        #x11: DJ=&quot;Q*&quot;<br>
+        summer x ,YTCS<br>
+        #x12: DJ=&quot;Z*&quot;<br>
+        summer x ,YTCS<br>
+        #x13: DJ=&quot;W*&quot;<br>
+        summer x ,YTCS<br>
+        #x14: DJ=&quot;J*&quot;<br>
+        summer x ,YTCS<br>
+        #x15: DJ=&quot;R*&quot;<br>
+        summer x ,YTCS<br>
+        #x16: DJ=&quot;M*&quot;<br>
+        End<br>
+        End<br>
+        action warray (&quot;c:\\temp\\Tbldbf&quot;,x)</p>
+        <li><b><a NAME="8_1_3">DBTREE接口函数</a></li>
+      </ol>
+      </b><p>DBTREE是一个称为“通用数据存储容器(G_D_C)”的一个数据存储管理函数集。它的特点是通过关键字来标识每个要存的信息，在存、取时都需给出这个关键字，而具体存储内容则邮DBTREE负责管理。</p>
+      <p>DBTREE是一棵B+树，只是在个棵树的文件内容又有许多“数据结点”，这些“数据结点”存的是与B+树无关的数据，B+树叶子上的关键字的附属信息记录了这些数据结点的定位信息。如图8.1所示。</p>
+      <p><img SRC="images/Image4.gif" WIDTH="516" HEIGHT="497"></p>
+      <p ALIGN="CENTER">图8.1 DBTREE的存储</p>
+      <p>采用DBTREE的好处是不用再关心文件的定义格式及其I/O的缓冲等问题，用户只关心自己的数据就可以了。因为没有了具体的存储格式，所以文件格式的版本控制就相对来说容易得多了。</p>
+      <b><p>接口函数定义：</p>
+      </b><p ALIGN="JUSTIFY">/* C语言定义的DBTREE接口函数<br>
+      * bHEAD 是一个内部定义的结构，使用时可以用void *代替*/</p>
+      <p ALIGN="JUSTIFY">_declspec(dllimport) int WINAPI writeBtreeData(bHEAD *b_head, char 
+      *keyBuf, char *data, int dataLen);</p>
+      <p ALIGN="JUSTIFY">_declspec(dllimport) char * WINAPI readBtreeData(bHEAD *b_head, char 
+      *keyBuf, char *data, int dataLen);</p>
+      <p ALIGN="JUSTIFY">_declspec(dllimport) int WINAPI freeBtreeData(bHEAD *b_head, char 
+      *keyBuf);<br>
+      _declspec(dllimport) int WINAPI dbTreeClose( bHEAD *b_head );<br>
+      _declspec(dllimport) short dbTreeDispose(bHEAD *b_head);</p>
+      <p ALIGN="JUSTIFY">_declspec(dllimport) long WINAPI getBtreeDataLen(bHEAD *b_head, char 
+      *keyBuf);<br>
+      _declspec(dllimport) long WINAPI getBtreeError( void );<br>
+      _declspec(dllimport) void WINAPI freeBtreeMem(char *s);<br>
+      _declspec(dllimport) int WINAPI dbTreeBuild(char *ndxName, short keyLen, short nodeSize);<br>
+      _declspec(dllimport) bHEAD * WINAPI dbTreeOpen(char *ndxName);<br>
+      _declspec(dllimport) long int dbTreeSeek( bHEAD *b_head, char *keyContent );<br>
+      _declspec(dllimport) char * dbTreeGetKeyContent( bHEAD *b_head );<br>
+      _declspec(dllimport) long int dbTreeSkip( bHEAD *b_head, long int count );</p>
+      <p ALIGN="JUSTIFY">/* Return:<br>
+      * Success: the record no<br>
+      * Fail: 0 (error no in BtreeErr), negative of the record<br>
+      * no(cannot skip so much steps, skip to the limit)*/</p>
+      <p ALIGN="JUSTIFY">_declspec(dllimport) long int dbTreeGoTop( bHEAD *b_head );<br>
+      _declspec(dllimport) long int dbTreeGoBottom( bHEAD *b_head );<br>
+      _declspec(dllimport) short dbTreeEof( bHEAD *b_head );<br>
+      _declspec(dllimport) int WINAPI dbTreeFlush( bHEAD *b_head );</p>
+      <b><p>接口函数说明：</p>
+      </b><p>注意：</p>
+      <p>bHEAD * 是一个内部存储结构，引用时将其看作void *就可。</p>
+      <p>因DBTREE内部将关键字当作二进制看，所以传给DBTREE的关键字一定注意位数与建立DBTREE文件时一</p>
+      <p>1.创建文件</p>
+      <p ALIGN="JUSTIFY">int WINAPI dbTreeBuild(char *ndxName, short keyLen, short nodeSize);</p>
+      <p ALIGN="JUSTIFY">说明：</p>
+      <p ALIGN="JUSTIFY">ndxName为文件名，keyLen为关键字长，nodeSize为结点大小，通常为256,512,1024,2048,4096等，视存储信息的通常规模而定。</p>
+      <p ALIGN="JUSTIFY">2.打开文件</p>
+      <p ALIGN="JUSTIFY">bHEAD * WINAPI dbTreeOpen(char *ndxName);</p>
+      <p ALIGN="JUSTIFY">说明：ndxName：文件名</p>
+      <p ALIGN="JUSTIFY">3.关闭文件</p>
+      <p ALIGN="JUSTIFY">int WINAPI dbTreeClose( bHEAD *b_head );</p>
+      <p ALIGN="JUSTIFY">说明：释放打开文件所点资源。</p>
+      <p ALIGN="JUSTIFY">4. 放弃文件</p>
+      <p ALIGN="JUSTIFY">short dbTreeDispose(bHEAD *b_head);</p>
+      <p ALIGN="JUSTIFY">说明：不存盘，关文件</p>
+      <p ALIGN="JUSTIFY">5.写数据</p>
+      <p ALIGN="JUSTIFY">int WINAPI writeBtreeData(bHEAD *b_head, char *keyBuf, char *data, int 
+      dataLen);</p>
+      <p ALIGN="JUSTIFY">说明：dataLen：data空间大小。</p>
+      <p ALIGN="JUSTIFY">如果相应关键字已有内容，则覆盖写，否则，添加。返回0为成功，其它不成功。</p>
+      <p ALIGN="JUSTIFY">6.读数据</p>
+      <p ALIGN="JUSTIFY">char * WINAPI readBtreeData(bHEAD *b_head, char *keyBuf, char *data, 
+      int dataLen);</p>
+      <p ALIGN="JUSTIFY">说明：如要data为NULL，则函数内部申请空间。</p>
+      <p ALIGN="JUSTIFY">7.释放数据，删除数据</p>
+      <p ALIGN="JUSTIFY">int WINAPI freeBtreeData(bHEAD *b_head, char *keyBuf);</p>
+      <p ALIGN="JUSTIFY">说明：删记录。</p>
+      <p ALIGN="JUSTIFY">8.取数据长</p>
+      <p ALIGN="JUSTIFY">long WINAPI getBtreeDataLen(bHEAD *b_head, char *keyBuf);</p>
+      <p ALIGN="JUSTIFY">说明：取不出来返回:-1无数据，-2有关键字但无数据体</p>
+      <p ALIGN="JUSTIFY">9.读镆误信息</p>
+      <p ALIGN="JUSTIFY">long WINAPI getBtreeError( void );</p>
+      <p ALIGN="JUSTIFY">说明：读错误号。</p>
+      <p ALIGN="JUSTIFY">10.内存空间释放</p>
+      <p ALIGN="JUSTIFY">void WINAPI freeBtreeMem(char *s);</p>
+      <p ALIGN="JUSTIFY">说明：释放readBtreeData可能申请的空间。</p>
+      <p ALIGN="JUSTIFY">11.关键字寻找</p>
+      <p ALIGN="JUSTIFY">long int dbTreeSeek( bHEAD *b_head, char *keyContent );</p>
+      <p ALIGN="JUSTIFY">说明：查打记录，看其存在否。</p>
+      <p ALIGN="JUSTIFY">12.读关键字</p>
+      <p ALIGN="JUSTIFY">char * dbTreeGetKeyContent( bHEAD *b_head );</p>
+      <p ALIGN="JUSTIFY">说明：读当前记录的关键字</p>
+      <p ALIGN="JUSTIFY">13.跳一条记录</p>
+      <p ALIGN="JUSTIFY">long int dbTreeSkip( bHEAD *b_head, long int count );</p>
+      <p ALIGN="JUSTIFY">说明：</p>
+      <p ALIGN="JUSTIFY">14.到记录集的顶</p>
+      <p ALIGN="JUSTIFY">long int dbTreeGoTop( bHEAD *b_head );</p>
+      <p ALIGN="JUSTIFY">说明：到记录集的顶</p>
+      <p ALIGN="JUSTIFY">15.到记录集的尾</p>
+      <p ALIGN="JUSTIFY">long int dbTreeGoBottom( bHEAD *b_head );</p>
+      <p ALIGN="JUSTIFY">说明：到记录集的尾</p>
+      <p ALIGN="JUSTIFY">16.测尾</p>
+      <p ALIGN="JUSTIFY">short dbTreeEof( bHEAD *b_head );</p>
+      <p ALIGN="JUSTIFY">说明：至记录集的最后一条记录则返回1，其它返回0。</p>
+      <p ALIGN="JUSTIFY">17.刷新缓冲区</p>
+      <p ALIGN="JUSTIFY">int WINAPI dbTreeFlush( bHEAD *b_head );</p>
+      <p>说明：刷新缓冲区</p>
+      <b><p>接口程序示例：</p>
+      </b><p ALIGN="JUSTIFY">/*DBTREE引用示例C程序*/</p>
+      <p ALIGN="JUSTIFY">int testDbtree(){<br>
+      void *bh;<br>
+      char buf[4096];<br>
+      char *s;<br>
+      int i;<br>
+      dbTreeBuild(&quot;gdcname&quot;, 6, 512);</p>
+      <p ALIGN="JUSTIFY">/*创建这个文件，关键字6个字符长，结点512字节大*/</p>
+      <p ALIGN="JUSTIFY">bh = dbTreeOpen(&quot;gdcname&quot;);<br>
+      strcpy(buf, &quot;David &quot;); /*注意传给DBTREE的关键字长度与事先声明的一致*/</p>
+      <p ALIGN="JUSTIFY">i = writeBtreeData(bh, &amp;abc, buf, strlen(buf)+1);<br>
+      if( i != 0 )<br>
+      printf(&quot;write error\n&quot;);<br>
+      s=readBtreeData(bh, buf, NULL, 4096);<br>
+      printf(&quot;%s\n&quot;, s);<br>
+      freeBtreeMem(s);<br>
+      s=readBtreeData(bh, buf, buf, 4096);<br>
+      printf(&quot;%s\n&quot;, s);<br>
+      dbTreeClose(bh);</p>
+      <p ALIGN="JUSTIFY">}</p>
+      <li><b><a NAME="8_2">ASQL服务器版</a><br>
+        </b><p>ASQL 可在 Windows NT(4.0) 及其以后版本的服务器上运行。ASQL 
+        服务器版实现了：</p>
+        <p>(1) 事务服务的线程化</p>
+        <p>Windows NT 
+        提供了强大的线程调度能力。线程共享同一进程地址空间，ASQL 
+        每一用户服务对应一个线程，采用线程可大大的降低上下文切换费用，减少系统资源开销。各个数据库系统的事务逻辑、并发机制、全面缓冲管理、快速事务结果提交等功能融合到一个进程内。</p>
+        <p ALIGN="CENTER"><img SRC="images/Image5.gif" WIDTH="510" HEIGHT="547"></p>
+        <p ALIGN="CENTER">图6.1 ASQL服务器版软件架构</p>
+        <p>(2) 用户服务的并发</p>
+        <p>ASQL 
+        在系统初始化时就创建了多个服务线程，当一个事务请求来到时，自动为其分配一个线程予以执行，事务结束后线程挂起。这样保证了多个用户的并发访问，同时也减少了每次创建线程的系统开销，提高了响应的速度。</p>
+        <p>(3) 基于事务的安全审计</p>
+        <p>数据库系统的安全审计是基于表的，用户一旦取得对于某张表的存取权限，就可以对该表的每条记录实施这种被授权的操作。ASQL 
+        允许在事务一级的审计。</p>
+        <p>考虑一下火车票售票的例子：</p>
+        <p>铁路系统对某一群体实施售出一张软卧票，则该包厢内的其它票就不可再售出，既该旅客虽然只买了一张票，但整个包厢就都被占有。而办理该项业务的售票员是要被授权的，在基于表格的安全审计中，这是需要在客户端软件中进行约束的，若基于事务的安全审计系统，则允许利用服务器进行统一的管理。</p>
+        <p>(4) 提供了基于 Web 访问的接口</p>
+        <p>随着数据库系统和 Internet 技术的发展，Web 
+        应用被引入信息系统，形成浏览器/服务器方式。ASQL 内置了对 Web 
+        的接口支持，使客户端可以方便地基于浏览器构造应用。例如如下的一个简单查询， 
+        包含三部分：</p>
+        <p>主控查询页面文档，负责构造ASQL查询条件。它引用了查询脚本。</p>
+        <p>&lt;HTML&gt;</p>
+        <p>&lt;HEAD&gt;</p>
+        <p>&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; 
+        charset=gb_2312-80&quot;&gt;<br>
+        &lt;META NAME=&quot;Generator&quot; CONTENT=&quot;Microsoft Frontpage 97&quot;&gt;</p>
+        <p>&lt;TITLE&gt; &lt;/TITLE&gt;<br>
+        &lt;/HEAD&gt;</p>
+        <p>&lt;BODY LINK=&quot;#0000ff&quot; BACKGROUND=&quot;Image13.gif&quot;&gt;<br>
+        &lt;P&gt;数据库查询&lt;/P&gt;</p>
+        <p>&lt;FORM ACTION=&quot;/scripts/DConnector.dll&quot; METHOD=POT&gt;<br>
+        &lt;INPUT TYPE=HIDDEN NAME=&quot;TDC_FILE&quot; 
+        VALUE=&quot;d:\inetpub\scripts\mwd\HELLO.TDC&quot;&gt;</p>
+        <p>From :<br>
+        &lt;INPUT NAME=&quot;VAR_FROM&quot;&gt;</p>
+        <p>Sex =<br>
+        &lt;INPUT NAME=&quot;SEX&quot;&gt;</p>
+        <p>&lt;br&gt;&lt;br&gt;</p>
+        <p>&lt;INPUT TYPE=SUBMIT VALUE=&quot;提交&quot;&gt;</p>
+        <p>&lt;/FORM&gt;<br>
+        &lt;/BODY&gt;<br>
+        &lt;/HTML&gt;</p>
+        <p>结果输出模板文件</p>
+        <p>&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML//EN&quot;&gt;</p>
+        <p>&lt;html&gt;</p>
+        <p>&lt;head&gt;</p>
+        <p>&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; 
+        charset=gb_2312-80&quot;&gt;<br>
+        &lt;meta name=&quot;GENERATOR&quot; content=&quot;Microsoft FrontPage 2.0&quot;&gt;</p>
+        <p>&lt;title&gt;TreeServer-Internet数据库连接器&lt;/title&gt;</p>
+        <p>&lt;/head&gt;</p>
+        <p>&lt;body bgcolor=&quot;#FFFFFF&quot;&gt;<br>
+        &lt;h2 align=&quot;center&quot;&gt;<br>
+        &lt;font color=&quot;#8080FF&quot;&gt;TreeServer-Internet连接器测试&lt;/font&gt;&lt;/h2&gt;<br>
+        &lt;h3 align=&quot;center&quot;&gt;&lt;font color=&quot;#8080FF&quot;&gt;From : 
+        %VAR_FROM%&lt;/font&gt;&lt;/h3&gt;<br>
+        &lt;div align=&quot;center&quot;&gt;&lt;center&gt;<br>
+        &lt;table border=&quot;3&quot;&gt;</p>
+        <p>&lt;%begindetail%&gt;<br>
+        &lt;tr&gt;<br>
+        &lt;td&gt;Record : &lt;/td&gt;<br>
+        &lt;td&gt;%name%&lt;/td&gt;<br>
+        &lt;/tr&gt;<br>
+        &lt;%enddetail%&gt;</p>
+        <p>&lt;/table&gt;<br>
+        &lt;/center&gt;&lt;/div&gt;</p>
+        <p>&lt;h3 align=&quot;center&quot;&gt;&lt;font color=&quot;#8080FF&quot;&gt;From : 
+        %VAR_FROM%&lt;/font&gt;&lt;/h3&gt;<br>
+        &lt;h3 align=&quot;center&quot;&gt;&lt;font color=&quot;#8080FF&quot;&gt;Everything is 
+        done!&lt;/font&gt;&lt;/h3&gt;</p>
+        <p>&lt;/body&gt;<br>
+        &lt;/html&gt;</p>
+        <p>查询脚本</p>
+        <p>act webprint( &quot;name&quot;, &quot;\n&quot; ) /* 
+        先传回域信息，以回车结束*/<br>
+        from %VAR_FROM% /* from d:\projects\lz0.dbf */</p>
+        <p>condition<br>
+        begin<br>
+        sex = &quot;%SEX%&quot; $ webprint( name )<br>
+        end</p>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>　 </p>
+</body>
+</html>

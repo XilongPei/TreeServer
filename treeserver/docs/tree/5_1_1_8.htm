@@ -1,0 +1,43 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>读数据库BLOB记录</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>读数据库BLOB记录</strong></p>
+    <p>　</p>
+    <p><font size="3"><span style="font-size: 12px">lp = 0x2007 读数据库BLOB记录(cmTS_BLOB_FETCH)</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">请求包格式：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">4字节：df，</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">4字节：recNo</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">12字节：Blob字段名</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">应答包格式：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">由三部分组成：包头、信息</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">lp为BLOB长度，后面是否还有数据视leftPacket和endPacket定。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <blockquote>
+      <p><font size="3"><span style="font-size: 12px">结果文件名为：表名.字段号T 
+      该文件在用户工作路径内</span></font></p>
+    </blockquote>
+    <p><font size="3"><span style="font-size: 12px">客户端需通过FTP将结果取回</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">注意ASQL的BLOB结构与xBASE不同。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">TreeServer的下一版本将如下实现？</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">BLOB内容</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">原始文件名为：表名.字段号T 
+    该文件在用户工作路径内</span></font></p>
+    <p><i><font size="3"><span style="font-size: 12px">TreeServer的BLOB每页为512－8＝504字节大小。TreeServer每次返回一个数据包</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">lp = 0正常包，1最后一页</span></font></i></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

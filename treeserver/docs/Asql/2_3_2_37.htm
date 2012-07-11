@@ -1,0 +1,79 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>客户端流输出</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><b><span style="font-size: 12px">客户端流输出(webstream)</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]webstream(&lt;数组名&gt;或&lt;域名&gt;或&lt;字符串表达式1&gt;，&lt;字符串表达式2&gt;……)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]将要送到浏览器客户端的信息打成包形式传送。此函数一般由CGI程序负责接收，对信息整理后再传给浏览器。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">如果当前客户端工作在非CGI方式，这个传送工作是由TreeSVR客户端负责传递给上层客户程序的，客户端可以通过这种方式将自己需要的数据传回来。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">可传送的内容为任意ASQL数据类型。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例1]ACTION 
+    webstream(&quot;NAME&quot;, &quot;SEX&quot;, &quot;\n&quot;);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例2]如下面的ASQL角本所示，统计职一张表在数组fee中，通过webstream()发回客户端去。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">predicates <br>
+    float fee[13,12]<br>
+    date d1<br>
+    date d2<br>
+    action d1 := dbfval(&quot;datedb&quot;, &quot;date1&quot;, &quot;1&quot;)<br>
+    action d2 := dbfval(&quot;datedb&quot;, &quot;date2&quot;, &quot;1&quot;)<br>
+    FROM drugbook,refre,*medi_no=billno<br>
+    to rblow.dbf, a01 c 8 ,a02 c 8 ,a03 c 8 ,a04 c 8 ,a05 c 8 ,\<br>
+    a06 c 4 ,a07 c 2 ,a08 c 2 , a09 c 4 ,a10 c 2 ,a11 c 2 <br>
+    condition<br>
+    begin<br>
+    drugbook.indate&gt;= d1 &amp;&amp; drugbook.indate&lt;=d2<br>
+    begin<br>
+    #y1:del_flag=&quot;MHJA&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+    #y2:del_flag=&quot;MHJB&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+    #y3:del_flag=&quot;MHJV&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+    #y4:(del_flag=&quot;MHJE&quot;||del_flag=&quot;MHJC&quot;&amp;&amp;sumfy&lt;100)&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;********<br>
+    1&quot;||h_i=&quot;*********4&quot;)<br>
+    #y5:(del_flag=&quot;MHJJ&quot;||del_flag=&quot;MHJC&quot;&amp;&amp;sumfy&gt;=100)&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;********<br>
+    1&quot;||h_i=&quot;*********4&quot;<br>
+    #y6:del_flag=&quot;MHJF&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+    #y7:del_flag=&quot;MHJ0&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+    #y8:(del_flag=&quot;MHJD&quot;||del_flag=&quot;MHJR&quot;)&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+    #y9:del_flag=&quot;MHJ0&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+    #y10:del_flag=&quot;MHJI&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+    #y11:del_flag=&quot;MHJM&quot;&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;<br>
+    #y12:(del_flag=&quot;MHJG&quot;||del_flag=&quot;MHJH&quot;)&amp;&amp;in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+    #y13:in_hos=&quot;0&quot;&amp;&amp;(h_i=&quot;*********1&quot;||h_i=&quot;*********4&quot;)<br>
+    summer fee,drugbook.sumfy<br>
+    #x2: 1<br>
+    summer fee,drugbook.ybfy<br>
+    #x3: 1<br>
+    summer fee,drugbook.zjfy<br>
+    #x4: 1<br>
+    summer fee,drugbook.gtfy<br>
+    #x5:1<br>
+    summer fee,drugbook.jzfy<br>
+    #x6:1<br>
+    summer fee,drugbook.g1<br>
+    #x7:1<br>
+    summer fee,drugbook.t1<br>
+    #x8:1<br>
+    summer fee,drugbook.g2<br>
+    #x9:1<br>
+    summer fee,drugbook.t2<br>
+    #x10:1<br>
+    summer fee,drugbook.g3<br>
+    #x11:1<br>
+    summer fee,drugbook.t3<br>
+    #x12:1<br>
+    end<br>
+    end<br>
+    ACTION webstream(fee)</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

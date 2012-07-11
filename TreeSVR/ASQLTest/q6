@@ -1,0 +1,7 @@
+database lz
+from (scope:billno:"00019681","00019681")wuik,wuik,*billno
+to cx,*
+cond
+begin
+  billno="00019681" $ record(@1)
+end

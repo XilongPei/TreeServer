@@ -1,0 +1,310 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>举例</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><b><span style="font-size: 12px">举例</span></b></p>
+    <p><span style="font-size: 12px">/*****************<br>
+    * xexpdll.c<br>
+    * copyright (c) Shanghai Tiedao University 1998<br>
+    * CRSC 1998<br>
+    * author: Xilong Pei<br>
+    ****************************************************************************/<br>
+    #include &lt;stdio.h&gt;<br>
+    #include &lt;stddef.h&gt;<br>
+    #include &lt;stdlib.h&gt;<br>
+    #include &lt;string.h&gt;<br>
+    #include &lt;ctype.h&gt;<br>
+    #include &lt;limits.h&gt;<br>
+    #include &lt;math.h&gt;<br>
+    #include &lt;errno.h&gt;<br>
+    #include &lt;io.h&gt;<br>
+    #include &lt;dos.h&gt;<br>
+    #include &lt;time.h&gt;<br>
+    #include &quot;asqlxexp.h&quot;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//public function protocol</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">char *substr(char *source_string, int 
+    start_pos, int length);<br>
+    short cdecl _TypeAlign( OpndType *lpOpnd, short ParaNum, short AlignType );<br>
+    long cdecl xGetOpndLong(OpndType *lpOpnd);<br>
+    double cdecl xGetOpndFloat(OpndType *lpOpnd);<br>
+    char * cdecl xGetOpndString(OpndType *lpOpnd);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//唯一化堆栈内数据类型</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">short cdecl _TypeAlign( OpndType *lpOpnd, 
+    short ParaNum, short AlignType )<br>
+    {<br>
+    register short i;<br>
+    switch( AlignType ) {<br>
+    case LONG_TYPE:<br>
+    for( i = 0; i &lt; ParaNum; i++ ) {<br>
+    switch( lpOpnd[i].type ) {<br>
+    case CHR_TYPE:<br>
+    case CHR_IDEN:<br>
+    *(long *)lpOpnd[i].values = *(char *)lpOpnd[i].values;<br>
+    break;<br>
+    case INT_TYPE:<br>
+    case INT_IDEN:<br>
+    *(long *)lpOpnd[i].values = *(short *)lpOpnd[i].values;<br>
+    break;<br>
+    case NFIELD_IDEN:<br>
+    *(long *)lpOpnd[i].values = atol( substr( lpOpnd[i].oval, 0, \<br>
+    lpOpnd[i].length ) );<br>
+    break;<br>
+    case FFIELD_IDEN:<br>
+    *(long *)lpOpnd[i].values = (long)atof( substr(lpOpnd[i].oval, 0, \<br>
+    lpOpnd[i].length ) );<br>
+    break;<br>
+    case LONG_TYPE:<br>
+    case LONG_IDEN:<br>
+    break;<br>
+    default:<br>
+    //ErrorSet.xERROR = iTypeNoCompt; /* type not comptible */<br>
+    return( 1 );<br>
+    }<br>
+    lpOpnd[i].type = LONG_TYPE;<br>
+    lpOpnd[i].length = 4;<br>
+    } /* end of for */<br>
+    break;<br>
+    case FLOAT_TYPE:<br>
+    for( i = 0; i &lt; ParaNum; i++ ) {<br>
+    switch( lpOpnd[i].type ) {<br>
+    case CHR_TYPE:<br>
+    case CHR_IDEN:<br>
+    *(double *)lpOpnd[i].values = *(char *)lpOpnd[i].values;<br>
+    break;<br>
+    case INT_TYPE:<br>
+    case INT_IDEN:<br>
+    *(double *)lpOpnd[i].values = *(short *)lpOpnd[i].values;<br>
+    break;<br>
+    case LONG_TYPE:<br>
+    case LONG_IDEN:<br>
+    *(double *)lpOpnd[i].values = *(long *)lpOpnd[i].values;<br>
+    break;<br>
+    case NFIELD_IDEN:<br>
+    *(double *)lpOpnd[i].values = atol( substr( lpOpnd[i].oval, 0, \<br>
+    lpOpnd[i].length ) );<br>
+    break;<br>
+    case FFIELD_IDEN:<br>
+    *(double *)lpOpnd[i].values = atof( substr(lpOpnd[i].oval, 0, \<br>
+    lpOpnd[i].length ) );<br>
+    break;<br>
+    case FLOAT_TYPE:<br>
+    case FLOAT_IDEN:<br>
+    break;<br>
+    default:<br>
+    //ErrorSet.xERROR = 1;<br>
+    return( 1 );<br>
+    }<br>
+    lpOpnd[i].type = FLOAT_TYPE;<br>
+    lpOpnd[i].length = sizeof(double);<br>
+    } /* end of for */<br>
+    }<br>
+    return( 0 );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} /* end of function TypeAlign */</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//从堆栈内取出一个长整数</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">long cdecl xGetOpndLong(OpndType *lpOpnd)<br>
+    {<br>
+    switch( lpOpnd-&gt;type ) {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">case CHR_TYPE:<br>
+    case CHR_IDEN:<br>
+    case LONG_TYPE:<br>
+    case LONG_IDEN:</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return *(long *)lpOpnd-&gt;values;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">break;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">case INT_TYPE:<br>
+    case INT_IDEN:</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return (long)*(short *)lpOpnd-&gt;values;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">break;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">case NFIELD_IDEN:</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return atol( substr(lpOpnd-&gt;oval, 0, 
+    lpOpnd-&gt;length) );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">break;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">case FFIELD_IDEN:</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return (long)atof( 
+    substr(lpOpnd-&gt;oval, 0, lpOpnd-&gt;length) );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">break;<br>
+    }</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//ErrorSet.xERROR = iTypeNoCompt;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return LONG_MIN;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} //xGetOpndLong()</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//从堆栈内取出一个浮点数</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">double cdecl xGetOpndFloat(OpndType 
+    *lpOpnd)<br>
+    {<br>
+    switch( lpOpnd-&gt;type ) {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">case CHR_TYPE:<br>
+    case CHR_IDEN:<br>
+    case LONG_TYPE:<br>
+    case LONG_IDEN:</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return (float)*(long *)lpOpnd-&gt;values;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">break;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">case INT_TYPE:<br>
+    case INT_IDEN:</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return (float)*(short 
+    *)lpOpnd-&gt;values;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">break;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">case NFIELD_IDEN:</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return (float)atol( 
+    substr(lpOpnd-&gt;oval, 0, lpOpnd-&gt;length) );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">break;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">case FFIELD_IDEN:</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return (float)atof( 
+    substr(lpOpnd-&gt;oval, 0, lpOpnd-&gt;length) );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">break;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">}</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//ErrorSet.xERROR = iTypeNoCompt;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return (float)(long)LONG_MIN;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} //xGetOpndFloat()<br>
+    //从堆栈内取出一个字符串</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">char * cdecl xGetOpndString(OpndType 
+    *lpOpnd)<br>
+    {<br>
+    char *s;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//use substr to hold the temp string</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">if( lpOpnd-&gt;type &gt;= FIELD_IDEN 
+    &amp;&amp; lpOpnd[0].type &lt;= SFIELD_IDEN ) {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">s = substr((char *)*(long 
+    *)lpOpnd-&gt;oval, 0, lpOpnd-&gt;length);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} else {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">if( lpOpnd-&gt;length &gt;= 
+    MAX_OPND_LENGTH ) {<br>
+    if( lpOpnd-&gt;oval == NULL ) {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">s = substr((char *)*(long 
+    *)lpOpnd-&gt;values,\</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">0, lpOpnd-&gt;length );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">free((char *)*(long *)lpOpnd-&gt;values);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} else {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">s = 
+    substr(lpOpnd-&gt;oval,0,lpOpnd-&gt;length);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">}}<br>
+    else {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">if( lpOpnd-&gt;oval == NULL ) {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">s = lpOpnd-&gt;values;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} else {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">s = (char *)lpOpnd-&gt;oval;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">}}}</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return s;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} //xGetOpndString()</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">static char *substring=NULL;<br>
+    static char subStaticStr[4096];</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*==============<br>
+    * function substr（源串，超始位置，长度）<br>
+    * 求字符子串<br>
+    *=================================================================*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">char *substr(char *source_string, int 
+    start_pos, int length)<br>
+    {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">int i, source_len;<br>
+    char *szResult;<br>
+    if( length &lt; 4096 ) {<br>
+    szResult = subStaticStr;<br>
+    } else {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">if( length == SHRT_MAX ) {<br>
+    if( substring != NULL ) free( substring );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return substring = NULL;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">}</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">if( (szResult = substring = (char 
+    *)realloc(substring, length+1)) == NULL )<br>
+    return NULL;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">}</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">if( source_string != NULL )<br>
+    source_len = strlen( source_string );<br>
+    else</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">source_len = 0;<br>
+    for(i=0; i&lt;length; i++)<br>
+    if( start_pos &lt; source_len )<br>
+    szResult[i] = source_string[start_pos++];</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">else<br>
+    szResult[i] = ' ';<br>
+    szResult[i] = '\0';<br>
+    return szResult;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} // end of substr()</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*------------<br>
+    ! xexpdlltest()<br>
+    ! 
+    这个函数就是一个用户自己提供的函数，上面的几个函数只是一种例子<br>
+    !-----------------------------------------------------------------------*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//#pragma argsused</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">short cdecl _declspec(dllexport) 
+    xexpdlltest( OpndType *lpOpnd, short ParaNum, short *OpndTop, \<br>
+    short *CurState )</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">// OpndType *lpOpnd; pointer of opnd 
+    stack<br>
+    // short ParaNum; parameter number for this action<br>
+    // short *OpndTop; system opnd top<br>
+    // short *CurState; the action sequence working state</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">{<br>
+    char parameter[256];<br>
+    short sysFunNo;<br>
+    char *sz;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">if( ParaNum &lt; 2 )</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return 1;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">sz = xGetOpndString(&amp;lpOpnd[0]);<br>
+    MessageBox(NULL, sz, &quot;hello&quot;, MB_OK);</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">switch( lpOpnd[0].type ) {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">case LONG_TYPE:<br>
+    sysFunNo = (short)*(long *)lpOpnd[0].values;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">break;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">case INT_TYPE:<br>
+    sysFunNo = *(short *)lpOpnd[0].values;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">break;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">case CHR_TYPE:<br>
+    sysFunNo = (short)*(char *)lpOpnd[0].values;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">break;<br>
+    default:<br>
+    sysFunNo = 0;<br>
+    }</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">if( lpOpnd[1].length &gt;= 
+    MAX_OPND_LENGTH ) {<br>
+    if( lpOpnd[1].oval == NULL ) {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">// temp string</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">strncpy(parameter, (char *)*(long 
+    *)lpOpnd[1].values, 255);<br>
+    free( (char *)*(long *)lpOpnd[1].values );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} else {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">strncpy(parameter, (char *)*(long 
+    *)lpOpnd[1].oval, 255 );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">}}<br>
+    else {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">if( lpOpnd[1].oval == NULL ) {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">strncpy(parameter, (char 
+    *)lpOpnd[1].values, 255 );<br>
+    } else {<br>
+    strncpy(parameter, lpOpnd[1].oval, 255 );<br>
+    }}</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">parameter[255] = '\0';</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">switch( sysFunNo ) {<br>
+    case 1:<br>
+    break;<br>
+    }</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">*OpndTop -= ParaNum; /* maintain the opnd 
+    stack */<br>
+    return( 0 );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} /* end of function xexpdlltest() */</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*************************&lt; end of 
+    xexpdll.c &gt;*******************************/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="../asql/images/Image3.gif"
+    WIDTH="15" HEIGHT="15">　ASQL堆栈使用注意事项：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">1.函数结束时一定要处置一下堆栈，留下要传回的数据，减掉不必要椎栈数据：<br>
+    &nbsp; *OpndTop -= ParaNum;<br>
+    &nbsp; 保留一个返回参数：<br>
+    &nbsp; *OpndTop -= ParaNum-1;<br>
+    &nbsp; 通常ASQL的动作没有参数返回。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">2.函数成功执行，返回0，中止当前表达式后面的运算，返回2，失败返回1；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">3.因为字符串处理的特珠性，对不是从oval传来的字符串，要先判断其长度，才可知其存储方法：短于32字节的字符串，直接存于values中，长于或等于32字节的字符串，values的立脚点4个字节存的是其指针，使用后应释放：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">free(( (void *)*(long *)lpOpnd[0].values 
+    );</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">同样，函数若想返回字符串给ASQL，也应是malloc申请的。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

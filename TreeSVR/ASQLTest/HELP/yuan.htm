@@ -1,0 +1,436 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>源</title>
+</head>
+
+<body bgcolor="#EAEAFB">
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><h2 ALIGN="center"><font face="楷体_GB2312">源（FROM）</font></h2>
+    <p ALIGN="JUSTIFY">&nbsp; 
+    源，就是操作对象，即要从哪里进行查询或统计。</p>
+    <p ALIGN="JUSTIFY">&nbsp;&nbsp;&nbsp; 例1中的From后的数据库\TG\DATA\SUBO.DBF就是信息的源。</p>
+    <p ALIGN="JUSTIFY">&nbsp;&nbsp;&nbsp; ASQL可以识别的源库有xBASE数据库，DIO视图，ODBC数据源，ASQL自定义外部数据源。</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> ASQL对关键字不区分大小写，如From与FROM等价， 
+    但字符串内的字符是有大小写区分的，如&quot;Hello&quot;不等于&quot;HELLO&quot;。</p>
+    <ol>
+      <li><b><a name="2_2_1_1">xBASE数据库作为数据源<br>
+        </a><br>
+        </b>数据源表不仅可以是一个数据表，还可以是多个数据表， 
+        也就是同时对多个数据表进行操作。<br>
+        <img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> ASQL在坚持与DBF文件兼容的同时，对DBF文件进行了扩充：<ol>
+          <li>为了提高删除记录的管理能力，为要求保持物理序的DBF表通常要增加一个字符型的域：DEL___LINK，4字符长。</li>
+          <li>BLOB型（备注型）的每个存储单位被组织成链表。</li>
+          <li>DBF文件的前32字节被有所扩充，每个域的名字支持24字符长。</li>
+        </ol>
+        <p><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> 通常DBF表中的字符型域是加了尾空格的，例如：“上海”在一个8个字符长的字符型域中被存成“上海 
+        ”，ASQL不是这样的，它不加尾空格了，原来什么样，就是什么样的。<br>
+        <br>
+        &nbsp;&nbsp; 源表表示有以下两种方法：<ol>
+          <li>单表：源库就是一个数据表。这时只要将路径名及数据表名写在FROM后面即可，如例1中的源。</li>
+          <li>多表：源库是多个数据表。这时将多个表的表名及路径名用“, 
+            ”分隔，放在FROM后。多个表名后面用 *连接关键字。<br>
+            连接关键字写法：<ol>
+              <li>*连接关键字</li>
+              <li>*连接关键字1=连接关键字2=连接关键字3...... 连接关键字N分别对应前面描述的表 
+              </li>
+              <li>*连接关键字1,连接表达式=连接关键字2,连接表达式=连接关键字3,连接表达式......<br>
+                连接表达式是指本表用来与连接关键字N匹配的表达式。<br>
+                <img SRC="images/Image4.gif" WIDTH="398" HEIGHT="284"> <p ALIGN="CENTER">图2.1 
+                用表达式来连接表</p>
+                <p>图2.1中： T1、T2、T3分别对应于源中的表1、表2、表3。T1、T2、T3分别对应于源中的表1的连接关键字、表2的连接关键字、表3的连接关键字。F1、F2分别表示源中的表1、表2中的域。<br>
+                <br>
+                方式③（如图2.1所示）使表相连时不一定必须由固定域值，这种方式对连接关键字不是一个域时特别有用，例如有下面的情况:<br>
+                <br>
+                T1、T2和T3相关联，T1中的某个运算值和T2中的某一域值有关联关系，T1、T2中的某个运算值和T3中的某一域值有关联关系。<br>
+                <br>
+                FROM T1,T2,T3,KT1,<u><i>结果为字符型的ASQL运算式用以在以KT1为关键字的索引中定位</i>=\<i>KT2,结果为字符型的ASQL运算式用以在以KT2为关键字的T2的索引中定位=\KT3,结果为字符型的ASQL运算式用以在以KT1为关键字的T3的索引中定位</i><br>
+                <br>
+                </u>连接关键字1后面的表达式是后面的参与运算表的缺省连接关键字值。<br>
+                <br>
+                ASQL不支持其它表的某个域与本表的某个或多个域运算结果的关联。<br>
+                <br>
+                如果用了连等，但相对应参与运算源表的表的关键字为空，则表示该表不参与具体连接运算，如下例：<br>
+                <br>
+                FROM T1,T2,T3,K1= = K3<br>
+                <br>
+                对应T2没有关键字描述，所以T2不参与具体连接运算。</p>
+              </li>
+            </ol>
+          </li>
+        </ol>
+        <p>　 <img SRC="Image3.gif" WIDTH="15" HEIGHT="15">源中所列文件可以是相对路径也可以是绝对路径，如果是绝对路径，必须是“盘符：\路径\文件名“的形式。如果是相对路径，则表示相对于本库的根的相地路径。数据字典只管理按文件名对应进行管理，而不管其存有何处，即一个相同名字的表，存有哪里都应是同结构，同定义的。如果想表示目标路径中的表，即用户工作路径中的表，并且用相对路径的形式给出，则需在文件名前加一“^”，如： 
+        FROM ^UserWorkPathFile.dbf </p>
+        <p ALIGN="JUSTIFY">[例2]人员基本集SUB0.DBF和工资集SUB11.DBF，两个集通过关键字CODE相连。源库的写法为：From 
+        \TG\DATA\SUB0.DBF,\TG\DATA\SUB11.DBF,*CODE</p>
+        <p ALIGN="JUSTIFY">最后的 *code就是联接关键字。code域是人员库和工资库中共有的域，两个库靠code域连成一个库。</p>
+        <p ALIGN="JUSTIFY">下面是几个合法的数据源定义：</p>
+        <p ALIGN="JUSTIFY">(1)FROM table1,table2,*relkey</p>
+        <p ALIGN="JUSTIFY">(2)FROM table1,table2,*RelkeyForTable1=RelkeyForTable2</p>
+        <p ALIGN="JUSTIFY">(3)FROM table1,table2,*RelkeyForTable1=RelkeyForTable2,substr(code,1,8)</p>
+        <p ALIGN="JUSTIFY">(4)FROM sub0.dbf,sub11.dbf,code=code,sub0.code</p>
+        <p ALIGN="JUSTIFY">(5)FROM sub0.dbf,sub11.dbf,code=wu_code,substr(sub0.code,1,9)</p>
+        <p ALIGN="JUSTIFY">我们下面详细解释多库连接的概念。</p>
+        <ol>
+          <li><p ALIGN="JUSTIFY">库连接<br>
+            <br>
+            &nbsp;&nbsp;&nbsp; 
+            多库联接就是把两个或两个以上的数据库通过关键字的笛卡儿乘积连接起来，形成一个虚库，便于操作和管理。在操作时，用户就象操作一个单库一样，出现在多个库中的域名都可以引用。</p>
+          </li>
+          <li><p ALIGN="JUSTIFY">连接关键字<br>
+            <br>
+            &nbsp;&nbsp;&nbsp; 关键字是多库连接的条件，From后面的*号引导的域名是连接关键字。若两库中的主关键字名字不同，可用＝连接。例如SUB0与MAIN相联结可表示为*code=wu_code。</p>
+            <p ALIGN="JUSTIFY">连接关键字可以是几个域的和。如code+wu_code=code</p>
+            <p ALIGN="JUSTIFY">ASQL在进行多库连接运算时，用的是不清确比较，即是“=”，而不是“==”。</p>
+            <p ALIGN="JUSTIFY">[例3]From \TG\DATA\SUB0.dbf,\TG\DATA\main.dbf,*code=wu_code</p>
+          </li>
+          <li><p ALIGN="JUSTIFY">两库联接<br>
+            <br>
+            [例4]在例2中人员库SUB0和工资库SUB11通过CODE域相连，下面是SUB0 库和SUB11库的内容。</p>
+            <p>S</p>
+            <p>UB0.DBF SUB11.DBF<br>
+            </p>
+            <p>┌───┬──────┐ ┌───┬──────┐<br>
+            │ code │ 其它域│ SUB0 中code域│ code │ 其它域 │<br>
+            ├───┼──┤ 的1对应SUB11中&nbsp; ├───┼──────┤<br>
+            │&nbsp; 1&nbsp;&nbsp; │ A11│ code域的1，一&nbsp;&nbsp; │&nbsp; 1 &nbsp;&nbsp; 
+            │ B11 │<br>
+            │&nbsp; 2&nbsp;&nbsp; │ A21│ 对三的关系。&nbsp;&nbsp;&nbsp; │&nbsp; 1 
+            &nbsp;&nbsp; │ B12 │<br>
+            │&nbsp; 2&nbsp;&nbsp; │ A22│ SUB0中code域&nbsp;&nbsp;&nbsp; │&nbsp; 1 
+            &nbsp;&nbsp; │ B13 │<br>
+            │&nbsp; 3&nbsp;&nbsp; │ A31│ 的2对应SUB11中&nbsp; │&nbsp; 2&nbsp;&nbsp; │ 
+            B21 │<br>
+            │&nbsp; 3&nbsp;&nbsp; │ A32│ code域的2，二&nbsp;&nbsp; │&nbsp; 3 &nbsp;&nbsp; 
+            │ B31 │<br>
+            │&nbsp; 4&nbsp;&nbsp; │ A41│ 对一的关系。&nbsp;&nbsp;&nbsp; │&nbsp; 3 
+            &nbsp;&nbsp; │ B32 │<br>
+            │&nbsp; 4&nbsp;&nbsp; │ A42│ ...... 
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; │&nbsp; 5&nbsp;&nbsp; │ B52 │<br>
+            │&nbsp; 6&nbsp;&nbsp; │ A61│ 这里的关键字&nbsp;&nbsp;&nbsp; │&nbsp; 6 
+            &nbsp;&nbsp; │ B61 │<br>
+            │&nbsp; ... │ ...│ 是code。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; │&nbsp; .. 
+            &nbsp; │ ... │<br>
+            └───┴──────┘ └───┴──────┘<br>
+            </p>
+            <p>人员库SUB0.DBF和工资库SUB11.DBF通过CODE域联成一个虚库（虚库指该库物理上并不存在，是一个逻辑上的概念）为ILOVEDIO.DBF，结构如下： 
+            </p>
+            <p ALIGN="JUSTIFY">ILOVEDIO.DBF</p>
+            <p ALIGN="JUSTIFY">┌───┬───────┬───────┐<br>
+            │ Code │ SUB0的域 │ SUB11的域 │<br>
+            ├───┼───────┼───────┤<br>
+            │ 1 │ A11 │ B11 │<br>
+            │ 1 │ A11 │ B12 │<br>
+            │ 1 │ A11 │ B13 │<br>
+            │ 2 │ A21 │ B21 │<br>
+            │ 2 │ A22 │ B21 │<br>
+            │ 3 │ A31 │ B31 │<br>
+            │ 3 │ A31 │ B32 │<br>
+            │ 3 │ A32 │ B31 │<br>
+            │ 3 │ A32 │ B32 │<br>
+            │ 4 │ A41 │ │<br>
+            │ 4 │ A42 │ │<br>
+            │ 6 │ A61 │ B61 │<br>
+            │ ..│ ... │ ... │<br>
+            └──┴──────┴───────┘</p>
+            <p ALIGN="JUSTIFY">如果对应的SUB11库中没有记录对应到相应的虚库中SUB11的域，那么虚库中相应位置为空。如虚库中CODE为6,SUB0的域为A41，SUB11的域为空。</p>
+          </li>
+          <li><p ALIGN="JUSTIFY">两个以上的库的连接<br>
+            <br>
+            [例5]</p>
+            <p ALIGN="JUSTIFY">数据库A、B和C通过code域相连构成一个库。</p>
+            <p ALIGN="JUSTIFY">A.DBF B.DBF C.DBF</p>
+            <p ALIGN="JUSTIFY">┌───┬──────┐┌───┬──────┐┌───┬──────┐<br>
+            │ code │ 其它域 ││ code │ 其它域 ││ code │ 其它域 │<br>
+            ├───┼──────┤├───┼──────┤├───┼──────┤<br>
+            │ 1 │ A11 ││ 1 │ B11 ││ 1 │ C11 │<br>
+            │ 2 │ A21 ││ 1 │ B12 ││ 2 │ C21 │<br>
+            │ 3 │ A31 ││ 2 │ B21 ││ 2 │ C22 │<br>
+            │ 3 │ A32 ││ 3 │ B31 ││ 5 │ C51 │<br>
+            │ 4 │ A41 ││ 5 │ B51 ││ 5 │ C52 │<br>
+            │ 5 │ A51 ││ 5 │ B52 ││ 5 │ C53 │<br>
+            │ ..│ ... ││ ..│ ... ││ ..│ ... │<br>
+            └───┴──────┘└───┴──────┘└───┴──────┘</p>
+            <p ALIGN="JUSTIFY">形成的虚库是ILOVEDIO.DBF，结构如下：</p>
+            <p ALIGN="JUSTIFY">┌───┬──────┬──────┬──────┐<br>
+            │ code │ A的域 │ B的域 │ C的域 │<br>
+            ├───┼──────┼──────┼──────┤<br>
+            │ 1 │ A11 │ B11 │ C11 │<br>
+            │ 1 │ A11 │ B12 │ C11 │<br>
+            │ 2 │ A21 │ B21 │ C21 │<br>
+            │ 2 │ A21 │ B21 │ C22 │<br>
+            │ 3 │ A31 │ B31 │ │<br>
+            │ 3 │ A32 │ B31 │ │<br>
+            │ 4 │ A41 │ │&nbsp; │<br>
+            │ 5 │ A51 │ B51 │ C51 │<br>
+            │ 5 │ A51 │ B52 │ C52 │<br>
+            │ 5 │ A51 │ B52 │ C53 │<br>
+            │ ..│ ... │ ... │ ... │<br>
+            └───┴──────┴──────┴──────┘</p>
+            <p ALIGN="JUSTIFY">从例5可以看出，两个库以上的连接基本等同于两库连接，仍是两库的笛卡儿 
+            乘积为基础， 
+            连接后的虚库的每一项都是由第一个库和其它库关键字中相同项最多的一个库连接得到，而其它库只作子集列出。如在例5中，数据库A中 
+            code域的1和数据库C中code域的1相连，数据库A中code域的2和数据库B中code域的2相连，数据库A中code域的5和数据库C中code域的5相连...。</p>
+            <p ALIGN="JUSTIFY">明白了多库联接的概念，对ASQL语言中的源库是多个库也就好理解了， 
+            这时的源库其实就是多库联接形成的虚库。这样，就可以拿多库当单库处理了，适合于单库的运算都可以用于多库。<br>
+            </p>
+          </li>
+        </ol>
+      </li>
+      <li><p ALIGN="JUSTIFY"><b><a name="2_2_1_2">视图(View)</a><br>
+        </b><br>
+        ASQL中引入了视图的概念， 
+        在这里解释一下什么是视图。简单来说，对一个数据库选出其某些行(记录)、某些列(域)，就构成对该数据库操作的一个视图。</p>
+        <p ALIGN="JUSTIFY">下面的例子是对SUB0.DBF 数据库进行操作， 选择SUB0. DBF 
+        中的哪些记录在记录号管理数据库TGVIEW.DBF中进行说明(R_E_C_N_O_域说明)， 
+        选择哪些域在视图文件SUB0.VEW中进行说明。图1.3为SUB0.DBF和TGVIEW.DBF数据库的结构。</p>
+        <p ALIGN="JUSTIFY">记录号管理数据库TGVIEW.DBF可以不止R_E_C_N_O_一个域(R_E_C_N_O_ 
+        域必须为第一个域)，可以增添其他域， 这样， 视图的域是在 SUB0. 
+        VEW 中被选中的域和TGVIEW.DBF中的域之和。</p>
+        <p ALIGN="JUSTIFY">SUB0.DBF TGVIEW.DBF</p>
+        <p ALIGN="JUSTIFY">┌──┬──┬──┐ ┌─────┬───┐<br>
+        │CODE│NAME│SEX │ │R_E_C_N_O_│DATE │<br>
+        │001 │ │ │&nbsp;&nbsp;&nbsp; ├─────┼───┤<br>
+        │002 │ │ │&nbsp;&nbsp;&nbsp; │ 3 │ │<br>
+        │003 │ │ │&nbsp;&nbsp;&nbsp; │ 9 │ │<br>
+        │004 │ │ │&nbsp;&nbsp;&nbsp; │ 4 │ │<br>
+        │005 │ │ │&nbsp;&nbsp;&nbsp; │ 10│ │<br>
+        │006 │ │ │&nbsp;&nbsp;&nbsp; └─────┴───┘<br>
+        │007 │ │ │<br>
+        │008 │ │ │<br>
+        │009 │ │ │<br>
+        │010 │ │ │<br>
+        └──┴──┴──┘</p>
+        <p ALIGN="JUSTIFY">　</p>
+        <p ALIGN="JUSTIFY">图 2.2 视图源库内容及记录号选择数据库内容</p>
+        <p ALIGN="JUSTIFY">视图文件SUB0.VEW的内容为：</p>
+        <p ALIGN="JUSTIFY">#*#ViewDBF#*# /*文件标识,必须是文件最前面的一行*/</p>
+        <p ALIGN="JUSTIFY">SUB0.DBF /*视图源数据库/*</p>
+        <p ALIGN="JUSTIFY">TGVIEW.DBF /*记录号管理数据库*/</p>
+        <p ALIGN="JUSTIFY">域名 /*选则的域名，可省略*/</p>
+        <p ALIGN="JUSTIFY">域名 . </p>
+        <p ALIGN="JUSTIFY">则对视图SUB0.VEW的操作相当于对如图1.4所示结构的数据库的操作， 
+        但实际上并不存在这样一个物理数据库。</p>
+        <p>┌───┬───┬──┬──┐<br>
+        │CODE │NAME │SEX │DATE│<br>
+        ├───┼───┼──┼──┤<br>
+        │003 │ │ │ │<br>
+        │009 │ │ │ │<br>
+        │004 │ │ │ │<br>
+        │010 │ │ │ │<br>
+        │ │ │ │ │<br>
+        │ │ │ │ │<br>
+        │ │ │ │ │<br>
+        │ │ │ │ │<br>
+        └───┴───┴──┴──┘<br>
+        图 2.3 </p>
+        <p ALIGN="JUSTIFY">当用户对视图SUB0.VEW操作时感觉是在操作TGVIEW.DBF中描述的4条记录， 
+        其它记录好象不存在一样。这样做的好处是能够将注意力集中到要操作的数据上，不受过多的干扰，在做修改时不用再限定范围。然而，视图操作也有缺点，缺点就是是不面向最终数据，容易使用户误认为SUB0的数据被弄丢了。</p>
+        <p ALIGN="JUSTIFY">视图在ASQL运算时等同一个实际库,利用视图你可以构造出很多新奇功能来。下面是视图应用的例子。</p>
+        <p ALIGN="JUSTIFY">视图作为一个可以当作DBF表独立存在的数据结构，可以对它实施单独授权（注意ASQL的表在数据字典中只描述了文件名，不包含扩展名，所以给视图定义名字时要注意），这就解决了一张表进行筛选授权的问题。</p>
+        <p ALIGN="JUSTIFY">一张表在视图所对应的内容被修改时不影响其它不在视图内的域的内容。</p>
+        <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">　ASQL允许访问源表中存在，但在视图中不存在的域，只是这些域读出的结果永远为空串（””），写入这些域的内容不被保存。</p>
+        <p ALIGN="JUSTIFY">为了更详细说明多表连接的办法，下面将可视化报表（ViTAB）对它的理解列在下面：</p>
+        <ol>
+          <li>问题阐述：</li>
+          <p ALIGN="JUSTIFY">当前，对于数据库系统中统计运算的多数据库表关联的需求是很平常的，所以我们在构造VITAB报表的统计数据源时，不可避免的要考虑多数据源关联的实现。签于我们的底层支持是ASQL，而它在实现数据源多库关联方面的语法与SQL不同，描述起来有些不一样，为了让用户比较容易的理解，我们必须在描述手段上做到简单、直观。下面我们就基于ASQL</p>
+          <p ALIGN="JUSTIFY">语法进行数据来源的构造。</p>
+          <p ALIGN="JUSTIFY">ASQL多库关联语法：举例</p>
+          <p ALIGN="JUSTIFY">SUB0，SUB1，SUB2，*CODE=CODE1=CODE2</p>
+          <p ALIGN="JUSTIFY">SUB0，SUB1，SUB2，*CODE=CODE1=CODE2，CODE {第三个库的关键字段CODE2与第一个库的关键字段CODE关联。}</p>
+          <p ALIGN="JUSTIFY">SUB0，SUB1，SUB2，*CODE=CODE1=CODE2，CODE+BODE {第三个库的关键字 
+          段CODE2与第一个库的关键字段CODE+BODE关联}</p>
+          <p ALIGN="JUSTIFY">SUB0，SUB1，SUB2，*CODE+BODE=CODE1=CODE2，CODE {第一个库的关键字段CODE+BODE与第二个库的关键字段CODE1关联，第三个库的关键字段CODE2</p>
+          <p ALIGN="JUSTIFY">与第一个库的关键字段CODE关联。</p>
+          <p ALIGN="JUSTIFY">知道了ASQL的语法，我们根据如下设计来实现。</p>
+          <li>任务设计实现：</li>
+        </ol>
+        <p ALIGN="JUSTIFY">我们在完成功能时，掌握一个原则，就是用户需要定义多库关联时才进行多库关联，也就是说用户一开始就是单数据源选择，需要定义多库关联时，选择“定义关联”按钮进入关联定义窗口。如下是设计界面。</p>
+        <p ALIGN="JUSTIFY">图一：单数据源选择</p>
+        <p ALIGN="JUSTIFY"><img SRC="images/Image5.gif" WIDTH="510" HEIGHT="547">图二 
+        定义关联</p>
+        <p ALIGN="JUSTIFY"><img SRC="images/Image6.gif" WIDTH="398" HEIGHT="220">定义关联时必须先在图一中选择一个基本数据源，然后进入图二，在图二中每选中一个数据源就多一个字段列表和一个编辑框，用户在字段列表中选择关联字段（可多选）</p>
+        <p ALIGN="JUSTIFY">选择好后按[增加]按钮，得到：字段1=字段2=字段3或</p>
+        <p ALIGN="JUSTIFY">字段1+字段2=字段3=字段4通常用户是这种需求.</p>
+        <p ALIGN="JUSTIFY">但如果是一个库的多个字段分别与另外两个（或多个）库的某些字段关联，则必须在编辑框中进行修改，如图二，首先，选择各数据源的基本关联字段，得：</p>
+        <p ALIGN="JUSTIFY">字段1=字段2=字段4</p>
+        <p ALIGN="JUSTIFY">在第三个数据源字段列表下的编辑框中输入字段1，选择[修改]按钮，得：</p>
+        <p ALIGN="JUSTIFY">字段1=字段2=字段4，字段1</p>
+        <p ALIGN="JUSTIFY">它表示这三个库的关联关系是，用第一个数据源的字段1与第二个数据源的字段2关联，同时用第一个数据源的字段1与第三个数据源的字段4关联。</p>
+      </li>
+      <li><b><a name="2_2_1_3">ODBC作为数据源</a><br>
+      </li>
+      </b><p>高档数据库，如Informix、Oracle、Db2、Sybase等具有很强的数据存储管理能力，而且由于历史的原因，在这些数据库上已经有大量的投资，实际这些数据库确实能解决大量的关系型数据的管理问题，如何充分利用这些数据资源是每个设计数据管理服务软件的人都应考虑的问题。这些数据库都支持一种共同的数据访问接口：开放的数据库连接技术，ODBC，利用这个接口规范就可以较充分地操作这些数据库。</p>
+      <p>ODBC是数据库访问的重要标准，大多数据库都提供ODBC访问方式。ODBC在ASQL中的角色如图2.4所示。</p>
+      <p>ASQL就是通过ODBC连接的办法实现充分利用大量数据库资源的。这种架构的系统还有一个特点就是充分发挥了大型高档数据系统的数据管理、分布管理等优势，同时又发挥了ASQL在处理事务时的强大能力。因为数据在由高档数据库传给ASQL时已经经过了高档数据库的筛选，所以这样的系统并不会增加网络流量，是在原有的系统效率上的提高。</p>
+      <p ALIGN="center"><img SRC="images/Image7.gif" WIDTH="173" HEIGHT="247"></p>
+      <p ALIGN="center">图2.4 ODBC在ASQL中的应用</p>
+      <p>ODBC作为ASQL数据源的语法格式为：</p>
+      <p>FROM ODBC:szDsn,szUser,szPassword,具有结果游标的SQL语句。</p>
+      <p>说明：</p>
+      <b><p>FROM</b>：ASQL关键字；</p>
+      <b><p>ODBC</b>：ASQL用以标识后面的数据是由ODBC取来的标识；</p>
+      <b><p>szDsn</b>:Windows系统中的系统数据源名称中的数据源名称，一般设置页面如下：</p>
+      <p>选{控制面板}中的<img SRC="images/Image8.gif" WIDTH="64" HEIGHT="52">，按下{系统DSN}按钮：</p>
+      <p><img SRC="images/Image9.gif" WIDTH="460" HEIGHT="426"></p>
+      <p ALIGN="center">图2.5 ODBC的定义</p>
+      <b><p>szUser</b>:用户名<br>
+      <b>szPassword</b>:口令</p>
+      <p>例：</p>
+      <p>FROM ODBC:informix_odbc,user,passwd, \</p>
+      <p>SELECT * FROM SUB0,SUB11 WHERE SUB0.CODE=SUB11.CODE</p>
+      <p><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">　ASQL的序行办法：</p>
+      <p>ASQL允许一行写不下的内容分成几行书写，续行的方法是在上一行的行尾用“\”。注意“\”后不应再有任何字符。一条语句扩大展后的最大长度不可超过8192字符。</p>
+      <p><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">　ODBC数据源一般支持空值（NULL），空值是一种状态不确定的值，它同任何值的运算都是空值。由于在SQL中对空值的定义各家关系数据库厂商也不完全相同，所以ASQL采用将空值转变为空字符串的形式，即若某字符型域的值为NULL，则其长度为0。可见ASQL将空值确定化了。</p>
+      <p>例如：</p>
+      <p>域JL，为字符型，当前值为NULL，则下面的表达式为真：</p>
+      <p>len(JL)=0</p>
+      <p><i>而at(“DZZ”,JL)&gt;0为假</p>
+      </i><p>下面是一个采用ODBC作为数据源为ASQL脚本：</p>
+      <p>predicate<br>
+      float x[32,30]<br>
+      FROM ODBC:ORACLE_DB,p04,p04,SELECT * FROM P_YC<br>
+      Condition<br>
+      begin<br>
+      &nbsp; summer x, YTCS*((Min(date(ZZRQ),date(&quot;19971231&quot;))-max(date(QSRQ), 
+      date(&quot;19971201&quot;)))+1.0)/((date(ZZRQ)-date(QSRQ))+1.0)1begin<br>
+      #y1: 0<br>
+      #y2: 0<br>
+      #y3: 0<br>
+      #y4: 0<br>
+      #y5: PM=&quot;01*&quot;<br>
+      #y6: PM=&quot;02*&quot;<br>
+      #y7: PM=&quot;03*&quot;<br>
+      #y8: PM=&quot;04*&quot;<br>
+      #y9: PM=&quot;05*&quot;<br>
+      #y10: PM=&quot;06*&quot;<br>
+      #y11: PM=&quot;07*&quot;<br>
+      #y12: PM=&quot;08*&quot;<br>
+      #y13: PM=&quot;09*&quot;<br>
+      #y14: PM=&quot;10*&quot;<br>
+      #y15: PM=&quot;11*&quot;<br>
+      #y16: PM=&quot;12*&quot;<br>
+      #y17: PM=&quot;13*&quot;<br>
+      #y18: PM=&quot;14*&quot;<br>
+      #y19: PM=&quot;15*&quot;<br>
+      #y20: PM=&quot;16*&quot;<br>
+      #y21: PM=&quot;17*&quot;<br>
+      #y22: PM=&quot;18*&quot;<br>
+      #y23: PM=&quot;19*&quot;<br>
+      #y24: PM=&quot;20*&quot;<br>
+      #y25: PM=&quot;21*&quot;<br>
+      #y26: PM=&quot;22*&quot;<br>
+      #y27: PM=&quot;23*&quot;<br>
+      #y28: PM=&quot;24*&quot;<br>
+      #y29: PM=&quot;25*&quot;<br>
+      #y30: PM=&quot;99*&quot;<br>
+      #y31: PM=&quot;97*&quot;<br>
+      #y32: PM=&quot;98*&quot;<br>
+      #x1: At(&quot;DZP&quot;,jl)&lt;&gt;0<br>
+      summer x , YTCS*((Min(date(ZZRQ), date(&quot;19971231&quot;) ) - max(date(QSRQ), 
+      date(&quot;19971201&quot;))) + 1.0)/((date(ZZRQ)-date(QSRQ))+1.0)#x2: 
+      At(&quot;FLH&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x3: At(&quot;JXH&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x4: At(&quot;MCG&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x5: At(&quot;PSQ&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x6: At(&quot;YJS&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x7: At(&quot;LLQ&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x8: At(&quot;EEH&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x9: At(&quot;YXK&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x10: At(&quot;GYW&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x11: At(&quot;PQN&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x12: At(&quot;ZYF&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x13: At(&quot;XVN&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x14: At(&quot;SHD&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x15: At(&quot;YTZ&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x16: At(&quot;WSH&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x17: At(&quot;UHP&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x18: At(&quot;LSQ&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x19: At(&quot;RXW&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x20: At(&quot;FMZ&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x21: At(&quot;RPW&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x22: At(&quot;SIQ&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x23: At(&quot;DUN&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x24: At(&quot;GIV&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x25: At(&quot;FLV&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x26: At(&quot;YKV&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x27: At(&quot;EDF&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x28: At(&quot;CBF&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x29: At(&quot;UQK&quot;,jl)&lt;&gt;0<br>
+      summer x ,YTCS<br>
+      #x30: At(&quot;GBP&quot;,jl)&lt;&gt;0<br>
+      End<br>
+      End<br>
+      action warray (&quot;Tbldbf&quot;,x)</p>
+      <li><b><a name="2_2_1_4">ASQL自定义外部数据源</a><br>
+        </b></li>
+      <p>ODBC数据源效率不高，大多数据库厂商又提供用高级语言直接操作数据库的方法，ASQL对这种方法予以直接支持。这时要求用户用ESQL/C(对Informix用户而言，对Oracle用户，同样功能的产品称为PRO*C)来编写一个动态连接库:</p>
+      <p>DIO_SQL.DLL</p>
+      <p>放在ASQL执行路径内。</p>
+      <p>数据源的语法格式为：</p>
+      <p>FROM SQL:szDatabaseName,szUser,szPassword,具有结果游标的SQL语句。</p>
+      <p>说明：</p>
+      <b><p>FROM</b>：ASQL关键字；<br>
+      <b>SQL</b>：ASQL用以标识后面的数据是由自定义数据源取来的标识；<br>
+      <b>szDatabaseName:</b>数据库名<br>
+      <b>szUser</b>:用户名<br>
+      <b>szPassword</b>:口令</p>
+      <p>ASQL自定义外部数据源有一特别重要的考虑，那就是降低了信息系统的造价。</p>
+      <p>信息系统的核心是数据库，作为数据库系统的重要技术指标是它的并发服务能力，即可以同时服务的客户数。让数据库系统为更多的客户服务成本有两个：一是硬件投入；另一是所购数据系统的并发数。</p>
+      <p>一般数据库厂商是按数据库的并发来报价的！每个并发多少钱，而在一定的硬件环境下，并发是有限度的，如一台如下配置的PC服务器：</p>
+      <p>(1)CPU：Pentium Pro 200MHz<br>
+      (2)RAM：128MB<br>
+      (3)硬盘：Untra/Wide SCSI<br>
+      (4)操作系统：Windows NT 中文4.0</p>
+      <p>它的实际并发能力不超过5个（有总线的、外部通道的、系统协作的、操作系统调度能力等原因）。</p>
+      <p>假定一个医院管理系统，它由门急诊挂号、门急诊收费、药品管理、住院部、院长办公等子系统构成，加起来的用户约30个，考虑到系统的服务速度（即给一个客户完成一件特定业务，如收某一张处方的费用），这30个用户要一直连接到数据库上，这就要求购买至少30个并发用户数，假定每个并发3000元人发币，单在数据库一项上就要付出3000*30=90,000元人民币，还不算客户端连接产品的钱，而实际该医院系统所用的PC服务器并发能力只有5个，这是一种很大的浪费。</p>
+      <p>采用服务器版的ASQL会怎么样呢？</p>
+      <p>ASQL保持了5个与数据库的连接，客户端的每个请求被ASQL代理，ASQL再将任务派生。ASQL负责事务的并发，而ASQL的并发代价要低得多。</p>
+      <p>你愿多花钱保持不忙的30个通道，还是愿少花钱保持5个忙的通道呢？</p>
+      <p>　</p>
+      <p><img SRC="images/Image10.gif" WIDTH="199" HEIGHT="179">　 <img
+      SRC="images/Image11.gif" WIDTH="199" HEIGHT="181"></p>
+      <p>　</p>
+      <p>图2.6纯数据库下的系统模式 图2.7采用事务代理服务器后的系统模式 
+      </p>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>　 </p>
+</body>
+</html>

@@ -1,0 +1,21 @@
+
+
+***********************************************************************
+Fatal NI connect error 12560, connecting to:
+ (DESCRIPTION=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle)(ARGV0=oracleORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))'))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=D:\PMOA\TreeSVR\bin\TreeSvr.exe)(HOST=B)(USER=pei))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.1.7.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.1.7.0.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 8.1.7.0.0 - Production
+  Time: 10-7月 -2001 15:51:46
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 0
+    ns main err code: 12560
+    TNS-12560: TNS：协议适配器出现错误
+    ns secondary err code: 0
+    nt main err code: 530
+    TNS-00530: 协议适配器错误
+    nt secondary err code: 126
+    nt OS err code: 0

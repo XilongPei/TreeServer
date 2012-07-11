@@ -1,0 +1,323 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>Windows NT技术准备</title>
+</head>
+
+<body style="font-size: 12px">
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>Windows NT技术准备</strong></p>
+    <p>&nbsp;&nbsp;&nbsp; Microsoft Windows NT Internet Information Server 
+    具有开发应用程序或脚本的能力，远程用户通过单击 HTML 
+    链接或通过插入和发送 HTML 
+    表单来启动应用程序或脚本。使用编程语言比如 C ，可创建与动态 
+    HTML 页面用户通讯的应用程序或脚本。 </p>
+    <p><b>　</p>
+    <p>创建应用程序或脚本 </b></p>
+    <p>&nbsp;&nbsp;&nbsp; 几乎可以用任何 32 
+    位编程语言编写交互式应用程序，如 C ， Windows　NT 
+    批处理文件（其扩展名为 .bat 或 .cmd 
+    ）。当编写应用程序或脚本时，可使用两种支持界面的一种，Microsoft 
+    Internet Server 应用程序编程接口 (ISAPI) 或通用网关接口 (CGI)。在VC++ 5.0的联机文档中有对ISAPI的详细介绍。可在本章后面部分找到对 
+    CGI 的介绍；通过 Internet 可访问 CGI 
+    信息。批处理文件可在命令提示下运行任何有效命令。 </p>
+    <p>使用 ISAPI 的应用程序将被编译为动态链接库 (DLL) 
+    ，该库在启动时通过 WWW 服务装载。因为程序驻留在内存中，ISAPI 
+    程序明显快于写为 CGI 规范的应用程序。 </p>
+    <p><b>　</p>
+    <p>Internet 服务器 API </b></p>
+    <p>&nbsp;&nbsp;&nbsp; ISAPI for Windows　NT 可用于编写应用程序， Web 
+    用户可通过填写 HTML 表单或单击 Web 节点上 HTML 
+    页面中的链接来激活该应用程序。远程应用程序可获取用户提供的信息，并且用这些可编程的信息作任何事情，然后返回 
+    HTML 页面中的结果或传递数据库中的信息。 </p>
+    <p>&nbsp;&nbsp;&nbsp; ISAPI 可用于在 Web 服务器上创建可运行为 DDL 
+    的应用程序。如果以前已经使用过通用网关接口 (CGI) 
+    脚本，则您将发现 ISAPI 
+    应用程序有更好的性能，因为应用程序在服务器运行时已被装入内存。它们要求较少的系统开销，因为每个请求并不启动单独的进程。</p>
+    <p ALIGN="CENTER"><img SRC="Image.gif" WIDTH="327" HEIGHT="210"></p>
+    <p ALIGN="CENTER">　</p>
+    <p ALIGN="CENTER">图11.1 网络计算上的客户/服务器模型</p>
+    <p><b>　</p>
+    <p>通用网关接口 </b></p>
+    <p>&nbsp;&nbsp;&nbsp; 通用网关接口 (CGI) 是在客户机 Web 浏览器、Web 
+    服务器和 CGI 应用程序之间传递信息的一组规范。通过填写 HTML 
+    表单或单击 Web 服务器上的 HTML 页面中的链接，Web 客户浏览器可启动 
+    CGI 应用程序。象使用 ISAPI 一样，CGI 应用程序可获取客户 Web 
+    浏览器提供的信息，并且做任何可以被编程的事情，然后返回 HTML 
+    页面中应用程序的结果，或将信息传递到数据库。</p>
+    <p>Microsoft Internet Information Server 可使用大部分在 Windows　NT 上运行的 
+    32 位应用程序或符合 CGI 规范的应用程序。 </p>
+    <p>图11.2解释了浏览器、服务器和 CGI 应用程序如何使用 CGI 
+    交换信息。本节的其余部分将讨论这五部分进程。</p>
+    <p ALIGN="CENTER"><img SRC="Image12.gif" WIDTH="350" HEIGHT="215"></p>
+    <p ALIGN="CENTER">　</p>
+    <p ALIGN="CENTER">图11.2 CGI在系统架构中的作用</p>
+    <p><i>　</p>
+    <p>客户发送请求 </i></p>
+    <p>客户浏览器可使用下列两种方法产生到服务器的 CGI 请求： </p>
+    <p>GET </p>
+    <p>客户将数据附加于传送到服务器的 URL。</p>
+    <p>POST </p>
+    <p>客户用 HTTP 消息数据字段的方式将数据发送到服务器，因此克服了 
+    GET 方法固有的大小限制。</p>
+    <p>客户单击 HTML 页面上的下列任何一项可以启动 CGI 进程： <ul>
+      <li>直接运行脚本的超文本链接。 </li>
+      <li>HTML 表单中的“提交”按钮。 </li>
+      <li>以 GET 方式检索的内联对象。 </li>
+      <li>搜索目标 (即使用 HTML 标志的 ISINDEX)。 </li>
+    </ul>
+    <p><i>　</p>
+    <p>服务器接收请求 </i></p>
+    <p>客户浏览器发送到服务器的 URL 包含 CGI 
+    脚本或要运行的应用程序名。服务器将文件扩展名与服务器的脚本映射注册表项进行对比，确定启动哪个可执行文件。服务器具有启动 
+    Cmd.exe 的.cmd 和.bat 文件及启动 Internet 数据库连接器 .idc 
+    文件的脚本映射项。为允许服务器启动不带扩展名映射的 CGI 
+    应用程序类型，将此应用程序类型的条目添加到注册表项。</p>
+    <p><i>　</p>
+    <p>服务器传递请求至应用程序 </i></p>
+    <p>服务器利用环境变量将信息传递至 CGI 
+    应用程序，然后启动应用程序。部分变量是与服务器相关的；主要部分来自客户浏览器，并和客户浏览器或正发送的请求相关。关于环境变量的部分列表，请参阅本章结尾的变量表。 
+    </p>
+    <p><i>　</p>
+    <p>CGI 应用程序返回数据到服务器 </i></p>
+    <p>应用程序执行其处理。如果合适，应用程序则以客户可接收的格式将数据写入标准输出流 
+    (STDOUT)。应用程序在返回数据时必须依照特定格式： </p>
+    <p>1. 第一行或包含服务器指令的行，必须为 MIME 
+    内容类型。其它服务器伪指令是 Location（它重定向客户到另一个文档或返回另一个文档）与 
+    Status。 </p>
+    <p>2. 服务器伪指令之后必须是空行。 </p>
+    <p>3. 应用程序返回到客户的数据紧跟空行。</p>
+    <p><i>　</p>
+    <p>服务器返回数据到客户 </i></p>
+    <p>服务器获取它从 STDOUT 接收的数据，并添加标准 HTTP 标题。然后将 
+    HTTP 消息回传客户。 </p>
+    <p><b>　</p>
+    <p>CGI 与 Internet Information Server </b></p>
+    <p>WWW 服务支持标准的通用网关接口 (CGI) 
+    规范。然而，应该知道下面这些只有在 Internet Information Server :上的 
+    CGI 实现才有的信息： <ul>
+      <li>对于此版本，只有 32 位 CGI 应用程序与 WWW 服务一起工作。 </li>
+      <li>当用户以匿名用户的形式登录时（即只能匿名访问 Web 服务器），REMOTE_USER 
+        环境变量将不出现。 </li>
+      <li>所有为 ISAPI 定义的变量将作为环境变量传递到 CGI 应用程序。 </li>
+    </ul>
+    <p>注意 CGI 应用程序是典型的独立可执行程序。这与 ISAPI 
+    应用程序类反，后者是作为 DLL 
+    装载并因此是服务器扩展。因此，较之 CGI 应用程序和脚本，ISAPI 
+    应用提供了增强性能。 </p>
+    <p><b>　</p>
+    <p>可执行程序的安全性考虑 </b></p>
+    <p>必须十分小心地使用 CGI 
+    可执行程序，以防止对服务器的潜在安全性冒险。作为一项准则，对于包含 
+    CGI 或 Internet ISAPI 应用程序的虚拟目录只授予执行权限。 </p>
+    <p>积极建议配置脚本映射。脚本映射在客户请求可执行文件时确保启动正确的解释程序（例如 
+    Cmd.exe）。 </p>
+    <p>应该只给 WWW 内容目录赋予 Read 权限。对于任何打算从 Windows　NT 
+    文件系统 (NTFS) 驱动器下载的可执行文件，应该只允许 Read 访问。 </p>
+    <p>可作为 CGI 
+    可执行文件运行批处理文件，但这样做时必须十分小心，防止对服务器的潜在安全性冒险。 
+    </p>
+    <p>注意　　　CGI 可执行文件也可具有扩展名 .exe 或 .cgi。 </p>
+    <p><b>　</p>
+    <p>ISAPI 应用程序的执行权限 </b></p>
+    <p>Internet Information Server 在调用用户的安全性环境中打开 ISAPI 
+    应用程序。针对调用用户执行访问检查，为将执行限定给选定的用户，NTFS 
+    权限可用于 ISAPI 应用程序例如 TreeSvr 数据库连接器 (Dconnector.dll)。 </p>
+    <p>例如，可以将 DConnector.dll 的 NTFS 执行权限赋予适当的用户。DConncetor.dll 
+    是实现 TreeSvr数据库连接器 的 ISAP 应用程序 DLL 
+    的名称。无论何时用户试图执行 Dconnector.dll，服务器都将检查权限。只有执行权限授予用户时，才允许访问。 
+    </p>
+    <p>注意　　　一旦已经装载 ISAPI 
+    应用程序，它将保持装载，直到终止 WWW 服务。在 ISAPI 
+    应用程序装载之后，Internet Information Server 
+    不跟踪安全性描述符的更改。如果在装载 ISAPI 
+    应用程序之后更改其权限，则在更改生效之前必须终止并启动 WWW 
+    服务。 </p>
+    <p>在 Winnt 目录及其子目录上设置访问控制列表 (ACL) 时要仔细。一些 
+    ISAPI 应用程序和数据库要求访问这些目录中的文件和 DLL。 </p>
+    <p>注意　　　ISAPI 应用程序 DLL 可以具有文件扩展名 .dll 或 .isa。 </p>
+    <p><i>在 Internet Information Server 上安装应用程序 </i></p>
+    <p>一旦已经编写了您的应用程序或脚本，将其置于 Scripts 
+    目录中，它是应用程序的虚拟目录，虚拟目录具有执行访问权。 </p>
+    <p>必须确保每个进程由使用拥有足够权限帐号的应用程序来启动。如果您的应用程序与其它文件交互，您赋予程序的帐号必须具有使用这些文件的适当权限。应用程序以默认方式使用 
+    IUSR_computername 
+    帐号运行，它必须具有这些应用程序文件的管理员权限和执行权限。 
+    </p>
+    <p>TreeSVR规定这个用户名必须重设。</p>
+    <p><i>运行应用程序 </i></p>
+    <p>如果您的应用程序不要求用户的数据，您将在简单的 HTML 
+    文件中创建到应用程序的链接。如果您的应用程序要求用户的数据，您可能将使用 
+    HTML 表单。在其它示例中，可只发送一个统一资源定位符 (URL)，通常包含数据参数，以调用一个程序。 
+    </p>
+    <p>下面的示例描述到不要求用户输入的应用程序的 HTML 链接： </p>
+    <blockquote>
+      <p>http://www.company.com/scripts/catalog.exe </p>
+    </blockquote>
+    <p>其中 Scripts 是交互式应用程序的虚拟目录。 </p>
+    <p>如果正创建要求用户输入的应用程序，将需要了解 HTML 
+    表单及如何以 ISAPI 或 CGI. 使用表单。在 Internet 
+    或其它资源中都可广泛获得相应的文档资料。 </p>
+    <p>与应用程序关联的解释程序 </p>
+    <p>因为具有以几乎任何编程语言创建应用程序的灵活性，Internet 
+    Information Server 
+    使用文件扩展名来判定哪个解释程序来调用每个应用程序。默认解释程序的关联列于下表。可使用注册表编辑器创建其它关联。 
+    </p>
+    <p>扩展名默认的解释程序.bat, .cmd Cmd.exe.idcHttpodbc.dll.exe, .comSystem</p>
+    <p><i>安全性隐含 </i></p>
+    <p>当允许远程用户运行您计算机上的应用程序时，您就有恶意者企图破坏您系统的危险。用默认方式配置 
+    Microsoft Internet Information Server 
+    ，以便应用程序以两种方式减少恶意入侵的危险。 </p>
+    <p>首先，虚拟目录 Scripts 
+    包含您的应用程序。只有管理员可向标记为只执行目录的目录添加程序。这样，未授权用户在未获得管理员访问权时不能复制恶意应用程序并在您的计算机上运行。 
+    </p>
+    <p>建议您对与虚拟文件夹关联的目录上的 IUSR_computername 
+    赋予读和执行权限，只对管理员才赋全部权限。Perl 脚本（.pl 
+    扩展名）和 IDC 文件（.idc 与 .htx 
+    文件扩展名）需要读和执行权限。然而，为防止某人在您的服务器上安装不安全文件，不要赋予写权限。 
+    </p>
+    <p>第二，如果已经配置 WWW 
+    服务只允许匿名登录，则所有远程用户的请求将使用 IUSR_computername 
+    帐号。默认情况下，IUSR_computername 帐号不能使用 Windows　NT 文件系统 
+    (NTFS) 
+    删除或更改文件，除非管理员特别授权的访问。这样，即使恶意程序复制到您的计算机，它也不能对您的内容造成太大破坏，因为它只有对您的计算机和文件的 
+    IUSR_computername 访问权。</p>
+    <p>　</p>
+    <p><b>　</p>
+    <p>发布消息与使用数据库 </b></p>
+    <p>使用Internet Information Server 提供的 WWW 服务和 TreeSvr数据库连接器，您可以： 
+    <ul>
+      <li>创建含有数据库中消息的 Web 页面。 </li>
+      <li>从 Web 页面上插入、更新和删除基于用户输入的数据库中的信息。 </li>
+      <li>执行ASQL 命令。 </li>
+    </ul>
+    <p>Internet 事务服务器连接器如何工作 ?从概念上讲，由Internet 
+    Information Server 执行数据库访问，如下图所示：</p>
+    <p ALIGN="CENTER"><img SRC="Image13.gif" WIDTH="349" HEIGHT="195"></p>
+    <p ALIGN="CENTER">　</p>
+    <p ALIGN="CENTER">图11.3 架构</p>
+    <p ALIGN="CENTER">　</p>
+    <p>Web 浏览器（例如 Internet Explorer 或其它公司的浏览器如 Netscape）使用 
+    HTTP 将请求提交给 Internet 服务器。Internet 服务器以 HTML 
+    中格式化的文档作为响应。通过称为 TreeSvr数据库连接器 的 ISAPI应用程序Dconnector.dll完成对数据库的访问。</p>
+    <p>下面示例显示从Internet Information Server 连接数据库的组件。</p>
+    <p ALIGN="CENTER"><img SRC="Image8.gif" WIDTH="228" HEIGHT="256"></p>
+    <p ALIGN="CENTER">　</p>
+    <p ALIGN="CENTER">图11.4 事务服务器连接器在架构中的位置</p>
+    <p ALIGN="CENTER">　</p>
+    <p>&nbsp;&nbsp;&nbsp; TreeSvr使用两类文件控制如何访问数据库及如何构造输出 
+    Web 页面。这些文件是 Internet 数据库连接器 (.tdc) 文件和 HTML 扩展名 
+    (.htx) 文件。 </p>
+    <p>&nbsp;&nbsp;&nbsp; Internet 数据库连接器文件存放了用以访问TreeSvr数据库的ASQL 
+    语句。</p>
+    <p>&nbsp;&nbsp;&nbsp; HTML 扩展文件是实际 HTML 文档的模板，Dconnector.dll将数据库信息并入其中之后将结果返回 
+    Web 浏览器。</p>
+    <p>&nbsp;&nbsp;&nbsp; 为提供从您的 Web 页面访问 ASQL 数据库，将需要创建 
+    TreeSvr数据库连接器文件 (.tdc 文件扩展名) 和 HTML 文件 (.htx 
+    文件扩展名)。用数据库访问编辑 Web 页面 </p>
+    <b><p><br>
+    数据库查询示例</b></p>
+    <p>&nbsp;&nbsp;&nbsp; 此示例用称为 hello.htm 的 Web 页面启动，Web 
+    示例页面包含一个将产生查询的表单，使用TreeSvr数据库连接器执行查询，将结果作为另一个 
+    Web 页面返回。 </p>
+    <p>图11.5显示了 hello.htm页面及其表单源代码。 </p>
+    <p ALIGN="CENTER"><img SRC="Image9.gif" WIDTH="550" HEIGHT="412"></p>
+    <p ALIGN="CENTER">图11.5 数据库查询示例</p>
+    <p ALIGN="CENTER">　</p>
+    <p>&lt;form action=&quot;/scripts/TSDemo/DConnector.dll&quot; method=&quot;POST&quot;&gt;<br>
+    <br>
+    &lt;input type=&quot;hidden&quot; name=&quot;TDC_FILE&quot; 
+    value=&quot;c:\inetpub\scripts\TSDemo\HELLO.TDC&quot;&gt;&lt;table 
+    border=&quot;0&quot;&gt;</p>
+    <p>&lt;tr&gt;<br>
+    &lt;td&gt;数据库：&lt;/td&gt;<br>
+    &lt;td&gt;&lt;input type=&quot;text&quot; size=&quot;19&quot; name=&quot;VAR_FROM&quot; 
+    value=&quot;lz0&quot;&gt;&lt;/td&gt;<br>
+    &lt;/tr&gt;<br>
+    &lt;tr&gt;</p>
+    <p>&lt;td&gt;性别：&lt;/td&gt;<br>
+    &lt;td&gt;&lt;select name=&quot;VAR_SEX&quot; size=&quot;1&quot;&gt;<br>
+    &lt;option selected value=&quot;1&quot;&gt;男&lt;/option&gt;<br>
+    &lt;option value=&quot;2&quot;&gt;女&lt;/option&gt;<br>
+    &lt;/select&gt; &lt;/td&gt;<br>
+    &lt;/tr&gt;<br>
+    &lt;/table&gt;</p>
+    <p>&lt;p align=&quot;center&quot;&gt;&lt;input type=&quot;submit&quot; value=&quot; 提交 
+    &quot;&gt; &lt;/p&gt;<br>
+    &lt;/form&gt;</p>
+    <p>在表单中共包括了三个域：TDC_FILE, VAR_FROM, VAR_SEX。TDC_FILE是一个隐含域（不在浏览器中显示），它指定了当前查询所使用的TDC文件的存放位置；在每个需通过Dconnector.dll访问数据库的Web页面中都必须包含此域。VAR_FROM是文本输入域，用于指定所访问的数据库。VAR_SEX指定性别查询条件，为男或女。单击提交按钮时，表单内容（包括用户输入）将发送到服务器。</p>
+    <p>在 Internet Information Server 上，本例使用 TreeSvr数据库连接器的全过程按六个步骤执行。如下图所示： 
+    </p>
+    <p ALIGN="CENTER"><img SRC="Image10.gif" WIDTH="305" HEIGHT="362"></p>
+    <p>1. 由 Internet Information Server 接收提交的表单<br>
+    2. Internet Information Server 装载 DConnectpor.dll，并将表单中保存的信息。<br>
+    3. DConnector.dll 读取 TDC文件， 将其与表单中的相应域进行合并。</p>
+    <p>下面是hello.tdc的全部内容：</p>
+    <p>act webprint( &quot;bh&quot;, &quot;name&quot;, &quot;bm&quot;, &quot;a04&quot;, 
+    &quot;a15&quot;, &quot;\n&quot; ) /* 先传回域信息，以回车结束*/<br>
+    from %VAR_FROM% /* from d:\projects\lz0.dbf */<br>
+    condition<br>
+    begin<br>
+    &nbsp; a04 = &quot;%VAR_SEX%&quot; $ webrint( bh, name, bm, a04, a15 )<br>
+    end</p>
+    <p>在本例中的ASQL语句的含义是从变量VAR_FROM指定的数据库中查询所有性别为VAR_SEX的人的情况。关于TDC查询脚本的说明详见后。</p>
+    <p>4. DConnetor连接到TreeSvr服务器，将TDC文件内容提交给它。</p>
+    <p>5. TreeSvr将结果数据返回给DConnector.，将其合并到 HTML 扩展文件。</p>
+    <p>执行 SQL 语句之后，IDC 读取 Sample.idc (Sample.htx) 中指定的 HTML 
+    扩展文件。HTML 扩展 (.htx) 文件包含特别 HTML 标志，IDC 用标志控制从 
+    SQL 语句中返回的数据合并入何处以及如何合并。</p>
+    <p>6. IDC 将合并的文档发送回 Internet Information Server ，并返回到客户。</p>
+    <p>数据合并入 Sample.htx 之后，将完整的 HTML 文档发送回客户。 </p>
+    <p><b><br>
+    hello.htx 文件 </b></p>
+    <p>要将数据返回到 WWW 客户，DConnector.dll将 HTML 扩展.htx 文件与 TreeSvr数据合并。合并后的数据附着到标准 
+    HTTP 标题中 (200 OK 状态，Content-Type 等) 并传送到 WWW 
+    服务并返回客户。 </p>
+    <p>.htx file 文件是含以&lt;%%&gt;括起来的附加标志的 HTML 文档， .tdc 
+    文件用此形式将动态数据添加到文档。 .htx 文件中的 HTML 
+    格式典型地将要返回的数据格式化。目前可用begindetail和enddetail控制来自数据库的数据如何以 
+    HTML 格式合并入 .htx 文件。数据库列名指定在 HTML 
+    文档中返回什么数据。例如，在.htx 文件中下列行合并a04列的数据： </p>
+    <p>&lt;%begindetail%&gt;&lt;%a04%&gt;&lt;%enddetail%&gt; </p>
+    <p>下面是hello.htx 文件。</p>
+    <p>&lt;html&gt;<br>
+    &lt;head&gt;<br>
+    &lt;title&gt;数据示例查询结果集&lt;/title&gt;<br>
+    &lt;/head&gt;</p>
+    <p>&lt;body bgcolor=&quot;#FFFFFF&quot;&gt;<br>
+    <br>
+    &lt;h3 align=&quot;center&quot;&gt;&lt;font color=&quot;#8080FF&quot; 
+    size=&quot;5&quot;&gt;数据查询结果&lt;/font&gt;&lt;/h3&gt;<br>
+    &lt;h3 align=&quot;left&quot;&gt;&lt;font color=&quot;#000000&quot;&gt;数据库 : 
+    %VAR_FROM%&lt;/font&gt;&lt;/h3&gt;<br>
+    &lt;div align=&quot;center&quot;&gt;&lt;center&gt;<br>
+    &lt;table border=&quot;3&quot;&gt;</p>
+    <p>&lt;%begindetail%&gt;<br>
+    <br>
+    &lt;tr&gt;<br>
+    &lt;td&gt;%bh%&lt;/td&gt;<br>
+    &lt;td&gt;%name%&lt;/td&gt;<br>
+    &lt;td&gt;%bm%&lt;/td&gt;<br>
+    &lt;td&gt;%a04%&lt;/td&gt;<br>
+    &lt;td&gt;%a15%&lt;/td&gt;<br>
+    &lt;/tr&gt;</p>
+    <p>&lt;%enddetail%&gt;&lt;/table&gt;</p>
+    <p>&lt;/center&gt;&lt;/div&gt;<br>
+    &lt;h3 align=&quot;left&quot;&gt;&lt;font color=&quot;#808080&quot;&gt;结果集结束&lt;/font&gt;&lt;/h3&gt;<br>
+    &lt;hr&gt;<br>
+    &lt;p&gt;&lt;font color=&quot;#000000&quot;&gt;TreeServer-Internet数据连接器测试。&lt;/font&gt;&lt;/p&gt;</p>
+    <p>&lt;/body&gt;<br>
+    &lt;/html&gt;</p>
+    <p>&lt;%begindetail%&gt; 与 &lt;%enddetail%&gt; 
+    部分限定了从数据库中返回的行将出现在文档何处。从查询返回的列用&lt;%%&gt;括起来，如此例中的&lt;%bh%&gt;,&lt;%name%&gt;,&lt;%bm%&gt;,&lt;%a04%&gt;与&lt;%a15%&gt;。</p>
+    <p>结果 Web 页面如下:</p>
+    <p><img SRC="Image11.gif" WIDTH="552" HEIGHT="413"></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

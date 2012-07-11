@@ -1,0 +1,38 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>函数接口定义</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>函数接口定义</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">short _cdecl xexpdlltest( OpndType 
+    *lpOpnd, short ParaNum, short *OpndTop, \</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">short *CurState )</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">// OpndType *lpOpnd; pointer of opnd 
+    stack<br>
+    // short ParaNum; parameter number for this action<br>
+    // short *OpndTop; system opnd top<br>
+    // short *CurState; the action sequence working state</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">说明：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">1.返回结果为短整型。<br>
+    2.函数调用方式为C语言规范。<br>
+    3.lpOpnd堆栈指针。<br>
+    4.ParaNum参数数量。<br>
+    5.OpndTop栈顶指针。<br>
+    6.CurState动作引用时态。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL的动作函数都具有时态：第一次运算(CurState=0)，最后一次运行(CurState-1)，单态动作引用(CurState-2)，其它运行状态(CurState1)。之所以提供时态，是因为动作在不同情况表表现为不同工作，如求平均值：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">第一次运算：初始内存空间，保存初值；<br>
+    第二次运算：累加值，累计加的次数；</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">最后一次运算：两值相除。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

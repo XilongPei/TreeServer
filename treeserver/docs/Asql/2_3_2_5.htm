@@ -1,0 +1,41 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>New Page 5</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+
+<table border="1" width="100%">
+  <tr>
+    <td width="100%">　<p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]sksum(&lt;数字型域名&gt;,结果变量名称&lt;字符串型表达式&gt;...)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]对各数字型域中的值分别求和。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">如果结果变量名称给出，结果为：变量名=求和值</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">否则结果为：结果输出：域名.6=和（6为和代码）。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">操作时，在第一条记录处使用此函数，返回值为第一条纪录的数值；在中间执行， 
+    返回值为第一条记录到当前记录所有值的和；在最后执行，返回值为整个域的和。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> 
+    因为域名与变量名区分的困难。一个函数中又可支持多个相同运算，结果变量名称给的方式必须为字符串，而不是一个具体的变量名。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*求全体人员的职能岗位工资总和和级别技能工资总和。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0<br>
+    TO \TG\DATA\CXMAIN,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ asksum(TOTAL_S,DUTY_S);<br>
+    END<br>
+    ACTION wsymbol(<a href="file://TG//DATA//CXMAIN.DAT">&quot;\\TG\\DATA\\CXMAIN.DAT&quot;</a>)</span></p>
+    <i><p ALIGN="JUSTIFY"><span style="font-size: 12px">也可以这样：</span></p>
+    </i><p ALIGN="JUSTIFY"><span style="font-size: 12px"><i>FROM \TG\DATA\SUB0</i><br>
+    TO \TG\DATA\CXMAIN,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ asksum(TOTAL_S,&quot;TOTAL_S&quot;,DUTY_S,&quot;DUTY_S&quot;);<br>
+    END<br>
+    ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</span></td>
+  </tr>
+</table>
+</body>
+</html>

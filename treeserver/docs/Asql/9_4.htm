@@ -1,0 +1,89 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>ASQL在医疗保险系统中应用的一个实例</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><b><span style="font-size: 12px">ASQL在医疗保险系统中应用的一个实例</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">医疗保险系统是一个涉及到电子货币支付、大量数据管理、有一定实时性要求的一个管理住处系统。在医疗保险系统中，ASQL得到了充分的应用，下面的这个例子就是决定充分引进ASQL的起因之一，透过这个例子，容易看到ASQL适合解决的事务。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">医疗保险系统中有下面两个表（为了说明的方便，被简化了）：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(1) 收费信息表：DRUGBOOK，具体结构如下：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">H_I 15（C） 医保号<br>
+    S1 9.2（N） 本次费用<br>
+    S2 9.2（N） 自付费用<br>
+    S3 9.2（N） 医保报销费用</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(2) 个人帐户表：SELFQ，具体结构如下：<br>
+    H_I 15（C） 医保号<br>
+    Q1 9.2（N） 付费段一<br>
+    Q2 9.2（N） 付费段二<br>
+    Q3 9.2（N） 付费段三</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">问题是这样的：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">对DRUGBOOK中的每条收费记录到SELFQ中查其目前帐户消费情况，根据这个情况，决定本次费用S1如何分摊到S2和S3中，分摊完毕后，要将新的个个帐户信息写回到SELFQ中，因为这时个人已产生消费行为。</span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">SQL解法：</span></p>
+    </b><p ALIGN="JUSTIFY"><span style="font-size: 12px">/*对收费表DRUGBOOK的每条记录，将信息查询至MH_I,MS1,MS2,MS3中*/<br>
+    SELECT H_I, Q1, Q2, Q3<br>
+    FROM SELFQ<br>
+    WHERE<br>
+    H_I=当前DRUGBOOK中当前记录的H_I<br>
+    /*根据付费算法，计算本次付费的S2,S3,Q1,Q2,Q3的新值<br>
+    这里给出的算法不精确，只是表示一种算法 */</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">if (ms1&gt;s1)<br>
+    {<br>
+    ms1=ms1-s1;<br>
+    } else {<br>
+    s1=s1-ms1;<br>
+    ms1=0;<br>
+    ……………<br>
+    }</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*修改个人帐户SELFQ*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">UPDATE<br>
+    SET Q1=MS1,Q2=MS2,Q3=MS3<br>
+    FROM SELFQ<br>
+    WHERE<br>
+    H_I=当前DRUGBOOK中当前记录的H_I</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*修改收费信息DRUGBOOK*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">UPDATE<br>
+    SET S1=………<br>
+    FROM SELFQ<br>
+    WHERE<br>
+    H_I=当前DRUGBOOK中当前记录的H_I</span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL解法：</span></p>
+    </b><p ALIGN="JUSTIFY"><span style="font-size: 12px">UPDATE<br>
+    FROM DRUGBOOK,SELFP,*H_I<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 /*对收费的每条记录*/<br>
+    BEGIN<br>
+    Q1:=Q1-S1<br>
+    END<br>
+    BEGIN</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*这个BEGIN相当于IF后的ELSE，这是负动作，条件表达式为假时才执行它。它还可以再嵌套下去*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">1 $ Q1:=Q1-M1<br>
+    ……………<br>
+    END<br>
+    1 $ CALREC(H_I)<br>
+    END</span></p>
+    <p ALIGN="JUSTIFY"><i><span style="font-size: 12px">也可以这样</span></p>
+    </i><p ALIGN="JUSTIFY"><span style="font-size: 12px">UPDATE<br>
+    FROM DRUGBOOK,SELFP,*H_I<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ calyb(1,H_I,SELFQ.H_I);CALREC(2,H_I,SELFQ.H_I)<br>
+    /*calyb()是用户自定义函数，它负责计算。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">这里之所以传进去二个域名，是为了让这些域参数能将运算源表信息传给用户函数。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">END</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">处理过程性很强的业务，不是SQL数据库的度项。本例中，假定DRUGBOOK有3000条记录，SELFQ有7万条记录，靠SQL处理每条记录需2秒（实际上在PC服务器上远不止2秒），共耗时：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">2秒*3000=6000秒=100分钟<br>
+    而靠ASQL解决需时不足5分钟。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

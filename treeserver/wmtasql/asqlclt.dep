@@ -1,0 +1,626 @@
+# Microsoft Developer Studio Generated Dependency File, included by Asqlclt.mak
+
+.\Arrayutl.c : \
+	".\Arrayutl.h"\
+	
+
+.\Askact.c : \
+	".\Asqlana.h"\
+	".\Asqlutl.h"\
+	".\Btree.h"\
+	".\Dio.h"\
+	".\Diodbt.h"\
+	".\Dioext.h"\
+	".\dir.h"\
+	".\ExchBuff.h"\
+	".\Mistools.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\Tabtools.h"\
+	".\ts_com.h"\
+	".\Ts_const.h"\
+	".\Tsdbfutl.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Askact2.c : \
+	".\Asqlana.h"\
+	".\Asqlutl.h"\
+	".\Btree.h"\
+	".\Btreeext.h"\
+	".\cfg_fast.h"\
+	".\dbs_util.h"\
+	".\Dio.h"\
+	".\Diodbt.h"\
+	".\Dioext.h"\
+	".\dir.h"\
+	".\ExchBuff.h"\
+	".\Filetool.h"\
+	".\Hzth.h"\
+	".\Memutl.h"\
+	".\Mistools.h"\
+	".\Mistring.h"\
+	".\ndx_man.h"\
+	".\odbc_dio.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\syscall.h"\
+	".\t_lock_r.h"\
+	".\ts_com.h"\
+	".\Ts_const.h"\
+	".\Ts_dict.h"\
+	".\Wmtasql.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"d:\program files\microsoft visual studio\vc98\include\sqltypes.h"\
+	
+
+.\Askactuv.c : \
+	".\Asqlana.h"\
+	".\Btree.h"\
+	".\Dio.h"\
+	".\dir.h"\
+	".\Mistools.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Asqlana.c : \
+	".\ascii_s.h"\
+	".\Asqlana.h"\
+	".\Asqlerr.h"\
+	".\Asqlutl.h"\
+	".\Btree.h"\
+	".\Btreeext.h"\
+	".\cfg_fast.h"\
+	".\db_s_ndx.h"\
+	".\dbtree.h"\
+	".\Dio.h"\
+	".\Dioext.h"\
+	".\dir.h"\
+	".\ExchBuff.h"\
+	".\Idbase.h"\
+	".\Memutl.h"\
+	".\Mistring.h"\
+	".\odbc_dio.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\str_gram.h"\
+	".\strutl.h"\
+	".\t_lock_r.h"\
+	".\ts_com.h"\
+	".\Ts_const.h"\
+	".\Ts_dict.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"d:\program files\microsoft visual studio\vc98\include\sqltypes.h"\
+	
+
+.\Asqlerr.c : \
+	".\Asqlana.h"\
+	".\Asqlerr.h"\
+	".\Btree.h"\
+	".\cfg_fast.h"\
+	".\Dio.h"\
+	".\dir.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Asqlmain.c : \
+	".\Asqlana.h"\
+	".\Btree.h"\
+	".\Dio.h"\
+	".\dir.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Asqlpath.c : \
+	".\Asqlana.h"\
+	".\asqlpath.h"\
+	".\Btree.h"\
+	".\Dio.h"\
+	".\dir.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Asqlutl.c : \
+	".\Asqlana.h"\
+	".\Asqlutl.h"\
+	".\Btree.h"\
+	".\Dio.h"\
+	".\dir.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Btree.c : \
+	".\Btree.h"\
+	".\Btreeadd.h"\
+	".\Dio.h"\
+	".\Memutl.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\Wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Btreeadd.c : \
+	".\Btree.h"\
+	".\Btreeadd.h"\
+	".\Dio.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\Wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Btreeext.c : \
+	".\Btree.h"\
+	".\Btreeext.h"\
+	".\Dio.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Btreewmt.c : \
+	".\Btree.h"\
+	".\Dio.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\Wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Cfg_fast.c : \
+	".\cfg_fast.h"\
+	".\Dio.h"\
+	".\Filetool.h"\
+	".\Macro.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\Wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\charutl.c : \
+	".\charutl.h"\
+	
+
+.\Db_s_ndx.c : \
+	".\Asqlana.h"\
+	".\Btree.h"\
+	".\Btreeext.h"\
+	".\db_s_ndx.h"\
+	".\Dio.h"\
+	".\dir.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\dbftotal.c : \
+	".\dbftotal.h"\
+	".\Dio.h"\
+	".\Mistools.h"\
+	".\mxccfg.h"\
+	".\rjio.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	
+
+.\Dbs_util.c : \
+	".\cfg_fast.h"\
+	".\dir.h"\
+	".\Filetool.h"\
+	".\strutl.h"\
+	".\Ts_dict.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\des.c : \
+	".\des.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Dio.c : \
+	".\Btree.h"\
+	".\dbtree.h"\
+	".\Dio.h"\
+	".\Mistring.h"\
+	".\mxccfg.h"\
+	".\odbc_dio.h"\
+	".\rjio.h"\
+	".\sql_dio.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\t_int64.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"d:\program files\microsoft visual studio\vc98\include\sqltypes.h"\
+	
+
+.\Diodbt.c : \
+	".\dbtree.h"\
+	".\Dio.h"\
+	".\Diodbt.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\Wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Dioext.c : \
+	".\Btree.h"\
+	".\cfg_fast.h"\
+	".\Dio.h"\
+	".\Dioext.h"\
+	".\Memutl.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\Ts_dict.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Diofile.c : \
+	".\Arrayutl.h"\
+	".\Btree.h"\
+	".\cfg_fast.h"\
+	".\dbtree.h"\
+	".\Dio.h"\
+	".\Diodbt.h"\
+	".\Dioext.h"\
+	".\dir.h"\
+	".\Filetool.h"\
+	".\Memutl.h"\
+	".\Mistring.h"\
+	".\mxccfg.h"\
+	".\odbc_dio.h"\
+	".\rjio.h"\
+	".\sql_dio.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\Ts_dict.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"d:\program files\microsoft visual studio\vc98\include\sqltypes.h"\
+	
+
+.\ExchBuff.c : \
+	".\ExchBuff.h"\
+	".\terror.h"\
+	".\tlimits.h"\
+	".\ts_com.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Filetool.c : \
+	".\dir.h"\
+	".\Filetool.h"\
+	".\Memutl.h"\
+	".\Mistring.h"\
+	
+
+.\Histdata.c : \
+	".\Asqlana.h"\
+	".\Btree.h"\
+	".\cfg_fast.h"\
+	".\Dio.h"\
+	".\dir.h"\
+	".\ExchBuff.h"\
+	".\Filetool.h"\
+	".\histdata.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\ts_com.h"\
+	".\Ts_const.h"\
+	".\Ts_dict.h"\
+	".\Wmtasql.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Hzth.c : \
+	".\Btree.h"\
+	".\cfg_fast.h"\
+	".\Dio.h"\
+	".\Filetool.h"\
+	".\Hzth.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\Ts_dict.h"\
+	".\Wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Macro.c : \
+	".\cfg_fast.h"\
+	".\Macro.h"\
+	".\Mistring.h"\
+	".\Ts_dict.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Mistools.c : \
+	".\Btree.h"\
+	".\Dio.h"\
+	".\Mistools.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Mistring.c : \
+	".\dir.h"\
+	".\Mistring.h"\
+	".\Wst2mt.h"\
+	
+
+.\Mxccfg.c : \
+	".\Filetool.h"\
+	".\Mistring.h"\
+	".\mxccfg.h"\
+	
+
+.\Ndx_man.c : \
+	".\Btree.h"\
+	".\cfg_fast.h"\
+	".\Dio.h"\
+	".\Mistring.h"\
+	".\ndx_man.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\Ts_dict.h"\
+	".\Wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\odbc_dio.c : \
+	".\Btree.h"\
+	".\Dio.h"\
+	".\Dioext.h"\
+	".\Mistring.h"\
+	".\odbc_dio.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\Wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"d:\program files\microsoft visual studio\vc98\include\sqltypes.h"\
+	
+
+.\Parabrk.c : \
+	".\parabrk.h"\
+	
+
+.\Rjio.c : \
+	".\Mistring.h"\
+	".\mxccfg.h"\
+	".\rjio.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Str_gram.c : \
+	".\strutl.h"\
+	
+
+.\Strutl.c : \
+	".\strutl.h"\
+	
+
+.\Syscall.c : \
+	".\dir.h"\
+	".\strutl.h"\
+	".\syscall.h"\
+	
+
+.\t_int64.c : \
+	".\t_int64.h"\
+	
+
+.\T_lock_r.c : \
+	".\Dio.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\t_lock_r.h"\
+	".\Wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Tabtools.c : \
+	".\Btree.h"\
+	".\Dio.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\Tabtools.h"\
+	".\Wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\treepara.c : \
+	".\treepara.h"\
+	
+
+.\treevent.c : \
+	".\Treevent.h"\
+	".\Wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Ts_dict.c : \
+	".\cfg_fast.h"\
+	".\Dio.h"\
+	".\ExchBuff.h"\
+	".\Memutl.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\ts_com.h"\
+	".\Ts_const.h"\
+	".\Ts_dict.h"\
+	".\Wst2mt.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Tsdbfutl.c : \
+	".\Asqlana.h"\
+	".\Btree.h"\
+	".\cfg_fast.h"\
+	".\dbtree.h"\
+	".\Dio.h"\
+	".\Diodbt.h"\
+	".\dir.h"\
+	".\ExchBuff.h"\
+	".\Filetool.h"\
+	".\Mistools.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\TAccount.h"\
+	".\ts_com.h"\
+	".\Ts_const.h"\
+	".\Ts_dict.h"\
+	".\Tsdbfutl.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Wmtasql.c : \
+	".\Asqlana.h"\
+	".\Asqlerr.h"\
+	".\Btree.h"\
+	".\cfg_fast.h"\
+	".\dbtree.h"\
+	".\Dio.h"\
+	".\dir.h"\
+	".\ExchBuff.h"\
+	".\Filetool.h"\
+	".\histdata.h"\
+	".\Hzth.h"\
+	".\Mistring.h"\
+	".\mxccfg.h"\
+	".\odbc_dio.h"\
+	".\rjio.h"\
+	".\sql_dio.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\TAccount.h"\
+	".\treepara.h"\
+	".\Treevent.h"\
+	".\ts_com.h"\
+	".\Ts_const.h"\
+	".\Ts_dict.h"\
+	".\TSCommon.h"\
+	".\Tsdbfutl.h"\
+	".\Wmtasql.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"d:\program files\microsoft visual studio\vc98\include\sqltypes.h"\
+	
+
+.\wst2mt.c : \
+	".\Wst2mt.h"\
+	
+
+.\Xexp.c : \
+	".\ascii_s.h"\
+	".\Asqlutl.h"\
+	".\Btree.h"\
+	".\charutl.h"\
+	".\Dio.h"\
+	".\Diodbt.h"\
+	".\dir.h"\
+	".\Mistools.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	
+
+.\Xexpfun.c : \
+	".\Asqlana.h"\
+	".\asqlpath.h"\
+	".\Btree.h"\
+	".\Btreeext.h"\
+	".\cfg_fast.h"\
+	".\des.h"\
+	".\Dio.h"\
+	".\Dioext.h"\
+	".\dir.h"\
+	".\Hzth.h"\
+	".\Mistools.h"\
+	".\Mistring.h"\
+	".\Sqlca.h"\
+	".\Sqlda.h"\
+	".\strutl.h"\
+	".\Ts_dict.h"\
+	".\Wst2mt.h"\
+	".\Xexp.h"\
+	"d:\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	

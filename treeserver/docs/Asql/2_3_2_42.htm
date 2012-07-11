@@ -1,0 +1,30 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>请求ASQL运算</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>请求ASQL运算(calasql)</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]calasql( &lt;字符型表达式&gt;表示的ASQL角本 
+    )</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]该函数将将ASQL角本提交给另一ASQL事务服务引擎，待其算完结果后再返回。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">本函数在数据仓库应用中特点有用。数据仓库中可以记述本历史数据构成的表，如由学生信息1996级信息级、学生信息1997级信息级、学生信息1998级信息级组成。想一次从这三个信息集中检索出某一信息，就可以将这些表的名字存在一个数据表中，在运算时，再从这些表中取出真正数据。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]FROM \tg\data\sub0.dbf</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">TO cxmain.dbf,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    name=&quot;宋氏三雄&quot; $ callasql(&quot;FROM &quot;+storetable+&quot;\nTO 
+    cxmain1.dbf,*\nCONDITION\nBEGIN\nrecord(@1)\nEND\n&quot;)<br>
+    END</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

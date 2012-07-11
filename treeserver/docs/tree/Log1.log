@@ -1,0 +1,25 @@
+Microsoft HTML Help Compiler 4.73.8198
+
+Compiling e:\doc\tree\Tree.chm
+
+HHC3001: Warning: The file "e:\doc\tree\1_8_8.htm" has a link to a non-existent file: "e:\doc\Viadm\Image14.gif".
+HHC3001: Warning: The file "e:\doc\tree\1_5_2.htm" has a link to a non-existent file: "e:\doc\Viadm\Image6.gif".
+HHC3001: Warning: The file "e:\doc\tree\1_8_1.htm" has a link to a non-existent file: "e:\doc\Viadm\Image7.gif".
+HHC3001: Warning: The file "e:\doc\tree\1_8_2.htm" has a link to a non-existent file: "e:\doc\Viadm\Image8.gif".
+HHC3001: Warning: The file "e:\doc\tree\1_8_3.htm" has a link to a non-existent file: "e:\doc\Viadm\Image9.gif".
+HHC3001: Warning: The file "e:\doc\tree\1_8_4.htm" has a link to a non-existent file: "e:\doc\Viadm\Image10.gif".
+HHC3001: Warning: The file "e:\doc\tree\1_8_5.htm" has a link to a non-existent file: "e:\doc\Viadm\Image11.gif".
+HHC3001: Warning: The file "e:\doc\tree\1_8_6.htm" has a link to a non-existent file: "e:\doc\Viadm\Image12.gif".
+HHC3001: Warning: The file "e:\doc\tree\1_8_7.htm" has a link to a non-existent file: "e:\doc\Viadm\Image13.gif".
+HHC3001: Warning: The file "e:\doc\tree\1_5_1.htm" has a link to a non-existent file: "e:\doc\Viadm\Image5.gif".
+HHC3001: Warning: The file "e:\doc\tree\1_8_9.htm" has a link to a non-existent file: "e:\doc\Viadm\Image15.gif".
+
+Compile time: 0 minutes, 6 seconds
+171	Topics
+278	Local links
+0	Internet links
+31	Graphics
+
+
+Created e:\doc\tree\Tree.chm, 358,844 bytes
+Compression decreased file by 403,221 bytes.

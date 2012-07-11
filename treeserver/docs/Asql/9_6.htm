@@ -1,0 +1,120 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>ASQL应用角本示例</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>ASQL应用角本示例</b></span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">示例1</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM wuik.dbf<br>
+    TO drugbook.dbf,\<br>
+    MEDI_NO 10 c,INDATE 8 d ,BM 14 c,YL 18 4 n,CS 11 n,DJ 18 4 n ,\<br>
+    ZJFY 18 4 n,GTFY 18 4 n,JZFY 18 4 n,YBFY 18 4 n, \<br>
+    SUMFY 18 4 n,DEL_FLAG 4 c,HOSPITAL 10 c,\<br>
+    t1 18 2 n,t2 18 2 n,t3 18 2 n,g1 18 2 n,g2 18 2 n,g3 18 2 n,no 10 c <br>
+    condition<br>
+    begin</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">1 $ 
+    initrec(@1);askrec(@1,1);calrec(sumfy:=feeje,ybfy:=gtfy,\<br>
+    jzfy:=zjfy,gtfy:=ybfy,t1:=jzfy1,t2:=jzfy2,t3:=jzfy3,zjfy:=zffy)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* initrec(@1)清记录<br>
+    askrec(@1,1)算同名域<br>
+    calrec（）算其它域 */</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">end</span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">示例2</span></p>
+    </b><p ALIGN="JUSTIFY"><span style="font-size: 12px">/* ph_i,pname,pcharge,pxb,pnl,psflb 
+    都是string*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">pred<br>
+    string ph_i[30]<br>
+    string pname[30]<br>
+    string pcharge[30]<br>
+    string pxb[30]<br>
+    string pnl[30]<br>
+    string psflb[30]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">from (scope: h_i, 
+    &quot;320000000000000&quot;, &quot;320000000000000&quot;) people.dbf, sex.dbf, 
+    charge_t.dbf, *h_i=e_expr,sex=e_expr,charge</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">cond<br>
+    begin</span></p>
+    <p><span style="font-size: 12px">h_i==&quot;320000000000000&quot; $ ph_i:=h_i; 
+    pname:=name; pcharge:=charge; pxb:=sex.c_brif; pnl:=str(age(birthday)); 
+    psflb:=charge_t.c_brif</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">end<br>
+    action wsymbol(&quot;test.dbf&quot;)</span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">示例3</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">predicates <br>
+    date d1<br>
+    date d2<br>
+    string str[1]<br>
+    action d1 := dbfval(&quot;d:\\ls\\datedb&quot;, &quot;date1&quot;, &quot;1&quot;)<br>
+    action d2 := dbfval(&quot;d:\\ls\\datedb&quot;, &quot;date2&quot;, &quot;1&quot;)<br>
+    action str := dbfval(&quot;d:\\ls\\datedb&quot;, &quot;enjoy&quot;, &quot;1&quot;)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">from d:\ls\refre.dbf<br>
+    conditio<br>
+    begin<br>
+    str = &quot;a&quot; $ askcnt(&quot;num&quot;);<br>
+    end<br>
+    action wsymbol(&quot;num.dbf&quot;)</span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">示例4</span></p>
+    </b><p ALIGN="JUSTIFY"><span style="font-size: 12px">/*将数组传回客户端*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">pred<br>
+    long x[10,10]<br>
+    long y[10,10]<br>
+    act webstream(x)<br>
+    act webstream(y)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*在客户端，须用一连续内存存放这些数组数据*/</span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">示例5</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* 
+    统计一张表，横表头为可能出现的性别(sex)，坚表头为可能出现的单位(wu_name)*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">pred<br>
+    string strx[32000]<br>
+    string stry[32000] /*为提高查找分组关键字速度而设的临时字符串*/<br>
+    long xx[30,10] /*假定该表最多30行，10列*/<br>
+    int i1,i2 /*分组关键字长度*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*X轴可出现情况分析*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">from lz0</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*横表头描述到一张表中*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">to xrd.dbf, L1 10 C<br>
+    groupby sex<br>
+    groupaction calrec(L1:=sex);strx:=strx+sex+&quot;,&quot;<br>
+    cond<br>
+    begin<br>
+    end</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*Y轴可出现情况分析*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">from lz0<br>
+    groupby wu_name<br>
+    groupaction calrec(L1:=wu_name);stry:=stry+wu_name+&quot;,&quot;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*坚表头描述到一张表中*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">to yrd.dbf, L1 10 C<br>
+    cond<br>
+    begin<br>
+    end</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*X，Y轴单一关键字大小*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">act i1 := at(&quot;,&quot;,stry)<br>
+    act i2 := at(&quot;,&quot;,strx)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*进行实际统计*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">from lz0<br>
+    cond<br>
+    begin</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*通知ASQL本次统计最多有30行*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">stat ,30</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">1 /*统计总约束条件，这里为永真*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">begin</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">1 $ staty( at(wu_name,stry)/i1 )<br>
+    1 $ statx( at(sex,strx)/i2, xx )</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">end<br>
+    end</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*将统计结果写出*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">act warray(&quot;test&quot;, xx)</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

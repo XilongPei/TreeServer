@@ -1,0 +1,29 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>New Page 6</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+
+<table border="1" width="100%">
+  <tr>
+    <td width="100%">　<p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]askxsum(&lt;数字型域名&gt;,&lt;数字型域名&gt;...&lt;数字型变量&gt;)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]将参量所列出的所有数字型域中的全部值迭加起来，放入&lt;数字型变量&gt;中。该&lt;数字型变量&gt;必须是传地址方式，即变量引用的前面要有符号&amp;。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15">ASQL对变量引用有两种办法，通常是传值方式，但有些时侯需要变量从函数中将值带回来，这在程序语言中叫传地址，即我告诉你我的信息放在什么地方，向ASQL函数传地址的方法是在变量名前加&amp;，如：&amp;num</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*求全体人员的职能岗位工资和级别技能工的总和，存入l。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">PREDICATES<br>
+    float l<br>
+    FROM \TG\DATA\SUB0.DBF<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ askxsum(TOTAL_S,DUTY_S,&amp;l);<br>
+    END<br>
+    ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DBF&quot;)</span></td>
+  </tr>
+</table>
+</body>
+</html>

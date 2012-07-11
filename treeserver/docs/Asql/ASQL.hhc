@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="Window Styles" value="0x800025">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="目录">
+		<param name="Local" value="mulu.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="前言">
+		<param name="Local" value="index.htm">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="基础">
+			<param name="Local" value="1.htm">
+			<param name="ImageNumber" value="1">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="增强的结构化查询语言----ASQL">
+			<param name="Local" value="2.htm">
+			<param name="ImageNumber" value="1">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="ASQL应用">
+			<param name="Local" value="3.htm">
+			<param name="ImageNumber" value="1">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="代码管理">
+			<param name="Local" value="4.htm">
+			<param name="ImageNumber" value="1">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="系统数据字典">
+			<param name="Local" value="5.htm">
+			<param name="ImageNumber" value="1">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="数据变动日志">
+			<param name="Local" value="6.htm">
+			<param name="ImageNumber" value="1">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="自定义函数">
+			<param name="Local" value="7.htm">
+			<param name="ImageNumber" value="1">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="ASQL运行环境">
+			<param name="Local" value="8.htm">
+			<param name="ImageNumber" value="1">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="附录">
+			<param name="Local" value="9.htm">
+			<param name="ImageNumber" value="1">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="TREESVR并行事务机制">
+			<param name="Local" value="10.htm">
+			<param name="ImageNumber" value="1">
+			</OBJECT>
+	</UL>
+</UL>
+</BODY></HTML>

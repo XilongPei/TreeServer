@@ -1,0 +1,54 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>快速事务提交</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>快速事务提交</strong></p>
+    <p align="left"><strong>　</strong></p>
+    <p><font size="3"><span style="font-size: 12px">任何一种成功的数据库系统都有一整套保证事务完整性的办法，但每一种方法都有其局限性。TreeSVR是一种整体上以事务为处理对象的事务服务器，兼有数据库的许多能力，它对事务的提交办法是：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">准备好需向数据库提交的数据，然后最小化锁定资源（即在算法上使锁定的资源最小），待整个事务处理完后，统一快速提交。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">事务快速提交文件是一个内部格式的临时文件，一般在事务执行完后自运放弃。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">先形成这个文件，然后快速提交它。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">下面一段ASQL角本将引用TreeSVR快速事务提交机制，予以执行。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">update</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">from doctor</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">cond</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">begin</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">1 $ 
+    calrec(1,doctor.branch:=&quot;123456789&quot;)</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">end</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">在快速事务提交执行过程中，TreeSVR将利用一种“伪页面锁”来对记录实施锁定，以保证在快速任务已经形成提交，但还未提交过程中，其它事务对记录的修改。在数据库领域中，这称为二阶段提交(2-phase-commit)技术。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">TreeSVR采用先来先服务的办法解决锁冲突，即在一个事务准备操作一个资源，而该资源已经被其它事务锁定，如想修改一条记录，而该记录已经被锁定，则经过1秒钟（这个值可以通过配置文件设置）的等待，还得不到资源，则放弃事务，向客户端回馈事务不成功信息。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">所谓“伪页面锁”， 
+    可以这样描述：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">TreeSVR为每个数据表分配一定数量的锁，缺省为1024把，每把锁代表“记录数据/锁数量”条记录，这样，只利用很少的一些锁，就可以解决资源引用冲突问题了，它不是一般的“记录锁（record 
+    lock）”，基于DBF数据结构也无法实施“页面锁（page lock）”。通过这种锁的机制，加上TreeSVR支持的表锁(Exclusive 
+    1)可以很好地高效地解决资源引用协调问题。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">/*algorithm:</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">1.a page like lock algorithm</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">2.i means one lock</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">3.one lock should be use only once, if it 
+    has been locked more than once</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">once freeRecLock() call will free the lock</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">/ record M+1</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">| record M+2</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">df-&gt;pwLocksByThread[i] ------+ record 
+    M+3</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">| record M+......</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">\ record M+N</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">N = df-&gt;rec_num / TOTAL_LOCKS_PER_DF</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">*/</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">快速事务提交中的锁定只对calrec()动作函数有效。</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

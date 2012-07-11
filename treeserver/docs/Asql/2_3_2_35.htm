@@ -1,0 +1,30 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>记录号传回客户端</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>记录号传回客户端(mvewno)</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]mvewno(表示源标记的整数或域名)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]将当前源中由源标记或域名（源中的第一张表）指示的表的当前记录号打成包传给客户端。源标记为1表示第一个源表，为2不第二个源表……</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">包的格式为TreeSVR网络传输包。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">包的内容部分为：为长整数数组。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM sub0<br>
+    TO cxmain.dbf,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    at(&quot;上海&quot;,hzth(GRAD_CLLG))!=0 $ distinct(POST_RANK);mvewno(1)<br>
+    END</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

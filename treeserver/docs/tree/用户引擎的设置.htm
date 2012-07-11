@@ -1,0 +1,73 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>用户引擎的设置</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><font face="黑体"><strong>用户引擎的设置</strong></font></p>
+    <p>　</p>
+    <p><font size="3"><span style="font-size: 12px">用户引擎集中的存放在 
+    &lt;TreeServerInstallDir&gt;/Engine/ 目录下，配置文件在&lt;TreeServerInstallDir&gt;/Config/TEngine.ini 
+    中。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">/**********************************/</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">/*ASQL为内置引擎*/</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">[Transaction Engine]</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">iSQL = Informix ODBC function engine</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">File = File Service engine</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Hello = test</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">David = </span></font></p>
+    <p><font size="3"><span style="font-size: 12px">[iSQL]</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Engine = c:\Program 
+    Files\TreeServer\Engine\isql.dll</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Command = isql</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">EntryFunction = iSQLEntry</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Capability = m-s</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">EnableTimer = 0 </span></font></p>
+    <p><font size="3"><span style="font-size: 12px">EnableIdle = 0</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">TimeOut = 100000</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Enable = 1</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">[FILE]</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Engine = c:\Program 
+    Files\TreeServer\Engine\filesvc.dll</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Command = File</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">EntryFunction = MyExportFunction</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Capability = m--</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">EnableTimer = 0 </span></font></p>
+    <p><font size="3"><span style="font-size: 12px">EnableIdle = 0</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">TimeOut = 60000</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Enable = 1</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">[Hello]</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Engine = c:\Program 
+    Files\TreeServer\Engine\Hello.dll</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Command = Hello</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">EntryFunction = MyExportFunction</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Capability = m-s</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">EnableTimer = 0 </span></font></p>
+    <p><font size="3"><span style="font-size: 12px">EnableIdle = 0</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">TimeOut = 60000</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Enable = 1</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">[David]</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Engine = c:\Program 
+    Files\TreeServer\Engine\David.dll</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Command = David</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">EntryFunction = MyExportFunction</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Capability = m-s</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">EnableTimer = 0 </span></font></p>
+    <p><font size="3"><span style="font-size: 12px">EnableIdle = 0</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">TimeOut = 60000</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">Enable = 1</span></font></p>
+    <p><b><font size="3"><span style="font-size: 12px">说明：</span></font></b></p>
+    <p><font size="3"><span style="font-size: 12px">Capability = mes</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">大小写不区分，M表示多线程的，E表示是否独占，S是否自身具备调度能力。其否定用减号表示。</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

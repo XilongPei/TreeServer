@@ -1,0 +1,44 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>New Page 10</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+
+<table border="1" width="100%">
+  <tr>
+    <td width="100%">　<p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]askrec(域名[，1])</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]依照域从源中将每个域的值放至目标中，同时目标中增加一条记录。如图2.10所示。</span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px"><img SRC="images/Image13.gif" WIDTH="336"
+    HEIGHT="189"></span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px">图2.10 记录按域复制示意图</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">如果域名以具体名字形式给出，它必须是源中有的域。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">如果第二个参数存在，则表示用源中的域的内容去填目标表中的相应域（名字相同），但是不在目标表中增加记录。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例1]/*新建一个只有序号、姓名、生日的子数据库。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0.DBF<br>
+    TO \TG\DATA\SUBA, code,name,birthday<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ askrec(code);<br>
+    END</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例2]/*新建一个只有序号、姓名、生日的子数据库。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0.DBF<br>
+    TO \TG\DATA\SUBA, code,name,birthday,salary<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ askrec(@1,1);calrec(salary:=salary)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/* askrec()负责从源中提取相应的域，calrec()负责重新记录salary域，同时向目标表中增加一条记录*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">END</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15">askrec()在填域内容前并不先清空记录缓冲区，这带来两个问题：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(1)真正新记录，需主动清一下。例如：1 
+    $ initrec(@1);askrec(@1)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(2)利用事先赋值。例如：1 $ 
+    fld1:=value;askrec(@1)</span></td>
+  </tr>
+</table>
+</body>
+</html>

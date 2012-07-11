@@ -1,0 +1,43 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>New Page 1</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><strong>TreeSVR并行事务机制</strong></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">……ASQL角本<br>
+    PARDO<br>
+    TB Transaction Name,Transaction Type<br>
+    ……ASQL角本</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ENDTB Transaction Name,</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">TB Transaction Name,Transaction Type</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">……ASQL角本<br>
+    ENDTB Transaction Name<br>
+    …………</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">TB Transaction Name,Transaction Type</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">……ASQL角本</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ENDTB Transaction Name<br>
+    ENDPAR</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">……ASQL角本</span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">关键字说明：</span></p>
+    <p ALIGN="JUSTIFY"></b><span style="font-size: 12px">PAR par(价值相等的，来源于容错系统设计语言)<br>
+    TB Transaction Block, 事务块<br>
+    Transaction Name 事务名称<br>
+    Transaction Type 事务类型，TreeSVR根据事务类型决定引用哪个服务器来完成</span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">其它说明：</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">一个PARDO段称为一个并发事务块（par 
+    transaction block）。<br>
+    一个PARDO段可以包含多个可以并行执行的事务，这些事务完成各自的任务。<br>
+    执行PARDO段内描述的事务的用户身份是本ASQL角本的用户身份。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

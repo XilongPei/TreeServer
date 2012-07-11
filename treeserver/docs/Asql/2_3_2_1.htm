@@ -1,0 +1,62 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>求平均(askavg)</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>求平均(askavg)</strong></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]askavg(&lt;数字型域名&gt;,[结果变量名称&lt;字符串型表达式&gt;].…..)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]对各数字型域中的值分别求平均值。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> 
+    本函数运算前，系统将自动创建娈量（如果该名称的变量不存在），而变量的名称由第二个参数给出，若第二个参数没给，系统自动产生一个名称，产生名称的规则为：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">域名,动作编号</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">函数askmax,askmin,asksum与此定义相同。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> 结果变量名称应符合ASQL变量名规范。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> 
+    因为域名与变量名区分的困难。一个函数中又可支持多个相同运算，结果变量名称给的方式必须为字符串，而不是一个具体的变量名。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">如果结果变量名称给出，结果为：变量名=平均值</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">否则结果为：域名.1=平均值（1为平均的代码）。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">操作时，在第一条记录处使用此函数，返回值为第一条纪录的数值；在中间执行， 
+    返回值为第一条记录到当前记录的和；在最后执行，返回值为整个域的平均值。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*求全体人员的平均职能岗位工资和平均级别技能工资。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">解法1：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0<br>
+    TO \TG\DATA\CXMAIN,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ askavg(TOTAL_S,DUTY_S);<br>
+    END<br>
+    ACT wsymbol(&quot;\\DATA\\CXMAIN.DAT&quot;)/*将结果写入CXMAIN.DAT文件中*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">解法2：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0<br>
+    TO \TG\DATA\CXMAIN,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ askavg(TOTAL_S,&quot;MTOTALS&quot;,DUTY_S,&quot;MDUTYS&quot;);<br>
+    END<br>
+    ACTION wsymbol(&quot;\\DATA\\CXMAIN.DAT&quot;)/*将结果写入CXMAIN.DAT文件中*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">解法3：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">PREDICATES<br>
+    FLOAT MTOTALS,MDUTYS<br>
+    FROM \TG\DATA\SUB0<br>
+    TO \TG\DATA\CXMAIN,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    1 $ askavg(TOTAL_S,&quot;MTOTALS&quot;,DUTY_S,&quot;MDUTYS&quot;);<br>
+    END<br>
+    ACTION wsymbol(&quot;\\DATA\\CXMAIN.DAT&quot;)/*将结果写入CXMAIN.DAT文件中*/</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+/*·ÖµØÇøÇé¿öÍ³¼Æ±í*/
+predicates      long x[6,34]
+from    tg.dbf
+condition
+begin
+statistics      x
+      #y1:   1      /*ÓÀÕæÌõ¼þ ËùÓÐÈËÔ±*/
+      #y2:   CS_TITLE>"001"
+      #y3:   WU_PRINCIP="2"
+      #y4:   WU_PRINCIP="2"&&CS_TITLE>"001"
+      #y5:   WU_PRINCIP="1"||WU_PRINCIP="4"
+      #y6:   (WU_PRINCIP="1"||WU_PRINCIP="4")&&CS_TITLE>"001"
+      del<>1
+      BEGIN
+        #x1:
+        #x2:   WU_RELATE="7"
+        #x3:   WU_RELATE<"7"
+        WU_RELATE<"7"
+        BEGIN
+        #x4:   WU_LOCATE="11"
+        #x5:   WU_LOCATE="12"
+        #x6:   WU_LOCATE="13"
+        #x7:   WU_LOCATE="14"
+        #x8:   WU_LOCATE="15"
+        #x9:   WU_LOCATE="21"
+        #x10:  WU_LOCATE="22"
+        #x11:  WU_LOCATE="23"
+        #x12:  WU_LOCATE="31"
+        #x13:  WU_LOCATE="32"
+        #x14:  WU_LOCATE="33"
+        #x15:  WU_LOCATE="34"
+        #x16:  WU_LOCATE="35"
+        #x17:  WU_LOCATE="36"
+        #x18:  WU_LOCATE="37"
+        #x19:  WU_LOCATE="41"
+        #x20:  WU_LOCATE="42"
+        #x21:  WU_LOCATE="43"
+        #x22:  WU_LOCATE="44"
+        #x23:  WU_LOCATE="45"
+        #x24:  WU_LOCATE="46"
+        #x25:  WU_LOCATE="51"
+        #x26:  WU_LOCATE="52"
+        #x27:  WU_LOCATE="53"
+        #x28:  WU_LOCATE="54"
+        #x29:  WU_LOCATE="61"
+        #x30:  WU_LOCATE="62"
+        #x31:  WU_LOCATE="63"
+        #x32:  WU_LOCATE="64"
+        #x33:  WU_LOCATE="65"
+        #x34:  WU_LOCATE>"70"
+        END
+      END
+end
+action sigmay(x,1,5,6)
+action sigmax(x,1,5,6)
+action  warray("tb03",x)
+ÿ

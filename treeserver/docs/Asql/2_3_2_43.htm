@@ -1,0 +1,31 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>请求SQL运算</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><b><span style="font-size: 12px">请求SQL运算(sql)</span></b></p>
+    <p><span style="font-size: 12px">[原型]sql( &lt;字符型表达式&gt;表示的SQL角本，&lt;字符型表达式&gt;表示的SQL角本，……)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]该函数将将SQL角本片段组合成一个角本提交给关系数据库服务引擎（以ODBC连接，如Informix、Oracle等），待其算完结果后再返回。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \tg\data\sub0.dbf<br>
+    TO cxmain.dbf,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    name=&quot;宋氏三雄&quot; $ sql(&quot;INSERT INTO TABLE RSGL VALUES ( ‘ &quot;,code,”’, 
+    “’,’ “,name, “’,’”, sex,”)”<br>
+    END</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*执行这个SQL角本就相当于向数据库服务器请求了insert 
+    into table (‘code’,’name’,’sex’)*/</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

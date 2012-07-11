@@ -1,0 +1,54 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>文件方式引用ASQL</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>文件方式引用ASQL</strong></p>
+    <p align="left">　</p>
+    <p><font size="3"><span style="font-size: 12px">DWORD tsCallAsqlSvr(HANDLE hConnect,LPCSTR 
+    szAsqlScriptFileName, LPCSTR szResultFileName，LPSTR szInstResult，DWORD 
+    dwInstResultSize);</span></font></p>
+    <p>　</p>
+    <b><p><font size="3"><span style="font-size: 12px">功能：</span></font></b></p>
+    <p><font size="3"><span style="font-size: 12px">以文件方式给ASQL脚本进行ASQL请求。如果运算结果有文件性内容，则有两种办法，一种办法是保持一个与Windows 
+    NT的连接，将用户的工作目录映射成自己的一个盘符；另一种办法是通过TreeSVR的文件传输支持取回运算结果。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">szResultFileName是为了接收在ASQL运算过程中由服务器发回来的数据，这些数据通常由ASQL的动作函数，如webprint(),webstream(),mvewno()等产生。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">ASQL服务的执行情况在szInstResult中，如果成功的话，它通常应是”ERR:0” 
+    ，执行错误的话，这里面放的是出错信息。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">sprintf(szInstResult, &quot;ERR:%d 
+    INF:%s\n%s\nXEXP:%s&quot;, \</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">ERR:ASQL错误号 \</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">ASQL错误信息, \</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">ASQL错误附属信息, \</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">表达式错误信息 {表达式错误附属信息}</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">);</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">dwInstResultSize最小应为256字节，以容纳ASQL执行结果。</span></font></p>
+    <p>　</p>
+    <b><p><font size="3"><span style="font-size: 12px">参数：</span></font></p>
+    </b><blockquote>
+      <p><font size="3"><span style="font-size: 12px">szAsqlScriptFileName：脚本文件名</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">szResultFileName：结果文件名</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">szInstResult: 
+      立即结果。为一指向字符缓冲区指针。</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">通常值的格式为：ERR:0 INF:success；</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">dwInstResultSize：缓冲区大小</span></font></p>
+    </blockquote>
+    <p>　</p>
+    <b><p><font size="3"><span style="font-size: 12px">返回：</span></font></p>
+    </b><blockquote>
+      <p><font size="3"><span style="font-size: 12px">运行结果，0为成功</span></font></p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

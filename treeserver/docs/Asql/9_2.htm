@@ -1,0 +1,94 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>ASQL语法错误代码</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><b><span style="font-size: 12px">ASQL语法错误代码</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL语法错是指在ASQL的描述语法中有不符合ASQL语法定义的成份，一般ASQL解释器在返回错误信息的同时还返回错误的位置。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">char *AsqlErrorMes( void )</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">{</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">switch( qsError ) {<br>
+    case 1001: return &quot;内存空间使用错&quot;;<br>
+    case 1002: return &quot;读语法文件时内存错&quot;;<br>
+    case 1003: return &quot;查询对象识别时内存错&quot;;<br>
+    case 1004: return &quot;动作(ACTION)处理时内存错&quot;;<br>
+    case 1005: return &quot;预定义(PREDICATE)时内存申请错&quot;;<br>
+    case 1006: return &quot;动作处理时内存错&quot;;<br>
+    case 1007: return &quot;表达式处理时内存错&quot;;<br>
+    case 1008: return &quot;表达式执行时内存错&quot;;<br>
+    case 1009: return &quot;动作表达式(ACTION)书写错&quot;;<br>
+    case 2001: return &quot;语法文件打不开&quot;;<br>
+    case 2002: return &quot;语法文件读错&quot;;<br>
+    case 2003: return &quot;查询对象(FROM)打开错&quot;;<br>
+    case 2004: return &quot;查询对象(FROM)中(SCOPE:key,start,end)描述错&quot;;<br>
+    case 2005: return &quot;SCOPE:描述中关键字错&quot;;<br>
+    case 2006: return &quot;DATABASE:描述错&quot;;<br>
+    case 2007: return &quot;no right of from tables&quot;;<br>
+    case 2008: return &quot;FROM中别名命名错，应以字母开头&quot;;<br>
+    case 3001: return &quot;注释太长&quot;;<br>
+    case 3002: return &quot;字符串未结束&quot;;<br>
+    case 3003: return &quot;表达式未结束&quot;;<br>
+    case 3004: return &quot;无统计声明或其位置不对&quot;;<br>
+    case 3005: return &quot;统计描述时表格项指示数字太大&quot;;<br>
+    case 3006: return &quot;符号识别错&quot;<br>
+    case 3007: return &quot;动作识别&quot;;<br>
+    case 3014: return &quot;变量定义(PREDICATES)出错&quot;;<br>
+    case 3016: return &quot;目标(TO)描述错&quot;;<br>
+    case 3017: return &quot;不知名关键字或BEGIN END不匹配&quot;;<br>
+    case 3018: return &quot;该出现关键字处无&quot;;<br>
+    case 3019: return &quot;查询目标(TO)描述错&quot;;<br>
+    case 3020: return &quot;预定义(PREDICATE)时不知明数据类型&quot;;<br>
+    case 3021: return &quot;预定义(PREDICATE)时变量名太长&quot;;<br>
+    case 3022: return &quot;条件(CONDITION)后无BEGIN&quot;;<br>
+    case 3023: return &quot;条件(CONDITION)中出现不知名关键字&quot;;<br>
+    case 3024: return &quot;条件(CONDITION)中BEGIN与END不对齐&quot;;<br>
+    case 3025: return &quot;目标域名源库中不存在&quot;;<br>
+    case 3026: return &quot;动作表达式出现不知名符号&quot;;<br>
+    case 3027: return &quot;条件表达式中出现不知明变量或函数&quot;;<br>
+    case 3028: return &quot;查询目标(TO)中域名错或无','号分隔&quot;;<br>
+    case 4001: return &quot;表达式分析时内存错&quot;;<br>
+    case 4002: return &quot;表达式书写错&quot;;<br>
+    case 4003: return &quot;描述性动作分析错&quot;;<br>
+    case 4004: return &quot;条件(CONDITION)一般性动作分析错&quot;;<br>
+    case 4005: return &quot;统计中没有设定统计要求&quot;;<br>
+    case 4006: return &quot;条件(CONDITION)只出现动作表达式而无条件表达式&quot;;<br>
+    case 5001: return &quot;警告:目标文件不存在&quot;;<br>
+    case 5002: return &quot;目标文件描述或创建错&quot;;<br>
+    case 5003: return &quot;分组(Group By)语法错,分组关键字太长&quot;;<br>
+    case 5004: return &quot;条件动作最后一遍执行错&quot;;<br>
+    case 5005: return &quot;描述动作执行错&quot;;<br>
+    case 5006: return &quot;条件动作第一遍执行错&quot;;<br>
+    case 5007: return &quot;内部错，函数引用错&quot;;<br>
+    case 5008: return &quot;分组索引无法建立&quot;;<br>
+    case 5009: return &quot;dSetAwake()出错&quot;;<br>
+    case 5010: return &quot;分组(Group By)索引引用错&quot;;<br>
+    case 6001: return &quot;内部错&quot;;<br>
+    case 6002: return &quot;FROM:关联关系描述错&quot;;<br>
+    case 6004: return &quot;创建连接索引时错，可能是连接关键字描述错&quot;;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">//case 6005: return &quot;从源中读取记录时错&quot;;<br>
+    case 7001: return &quot;errorStamp&quot;;<br>
+    case 7002: return &quot;取记录时出错&quot;;<br>
+    case 7003: return &quot;ENDIF与IF不匹配&quot;;<br>
+    case 7004: return &quot;ENDWHILE与WHILE不匹配&quot;;<br>
+    case 7005: return &quot;LOOP与WHILE不匹配&quot;;<br>
+    case 7006: return &quot;CALL函数但函数不存在&quot;;<br>
+    case 7007: return &quot;execGramMan()出错&quot;;<br>
+    case 7008: return &quot;ENDIF或ELSE或ENDWHILE前必须有Asql_LET&quot;;<br>
+    case 7009: return &quot;ELSE与ENDIF不匹配&quot;;<br>
+    case 9001: return &quot;目标表已经被独占打开&quot;;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">}</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">return &quot;内部错&quot;;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} // end of function AsqlErrorMes()</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

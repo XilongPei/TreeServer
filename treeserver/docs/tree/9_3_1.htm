@@ -1,0 +1,86 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>分析条件库定义</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>分析条件库定义</strong></p>
+    <p><span style="font-size: 12px"><strong>&nbsp;&nbsp; </strong>历史资料分析条件库是用来存放所有历史资料的分析条件，提供给用户进行分析的内容，是历史资料采集的依据。</span></p>
+    <p><span style="font-size: 12px">其库名为：HISTCOND.DBF</span></p>
+    <p><span style="font-size: 12px">其结构及说明如下：</span></p>
+    <p><span style="font-size: 12px">COND_CODE 历史资料分析条件编码，宽度为6，字符型，与历史资</span></p>
+    <blockquote>
+      <blockquote>
+        <p><span style="font-size: 12px">料数据库中的 COND_CODE 
+        相一致。在库中对该编码进</span></p>
+      </blockquote>
+    </blockquote>
+    <p>　</p>
+    <p><span style="font-size: 12px">行了定义性描述。当为 ASQL 时，表示 ASQL_ASK 
+    域填</span></p>
+    <p><span style="font-size: 12px">的是一个ASQL任务文件名；当为序号时，表示ASQL_ASK</span></p>
+    <p><span style="font-size: 12px">域填的是一个数据采集要求。运行时，若遇到 
+    ASQL，</span></p>
+    <p><span style="font-size: 12px">就运行相应的ASK文件,将所需采集的历史资料数据存入它</span></p>
+    <p><span style="font-size: 12px">所对应的系统自动生成的DBF文件中；若遇到编号行，系</span></p>
+    <p><span style="font-size: 12px">统读取DBF文件中对应的数据信息并放入HISTSREM.DBF供</span></p>
+    <p><span style="font-size: 12px">历史资料分析用。</span></p>
+    <p><span style="font-size: 12px">EXPLAIN 分析条件汉语说明，宽度为20，字符型，在历史资料分析</span></p>
+    <p><span style="font-size: 12px">结果输出表中作为表项。</span></p>
+    <p><span style="font-size: 12px">ASQL_ASK 当 COND_CODE 为ASQL时，为相应的 ASK文件名(可带路径)</span></p>
+    <p><span style="font-size: 12px">当 COND_CODE 为序号行时,为所要采集的数据的位置，用</span></p>
+    <p><span style="font-size: 12px">(M,N)表示,其中 M 为数据所在表的行号,N 
+    为数据所在的</span></p>
+    <p><span style="font-size: 12px">列号。宽度为80，字符型。</span></p>
+    <p><span style="font-size: 12px">RESULT_TYPE 结果类型说明，宽度为1，字符型。</span></p>
+    <p><span style="font-size: 12px">RESULT_TYPE =N 整数结果</span></p>
+    <p><span style="font-size: 12px">RESULT_TYPE =F 浮点型结果</span></p>
+    <p><span style="font-size: 12px">RESULT_TYPE =C 字符串型结果</span></p>
+    <p><span style="font-size: 12px">FLAG 条件被选中的标记位，宽度为1，字符型。</span></p>
+    <p><span style="font-size: 12px">例如 HISTCOND.DBF有以下几条记录：</span></p>
+    <p><span style="font-size: 12px">─────┬───────┬──────────┬──────┬───</span></p>
+    <p><span style="font-size: 12px">COND_CODE │ EXPLAIN │ ASQL_ASK │RESULTTYPE │FLAG</span></p>
+    <p><span style="font-size: 12px">─────┼───────┼──────────┼──────┼───</span></p>
+    <p><span style="font-size: 12px">... │... │... │... │...</span></p>
+    <p><span style="font-size: 12px">ASQL │`职称统计 │A.ASK │ │</span></p>
+    <p><span style="font-size: 12px">001001 │高级技术职称 │A.DBF(1,1) │N │</span></p>
+    <p><span style="font-size: 12px">001001 │副高级技术职称│A.DBF(2,1) │N │</span></p>
+    <p><span style="font-size: 12px">001003 │中级技术职称 │A.DBF(3,1) │N │</span></p>
+    <p><span style="font-size: 12px">001004 │初级技术职称 │A.DBF(4,1) │N │</span></p>
+    <p><span style="font-size: 12px">001005 │未定技术职称 │A.DBF(5,1) │N │</span></p>
+    <p><span style="font-size: 12px">001006 │合计 │A.DBF(6,1) │N │</span></p>
+    <p><span style="font-size: 12px">ASQL │`学历统计 │B.ASK │ │</span></p>
+    <p><span style="font-size: 12px">002001 │硕士 │B.DBF(1,1) │N │</span></p>
+    <p><span style="font-size: 12px">002002 │大学本科 │B.DBF(2,1) │N │</span></p>
+    <p><span style="font-size: 12px">002003 │大学专科 │B.DBF(3,1) │N │</span></p>
+    <p><span style="font-size: 12px">... │... │... │... │...</span></p>
+    <p><span style="font-size: 12px">─────┴───────┴──────────┴──────┴───</span></p>
+    <blockquote>
+      <blockquote>
+        <p><span style="font-size: 12px">说明：COND_CODE域为ASQL时，作为历史资料分析条件分组的标记位,它相应的 
+        ASQL_ASK域的 .ASK文件作为数据采集的文件。.ASK 
+        文件是由本系统所提供的 ASQL 
+        语言编写的，它规定了到哪儿取数据，以及取得的数据存入以.DBF为扩展名的什么文件中。程序执行遇到.ASK文件后，会自动地按照.ASK文件中所规定的条件(ASQL语法书写)取数据存入规定好的.DBF文件中。当CON_CODE域为编号时，例如001001(高级技术职称)，直接从ASQL_ASK域中所指明的 
+        ZCH.DBF文件中取数据，该文件指明了 ZCH.DBF的路径以及满足条件的数据的位置，例如：.DBF(2,1)中的(2,1)就代表 
+        ZCH.DBF中的第二条记录，第一个域。</span></p>
+      </blockquote>
+    </blockquote>
+    <p><span style="font-size: 12px">历史资料分析条件是一种统计指标体标体系。</span></p>
+    <p><span style="font-size: 12px">历史资料分析条件维护是对历史资料条件库HISTCOND.DBF的内容进行增加、删除、修改操作。增加时，用户应根据本书所提供的 
+    ASQL语言编写相应的.ASK文件,然后再写入编号行，注意不能与已有的编号相重复！另外可以变动数据位置。但应确保条件编码、说明及所采集数据的一致性。</span></p>
+    <p><span style="font-size: 12px">历史资料数据采集就是从头到尾遍历HISTCOND.DBF的过程，遇到COND_CODE为&quot;ASQL&quot;则调用ASQL解释器执行ASQL_ASK中指定的ASQL语法文件，其它时则依据取数规则取得数据然后放到结果库中去。</span></p>
+    <p><span style="font-size: 12px">取数规则：</span></p>
+    <p><span style="font-size: 12px">DBF文件名(行，列)</span></p>
+    <p><span style="font-size: 12px">行表示DBF数据库中的第几条记录，列为第几个域。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

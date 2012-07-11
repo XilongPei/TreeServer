@@ -1,0 +1,66 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>TreeServer与服务引擎间通讯协议</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>TreeServer与服务引擎间通讯协议</strong></p>
+    <p align="left"><strong>　</strong></p>
+    <p><span style="font-size: 12px">TreeServer的任务调度器与任务引擎间通过消息协调工作</span></p>
+    <p><span style="font-size: 12px">1.#define ASQL_STARTTASK_MSG 0x1001</span></p>
+    <p><span style="font-size: 12px">开始任务</span></p>
+    <p><span style="font-size: 12px">2.#define ASQL_ENDTASK_MSG 0x1002</span></p>
+    <p><span style="font-size: 12px">结束任务</span></p>
+    <p><span style="font-size: 12px">3.#define ASQL_TRAN_MSG 0x1003</span></p>
+    <p><span style="font-size: 12px">消息传递，表示交换区内数据已填，调度器或任务引擎应该对交换区内数据做出正确处理后</span></p>
+    <p><span style="font-size: 12px">将信号量置成有信号状态。</span></p>
+    <p><span style="font-size: 12px">交换区数据如何处理由交换区内数据决定。一般来说，交换区内是一个TreeServer通讯包。</span></p>
+    <p><span style="font-size: 12px">客户端与服务器端的任务协调完全靠通讯包来决定。</span></p>
+    <u><i><b><p><span style="font-size: 12px">包定义：</span></b></i></u></p>
+    <p><span style="font-size: 12px">typedef struct tagTS_COM_PROPS {</span></p>
+    <p><span style="font-size: 12px">char packetType; //'Q' 'R'</span></p>
+    <p><span style="font-size: 12px">char msgType;</span></p>
+    <p><span style="font-size: 12px">short len; //this packet length</span></p>
+    <p><span style="font-size: 12px">long lp;</span></p>
+    <p><span style="font-size: 12px">char leftPacket; //0, not; others not end;当前数据块最后一个数据包</span></p>
+    <p><span style="font-size: 12px">char endPacket; //rights given up: 0:give up；此包发送后再无包发送</span></p>
+    <p><span style="font-size: 12px">} TS_COM_PROPS;</span></p>
+    <u><i><b><p><span style="font-size: 12px">包定义说明：</span></b></i></u></p>
+    <p><span style="font-size: 12px">TreeServer包为定长4096B大小，包头为结构TS_COM_PROPS，余下的4088B用来存具本内容。</span></p>
+    <p><span style="font-size: 12px">如果一个包是上一个包的继续，则该包的头与上一个包的 
+    8个字节完全相同。</span></p>
+    <p><span style="font-size: 12px">ASQL_ENDTASK_MSG(0x1002)消息优先于包的定义，即一个信息还没完，但已收到任务结束</span></p>
+    <p><span style="font-size: 12px">消息，也做为最后一个消息。此时任务调度器息动产生一个应答包通知客户端任务已经完成。</span></p>
+    <p><span style="font-size: 12px">如果引擎函数已做出错返回，但尚未接到任务结束信息，则自动认为系统产生了一个应答信息。</span></p>
+    <p><span style="font-size: 12px">引擎函数的出错返回结果是小于10000的正数。</span></p>
+    <p><span style="font-size: 12px">对非正常状态的包做丢弃处理。</span></p>
+    <u><i><b><p><span style="font-size: 12px">限制：</span></b></i></u></p>
+    <p><span style="font-size: 12px">TreeServer的数据表定义有以下约束：</span></p>
+    <p><span style="font-size: 12px">1.记录最大：4096-sizeof(TS_COM_PROPS)+sizeof(RECPROPS)=4096-10-14=4072B。</span></p>
+    <p><span style="font-size: 12px">2.最多域数：(4096-sizeof(TS_COM_PROPS)-32)/32=(4096-10-32)/32=126个。</span></p>
+    <p><span style="font-size: 12px">3.为了充分利用空间每个表应设一系统使用域：DEL___LINK(C型,4字节长)。</span></p>
+    <p><span style="font-size: 12px">4.经TreeServer引用的表将引起结构的微小变化，但不影响FoxPro或Clipper或dBASE的使用。</span></p>
+    <u><i><b><p><span style="font-size: 12px">具体定义：</span></b></i></u></p>
+    <blockquote>
+      <ol style="font-size: 12px">
+        <li><a href="5_1_1.htm"><font size="2"><span style="font-size: 12px">任务请求包</span></font></a></li>
+        <li><a href="5_1_2.htm"><font size="2"><span style="font-size: 12px">结果应答</span></font></a></li>
+        <li><a href="5_1_3.htm"><font size="2"><span style="font-size: 12px">信息包</span></font></a></li>
+        <li><a href="5_1_4.htm"><font size="2"><span style="font-size: 12px">请求服务器状态提示</span></font></a></li>
+        <li><a href="5_1_5.htm"><font size="2"><span style="font-size: 12px">TreeServer内部协调信息包</span></font></a></li>
+        <li><a href="5_1_6.htm"><font size="2"><span style="font-size: 12px">TreeServer用户自定义引擎调用</span></font></a></li>
+      </ol>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+database lz
+to cx.dbf,aaa 10 c
+let abc:=_asqluser
+let a:=_asqlto

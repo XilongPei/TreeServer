@@ -1,0 +1,455 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>目标</title>
+</head>
+
+<body bgcolor="#EAEAFB">
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><h2 align="center"><a name="2_2_2"><font face="楷体_GB2312">目标</font></a></h2>
+    <p ALIGN="JUSTIFY">&nbsp;&nbsp;&nbsp; 
+    目标就是操作结果，也就是查询操作或统计操作产生的结果应放的位置、 
+    怎样放法，以及结果的结构。</p>
+    <p ALIGN="JUSTIFY">ASQL生成的目标结果都是xBASE标准的DBF文件。</p>
+    <p ALIGN="JUSTIFY">例1中To后面的数据库\TG\DATA\CXMAIN.DBF就是目标， 
+    即操作后的结果存放在该库中。</p>
+    <p ALIGN="JUSTIFY">目标库的表示方法：</p>
+    <p ALIGN="JUSTIFY">To 目标文件名，域名表</p>
+    <p ALIGN="JUSTIFY">如果只有目标文件名，而无域名表， 
+    表示若目标库存在则将操作结果添加在其后；若目标库不存在，则按照后面的域名表创建一个新库。</p>
+    <p ALIGN="JUSTIFY">域名表也可缺省（用*表示）。缺省后，ASQL将按源库格式创建目标库。</p>
+    <p ALIGN="JUSTIFY">域名表写法为：</p>
+    <p ALIGN="JUSTIFY">域名 长度 [小数位长度] 类型</p>
+    <p ALIGN="JUSTIFY">类型可以是C型（字符）、 N型（数字）、D型（日期）；域名为1－10个字符；长度最大为254，同xBASE 
+    数据类型要求一致。</p>
+    <p ALIGN="JUSTIFY">日期型长度固定为8个字符长。</p>
+    <p ALIGN="JUSTIFY">如果一个域名只由名字表示，则ASQL认为该域是源中已有的域，域名的写法可以是“域名”，也可以是“表名.域名”。源中已有的域在运算时可以引用它的值。如：CODE，SUB0.CODE。</p>
+    <p ALIGN="JUSTIFY">重新定义的域与源中已有的域可以混合出现，如：</p>
+    <p ALIGN="JUSTIFY">TO cxmain.dbf,CODE,NAME,ZY 10 C</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">目标中所列文件可以是相对路径也可以是绝对路径，如果是绝对路径，必须是“盘符：\路径\文件名“的形式。如果是相对路径，则表示相对于用户工作路径的根的相地路径。如果想表示源库中的路径，并且用相对路径的形式给出，则需在文件名前加一“^”，如：</p>
+    <p ALIGN="JUSTIFY">TO ^DatabaseFile.dbf</p>
+    <p ALIGN="JUSTIFY">[例6]</p>
+    <p ALIGN="JUSTIFY">①To \TG\DATA\CXMain.dbf</p>
+    <p ALIGN="JUSTIFY">②To \TG\DATA\CXMain.dbf,ZY1 10 2 N,ZY2 5 C</p>
+    <p ALIGN="JUSTIFY">③TO \TG\DATA\CXMain.dbf,CODE,NAME</p>
+    <p ALIGN="JUSTIFY">④ action zap(&quot;\\tg\\data\\l.dbf&quot;);</p>
+    <p ALIGN="JUSTIFY">from \tg\data\sub0.dbf, \tg\data\main.dbf, *code=wu_code<br>
+    to \tg\data\l.dbf<br>
+    condition<br>
+    begin<br>
+    &nbsp; 1 $ askrec(@1)<br>
+    NULL(sex) $ errstamp(1);<br>
+    end</p>
+    <p ALIGN="JUSTIFY">from \tg\del\dsub0.dbf, \tg\data\main.dbf, *code=wu_code<br>
+    to \tg\data\l.dbf<br>
+    condition<br>
+    begin<br>
+    &nbsp; 1 $ askrec(@1)<br>
+    NULL(wu_code) $ errstamp(1);end</p>
+    <p ALIGN="JUSTIFY">⑤To \TG\DATA\cxmain.DBF,* </p>
+    <p ALIGN="JUSTIFY">①表示若\TG\DATA\CXMain.dbf存在，则将操作结果在其后追加；若不存在，则创建的目标库结构同源库结构相同。</p>
+    <p ALIGN="JUSTIFY">②表示创建目标库CXMain.dbf，该库含两个域：ZY1和Z Y2，类型分别为数值型（N）和字符型（C）。</p>
+    <p ALIGN="JUSTIFY">③表示创建目标库CXMain.dbf，该库含有两个域code,name, 
+    这两个域的定义同源中相应域的定义。</p>
+    <p ALIGN="JUSTIFY">④是一个完整的ASQL语法文件。</p>
+    <p>⑤表示将按源表结构创建\TG\DATA\CXMain.dbf。</p>
+    <p align="center">　</p>
+    <h2 align="center"><font face="楷体_GB2312"><a name="2_2_3">条件段</a></font></h2>
+    <p align="center">　</p>
+    <p ALIGN="JUSTIFY">条件段是从源库到目标库的操作条件的集合，用来说明对给出的源作出何种操作。条件段由 
+    CONDITION引导，由Begin...End限定范围。</p>
+    <p ALIGN="JUSTIFY">ASQL的条件写法为SQL语言的一种扩展，它是由一个个的条件动作单元构成。</p>
+    <p ALIGN="JUSTIFY">条件动作单元为： 条件 $正动作 $负动作</p>
+    <p ALIGN="JUSTIFY">动作是由ASQL表达式来描述的，称为动作表达式。我们把满足条件所做的动作定义为正动作，不满足条件所做的动作定义为负动作。这种结构同一般程序语言中的If...Then...Else结构很类似。在条件动作单元中，条件和$ 
+    正动作必须成对出现，$负动作为可选项；如果不存在$负动作，则条件不成立时，什么也不执行，转向下一个条件动作单元。</p>
+    <p ALIGN="JUSTIFY">在例1中如果满足是中共党员或预备党员的条件，系统就执行$后面的动作表达式，反之，就不执行。</p>
+    <p ALIGN="JUSTIFY">条件也是由ASQL表达式来描述，但其结果必须是布尔型（逻辑类型），即表达式的值只有“真”和“假”两种。</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">　ASQL的真值为任意非0的整型值：</p>
+    <p ALIGN="JUSTIFY">1 $ record(@1)</p>
+    <p ALIGN="JUSTIFY">此处的1表示真值，即该条件记录为真。</p>
+    <p ALIGN="JUSTIFY">动作表达式的基本语法与条件表达式相同，就是引用函数时多了可以引用的动作函数。</p>
+    <p ALIGN="JUSTIFY">如果一个条件表达式后面同时有好几个动作要同时执行，可用分号分隔，如例7。</p>
+    <p ALIGN="JUSTIFY">[例7]</p>
+    <p ALIGN="JUSTIFY">... $record(@1);askmax(salary)</p>
+    <p ALIGN="JUSTIFY">表示同时执行两个动作。</p>
+    <p ALIGN="JUSTIFY">ASQL每个动作表达式或条件动作单元都可以重复书写，如例8。</p>
+    <p ALIGN="JUSTIFY">[例8]</p>
+    <p ALIGN="JUSTIFY">CONDITION</p>
+    <p ALIGN="JUSTIFY">Begin</p>
+    <p ALIGN="JUSTIFY">Del!=1&amp;&amp;Party_n=&quot;01&quot; $recard(@1)</p>
+    <p ALIGN="JUSTIFY">Del!=1&amp;&amp;Party_n=&quot;02&quot; $recard(@1)</p>
+    <p ALIGN="JUSTIFY">End</p>
+    <p ALIGN="JUSTIFY">但这是条件动作单元的重复，不是复合动作。</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> 复合动作:</p>
+    <p ALIGN="JUSTIFY">复合动作是指本身又是条件动作单元的动作，这里的条件动作单元是由Begin... 
+    End界定范围，并且不写$（动作引导符），如例9。</p>
+    <p ALIGN="JUSTIFY">[例9]</p>
+    <p ALIGN="JUSTIFY">CONDITION</p>
+    <p ALIGN="JUSTIFY">Begin<br>
+    Del!=1 /*现员*/<br>
+    Begin<br>
+    Party_n=&quot;01&quot;||Party_n=&quot;02&quot; $record(@1)<br>
+    End<br>
+    End</p>
+    <p ALIGN="JUSTIFY">这里，外层的Begin... End就是复合的条件动作单元，内层的Begin... 
+    End就是 Del!=1条件的动作。</p>
+    <p ALIGN="JUSTIFY">合理利用ASQL的复合动作能力将有助于结构化地、高效地解决问题。</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">　ASQL的复合条件的限定关键字BEGIN、END必须单独成一行，否则ASQL将将其认成表达式的一部分，造成语法错误。下面的写法是错误的：</p>
+    <p ALIGN="JUSTIFY">CONDITION</p>
+    <p ALIGN="JUSTIFY">Begin</p>
+    <p ALIGN="JUSTIFY">Del!=1 /*现员*/</p>
+    <p ALIGN="JUSTIFY">Begin Party_n=&quot;01&quot;||Party_n=&quot;02&quot; $record(@1)</p>
+    <p ALIGN="JUSTIFY">End</p>
+    <p ALIGN="JUSTIFY">End</p>
+    <p ALIGN="JUSTIFY">[例10]</p>
+    <p ALIGN="JUSTIFY">CONDITION</p>
+    <p ALIGN="JUSTIFY">Begin</p>
+    <p ALIGN="JUSTIFY">Del!=1&amp;&amp;(Party_n=&quot;01&quot;||Party_n=&quot;02&quot;) 
+    $record(@1)</p>
+    <p ALIGN="JUSTIFY">End</p>
+    <p ALIGN="JUSTIFY">例8、例9和例10都是查询现员中的党员情况，它们的功能完全一样， 
+    但是显</p>
+    <p ALIGN="JUSTIFY">然例9的结构更加合理，执行效率更高。</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">　正确使用ASQL的序行：</p>
+    <p ALIGN="JUSTIFY">ASQL允许一行写不下的内容分成几行书写，续行的方法是在上一行的行尾用“\”。但是因为ASQL语法的灵活性，不正确地使用续行也可能发生，下面是一个例子：</p>
+    <p ALIGN="JUSTIFY">………</p>
+    <p ALIGN="JUSTIFY">CONDITION</p>
+    <p ALIGN="JUSTIFY">BEGIN</p>
+    <blockquote>
+      <p ALIGN="JUSTIFY">1 $ calrec(code:=code);\</p>
+      <p ALIGN="JUSTIFY">sex=&quot;2&quot; $ record@1)</p>
+    </blockquote>
+    <p ALIGN="JUSTIFY">END</p>
+    <p ALIGN="JUSTIFY">………</p>
+    <p ALIGN="JUSTIFY">这个例子中错就错在该CONDITION段应该是由两句组成的，但第一句后有一个续行符，ASQL认为它是一句，恰恰这是一个合法的ASQL语法，条件$正动作$负动作，ASQL将它认为是下面这个表达式：</p>
+    <blockquote>
+      <p ALIGN="JUSTIFY">1 $ calrec(code:=code); sex=&quot;2&quot; $ record@1)</p>
+    </blockquote>
+    <p ALIGN="JUSTIFY">这个续行符不应使用。</p>
+    <p ALIGN="JUSTIFY">　</p>
+    <p>为了简化统计条件的写法，ASQL条件段中还可以出现关键字STATISTICS、SUMMER、AVERAGE、MAX、MIN等。具体统计条件的写法本书后面有详细说明。</p>
+    <p align="center">　</p>
+    <h2 align="center"><a name="2_2_4"><font face="楷体_GB2312">无条件动作语句</font></a></h2>
+    <p align="center">　</p>
+    <p ALIGN="JUSTIFY">Action是一种不受查询或统计条件限制的动作， 
+    即无论条件是否为真都必须</p>
+    <p ALIGN="JUSTIFY">执行的语句。</p>
+    <p ALIGN="JUSTIFY">Action指定的无条件动作可以放在CONDITION之前，这通常用来输入键盘信息，</p>
+    <p ALIGN="JUSTIFY">如例11；也可以出现在CONDITION之后， 
+    这通常用来将某些操作结果写入具体的库</p>
+    <p ALIGN="JUSTIFY">文件（可自动生成）中，如例12。</p>
+    <p ALIGN="JUSTIFY">[例11]</p>
+    <p ALIGN="JUSTIFY">/* 查询人员库中职务岗位工资低于L（由键盘输入）的人员名单。*/</p>
+    <p ALIGN="JUSTIFY">PREDICATE</p>
+    <p ALIGN="JUSTIFY">long L</p>
+    <p ALIGN="JUSTIFY">ACTION L:=inputstr(&quot;请输入职务岗位工资的下限：&quot;)</p>
+    <p ALIGN="JUSTIFY">From sub0.dbf<br>
+    To CXMain.dbf,*<br>
+    CONDITION<br>
+    Begin<br>
+    &nbsp; L&lt;total_s $record(@1)<br>
+    End</p>
+    <p ALIGN="JUSTIFY">[例12]</p>
+    <p ALIGN="JUSTIFY">/*统计现员的技术职务情况。*/</p>
+    <p ALIGN="JUSTIFY">PREDICATES<br>
+    LONG fxr[6,1]<br>
+    FROM \TG\DATA\SUB0.DBF<br>
+    CONDITION<br>
+    BEGIN<br>
+    DEL&lt;&gt;1<br>
+    BEGIN<br>
+    &nbsp; STATISTICS fxr<br>
+    &nbsp; #Y1: CS_TITLE=&quot;**1&quot; /*高级技术职务人数*/<br>
+    &nbsp; #Y2: CS_TITLE=&quot;**2&quot; /*副高级技术职务人数*/<br>
+    &nbsp; #Y3: CS_TITLE=&quot;**3&quot; /*中级技术职务人数*/<br>
+    &nbsp; #Y4: CS_TITLE=&quot;**4&quot; /*初级技术职务人数*/<br>
+    &nbsp; #Y5: CS_TITLE=&quot;**9&quot; /*未定技术职务人数*/<br>
+    &nbsp; #Y6: CS_TITLE&lt;&gt;&quot; &quot; /*有职称人员合计人数*/<br>
+    &nbsp; #X1:<br>
+    &nbsp; END<br>
+    END<br>
+    ACTION WARRAY(&quot;\\TG\\FX\\ZCH.DBF&quot;,fxr)</p>
+    <p ALIGN="JUSTIFY">其中内层BEGIN...END嵌套是将统计数据存入二维数组fxr，具体原理后面再讲。<br>
+    ACTION后的动作是将fxr中的数据无条件存入\TG\FX\ ZCH.DBF中（不管fxr 
+    中是否已存储了数据或是否有空项，若有空项按0存储）。</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> 
+    注意，这里用来表示库名的字符串中出现&quot;\&quot;的地方用的都是&quot;\\&quot;， 
+    这是因为&quot;\&quot;是一个转义字符，如'\t'代表制表符。所以两个&quot;\\&quot; 
+    代表一个真正意义上的&quot;\&quot;。</p>
+    <p ALIGN="JUSTIFY">　</p>
+    <h2 ALIGN="center"><a name="2_2_5"><font face="楷体_GB2312">分组与分组动作</font></a></h2>
+    <p ALIGN="center">　</p>
+    <b><p ALIGN="JUSTIFY">1.概念</b></p>
+    <p ALIGN="JUSTIFY"><b>(1)分组</b></p>
+    <p ALIGN="JUSTIFY">分组是一个数据处理上经常用到的概念，它按关键字的不同，将数据分为不同的组，把关键字相同的数据分在一组，这其实就是按关键字排序的问题。</p>
+    <p ALIGN="JUSTIFY">格式：GROUPBY (EXACT DESCEND) 关键字</p>
+    <p ALIGN="JUSTIFY">(EXACT)表是否需精确分组，缺省情况下，ASQL将下列关键字作为一个分组：</p>
+    <p ALIGN="JUSTIFY">A<br>
+    AB<br>
+    ABCD</p>
+    <p ALIGN="JUSTIFY">DESCEND表示分组是否降序，缺省为升序。</p>
+    <p ALIGN="JUSTIFY">语法示例：</p>
+    <p ALIGN="JUSTIFY">groupby (exact descend)groupby_key<br>
+    groupby (descend) groupby_key<br>
+    groupby (exact) groupby_key</p>
+    <p ALIGN="JUSTIFY">若需精确比较，需采用关键字(EXACT)。</p>
+    <p ALIGN="JUSTIFY">[例13]</p>
+    <p ALIGN="JUSTIFY">/*求群众中男女职务岗位工资、技能级别工资最高的人，并列出参与比较的所有人。*/</p>
+    <p ALIGN="JUSTIFY">From SUB0.DBF<br>
+    To CXMain,*<br>
+    groupby sex<br>
+    CONDITION<br>
+    Begin<br>
+    &nbsp; Party_n=&quot;13&quot; 
+    $record(@1);askmax(total_s,&quot;total_s&quot;,duty_s,&quot;duty_s&quot;)<br>
+    End</p>
+    <p ALIGN="JUSTIFY">本例中ASQL自动生成两个变量total_s和duty_s，ASQL是根据被求最大值的域的类型来决定生成变量的类型的，一般无小数位的数字型域为长整型，有小数位的数字型域为浮点型。</p>
+    <p ALIGN="JUSTIFY">这里就是先用groupby把人员库分成男、女两组，再执行CONDITION，完成操作。在运算过程中， 
+    ASQL 遇到分组边界， 自动将当前的运算量的中间结果存于文件CXMain.one中，也是DBF结构。该结果文件为目标文件名，后缀改为&quot;.one&quot;，该文件是一个xBASE的DBF 
+    结构文件，域名为“运算符”后面的字符串或“运算域”加上“.动作号”，域类型根据运算结果类型确定。</p>
+    <p ALIGN="JUSTIFY">精确比较需加关键字EXACT:</p>
+    <p ALIGN="JUSTIFY">from people<br>
+    to cx,*<br>
+    groupby (exact)name<br>
+    groupaction record(@1)<br>
+    cond<br>
+    begin<br>
+    end</p>
+    <b><p ALIGN="JUSTIFY">(2)分组动作</b></p>
+    <p ALIGN="JUSTIFY">分组动作是在分组完成之后，对每一组的最后一条记录进行运算的动作。分组动作与普通ASQL动作的区别是ASQL的普通动作可能对源表的每一条记录进行运算，而分组动作只对分组记录进行运算，一个分组只运算一次，有多少个分组运算多少次。</p>
+    <p ALIGN="JUSTIFY">格式：</p>
+    <p ALIGN="JUSTIFY">groupaction 动作表达式</p>
+    <p ALIGN="JUSTIFY">[例14]</p>
+    <p ALIGN="JUSTIFY">求群众中男女职务岗位工资、技能级别工资最高的人，并列出参与比较的男女</p>
+    <p ALIGN="JUSTIFY">各一人。</p>
+    <p ALIGN="JUSTIFY">From SUB0.DBF<br>
+    To CXMain,*<br>
+    groupby sex<br>
+    groupaction record(@1)<br>
+    CONDITION<br>
+    Begin<br>
+    Party_n=&quot;13&quot; $askmax(total_s,duty_s)<br>
+    End</p>
+    <p ALIGN="JUSTIFY">这里就是利用groupaction提出特例。</p>
+    <p ALIGN="JUSTIFY">本例中在生成cxmain.dbf之外还生成了一个文件cxmain.one。该文件为DBF结构。</p>
+    <p ALIGN="JUSTIFY">在有GROUPACTION的ASQL角本中，CONDITION段不可以省略，因为CONDITION段是负责通知ASQL要对每第记录进行扫描的，如果它省了ASQL将只做ACTION这样的过程性动作。但如果确实除GROUPACTION外无其它动作要做了，怎么办呢？这时的CONDITION段可以这样写：</p>
+    <p ALIGN="JUSTIFY">CONDITION<br>
+    BEGIN<br>
+    END</p>
+    <p ALIGN="JUSTIFY">即在CONDITION段中不指定任何运算，是一个空的。</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">　ASQL的分组关键字必须来源于数据源的第一张表，且必须是字符型的。</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">　如果没有指定分组动作，ASQL将在每年分组本应执行分组动作的地方，将符号表清成0，所以若想保持运算结果，一般应指定分组动作。</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">　ASQL分组运算的范围为整张表，不受CONDITION段的条件的约束。为了使分组动作有个选择，可以用表达式中的“？”：</p>
+    <p ALIGN="JUSTIFY">表达式1？表达式2：表达式3</p>
+    <p ALIGN="JUSTIFY">只有表达式1为真时才执行表达式2，否则执行表达式3。</p>
+    <p ALIGN="JUSTIFY"><b>2.作用</b></p>
+    <p ALIGN="JUSTIFY">同一个库的数据需要按不同的条件做相同的工作时，一般可用分组来减轻工作量。另外，分组也可用来排序。</p>
+    <p ALIGN="JUSTIFY">例15是分组作用的一个典型例子。</p>
+    <p ALIGN="JUSTIFY">[例15]</p>
+    <p ALIGN="JUSTIFY">求成绩库中各科课程的平均成绩。</p>
+    <p ALIGN="JUSTIFY">假设成绩库(S9611.DBF)如下：</p>
+    <p ALIGN="JUSTIFY">┌─────────┬──────────┬─────────┐<br>
+    │学号(student_nu) │ 课程代码(lesson_nu)│ 成绩(sch_record) │<br>
+    ├─────────┼──────────┼─────────┤<br>
+    │ 961100001 │ 1001 │ 96.0 │<br>
+    │ 961100001 │ 1002 │ 70.0 │<br>
+    │ ... │ ... │ ... │<br>
+    ├─────────┼──────────┼─────────┤<br>
+    │ 961100002 │ 1001 │ 68.5 │<br>
+    │ 961100002 │ 1002 │ 72.0 │<br>
+    │ ... │ ... │ ... │<br>
+    ├─────────┼──────────┼─────────┤<br>
+    │ ... │ ... │ ... │<br>
+    └─────────┴──────────┴─────────┘</p>
+    <p ALIGN="JUSTIFY">程序：</p>
+    <p ALIGN="JUSTIFY">From S9611.DBF<br>
+    To CXMAIN.DBF<br>
+    groupby lesson_nu<br>
+    CONDITION<br>
+    Begin<br>
+    &nbsp; 1 $askavg(sch_record) /*对域中所有值求平均， 
+    这里的条件表达式只有一个数字1，表示永真条件*/<br>
+    End</p>
+    <p ALIGN="JUSTIFY">分组条件动作的作用主要是从分组的类别中提取示例。</p>
+    <p ALIGN="JUSTIFY">/*应用分组及分组动作的一个综合示例宋晖 1998年7月为医院信息系统而做*/</p>
+    <p ALIGN="JUSTIFY">pred<br>
+    int mzc,jzc,qtc,ry1c,try1c,ry2c,try2c,ry3c,try3c,ryBc,tryBc,\<br>
+    &nbsp;&nbsp;&nbsp; ryLc,tryLc,tmzc,tjzc,tqtc,tghfee,tzlfee<br>
+    from d:\hospital\bin7\dbf\reg_lst.dbf,d:\hospital\dbf\branch.dbf,*branch_no<br>
+    to tempdm.dbf,ry1 14 4 N,ry2 14 4 N,ry3 14 4 N,ryB 14 4 N,\<br>
+    &nbsp;&nbsp; ryL 14 4 N,mzcs 10 N,jzcs 10 N,qtcs 10 N,ghfee 14 4 N,zlfee 14 4 N,\<br>
+    name 10 C)<br>
+    groupby branch_no<br>
+    groupaction branch_no=”901001” ? calrec(name:=branch.name,\<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    ghfee:=gh_fee.6,zlfee:=zl_fee.6,ry1:=ry1c,ry2:=ry2c,\<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    ry3:=ry3c,ryB:=ryBc,ryL:=ryLc,mzcs:=mzc,jzcs:=jzc,qtcs:=qtc);\<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    tmzc:=tmzc+mzc;tjzc:=tjzc+jzc;tqtc:=tqtc+qtc;\<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    try1c:=try1c+ry1c;try2c:=try2c+ry2c;try3c:=try3c+ry3c;\<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    tryBc:=tryBc+ryBc;tryLc:=tryLc+ryLc;\<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    tghfee:=tghfee+gh_fee.6;tzlfee:=tzlfee+zl_fee.6;\<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mzc:=0; 
+    jzc:=0;qtc:=0;ry1c:=0;try1c:=0;ry2c:=0;try2c:=0;\<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    ry3c:=0;try3c:=0;ryBc:=0;tryBc:=0;ryLc:=0;tryLc:=0;tmzc:=0;\<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    tjzc:=0;tqtc:=0;tghfee:=0;tzlfee:=0<br>
+    cond<br>
+    begin<br>
+    &nbsp; date=19980704T<br>
+    &nbsp; begin<br>
+    &nbsp;&nbsp;&nbsp; 1 $ asksum(gh_fee,zl_fee)<br>
+    &nbsp;&nbsp;&nbsp; charge=&quot;1&quot; $ askcnt(ry1c)<br>
+    &nbsp;&nbsp;&nbsp; charge=&quot;2&quot; $ askcnt(ry2c)<br>
+    &nbsp;&nbsp;&nbsp; charge=&quot;3&quot; $ askcnt(ry3c)<br>
+    &nbsp;&nbsp;&nbsp; charge=&quot;B&quot; $ askcnt(ryBc)<br>
+    &nbsp;&nbsp;&nbsp; charge=&quot;L&quot; $ askcnt(ryLc)<br>
+    &nbsp;&nbsp;&nbsp; type=&quot;1&quot; $ askcnt(mzc)<br>
+    &nbsp;&nbsp;&nbsp; type=&quot;2&quot; $ askcnt(jzc)<br>
+    &nbsp;&nbsp;&nbsp; type&lt;&gt;&quot;1&quot; &amp;&amp; type&lt;&gt;&quot;2&quot; $ 
+    askcnt(qtc)<br>
+    &nbsp; end<br>
+    end<br>
+    action initrec(@1);apprec(name:=&quot;合计&quot;,ghfee:=tghfee,zlfee:=tzlfee,\<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    ry1:=try1c,ry2:=try2c,ry3:=try3c,ryB:=tryBc,ryL:=tryLc,\<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mzcs:=tmzc,jzcs:=tjzc,qtcs:=tqtc);\</p>
+    <p ALIGN="JUSTIFY">　</p>
+    <h2 ALIGN="center"><a name="2_2_6"><font face="楷体_GB2312">标号</font></a></h2>
+    <p ALIGN="JUSTIFY">标号是为了增加程序的过程能力，使得再明确了一个条件后其它明确真假值的条件动作单员被跳过。</p>
+    <p ALIGN="JUSTIFY">标号的书写格式为：</p>
+    <p ALIGN="JUSTIFY">LABEL 标号</p>
+    <p ALIGN="JUSTIFY">[例16]</p>
+    <p ALIGN="JUSTIFY">FROM sub0<br>
+    TO cxmain,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    &nbsp; occupy=&quot;081&quot; $ record(code);goto(&quot;condend&quot;)<br>
+    &nbsp; occupy=&quot;082&quot; $ record(code);goto(&quot;condend&quot;)<br>
+    &nbsp; occupy=&quot;083&quot; $ record(code);goto(&quot;condend&quot;)<br>
+    LABEL condend<br>
+    END</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> ASQL允许一个动作表达式内写多个并列的子表达式，这些子表达式间用分号“；”分隔。</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">ASQL的标号可以放在ASQL的任何语句可以出现的地方，但goto跳转则只能在条件段(CONDITION)内跳转，即查询块内跳转。</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> ASQL允许一个语法体内最多有32个标号。</p>
+    <p ALIGN="JUSTIFY">　</p>
+    <h2 ALIGN="center"><font face="楷体_GB2312"><a name="2_2_7">数据库声明</a></font></h2>
+    <p ALIGN="JUSTIFY">ASQL的源中的表可以指定数据库，如果这种类型的数据源支持库的概念。ASQL自身管理的数据库是支持这种概念的，它将一个存放ASQL数据的子目录看作是一个库。</p>
+    <p ALIGN="JUSTIFY">ASQL引用的库必须在数据字典中有定义，ASQL用数据字典中的下列信息将库对应为子目录。</p>
+    <p ALIGN="JUSTIFY">[DATABSE]</p>
+    <p ALIGN="JUSTIFY">#库名</p>
+    <p ALIGN="JUSTIFY">PATH=数据存放路径</p>
+    <p ALIGN="JUSTIFY">数据库声明的书写格式为：</p>
+    <p ALIGN="JUSTIFY">DATABASE 库名</p>
+    <p ALIGN="JUSTIFY">库名最长32字符。一旦声明对某个数据库操作，后面的对表的引用都是对这个库中的相应的表的操作。可以将库看成是一组表的集合，一些DBF文件组成的集合在物理上就构成了一个库，其中的每个DBF文件就是一个表。</p>
+    <p ALIGN="JUSTIFY">一旦声明对某个数据库操作，FROM中及其它对源数据引用（如dbfval()函数）的表都将是这个库所对应下的子目录下的文件。如果为些引用时又出现了路径，则只能是相对路径，表示这个路径的第一个字符不再是“\”，因为路径是相对的了，不再是绝对于根目录的。</p>
+    <p ALIGN="JUSTIFY">ASQL的这个库机制简代了数据的管理。</p>
+    <p ALIGN="JUSTIFY">[例17]</p>
+    <p ALIGN="JUSTIFY">DATABASE xsdw</p>
+    <p ALIGN="JUSTIFY">FROM tg\data\sub0.dbf</p>
+    <p ALIGN="JUSTIFY">/*这里指定源时写了路径，但这个路径是一个相对路径，即相对于当前数据库所对应目录的相对路径。*/</p>
+    <p ALIGN="JUSTIFY">TO cxmain,code,name</p>
+    <p ALIGN="JUSTIFY">CONDITION</p>
+    <p ALIGN="JUSTIFY">BEGIN</p>
+    <p ALIGN="JUSTIFY">1 $ calrec(code,name)</p>
+    <p ALIGN="JUSTIFY">END</p>
+    <p ALIGN="JUSTIFY">本例中结果的code,name为结果域名。</p>
+    <p ALIGN="JUSTIFY">　</p>
+    <h2 ALIGN="center"><font face="楷体_GB2312"><a name="2_2_8">独占声明</a></font></h2>
+    <p ALIGN="JUSTIFY">独占声明的书写格式为：</p>
+    <p ALIGN="JUSTIFY">EXCLUSIVE 逻辑值（0代表不独占，其它数字代表独占），缺省为不独占。</p>
+    <p ALIGN="JUSTIFY">[例18]</p>
+    <p ALIGN="JUSTIFY">EXCLUSIVE 1<br>
+    FROM sub0<br>
+    TO cxmain,code,myVal 10 N<br>
+    CONDITION<br>
+    BEGIN</p>
+    <p ALIGN="JUSTIFY">sex=&quot;1&quot; $ calrec(code:=code, myVal:=salary*10+3)</p>
+    <p ALIGN="JUSTIFY">END</p>
+    <p ALIGN="JUSTIFY">　</p>
+    <h2 ALIGN="center"><a name="2_2_9"><font face="楷体_GB2312">标题</font></a></h2>
+    <p ALIGN="JUSTIFY">ASQL的解释引擎内用以提示这个任务的一个标识串。书写格式为：</p>
+    <p ALIGN="JUSTIFY">TITLE 标题信息</p>
+    <p ALIGN="JUSTIFY">[示例]</p>
+    <p ALIGN="JUSTIFY">TITLE 这是一个测试性的ASQL</p>
+    <p ALIGN="JUSTIFY">　</p>
+    <h2 ALIGN="center"><font face="楷体_GB2312"><a name="2_2_10">变量定义</a></font></h2>
+    <p ALIGN="center">　</p>
+    <p ALIGN="JUSTIFY">ASQL允许用户自定义变量。书写格式为：</p>
+    <p ALIGN="JUSTIFY">PREDICATE</p>
+    <p ALIGN="JUSTIFY">变量类型 变量名称，变量名称</p>
+    <p ALIGN="JUSTIFY">字符串型变量格式为：</p>
+    <p ALIGN="JUSTIFY">STRING 变量名[字符串容量]</p>
+    <p ALIGN="JUSTIFY">数组型变量格式为：</p>
+    <p ALIGN="JUSTIFY">基类型 变量名[一维大小，二维大小……]</p>
+    <p ALIGN="JUSTIFY">可做为数组基类型的数据类型有：字符型、整型、长整型、浮点型。</p>
+    <p ALIGN="JUSTIFY">　</p>
+    <p ALIGN="JUSTIFY">变量类型说明见表。</p>
+    <u><p ALIGN="CENTER">ASQL支持的变量说明表</u></p>
+    <table BORDER="1" CELLSPACING="1" BORDERCOLOR="#000000" CELLPADDING="7" WIDTH="527">
+      <tr>
+        <td WIDTH="14%" VALIGN="TOP"><p ALIGN="JUSTIFY">变量类型</td>
+        <td WIDTH="23%" VALIGN="TOP"><p ALIGN="JUSTIFY">变量声明关键字</td>
+        <td WIDTH="17%" VALIGN="TOP"><p ALIGN="JUSTIFY">占用字节数</td>
+        <td WIDTH="47%" VALIGN="TOP"><p ALIGN="JUSTIFY">表示范围</td>
+      </tr>
+      <tr>
+        <td WIDTH="14%" VALIGN="TOP"><p ALIGN="JUSTIFY">字符型</td>
+        <td WIDTH="23%" VALIGN="TOP"><p ALIGN="JUSTIFY">char</td>
+        <td WIDTH="17%" VALIGN="TOP"><p ALIGN="JUSTIFY">1</td>
+        <td WIDTH="47%" VALIGN="TOP"><p ALIGN="JUSTIFY">-127-127</td>
+      </tr>
+      <tr>
+        <td WIDTH="14%" VALIGN="TOP"><p ALIGN="JUSTIFY">整型</td>
+        <td WIDTH="23%" VALIGN="TOP"><p ALIGN="JUSTIFY">int</td>
+        <td WIDTH="17%" VALIGN="TOP"><p ALIGN="JUSTIFY">2</td>
+        <td WIDTH="47%" VALIGN="TOP"><p ALIGN="JUSTIFY">-32767-32767</td>
+      </tr>
+      <tr>
+        <td WIDTH="14%" VALIGN="TOP"><p ALIGN="JUSTIFY">长整型</td>
+        <td WIDTH="23%" VALIGN="TOP"><p ALIGN="JUSTIFY">long</td>
+        <td WIDTH="17%" VALIGN="TOP"><p ALIGN="JUSTIFY">3</td>
+        <td WIDTH="47%" VALIGN="TOP"><p ALIGN="JUSTIFY">-2147583647-2147483647</td>
+      </tr>
+      <tr>
+        <td WIDTH="14%" VALIGN="TOP"><p ALIGN="JUSTIFY">浮点型</td>
+        <td WIDTH="23%" VALIGN="TOP"><p ALIGN="JUSTIFY">float</td>
+        <td WIDTH="17%" VALIGN="TOP"><p ALIGN="JUSTIFY">8</td>
+        <td WIDTH="47%" VALIGN="TOP">　</td>
+      </tr>
+      <tr>
+        <td WIDTH="14%" VALIGN="TOP"><p ALIGN="JUSTIFY">字符串型</td>
+        <td WIDTH="23%" VALIGN="TOP"><p ALIGN="JUSTIFY">string</td>
+        <td WIDTH="17%" VALIGN="TOP"><p ALIGN="JUSTIFY">视具体定义</td>
+        <td WIDTH="47%" VALIGN="TOP">　</td>
+      </tr>
+    </table>
+    <p>　</p>
+    <p ALIGN="JUSTIFY">[示例]</p>
+    <p ALIGN="JUSTIFY">CHAR c1,c2,c3</p>
+    <p ALIGN="JUSTIFY">INT i1,i2</p>
+    <p ALIGN="JUSTIFY">LONG d1,d2</p>
+    <p ALIGN="JUSTIFY">FLOAT f1,f2</p>
+    <p ALIGN="JUSTIFY">STRING str[128]</p>
+    <p ALIGN="JUSTIFY">INT ii[6,4]</p>
+    <p ALIGN="JUSTIFY">FLOAT ff[7,5]</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> ASQL支持关键字简写。</p>
+    <p ALIGN="JUSTIFY">ASQL的关键字有些很长，在不引起混淆的情况下可以简写，只写前几个字母就可，如PREDICATES写为PRED，STATISTICS写为STAT，CONDITION写为COND等。</p>
+    <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> ASQL的变量类型优先于域类型使用，在变量名称与域名重复时，ASQL将其做变量对待。</td>
+  </tr>
+</table>
+</center></div>
+
+<p>　 </p>
+</body>
+</html>

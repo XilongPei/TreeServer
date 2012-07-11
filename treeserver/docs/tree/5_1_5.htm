@@ -1,0 +1,54 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>TreeServer内部协调信息包</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>TreeServer内部协调信息包</strong></p>
+    <p>　</p>
+    <b><p><span style="font-size: 12px">packetType = '$'</span></b></p>
+    <p><span style="font-size: 12px">TreeServer内部协调信息包</span></p>
+    <p><span style="font-size: 12px">　</span></p>
+    <b><p><span style="font-size: 12px">packetType = 'F'</span></p>
+    <p><span style="font-size: 12px">FTP </span></b></p>
+    <p><span style="font-size: 12px">msgType = 'Q'</span></p>
+    <p><span style="font-size: 12px">　</span></p>
+    <b><p><span style="font-size: 12px">packetType = 'C'</span></p>
+    <p><span style="font-size: 12px">请求服务器连接或断除连接</span></b></p>
+    <p><span style="font-size: 12px">msgType = 'Q'</span></p>
+    <p><span style="font-size: 12px">连接</span></p>
+    <p><span style="font-size: 12px">len = 内容长</span></p>
+    <p><span style="font-size: 12px">lp 保留</span></p>
+    <p><span style="font-size: 12px">　</span></p>
+    <i><p><span style="font-size: 12px">请求包格式：</span></i></p>
+    <p><span style="font-size: 12px">用户名`口令`机器名 </span></p>
+    <p><span style="font-size: 12px"><b>返回：</b></span></p>
+    <p><span style="font-size: 12px">lp 连接描述字</span></p>
+    <p><span style="font-size: 12px">----------------------------------------------------------------</span></p>
+    <p><span style="font-size: 12px">msgType = 'D'</span></p>
+    <p><span style="font-size: 12px">断除连接</span></p>
+    <p><span style="font-size: 12px">len = 0</span></p>
+    <p><span style="font-size: 12px">lp 连接描述字</span></p>
+    <p><span style="font-size: 12px">　</span></p>
+    <b><p><span style="font-size: 12px">TreeServer的客户端与服务器端协同完成一件工作有以下几种办法：</span></b></p>
+    <p><span style="font-size: 12px">1.连机工作(Online)</span></p>
+    <p><span style="font-size: 12px">(1) C-&gt;S 'CQ'请求连接</span></p>
+    <p><span style="font-size: 12px">(2) C-&gt;S 'QA'任务请求</span></p>
+    <p><span style="font-size: 12px">(3) C&lt;-S 'RM'执行结果</span></p>
+    <p><span style="font-size: 12px">(4) C-&gt;S 'CD'断除连接</span></p>
+    <p><span style="font-size: 12px">2.代理工作</span></p>
+    <p><span style="font-size: 12px">(1) C-&gt;S 'A'类似于CGI模式的一次提交一次完成，至于结时客户端自己到服务器上取</span></p>
+    <p><span style="font-size: 12px">　</span></p>
+    <u><p><span style="font-size: 12px">不同的协作方式将对能力有不同限制，一般连机方式限制最小。</span></u></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

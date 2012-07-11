@@ -1,0 +1,476 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>函数</title>
+</head>
+
+<body bgcolor="#EAEAFB">
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><h2 align="center"><font face="楷体_GB2312">函数</font></h2>
+    <p>&nbsp;&nbsp;&nbsp; 在ASQL中，条件、动作都是由ASQL表达式来描述的，而 
+    ASQL 表达式主要是由ASQL函数来构成的。ASQL函数是我们自己开发的，主要包括两类：条件函数和动作函数。下面分别对每类函数中具体函数的原型、功能作一说明，并给出示例。</p>
+    <h2 align="center"><font face="楷体_GB2312">条件函数</font></h2>
+    <ol>
+      <li><b>求年龄(age)</b><p>[原型]LONG_TYPE AGE(&quot;出生年月日&quot;)</p>
+        <p ALIGN="JUSTIFY">[功能]<br>
+        返回整型年龄值。年龄为：给定年月日距今天数/365。<br>
+        当天日期由机器系统时间给定。</p>
+        <p ALIGN="JUSTIFY">[示例]/*查询人员库中年龄小于30岁的职工*/</p>
+        <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+        TO \TG\DATA\CXMAIN, *<br>
+        CONDITION<br>
+        BEGIN<br>
+        age(BIRTHDAY) &lt; 30 $ record(@1);<br>
+        SEND<br>
+        ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</p>
+        <p ALIGN="JUSTIFY">[说明]</p>
+        <p ALIGN="JUSTIFY">wsymbol()是一个ASQL动作函数，后面将详细介绍。</p>
+        <ol>
+          <li><a name="2_3_1_1">子字符串搜索(at)<br>
+            </a></li>
+          <p ALIGN="JUSTIFY">[原型]LONG_TYPE AT(&lt;子字符串&gt;, &lt;主字符串&gt;)</p>
+          <p ALIGN="JUSTIFY">[功能]检测主字符串中是否包含子字符串，如果包含，返回第一次包含的子字符串所在主字符串中的位置，否则返回0。</p>
+          <p ALIGN="JUSTIFY">[示例]/*查出身地在黑龙江省的人员*/</p>
+          <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+          TO \TG\DATA\CXMAIN, *<br>
+          CONDITION<br>
+          BEGIN<br>
+          at(&quot;23&quot;,b_place)=1 $ record(@1);<br>
+          /*&quot;23&quot;是黑龙江省的代号，省代号是字符串的前两位，故返回值为1。*/<br>
+          END<br>
+          ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</p>
+          <li><a name="2_3_1_2">字符串对整数转换函数(atol)</a><br>
+          </li>
+          <p ALIGN="JUSTIFY">[原型]LONG_TYPE atol( &lt;字符串型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]该函数可将由数字、正负号、小数点组成的字符串转换成整数。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          birthday=&quot;19431025&quot;<br>
+          atol(birthday)=19431025</p>
+          <li><a name="2_3_1_3">求平均值(average)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]LONG_TYPE average(数字型表达式, 数字型表达式, ...)</p>
+          <p ALIGN="JUSTIFY">[功能]该函数可求出给定几个算术表达式的值的平均值。</p>
+          <p ALIGN="JUSTIFY">[示例]average(3*2,6/3+2,9-1)=6</p>
+          <li><a name="2_3_1_4">字符串转为日期型(date)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]LOGIC_TYPE date( &lt;字符串型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]该函数判断给定字符串是否为合法日期串，如果是合法的日期型字符串，则将其转换为日期型，否则返回一个空串。合法日期字符串的格式为YYYYMMDD或 
+          YYYYMM(Y表示年，M表示月，D表示日)或YYYY。</p>
+          <p ALIGN="JUSTIFY">注：此处的年不可简写（即不可只写后两位）。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          BIRTHDAY=&quot;19660101&quot;<br>
+          date(BIRTHDAY)=19660101T<br>
+          BIRTHDAY=&quot;700101&quot;<br>
+          data(BIRTHDAY)=“”，空日期</p>
+          <li><a name="2_3_1_5">指数函数(exp)</a><br>
+          </li>
+          <p ALIGN="JUSTIFY">[原型]FLOAT_TYPE exp( &lt;数字型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]该函数用来进行指数运算,底数为自然常数e=2.718。</p>
+          <p ALIGN="JUSTIFY">[示例]exp(2*3)=403.18</p>
+          <li><a NAME="2_3_1_6">格式化字符串(fmtstr)</a><br>
+          </li>
+          <p ALIGN="JUSTIFY">[原型]STRING_TYPE fmtstr ( &lt;字符型表达式&gt;表示的格式化控制字符串，（字符/整型/长整/浮点/字符串）型值 
+          )</p>
+          <p ALIGN="JUSTIFY">[功能]格式化控制字符串存放格式化规范，格式化规范确定第二个参数的输出格式。格式化规范（后面讨论）总是以一个(%)开始。若百分号之后所跟的字符作为格式化字段无意义,则该字符不被格式化(如: 
+          %%产生一个百分号字符)。</p>
+          <p ALIGN="JUSTIFY">格式化字符串是被从左到右读取的。当遇第一个(存在的)格式化规范时,便导致格式化字符串后面的第一个参变量的值 
+          被根据格式化规范转换并烤贝到输出缓冲区中。第二个格式化规范将导致第二个参变量被转换和拷贝，等等。目前的ASQL版本只支持一个参变量。若参变量的数目多于格式化规范的数目,额外的参变量将被忽略。若对所有格式化规范来说参变量的数目不足,则结果不确定.</p>
+          <p ALIGN="JUSTIFY">格式化规范有如下格式： </p>
+          <p ALIGN="JUSTIFY">%[ - ][ # ][ 0 ][ width ][ .precision ] type</p>
+          <p ALIGN="JUSTIFY">其中的每个字段都是一个字符或一个指定特殊格式化选项的值。最后一个格式化字段之后的type字符决定是将一个参变量解释为字符，还是字符串，或是一个值。最简单的格式化规范仅有一个百分号和一个type字符(如:%s)。可选字段控制格式的其它方面。下面列出的是可选字段和必选字段以及它们的含义。</p>
+          <u><p ALIGN="JUSTIFY">字段 含义 </p>
+          </u><p ALIGN="JUSTIFY">- 用空格或0填充输出的右端以添满整个字段，并使输出左端对齐。若省略该字段， 
+          则在输出的左端填充，并使输出右对齐。 .</p>
+          <p ALIGN="JUSTIFY"># 用0x或0X作为十六进制前缀.</p>
+          <p ALIGN="JUSTIFY">0 在字段宽度内补0.若省略该字段，则用空格填补输出值.</p>
+          <p ALIGN="JUSTIFY">width 向输出缓冲区中拷贝所指定的最少数目的字符。width字段是一个非负的整数宽度规范不会导致一个值被截断;若输出的中的字符数大于指定的宽度,或者若未提供width字符,则根据精度规范输出改值的所有字符。</p>
+          <p ALIGN="JUSTIFY">.precision 对数字来说,向输出缓冲区中拷贝所指定的最小数目的数字。若参变量中的数字的数目小于指定的精度,则在输出值的左边补零。若数字的数目超出所指定的精度,则该值不被截断。若所指定的精度为0或者省略这一字段,或者若小数点(.)之后未跟有数字,则精度被设置为1。</p>
+          <p ALIGN="JUSTIFY">对字符串来说,向输出缓冲区中拷贝所指定的最大数目的字符。</p>
+          <p ALIGN="JUSTIFY">type 将对应的参变量作为一个字符,或一个字符串,或一个数字输出,该字段可以是下列字符序列中的任何值：</p>
+          <u><p ALIGN="JUSTIFY">序列 插入内容</p>
+          </u><p ALIGN="JUSTIFY">c 一个字符。函数忽略其数字值为0的字符参变量。</p>
+          <p ALIGN="JUSTIFY">C 一个字符。</p>
+          <p ALIGN="JUSTIFY">d 一个带符号的十进整数参变量。该序列与i序列相同。</p>
+          <p ALIGN="JUSTIFY">hc , HC 一个字符。 函数忽略其数字值为0的字符参变量。</p>
+          <p ALIGN="JUSTIFY">hs , HS 一个字符串。</p>
+          <p ALIGN="JUSTIFY">i 一个带符号的十进整数。这一序列与d序列相同。</p>
+          <p ALIGN="JUSTIFY">lc , LC 一个字符。 </p>
+          <p ALIGN="JUSTIFY">ld 一个带符号的十进整数。这一序列与li序列相同。</p>
+          <p ALIGN="JUSTIFY">li 一个带符号的十进整数。这一序列与ld序列相同。</p>
+          <p ALIGN="JUSTIFY">ls , LS 一个字符串。</p>
+          <p ALIGN="JUSTIFY">lu 一个无符号长整数。</p>
+          <p ALIGN="JUSTIFY">lx , LX 一个小写或大写的无符号十六长进数。</p>
+          <p ALIGN="JUSTIFY">s 一个字符串。</p>
+          <p ALIGN="JUSTIFY">S 一个字符串。</p>
+          <p ALIGN="JUSTIFY">u 一个无符号整数参变量。</p>
+          <p ALIGN="JUSTIFY">x , X 一个小写或大写的无符号十六进整数。</p>
+          <p ALIGN="JUSTIFY">[示例]fmtstr(&quot;%4.2d&quot;, 100.34)</p>
+          <li><a NAME="2_3_1_7">取整(int)</a><br>
+          </li>
+          <p ALIGN="JUSTIFY">[原型]LONG_TYPE int( &lt;数字型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]该函数可以将一个实型数转换为整型数。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          int(3/2)=1<br>
+          int(34.95)=34</p>
+          <li><a NAME="2_3_1_8">记录删除判断(isdel)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]LOGIC_TYPE isdel(@1)</p>
+          <p ALIGN="JUSTIFY">[功能]<br>
+          该函数用来判断当前记录是否被逻辑删除。<br>
+          返回值为逻辑型，逻辑删除返回值为1（真），反之为0（假）。</p>
+          <p ALIGN="JUSTIFY">注：它判断的是xBASE形式的逻辑删除，并非是Del域是否置1。</p>
+          <p ALIGN="JUSTIFY">该函数是ASQL1.0提供的功能，现已废弃。因已置了删除标记的记录可能将被立即删除，既使不被删除，也不会参加运算。</p>
+          <p ALIGN="JUSTIFY">[示例]/*查询做过逻辑删除的人员*/</p>
+          <p ALIGN="JUSTIFY">PREDICATES<br>
+          long L<br>
+          FROM \TG\DATA\SUB0<br>
+          TO \TG\DATA\CXMAIN, *<br>
+          CONDITION<br>
+          BEGIN<br>
+          &nbsp; isdel(@1) $ record(@1);askcnt(L)<br>
+          END<br>
+          ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</p>
+          <li><a NAME="2_3_1_9">字符串长度(len)</a><br>
+          </li>
+          <p ALIGN="JUSTIFY">[原型]LONG_TYPE len(&lt;字符串型表达式&gt;)</p>
+          <p ALIGN="JUSTIFY">[功能]该函数用来计算字符串长度。</p>
+          <p ALIGN="JUSTIFY">[示例]/*查询姓名为四个字的人员*/</p>
+          <p ALIGN="JUSTIFY">FROM \TG\DATA\SUB0<br>
+          TO \TG\DATA\CXMAIN, *<br>
+          CONDITION<br>
+          BEGIN<br>
+          &nbsp; len(NAME)=8 $ record(@1);<br>
+          END<br>
+          ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)</p>
+          <li><a NAME="2_3_1_10">定位查找(locate)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]LONG_TYPE locate(数据库或索引文件名, &quot;定位表达式字符串&quot;(可有多个))</p>
+          <p ALIGN="JUSTIFY">[功能]从数据库的第一条记录开始 
+          查找。查找到后，返回定位到的记录号，查询工作结束。若无此记录，则返回0。</p>
+          <p ALIGN="JUSTIFY">定位表达式字符串是指用来形成表达式的字符串，该函数将拿着这个字符串，将其当作一个表达式，对被定位数据库进行逐条记录计算。若某一字符串需传给该函数，则需再在其前后加引号，而若将一个域、字符串内容传给该函数，该函数将自动识别其类型，决定要否加上双引号。</p>
+          <p ALIGN="JUSTIFY">数据库或索引文件名是一个与FROM后面的表名写法相同的一个字符串，它可以有路径，但只能是相对于当前数据库的相对路径，如：</p>
+          <p ALIGN="JUSTIFY">CODE\DM1.DBF</p>
+          <p ALIGN="JUSTIFY">[示例]PREDICATES</p>
+          <p ALIGN="JUSTIFY">LONG a<br>
+          ACTION a:=locate(&quot;sub1.dbf&quot;,&quot;name=\&quot;王\&quot;&quot;)<br>
+          /*这相当于告诉locate,用表达式name=&quot;王&quot;去定位数据库*/<br>
+          ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DAT&quot;)<br>
+          locate(&quot;LZ0.DBF&quot;, &quot;NAME=\&quot;裴\&quot;&quot;)<br>
+          locate(&quot;SUB0.DBF&quot;,&quot;NATION=&quot;,NATION)<br>
+          /*假设a当前为LONG型*/<br>
+          locate(&quot;SUB0.DBF&quot;,&quot;NATION=&quot;,str(a))<br>
+          locate(&quot;SUB0.DBF&quot;,&quot;NATION=&quot;,19980504T)</p>
+          <li><a NAME="2_3_1_11">对数(log)</a><br>
+          </li>
+          <p ALIGN="JUSTIFY">[原型]FLOAT_TYPE log( &lt;数值表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]该函数传回&lt;数值表达式&gt;的自然对数。</p>
+          <p ALIGN="JUSTIFY">[示例]log(20/2)=2.30</p>
+          <li><a NAME="2_3_1_12">字符串变小写(lower)</a><br>
+          </li>
+          <p ALIGN="JUSTIFY">[原型]STRING_TYPE lower(&lt;字符串表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]该函数将&lt;字符串表达式&gt;中所有的大写字母转换为小写字母。</p>
+          <p ALIGN="JUSTIFY">[示例]设Title=&quot;ASMifAS&quot;</p>
+          <p ALIGN="JUSTIFY">则lower(&quot;ASMifAS&quot;)=lower(Title)=&quot;asmifas&quot;</p>
+          <li><a NAME="2_3_1_13">删前导空格(ltrim)</a><br>
+          </li>
+          <p ALIGN="JUSTIFY">[原型]STRING_TYPE ltrim( &lt;字符串型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]串首空格(英文空格, 汉字空格, Tab键, 回车, 换行)压缩,对于消除STR函数造成的前面空格时特别有用。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          设Country=&quot; CHINA&quot;<br>
+          则ltrim(Country)=&quot;CHINA&quot;</p>
+          <li><a NAME="2_3_1_14">最大值(max)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]LONG_TYPE max(数字或日期型表达式, 数字或日期型表达式, ...)</p>
+          <p ALIGN="JUSTIFY">[功能]该函数从给定的多个表达式(数值表达式或日期表达式)中传回最大的值，可能是日期型，也可能是数字型。</p>
+          <p ALIGN="JUSTIFY">函数返回的数值是第一个参数所对应的数字类型，字符型、整型、长整型被唯一化为长整型。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          max(54,60,2*3)=60<br>
+          max(19.8,13)=19.8<br>
+          max('9',168)=168<br>
+          max(19980504T,19960112T,date(&quot;19980101&quot;)) = 19980504T</p>
+          <li><a NAME="2_3_1_15">最小值(min)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]LONG_TYPE min(数字或日期型表达式, 数字或日期型表达式, ...)</p>
+          <p ALIGN="JUSTIFY">[功能]该函数从给定的多个数字或日期型表达式中传回最小的数值，可能是日期型，也可能是数字型。</p>
+          <p ALIGN="JUSTIFY">函数返回的数值是第一个参数所对应的数字类型，字符型、整型、长整型被唯一化为长整型。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          min(54,60,150/2)=54<br>
+          max(19980504T,19960112T,date(&quot;19980101&quot;)) = 19960112T</p>
+          <li><a NAME="2_3_1_16">模比字符串(mdstr)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]LOGIC_TYPE mdstr(&lt;字符串型表达式&gt;, &lt;模板字符串&gt;)</p>
+          <p ALIGN="JUSTIFY">[功能]把字符串和模板字符串进行比较。字符串符合模板字符串提供的格式，返回值为1(真值)；否则，返回0(假)。</p>
+          <p ALIGN="JUSTIFY">模板字符串由普通字符和模板字符组成。</p>
+          <p ALIGN="JUSTIFY">ASQL支持的模板字符有：</p>
+          <p ALIGN="JUSTIFY">'9'代表数字</p>
+          <p ALIGN="JUSTIFY">'#'代表数字, 空格, 正号, 负号</p>
+          <p ALIGN="JUSTIFY">'A'代表中英文字符</p>
+          <p ALIGN="JUSTIFY">'X'代表任意字符</p>
+          <p ALIGN="JUSTIFY">其它字符：必须与待匹配字符串相等。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          mdstr(&quot;+12345&quot;, &quot;#129&quot;) <br>
+          结果为： 1(真值)<br>
+          mdstr(&quot;cde2%&quot;,&quot;AXe#X&quot;) <br>
+          结果为： 1(真值)</p>
+          <li><a NAME="2_3_1_17">空字符串判断(null)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]LONG_TYPE null( &lt;字符串型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]判断字符串是否为空(长度是否为0)。是空，返回1(真)；否则，返回0(假)。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          CODE=&quot; QW &quot;<br>
+          NULL(CODE)=0</p>
+          <li><a NAME="2_3_1_18">邮编(postcode)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]LONG_TYPE postcode( &lt;字符串型表达式&gt;表示的邮政编码 )</p>
+          <p ALIGN="JUSTIFY">[功能]判断是否为合法的邮政编码。是，返回1(真)；不是，返回0(假)。</p>
+          <p ALIGN="JUSTIFY">[示例]postcode(&quot;200333&quot;)=1</p>
+          <li><a NAME="2_3_1_19">记录号(recno)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]LONG_TYPE recno( &lt;域名&gt; 或&lt;数据源标识&gt;)</p>
+          <p ALIGN="JUSTIFY">[功能]&lt;数据源标识&gt;是对数据源进行标识的一个整数，第一张表为1，其它往下排……。该函数通过指定的域名传回指定数据源中数据表的当前记录号。如果指定工作区中没有数据库被打开，则函数返回值为0；若数据库是空的，函数返回值为1。</p>
+          <p ALIGN="JUSTIFY">第一条记录的记录号为1。</p>
+          <p ALIGN="JUSTIFY">若记录指针在文件中移动而且超过最后一个记录，那么该函数就会传回一个比数据库中总记录的数目大于1的值。</p>
+          <p ALIGN="JUSTIFY">[示例]刚打开文件SUB0.DBF，recno(code)的值为1。</p>
+          <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> ASQL支持的数据源，缺省时是一种在DBF基础上开发的数据库系统（在不指定ODBC，也不指定SQL时），它支持记录号，认为每条记录是有物理顺序的，只有该表不被任何人操作了，记录的位置才可能被调整（视数据字典内的定义），所以可以用记录号来标识记录。事实上ASQL的视图就是这样实现的。</p>
+          <li><a NAME="2_3_1_20">四舍五入(保留，尚未提供)(round)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]FLOAT_TYPE round( &lt;数字型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]</p>
+          <p ALIGN="JUSTIFY">[示例]</p>
+          <li><a NAME="2_3_1_21">删尾空格(rtrim)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]STRING_TYPE rtrim( &lt;字符串型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]该函数将给定的字符串尾随的空格去除。若给定的字符串完全由空格组成，那<br>
+          么rtrim将传回一个空串。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          设Country=&quot;CHINA &quot;<br>
+          则ltrim(Country)=&quot;CHINA&quot;</p>
+          <li><a NAME="2_3_1_22">字符串缩水(shrink)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]STRING_TYPE shrink( &lt;字符串型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]去除字符串内部的空格。</p>
+          <p ALIGN="JUSTIFY">[示例]设COUNTRY=&quot; 中华 人民 共和国 &quot;，则shrink(COUNTRY)=&quot;中华人民共和国&quot;</p>
+          <li><a NAME="2_3_1_23">产生空格(space)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]STRING_TYPE space( &lt;数字型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]形成空白字符串，空白字符个数由&lt;数字型表达式&gt;确定，最多有32K。</p>
+          <p ALIGN="JUSTIFY">[示例]space(15)将产生一个15个空格的空串。</p>
+          <li><a NAME="2_3_1_24">求平方(sqrt)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]FLOAT_TYPE sqrt( &lt;数字型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]给出一个正数的平方根。</p>
+          <p ALIGN="JUSTIFY">[示例]sqrt(25)＝5</p>
+          <li><a NAME="2_3_1_25">数字型量转为字符串(str)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]STRING_TYPE str(&lt;数值表达式&gt;，[表示小数点位数的&lt;数值表达式&gt;])</p>
+          <p ALIGN="JUSTIFY">[功能]该函数可以将数值表达式转换为一个字符串，如&lt;数值表达式&gt;为整数，经过转换得到的字符串中的数也是整数；如&lt;数值表达式&gt; 
+          为浮点数，经过转换得到的字符串中的数也是浮点数，如果小数点位数没有给定，小数值保留2位。</p>
+          <p ALIGN="JUSTIFY">如果&lt;数值表达式&gt;为一个域类型，则将这个域的物理存储返回。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          str(3225)=&quot;3225&quot;<br>
+          str(123.456)=&quot;123.45&quot;<br>
+          str(123.456,3)=&quot;123.456&quot;<br>
+          str(code)=”123456789012345” /*假定此时域内的值为”123456789012345”*/</p>
+          <li><a NAME="2_3_1_26">求和(sum)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]LONG_TYPE sum(数字型表达式, 数字型表达式, ...)</p>
+          <p ALIGN="JUSTIFY">[功能]返回类型依赖于第一个参数类型：整型，还是浮点型。</p>
+          <p ALIGN="JUSTIFY">[示例]sum(12.2,245,32)=289.2</p>
+          <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> ASQL支持的函数参数不可超过200个.</p>
+          <li><a NAME="2_3_1_27">求子串(substr)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]STRING_TYPE substr(&lt;字符型表达式&gt;,&lt;数字型表达式1&gt;,&lt;数字型表达式2&gt;))</p>
+          <p ALIGN="JUSTIFY">[功能]该函数用来取得指定字符串的子串，开始位置是&lt;数字型表达式1&gt; 
+          的值，取出位数是&lt;数字型表达式2&gt;的值。</p>
+          <p ALIGN="JUSTIFY">如果要取的字符串在源串中取不出来，则可能取不出如要求的那么长的字符串。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          设x=&quot;abcdefghefsdk&quot;<br>
+          则substr(x,4,4)=&quot;defg&quot;<br>
+          substr(x,6,10)=&quot;fghefsdk&quot;</p>
+          <li><a NAME="2_3_1_28">求子串补空格(substrb)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]STRING_TYPE substr(&lt;字符型表达式&gt;,&lt;数字型表达式1&gt;,&lt;数字型表达式2&gt;))</p>
+          <p ALIGN="JUSTIFY">[功能]该函数用来取得指定字符串的子串，开始位置是&lt;数字型表达式1&gt; 
+          的值，取出位数是&lt;数字型表达式2&gt;的值。</p>
+          <p ALIGN="JUSTIFY">如果要取的字符串在源串中取不出来，即可能取不出如要求的那么长的字符串，<u>则在目标串的尾部用空格补足所需位数</u>。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          设x=&quot;abcdefghefsdk&quot;<br>
+          则substrb(x,4,4)=&quot;defg&quot;<br>
+          substrb(x,6,10)=&quot;fghefsdk &quot;</p>
+          <li><a NAME="_Toc436657943">系统日期(sysdate)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]STRING_TYPE sysdate(['字符'])</p>
+          <p ALIGN="JUSTIFY">[功能]<br>
+          将系统日期数值转换为数字型。<br>
+          M表示数字型月份<br>
+          D表示数字型日<br>
+          Y表示数字型年</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          假定当前系统日期为1996年05月18日<br>
+          sysdate()=19960518<br>
+          sysdate('M')=5<br>
+          sysdate('D')=18<br>
+          sysdate('Y')=1996</p>
+          <li><a NAME="2_3_1_30">系统时间(systime)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]STRING_TYPE systime()</p>
+          <p ALIGN="JUSTIFY">[功能]返回系统时间格式为HHMMSSHH(H:时 M:分 S:秒 H:百分之一秒)。无参数。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          假定当前系统时间为15:30:12'76<br>
+          systime()=15301276</p>
+          <li><a NAME="2_3_1_31">依空格折断字符串(trim)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]STRING_TYPE trim(&lt;字符串型表达式&gt;)</p>
+          <p ALIGN="JUSTIFY">[功能]从字符串第一个不是空格的字符起，到第一个空格为止，截取子串。</p>
+          <p ALIGN="JUSTIFY">[示例]trim(&quot; Xilong Pei&quot;)=&quot;Xilong&quot;</p>
+          <li><a NAME="2_3_1_32">唯一否判断(uniquekey)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]LOGIC_TYPE uniquekey( 关键字形成&lt;字符串型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]判断是否唯一,唯一返回真,不唯一返回假</p>
+          <p ALIGN="JUSTIFY">[说明]此时需bh = (bHEAD *)*(long 
+          *)(SysVar[SysVar_STRINGTMP].values)<br>
+          该函数是为内置ASQL引用提供的,这时需向ASQL提供ASQL支持的B<sup>+</sup>树索引.</p>
+          <p ALIGN="JUSTIFY">[示例]</p>
+          <li><a NAME="2_3_1_33">字符串变大写(upper)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]STRING_TYPE upper(&lt;字符串型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]与lower()函数功能相反.将给定字符串中的小写字母转换为大写字母.</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          设Title=&quot;ASmifaS&quot;<br>
+          则upper(Title)=&quot;ASMIFAS&quot;</p>
+          <li><a NAME="2_3_1_34">字符串转为数字值(val)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]LONG_TYPE val( &lt;字符串型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]该函数可将由数字、正负号、小数点组成的字符串转换成数字，遇到字母或其它字符自动中断。输入串中有小数点，转为浮点型，否则转为长整型。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          val(&quot;a123.24&quot;)=0<br>
+          val(&quot;123.a45&quot;)=123.00<br>
+          val(&quot;1a34.3)=1</p>
+          <li><a NAME="2_3_1_35">判断文件状态(file)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]STRING_TYPE file( 文件名&lt;字符串型表达式&gt; )</p>
+          <p ALIGN="JUSTIFY">[功能]检查文件属性。返回串中 'R':表示可读，'W':表示可写，'N':表示不存在。</p>
+          <p ALIGN="JUSTIFY">[示例]file(&quot;TGCTL.TXT&quot;)=&quot;RW&quot;</p>
+          <li><a NAME="2_3_1_36">汉字替换(hzth)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]hzth(代码,&quot;%域名&quot;或&quot;汉字替换描述字符串&quot;,['E'])</p>
+          <p ALIGN="JUSTIFY">[功能]将代码替换成汉字。第二个参数中若写成“%域名”，则系统自动到数据库字典中找该域的汉字替换描述， 
+          如在域中操作，此参数可省略。E表示扩展替换，即用数据库字典中的汉字扩展替换描述替换代码。</p>
+          <p ALIGN="JUSTIFY">[示例]hzth(&quot;1&quot;,&quot;%sex&quot;)=&quot;男&quot;</p>
+          <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15"> ASQL功能引用有时需要初始化ASQL的运行环境,如加载系统数据字典、加载代码库等。如未初始化，则ASQL有些功能就不提供。</p>
+          <li><a NAME="2_3_1_37">数组初始化(iarray)</a><br>
+          </li>
+          <p ALIGN="JUSTIFY">[原型]iarray(数组变量)</p>
+          <p ALIGN="JUSTIFY">[功能]将数组值全部写为0。</p>
+          <p ALIGN="JUSTIFY">[示例]<br>
+          PREDICATES<br>
+          long statx[3,1]<br>
+          ACTION iarray(statx)</p>
+          <li><a NAME="2_3_1_38">输入字符串(inputstr)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]STRING_TYPE inputstr(&lt;字符串型表达式1&gt;,&lt;字符串型表达式2&gt;)</p>
+          <p ALIGN="JUSTIFY">[功能]通过弹出一个对话框，显示提示，允许用户送入一个字符型变量。</p>
+          <p ALIGN="JUSTIFY">&lt;字符串型表达式1&gt;是输入信息的提示说明，&lt;字符串型表达式2&gt;是输入信息的缺省值。注意，因为ASQL内部在将字符串赋给数值型变量时可以自动转换类型， 
+          所以这里可以直接进行赋值运算。</p>
+          <p ALIGN="JUSTIFY">[示例]/*通过键盘给变量L赋值，缺省为0。*/</p>
+          <p ALIGN="JUSTIFY">PREDICATES<br>
+          LONG L<br>
+          ACTION L:=inputstr(&quot;请输入一个字符变量：&quot;,&quot;0&quot;)</p>
+          <li><a NAME="2_3_1_39">系统变量(sysvar)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]sysvar([文件名&lt;字符型表达式&gt;,]变量名&lt;字符型表达式&gt;)</p>
+          <p ALIGN="JUSTIFY">[功能]如果文件名没给定，即只有一个参数，则该函数认为是对系统数据字典的引用。</p>
+          <p ALIGN="JUSTIFY">取配置文件中某一项的值，配置文件是如下描述形式（与ASQL数据字典格式兼容）的文本文件(如系统控制层文件TGCTL.TXT)：</p>
+          <table BORDER="1" CELLSPACING="0" CELLPADDING="3" WIDTH="143">
+            <tr>
+              <td VALIGN="top"><p ALIGN="JUSTIFY"><a NAME="xxqqWholeArea">[段]</td>
+            </tr>
+            <tr>
+              <td VALIGN="top"><p ALIGN="JUSTIFY">#标识</td>
+            </tr>
+            <tr>
+              <td VALIGN="top"><p ALIGN="JUSTIFY">关键字=值</td>
+            </tr>
+          </table>
+          </a><p ALIGN="JUSTIFY">如:[FILECTL]</p>
+          <p ALIGN="JUSTIFY">#SUB0<br>
+          PATH=\TG\DATA\SUB0.VEW<br>
+          [SERIALNO]<br>
+          SER1=100</p>
+          <p ALIGN="JUSTIFY">变量名写法为:</p>
+          <p ALIGN="JUSTIFY">[段名@][标识:]关键字</p>
+          <p ALIGN="JUSTIFY">段名和标识都可以省略。如果段名为“SERIALNO”，则表示该关键字为序列号，系统返回该值，并把该值加１存回原处。</p>
+          <p ALIGN="JUSTIFY">[示例]</p>
+          <p ALIGN="JUSTIFY">sysvar(&quot;tgctl.txt&quot;,&quot;FILECTL@SUB0:PATH&quot;)<br>
+          返回:\TG\DATA\SUB0.VEW<br>
+          sysvar(&quot;EUCFG.CFG&quot;,&quot;SERIALN0@SER1&quot;)--&gt;长整型100</p>
+          <p ALIGN="JUSTIFY">[示例]</p>
+          <p ALIGN="JUSTIFY">predicates<br>
+          float fee[6,15]<br>
+          let &amp;fee[1,1]:=sysvar(&quot;SERIALNO@KK:SER1&quot;)<br>
+          let &amp;fee[1,2]:=sysvar(&quot;SERIALNO@KK:SER1&quot;)<br>
+          let &amp;fee[1,3]:=sysvar(&quot;SERIALNO@KK:SER1&quot;)<br>
+          let sigmax(fee,1,8,15)<br>
+          let sigmax(fee,12,15,15)<br>
+          let warray(&quot;a05.dbf&quot;,fee)<br>
+          //相应的数据字典中就应有如下内容</p>
+          <p ALIGN="JUSTIFY">[SERIALNO]</p>
+          <p ALIGN="JUSTIFY">#KK<br>
+          SER1=18</p>
+          <p ALIGN="JUSTIFY"><img SRC="Image3.gif" WIDTH="15" HEIGHT="15">　ASQL数据字典的域定义在一张表中，在数据字典引用时，TID相当于GROUP（如果TID域为空填，则BASENAME相当于GROUP），EFNAME相当于LABEL，FIELDCTL中的域名相当于关键字，帮取域定义表中的信息方法如下：</p>
+          <p ALIGN="JUSTIFY">sysvar(&quot;BASENAME@EFNAME:FIELD &quot;)</p>
+          <p ALIGN="JUSTIFY">例如：sysvar(&quot;SUB0@CODE:CFNAME &quot;)</p>
+          <li><a NAME="2_3_1_40">数据库中取数(dbfval)</a><br>
+          </li>
+          <p ALIGN="JUSTIFY">[原型]dbfval(数据库名&lt;字符串型表达式&gt;,域名&lt;字符串型表达式&gt;,&lt;定位表达式字符串&gt; 
+          (可有多个))</p>
+          <p ALIGN="JUSTIFY">[功能]从数据库中定位取一个域的值，功能原理基本类似函数locate，只是locate的返回值是记录号，而dbfval的返回值是所求记录中指定域的内容。</p>
+          <p ALIGN="JUSTIFY">定位表达式字符串的写法参见locate函数的说明。</p>
+          <p ALIGN="JUSTIFY">[示例]dbfval(&quot;EC_M8.DBF&quot;,&quot;C_BRIF&quot;,&quot;E_EXPR=&quot;,NATION)</p>
+          <p ALIGN="JUSTIFY">　</p>
+          <li><a NAME="2_3_1_41">求子集记录数(relcnt)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]relcnt()</p>
+          <p ALIGN="JUSTIFY">求子集中与当前关键字相连接的记录数，参数为FROM后的表序号，1代表第一个参与运算的子表；</p>
+          <p ALIGN="JUSTIFY">[示例]</p>
+          <p ALIGN="JUSTIFY">/*子集中相关记录多于一条的记录,relcnt()不影响当前运算<br>
+          nextmrec()跳转至主集的下一条记录*/</p>
+          <p ALIGN="JUSTIFY">FROM SUB0,SUB11,*code<br>
+          TO ls,*CONDITIONBEGIN<br>
+          relcnt(1) &gt; 1 $ record(@1);nextmrec()<br>
+          END</p>
+          <li><a NAME="2_3_1_42">字符串加密(tencrypt)</a></li>
+          <p ALIGN="JUSTIFY"><br>
+          [原型]STRING_TYPE tencrypt(被加密串&lt;字符串型表达式&gt;，口令字&lt;字符串型表达式&gt;)将被加密串加密，口令字为8个字符长的字符，不足8个字符，ASQL将自动补足。被加密串无长度限制，以尾零结束。</p>
+          <p ALIGN="JUSTIFY">[示例]</p>
+          <p ALIGN="JUSTIFY">pred<br>
+          string str[20]<br>
+          let str:=tencrypt(&quot;xilong&quot;, &quot;xilongpe&quot;)<br>
+          let str:=tdecrypt(str, &quot;xilongpe&quot;)<br>
+          let wsymbol(&quot;test&quot;)</p>
+          <li><a NAME="2_3_1_43">字符串解密(tdecrypt)</a><p ALIGN="JUSTIFY">[原型]STRING_TYPE 
+            tdecrypt(已经被加密串&lt;字符串型表达式&gt;，口令字&lt;字符串型表达式&gt;)将被加密过的字符串解密，口令字为8个字符长的字符，ASQL将自动补足。</p>
+            <p ALIGN="JUSTIFY">[示例]<br>
+            <br>
+            pred<br>
+            string str[20]<br>
+            let str:=tencrypt(&quot;xilongshanghai&quot;, &quot;xilongpe&quot;)<br>
+            let str:=tdecrypt(str, &quot;xilongpe&quot;)<br>
+            let wsymbol(&quot;test&quot;)</p>
+          </li>
+        </ol>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>　 </p>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>New Page 2</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><strong><span style="font-size: 12px">askmax 最大 </span></strong></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]askcnt(变量或结果变量名称&lt;字符串型表达式&gt;)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]对符合条件记录进行统计。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">结果输出：结果变量=计数值</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">这里之所以允许参数给一个表示结果变量名称的&lt;字符串型表达式&gt;，是因为ASQL可以为此自动创建一个变量，如晨本身已经是一个变量也可以。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">wsymbol()的输出结果为DBF格式，变量名为域名。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例1]/*统计现员库中小于30岁的人数。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \TG\DATA\SUB0<br>
+    TO \TG\DATA\CXMAIN,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    age(BIRTHDAY)&lt;30 $ askcnt(&quot;NS&quot;);<br>
+    END<br>
+    ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DBF&quot;)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例2]/*统计现员库中小于30岁的人数。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">PREDICATE<br>
+    long x<br>
+    FROM \TG\DATA\SUB0<br>
+    TO \TG\DATA\CXMAIN,*<br>
+    CONDITION<br>
+    BEGIN<br>
+    age(BIRTHDAY)&lt;30 $ askcnt(x);<br>
+    END<br>
+    ACTION wsymbol(&quot;\\TG\\DATA\\CXMAIN.DBF&quot;)</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

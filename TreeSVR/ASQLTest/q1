@@ -1,0 +1,51 @@
+/*
+ * 统计一张表，横表头为可能出现的性别(sex)，坚表头为可能出现的单位(wu_name)
+ */
+pred
+  string strx[32000]
+  string stry[32000]	/*为提高查找分组关键字速度而设的临时字符串*/
+  long   xx[30,10]	/*假定该表最多30行，10列*/
+  int    i1,i2		/*分组关键字长度*/
+
+database lz
+/*X轴可出现情况分析*/
+from lz0
+/*横表头描述到一张表中*/
+to xrd.dbf, L1 10 C
+groupby a04
+groupaction calrec(L1:=a04);strx:=strx+a04+","
+cond
+begin
+end
+
+/*Y轴可出现情况分析*/
+from lz0
+groupby bm
+groupaction calrec(L1:=bm);stry:=stry+bm+","
+/*坚表头描述到一张表中*/
+to yrd.dbf, L1 10 C
+cond
+begin
+end
+
+
+/*X，Y轴单一关键字大小*/
+act i1 := at(",",stry)
+act i2 := at(",",strx)
+
+/*进行实际统计*/
+from lz0
+cond
+begin
+    /*通知ASQL本次统计最多有30行*/
+    stat ,30
+    1   /*统计总约束条件，这里为永真*/
+    begin
+        1 $ xx[1,1]:=xx[1,1]+1
+        1 $ staty( at(bm,stry)/i1+1 )
+        1 $ statx( at(a04,strx)/i2+1, xx )
+    end
+end
+
+/*将统计结果写出*/
+act warray("test", xx)

@@ -1,0 +1,327 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>目录</title>
+<script LANGUAGE="JavaScript" FPTYPE="dynamicoutline">
+<!--
+  // If you want to change this script, you must also make the following
+  // changes so that FrontPage will not overwrite your new script.
+  // In the script tag, change type="dynamicoutline" to type="mydynamicoutline"
+  // In function dynOutlineEnabled, change "dynamicoutline" to "mydynamicoutline"
+  // Throughout the HTML content, change dynamicoutline to mydynamicoutline
+  // Change function dynOutline to function mydynOutline in the script
+  // In the body tag, change onclick="dynOutline()" to onclick="mydynOutline()"
+  function getControlTag(src)
+  {
+    TRok = false
+    while ("HTML" != src.tagName)
+    {
+      if ("IMG" == src.tagName || "FONT" == src.tagName || "A" == src.tagName)
+        TRok = true
+      if ("LI" == src.tagName)
+        return src
+      if ("TR" == src.tagName)
+      {
+        if(TRok)
+          return src
+        return null
+      }
+      src = src.parentElement
+    }
+    return null
+  }
+  function dynOutlineEnabled(src)
+  {
+    while ("HTML" != src.tagName)
+    {
+      if("OL" == src.tagName || "UL" == src.tagName || "TABLE" == src.tagName)
+        if(null != src.getAttribute("dynamicoutline", false))
+          return true
+      src = src.parentElement
+    }
+    return false
+  }
+  function containedIn(src, dest)
+  {
+    while ("HTML" != src.tagName)
+    {
+      if (src == dest)
+        return true
+      src = src.parentElement
+    }
+    return false
+  }
+  function dynOutline()
+  {
+    var ms = navigator.appVersion.indexOf("MSIE");
+    ie4 = (ms>0) && (parseInt(navigator.appVersion.substring(ms+5, ms+6)) >= 4);
+    if(!ie4)
+        return;
+    var src = event.srcElement
+    src = getControlTag(src)
+    if (null == src)
+      return
+    if (!dynOutlineEnabled(src))
+      return
+    var idx = src.sourceIndex+1
+    while (idx < document.all.length && containedIn(document.all[idx].parentElement, src))
+    {
+      srcTmp = document.all[idx]
+      tag = srcTmp.tagName
+      if ("UL" == tag || "OL" == tag || "TABLE" == tag)
+        srcTmp.style.display = srcTmp.style.display == "none" ? "" : "none"
+      idx++;
+    }
+  }
+//-->
+</script></head>
+
+<body bgcolor="#EAEAFB" onclick="dynOutline()" link="#008080">
+
+<h2 align="center"><font face="楷体_GB2312">目录</font></h2>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><ol>
+      <li><a href="jichu.htm"><b>基础</b></a><ol>
+          <li><a href="basic.htm"><em>基本概念</em></a></li>
+          <li><a href="chanpin.htm"><em>产品概述</em></a></li>
+          <li><a href="julie.htm"><em>举例数据说明</em></a></li>
+        </ol>
+      </li>
+      <li><a href="yuyan.htm"><b>结构化查询语言(ASQL)</b></a><ol>
+          <li><a href="biaodashi.htm">表达式</a></li>
+          <li><a href="jiegou.htm">ASQL语言的结构</a></li>
+          <ol dynamicoutline>
+            <li><a href="yuan.htm"><i>源(FROM)</i></a><ol>
+                <li><a href="yuan.htm#2_2_1_1">xBASE数据库作为数据源</a></li>
+                <li><a href="yuan.htm#2_2_1_2">视图(View)</a></li>
+                <li><a href="yuan.htm#2_2_1_3">ODBC作为数据源</a></li>
+                <li><a href="yuan.htm#2_2_1_4">ASQL自定义外部数据源</a></li>
+              </ol>
+            </li>
+            <li><a href="mubiao.htm#2_2_2"><i>目标(TO)</i></a></li>
+            <li><a href="mubiao.htm#2_2_3"><i>条件段(CONDITION)</i></a></li>
+            <li><a href="mubiao.htm#2_2_4"><i>无条件动作语句Action</i></a></li>
+            <li><a href="mubiao.htm#2_2_5"><i>分组(groupby)与分组动作(groupaction)</i></a></li>
+            <li><a href="mubiao.htm#2_2_6"><i>标号(LABEL)</i></a></li>
+            <li><a href="mubiao.htm#2_2_7"><i>数据库声明(DATABASE)</i></a></li>
+            <li><a href="mubiao.htm#2_2_8"><i>独占声明(EXECLUSIVE)</i></a></li>
+            <li><a href="mubiao.htm#2_2_9"><i>标题(TITLE)</i></a></li>
+            <li><a href="mubiao.htm#2_2_10"><i>变量定义(PREDICATES)</i></a></li>
+            <li><a href="GUOCHEN.htm"><i>ASQL过程语句</i></a><ol>
+                <li><a href="GUOCHEN.htm#2_2_11_1">LET语句</a></li>
+                <li><a href="GUOCHEN.htm#2_2_11_2">IF语句</a></li>
+                <li><a href="GUOCHEN.htm#2_2_11_3">WHILE语句</a></li>
+                <li><a href="GUOCHEN.htm#2_2_11_4">CALL语句</a></li>
+              </ol>
+            </li>
+          </ol>
+          <li><a href="tiaojian.htm">函数</a><ol>
+              <li><a href="tiaojian.htm"><i>条件函数</i></a><ol>
+                  <li><a href="tiaojian.htm#2_3_1_1">求年龄(age)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_2">子字符串搜索(at)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_3">字符串对整数转换函数(atol)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_4">求平均值(average)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_5">字符串转为日期型(date)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_6">指数函数(exp)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_7">格式化字符串(fmtstr)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_8">取整(int)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_9">记录删除判断(isdel)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_10">字符串长度(len)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_11">定位查找(locate)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_12">对数(log)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_13">字符串变小写(lower)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_14">删前导空格(ltrim)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_15">最大值(max)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_16">最小值(min)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_17">模比字符串(mdstr)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_18">空字符串判断(null)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_19">邮编(postcode)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_20">记录号(recno)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_21">四舍五入(保留，尚未提供)(round)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_22">删尾空格(rtrim)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_23">字符串缩水(shrink)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_24">产生空格(space)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_25">求平方(sqrt)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_26">数字型量转为字符串(str)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_27">求和(sum)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_28">求子串(substr)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_29">求子串补空格(substrb)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_30">系统日期(sysdate)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_31">系统时间(systime)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_32">依空格折断字符串(trim)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_33">唯一否判断(uniquekey)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_34">字符串变大写(upper)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_35">字符串转为数字值(val)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_36">判断文件状态(file)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_37">汉字替换(hzth)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_38">数组初始化(iarray)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_39">输入字符串(inputstr)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_40">系统变量(sysvar)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_41">数据库中取数(dbfval)</a></li>
+                  <li><a href="tiaojian.htm#2_3_1_42">求子集记录数(relcnt)</a></li>
+                  <li><a name="2_3_1_43" href="tiaojian.htm#2_3_1_43">字符串加密(tencrypt)</a></li>
+                  <li><a name="2_3_1_44" href="tiaojian.htm#2_3_1_44">字符串解密(tdecrypt)</a></li>
+                </ol>
+              </li>
+              <li><a href="active.htm"><i>动作函数</i></a><ol>
+                  <li><a name="2_3_2_1" href="active.htm#2_3_2_1">求平均(askavg)</a></li>
+                  <li><a href="active.htm#2_3_2_2">计数(askcnt)</a></li>
+                  <li><a href="active.htm#2_3_2_3">求最大(askmax)</a></li>
+                  <li><a href="active.htm#2_3_2_4">求最小(askmin)</a></li>
+                  <li><a href="active.htm#2_3_2_5">求和(asksum)</a></li>
+                  <li><a href="active.htm#2_3_2_6">统计求和(askxsum)</a></li>
+                  <li><a href="active.htm#2_3_2_7">BLOB由文件填(bfromfile)</a></li>
+                  <li><a href="active.htm#2_3_2_8">BLOB写至文件(btofile)</a></li>
+                  <li><a href="active.htm#2_3_2_9">拷贝记录(record)</a></li>
+                  <li><a href="active.htm#2_3_2_10">求记录(askrec)</a></li>
+                  <li><a href="active.htm#2_3_2_11">算记录（calrec）</a></li>
+                  <li><a href="active.htm#2_3_2_12">逻辑删除(delete)</a></li>
+                  <li><a href="active.htm#2_3_2_13">添加记录(apprec)</a></li>
+                  <li><a href="active.htm#2_3_2_14">插入记录(insrec)</a></li>
+                  <li><a href="active.htm#2_3_2_15">删除记录并立即压缩无用记录(recpack)</a></li>
+                  <li><a href="active.htm#2_3_2_16">数据列求和(sigmax)</a></li>
+                  <li><a href="active.htm#2_3_2_17">数据行求和(sigmay)</a></li>
+                  <li><a href="active.htm#2_3_2_18">放弃子集关联(nextmrec)</a></li>
+                  <li><a href="active.htm#2_3_2_19">物理删除(packdbf)</a></li>
+                  <li><a href="active.htm#2_3_2_20">中止运行(errstamp)</a></li>
+                  <li><a href="active.htm#2_3_2_21">填表函数(filltable)</a></li>
+                  <li><a href="active.htm#2_3_2_22">生成表(gentable)</a></li>
+                  <li><a href="active.htm#2_3_2_23">多库相交(idbf)</a></li>
+                  <li><a href="active.htm#2_3_2_24">数据库联合(udbf)</a></li>
+                  <li><a href="active.htm#2_3_2_25">读数组(rarray)</a></li>
+                  <li><a href="active.htm#2_3_2_26">统计Y轴运算(staty)</a></li>
+                  <li><a href="active.htm#2_3_2_27">统计X轴运算(statx)</a></li>
+                  <li><a href="active.htm#2_3_2_28">求和X运算(sumx)</a></li>
+                  <li><a href="active.htm#2_3_2_29">ASQL功能引用(sys)</a></li>
+                  <li><a href="active.htm#2_3_2_30">数组运算(tarray)</a></li>
+                  <li><a href="active.htm#2_3_2_31">向视图记录号库内写记录号(viewno)</a></li>
+                  <li><a href="active.htm#2_3_2_32">写数组(warray)</a></li>
+                  <li><a href="active.htm#2_3_2_33">写符号表(wsymbol)</a></li>
+                  <li><a href="active.htm#2_3_2_34">清数据库(zap)</a></li>
+                  <li><a href="active.htm#2_3_2_35">记录号传回客户端(mvewno)</a></li>
+                  <li><a href="active.htm#2_3_2_36">浏览器输出(webprint)</a></li>
+                  <li><a href="active.htm#2_3_2_37">客户端流输出(webstream)</a></li>
+                  <li><a href="active.htm#2_3_2_38">唯一执行(distinct)</a></li>
+                  <li><a href="active.htm#2_3_2_39">输出(print)</a></li>
+                  <li><a href="active.htm#2_3_2_40">初始化记录缓冲区(initrec)</a></li>
+                  <li><a href="active.htm#2_3_2_41">跳转动作(goto)</a></li>
+                  <li><a href="active.htm#2_3_2_42">请求ASQL运算(calasql)</a></li>
+                  <li><a href="active.htm#2_3_2_43">请求SQL运算(sql)</a></li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+          <li><a href="active.htm#2_4">内部变量</a><ol>
+              <li><a href="active.htm#2_4_1"><i>_ASQLUSER</i></a></li>
+              <li><a href="active.htm#2_4_2"><i>_ASQLTO</i></a></li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li><a href="yiyong.htm">ASQL应用</a></li>
+      <ol>
+        <li><a href="yiyong.htm#3_1">ASQL应用前的数据准备</a></li>
+        <li><a href="yiyong.htm#3_2">查询</a></li>
+        <li><a href="yiyong.htm#3_3">统计</a><ol>
+            <li><a href="yiyong.htm#3_3_1"><i>变量定义语句(predicates)</i></a></li>
+            <li><a href="yiyong.htm#3_3_2"><i>计数标识(statistics)</i></a></li>
+            <li><a href="yiyong.htm#3_3_3"><i>求和标识(summer)</i></a></li>
+            <li><a href="yiyong.htm#3_3_4"><i>平均值标识(average)</i></a></li>
+            <li><a href="yiyong.htm#3_3_5"><i>求最大值标识(max)</i></a></li>
+            <li><a href="yiyong.htm#3_3_6"><i>求最小值标识(min)</i></a></li>
+            <li><a href="yiyong.htm#3_3_7"><i>应用举例</i></a></li>
+            <li><a href="yiyong.htm#3_3_8"><i>行列数需通过计算的统计表</i></a></li>
+          </ol>
+        </li>
+        <li><a name="3_4" href="yiyong.htm#3_4">添加数据</a></li>
+        <li><a href="yiyong.htm#3_5">删除记录</a></li>
+        <li><a href="yiyong.htm#3_6">修改数据</a></li>
+        <li><a href="yiyong.htm#3_7">其它操作</a><ol>
+            <li><a href="yiyong.htm#3_7_1"><i>子集操作</i></a></li>
+            <li><a href="yiyong.htm#3_7_2"><i>索引辅助下的快速查找(SCOPE)</i></a></li>
+            <li><a href="yiyong.htm#3_7_3"><i>求检索结果的记录号</i></a></li>
+            <li><a href="yiyong.htm#3_7_4"><i>Web输出信息</i></a></li>
+          </ol>
+        </li>
+      </ol>
+      <li><a href="daima.htm">代码管理</a><ol>
+          <li><a href="daima.htm#4_1">汉字替换概述</a><ol>
+              <li><a href="daima.htm#4_1_1"><i>概述</i></a></li>
+              <li><a href="daima.htm#4_1_2"><i>汉字替换的应用</i></a></li>
+            </ol>
+          </li>
+          <li><a href="daima.htm#4_2">代码库设计</a><ol>
+              <li><a href="daima.htm#4_2_1"><i>代码库结构</i></a></li>
+              <li><a href="daima.htm#4_2_2"><i>工作代码文件的设计</i></a></li>
+            </ol>
+          </li>
+          <li><a href="daima.htm#4_3">汉字替换方式</a><ol>
+              <li><a href="daima.htm#4_3_1"><i>给定域的汉字替换</i></a></li>
+              <li><a href="daima.htm#4_3_2"><i>整库汉字替换</i></a></li>
+              <li><a href="daima.htm#4_3_3"><i>汉字替换的控制</i></a></li>
+            </ol>
+          </li>
+          <li><a href="daima.htm#4_4">工作代码文件的生成与代码维护</a><br>
+          </li>
+        </ol>
+      </li>
+      <li><a href="sjzd.htm">系统数据字典</a><ol>
+          <li><em><a href="sjzd.htm#5_1">表级定义</a></em></li>
+          <li><em><a href="sjzd.htm#5_2">域级定义</a></em><br>
+          </li>
+        </ol>
+      </li>
+      <li><a href="xtbdrz.htm">数据变动日志</a><ol>
+          <li><em><a href="xtbdrz.htm#6_1">数据变动日志的引入</a></em></li>
+          <li><em><a href="xtbdrz.htm#6_2">数据变动日志的形成</a></em></li>
+          <li><em><a href="xtbdrz.htm#6_3">数据变动日志撰写规则</a></em><br>
+          </li>
+        </ol>
+      </li>
+      <li><a href="zdyhs.htm">自定义函数</a><ol>
+          <li><em><a href="zdyhs.htm#7_1">参数传递办法</a></em></li>
+          <li><em><a href="zdyhs.htm#7_2">函数接口定义</a></em></li>
+          <li><em><a href="zdyhs.htm#7_3">ASQL表达式符号表</a></em></li>
+          <li><em><a href="zdyhs.htm#7_4">表达式常用结构定义头文件</a></em></li>
+          <li><em><a href="zdyhs.htm#7_5">举例</a></em><br>
+          </li>
+        </ol>
+      </li>
+      <li><a href="yxhj.htm">ASQL运行环境</a><ol>
+          <li><a href="yxhj.htm#8_1">ASQL 单机版</a><ol>
+              <li><a href="yxhj.htm#8_1_1">ASQLCLT.DLL的函数入口</a><ol>
+                  <li><a href="yxhj.htm#8_1_1_1">表达式分析</a></li>
+                  <li><a href="yxhj.htm#8_1_1_2">汉字替换</a></li>
+                </ol>
+              </li>
+              <li><a href="yxhj.htm#8_1_2"><i>ASQL引用方法</i></a></li>
+              <li><a href="yxhj.htm#8_1_3"><i>DBTREE接口函数</i></a></li>
+            </ol>
+          </li>
+          <li><a href="yxhj.htm#8_2">ASQL服务器版</a><br>
+          </li>
+        </ol>
+      </li>
+      <li><a href="fl.htm">附录:</a><ol>
+          <li><em><a href="fl.htm#9_1">ASQL表达式错误代码</a></em></li>
+          <li><em><a href="fl.htm#9_2">ASQL语法错误代码</a></em></li>
+          <li><em><a href="fl.htm#9_3">可视化表格(ViTAB)简介</a></em></li>
+          <li><em><a href="fl.htm#9_4">ASQL在医疗保险系统中应用的一个实例</a></em></li>
+          <li><em><a href="fl.htm#9_5">举案说法</a></em></li>
+          <li><em><a href="fl.htm#9_6">ASQL应用角本示例</a></em></li>
+        </ol>
+      </li>
+    </ol>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>　 </p>
+</body>
+</html>

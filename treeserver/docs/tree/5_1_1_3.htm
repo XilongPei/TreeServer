@@ -1,0 +1,46 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>读数据库记录</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>读数据库记录</strong></p>
+    <p align="left"><strong>　</strong></p>
+    <p><span style="font-size: 12px">lp = 0x2002 读数据库记录(cmTS_REC_FETCH)</span></p>
+    <p><span style="font-size: 12px">请求包格式：</span></p>
+    <p><span style="font-size: 12px">4字节：df，</span></p>
+    <p><span style="font-size: 12px">4字节：recNo</span></p>
+    <p><span style="font-size: 12px">应答包格式：</span></p>
+    <p><span style="font-size: 12px">由三部分组成：包头、记录信息、记录内容</span></p>
+    <p><span style="font-size: 12px">packetType = 'R';</span></p>
+    <p><span style="font-size: 12px">msgType = 'D';</span></p>
+    <p><span style="font-size: 12px">len = 
+    sizeof(TS_COM_PROPS)+sizeof(RECPROPS)+df-&gt;rec_len;</span></p>
+    <p><span style="font-size: 12px">lp = 0;</span></p>
+    <p><span style="font-size: 12px">recprops.iPhyRecNum = df-&gt;rec_p;</span></p>
+    <p><span style="font-size: 12px">recprops.bDeleteFlag = df-&gt;rec_buf[0] - ' ';</span></p>
+    <p><span style="font-size: 12px">记录内容</span></p>
+    <p><span style="font-size: 12px">　</span></p>
+    <p><span style="font-size: 12px">结构定义：</span></p>
+    <p><span style="font-size: 12px">typedef struct tagRECProps {</span></p>
+    <p><span style="font-size: 12px">long iSeqNum; //: Longint; { When Seq# supported only }</span></p>
+    <p><span style="font-size: 12px">long iPhyRecNum; //: Longint; { When Phy Rec#s supported 
+    only }</span></p>
+    <p><span style="font-size: 12px">short iRecStatus; //: Word; { Delayed Updates Record 
+    Status }</span></p>
+    <p><span style="font-size: 12px">short bSeqNumChanged; //: WordBool; { Not used }</span></p>
+    <p><span style="font-size: 12px">short bDeleteFlag; //: WordBool; { When soft delete 
+    supported only }</span></p>
+    <p><span style="font-size: 12px">} RECPROPS;</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

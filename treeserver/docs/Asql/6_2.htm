@@ -1,0 +1,30 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>数据变动日志的形成</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><font size="2"><span style="font-size: 12px"><b>数据变动日志的形成</b></span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">　　数据变动日志是在数据维护模块中撰写的。当数据库中的数据发生变化时，数据变动日志就把这些变动情况记录下来。首先记录下数据的变动类型, 
+    即数据变动码, 
+    接着记录数据变动的情况。先写成一个控制子块，紧接控制子块之后是数据块，由各记录中的有关域组成，包括：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">1.被修改记录的主关键字内容(序号CODE)；</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">2.被修改域修改前的内容；</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">3.被修改域修改后的内容。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="2"><span style="font-size: 12px">　　数据变动的上报文件是由增加记录和数据变动日志一起构成的，流图6.1所示：</span></font></p>
+    <p ALIGN="CENTER"><font size="2"><span style="font-size: 12px"><img
+    SRC="../asql/images/Image2.gif" WIDTH="454" HEIGHT="269"></span></font></p>
+    <p ALIGN="CENTER"><font size="2"><span style="font-size: 12px">图6.1 
+    数据变动上报文件形成流程图</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

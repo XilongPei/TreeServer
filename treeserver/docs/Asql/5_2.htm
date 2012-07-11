@@ -1,0 +1,99 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>域级定义</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><b><font size="2">域级定义</font></b></p>
+    <p><font size="2">为了简化域的描述，域的描述是放在一张表中的，其表的结构为：</font></p>
+    <table BORDER="1" CELLSPACING="0" BORDERCOLOR="#000000" CELLPADDING="2" WIDTH="321">
+      <tr>
+        <td VALIGN="top" BGCOLOR="#800000"><i><b><p ALIGN="JUSTIFY"><font color="#FFFFFF" size="2">Field 
+        域名 类型 宽度</font></b></i></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">1 NUM Character 4</font></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">2 TID Character 4</font></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">3 BASENAME Character 8</font></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">4 C_EXPR Character 20</font></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">5 EFNAME Character 10</font></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">6 CWIDE Character 2</font></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">7 EWIDE Character 2</font></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">8 DEC Character 2</font></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">9 D_TYPE Character 1</font></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">10 CFNAME Character 20</font></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">11 REPDESCRIP Character 70</font></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">12 CHECK_COND Character 150</font></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">13 TYPE Character 1</font></td>
+      </tr>
+      <tr>
+        <td VALIGN="TOP"><p ALIGN="JUSTIFY"><font size="2">** 记录大小 ** 295</font></td>
+      </tr>
+    </table>
+    <p ALIGN="JUSTIFY"><font size="2">下边对域描述表中每个域的含义作一解释：</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">1. NUM 信息项编号</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">NUM 
+    的宽度为四，前两位表示数据库的编号，例如，在TGMIS原始资源中，00表示SUB0， 
+    01表示SUB1...，10表示SUB10...等等。NUM中的后两位表示同一库中域名的编号，也 
+    可自行定义，它没有实际意义。</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">2.TID 表标识</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">3. BASENAME 数据库名</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">信息项所在的数据库（源库）名。</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">4. EFNAME 域名</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">信息项在数据库中的域名。</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">5. C_EXPR 对应的中文域名</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">信息项的中文自然含义。</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">6. EWIDE 域宽</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">数据库(源库)中的信息项的域宽。</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">7. CWIDE 中文域宽</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">信息项的中文宽度，对于域中填写的内容是与代码库一一对应的域，&amp;127;即所对崐应的代码库中的C_BRIF字段的宽度。此项也可用 
+    &amp;127;来控制汉字替换以后汉字库中该崐域的宽度。汉字替换的结果是代码库中C_BRIF中的内容。</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">8.DEC 小数位</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">9.D_TYPE 数据类型</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">10. CFNAME 中文域名</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">它是简化了的中文域名，在查询结果输出时用它来自动构造所选择的输出项的域 
+    名，在屏幕上显示的也是简化了的中文域名。</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">11. REPDESCRIP 
+    汉字替换方式（代码替换表达式）</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">用以描述汉字替换方式的表达式，对于域中填写的内容是代码库一一对应的域，此项填写的是该信息项所对应的代码库名，空为不需替换。</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">通常，数据库中该域的宽度和对应的代码库中的 
+    E_EXPR 的宽度一致，&amp;127;将源崐库中的代码 
+    字符串全部取出，在对应的代码库中找到此代码所对应的汉字，进行替换。</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">12. CHECK_COND 数据检查条件表达式</font></p>
+    <p ALIGN="JUSTIFY"><font size="2">填写该项信息必须满足的条件表达式，在进行数据操作时，系统会自动根据此条件对数据进行检查。空为不检查。</font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

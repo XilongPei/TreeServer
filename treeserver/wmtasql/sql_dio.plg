@@ -1,0 +1,33 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: sql_dio - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\TEMP\RSP80.tmp" with contents
+[
+/nologo /Zp1 /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_NTSDK" /Fp"Release/sql_dio.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
+"F:\TreeServer\wmtasql\idbase_b.c"
+]
+Creating command line "cl.exe @C:\TEMP\RSP80.tmp" 
+Creating temporary file "C:\TEMP\RSP81.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /pdb:none /machine:I386 /out:"sql_dio/SQL_DIO.dll" /implib:"Release/SQL_DIO.lib" 
+.\Release\idbase_b.obj
+]
+Creating command line "link.exe @C:\TEMP\RSP81.tmp"
+<h3>Output Window</h3>
+Compiling...
+idbase_b.c
+Linking...
+   Creating library Release/SQL_DIO.lib and object Release/SQL_DIO.exp
+
+
+
+<h3>Results</h3>
+SQL_DIO.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

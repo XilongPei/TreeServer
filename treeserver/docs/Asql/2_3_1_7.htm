@@ -1,0 +1,67 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>格式化字符串</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><strong>格式化字符串(fmtstr)</strong><br>
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]STRING_TYPE fmtstr ( &lt;字符型表达式&gt;表示的格式化控制字符串，（字符/整型/长整/浮点/字符串）型值 
+    )</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]格式化控制字符串存放格式化规范，格式化规范确定第二个参数的输出格式。格式化规范（后面讨论）总是以一个(%)开始。若百分号之后所跟的字符作为格式化字段无意义,则该字符不被格式化(如: 
+    %%产生一个百分号字符)。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">格式化字符串是被从左到右读取的。当遇第一个(存在的)格式化规范时,便导致格式化字符串后面的第一个参变量的值 
+    被根据格式化规范转换并烤贝到输出缓冲区中。第二个格式化规范将导致第二个参变量被转换和拷贝，等等。目前的ASQL版本只支持一个参变量。若参变量的数目多于格式化规范的数目,额外的参变量将被忽略。若对所有格式化规范来说参变量的数目不足,则结果不确定.</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">格式化规范有如下格式： </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">%[ - ][ # ][ 0 ][ width ][ .precision ] 
+    type</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">其中的每个字段都是一个字符或一个指定特殊格式化选项的值。最后一个格式化字段之后的type字符决定是将一个参变量解释为字符，还是字符串，或是一个值。最简单的格式化规范仅有一个百分号和一个type字符(如:%s)。可选字段控制格式的其它方面。下面列出的是可选字段和必选字段以及它们的含义。</span></p>
+    <u><p ALIGN="JUSTIFY"><span style="font-size: 12px">字段 含义 </span></p>
+    </u><p ALIGN="JUSTIFY"><span style="font-size: 12px">- 用空格或0填充输出的右端以添满整个字段，并使输出左端对齐。若省略该字段， 
+    则在输出的左端填充，并使输出右对齐。 .</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"># 用0x或0X作为十六进制前缀.</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">0 在字段宽度内补0.若省略该字段，则用空格填补输出值.</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">width 
+    向输出缓冲区中拷贝所指定的最少数目的字符。width字段是一个非负的整数宽度规范不会导致一个值被截断;若输出的中的字符数大于指定的宽度,或者若未提供width字符,则根据精度规范输出改值的所有字符。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">.precision 对数字来说,向输出缓冲区中拷贝所指定的最小数目的数字。若参变量中的数字的数目小于指定的精度,则在输出值的左边补零。若数字的数目超出所指定的精度,则该值不被截断。若所指定的精度为0或者省略这一字段,或者若小数点(.)之后未跟有数字,则精度被设置为1。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">对字符串来说,向输出缓冲区中拷贝所指定的最大数目的字符。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">type 
+    将对应的参变量作为一个字符,或一个字符串,或一个数字输出,该字段可以是下列字符序列中的任何值：</span></p>
+    <u><p ALIGN="JUSTIFY"><span style="font-size: 12px">序列 插入内容</span></p>
+    </u><p ALIGN="JUSTIFY"><span style="font-size: 12px">c 
+    一个字符。函数忽略其数字值为0的字符参变量。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">C 一个字符。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">d 
+    一个带符号的十进整数参变量。该序列与i序列相同。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">hc , HC 一个字符。 
+    函数忽略其数字值为0的字符参变量。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">hs , HS 一个字符串。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">i 
+    一个带符号的十进整数。这一序列与d序列相同。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lc , LC 一个字符。 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ld 
+    一个带符号的十进整数。这一序列与li序列相同。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">li 
+    一个带符号的十进整数。这一序列与ld序列相同。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ls , LS 一个字符串。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lu 一个无符号长整数。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">lx , LX 
+    一个小写或大写的无符号十六长进数。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">s 一个字符串。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">S 一个字符串。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">u 一个无符号整数参变量。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">x , X 
+    一个小写或大写的无符号十六进整数。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]fmtstr(&quot;%4.2d&quot;, 100.34)</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

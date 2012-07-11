@@ -1,0 +1,8 @@
+database lz
+from wuik,wuik,*billno
+to cx,*
+cond
+begin
+  billno="00019681" $ record(@1)
+end
+action initrec(1);apprec(2,wuik.billno:="00019681",wuik.branch:="pxl")

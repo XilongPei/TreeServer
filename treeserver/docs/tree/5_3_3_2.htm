@@ -1,0 +1,74 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>用户级帐号操作协议</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>用户级帐号操作协议</strong></p>
+    <p align="left"><strong>　</strong></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">msgType = 'U' </span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <b><p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">修改密码 </span></font></b></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">lp = 0x4000 len =旧密码长度 
+    + 1 + 新密码长度 + 1 包数据为旧密码\x0新密码\x0 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">返回：lp = 0 成功； </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">否则 lp 为出错号，len 
+    为出错信息长，数据为出错信息 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">在 TreeSVR 
+    的用户帐号数据库中，包含一个内置的帐号，对于用户是不可见的，该帐号的标识为 
+    &quot;#T_USER&quot;，存储的是用户的模板信息及帐号的规则。 
+    所谓的模板即用户帐号参数的默认值，描述如下： </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">szUser* 
+    &quot;#T_USER&quot; </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">dwUserId* 
+    目前可用的最小用户 ID </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">系统内部保留，与应用程序无关 
+    </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">szPasswd* &quot;&quot; </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">szHomeDir+ 默认为 
+    &quot;%USER_HOME%\%USER_NAME%&quot; </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">%USER_HOME% 表示代表 
+    TreeSVR 用户的根目录的变量 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">%USER_NAME% 
+    表示代表当前用户名的变量 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">在实际运行时是用 
+    TreeSVR 用户的根目录和当前用户名 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">代换的。 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">szLogonComputer* 
+    &quot;&quot; </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">bLogonHours+ 
+    用户默认的登录时间控制 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">szAccessMask+ 
+    用户默认的权限掩码 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">szDescription* 
+    &quot;&quot; </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">cLogonFail- 
+    用户被锁定的最大登录失败计数 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">cLocked- 
+    是否根据登录失败计数 cLogonFail 的值锁定帐号 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">cLogonFail 与 cLocked 
+    两个标志是相互作用的，当某用 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">户帐号的登录失败计数达到该 
+    cLogonFail 值时，检查 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">cLocked 是否为 1，若为 
+    1 则锁定帐号，若为 0 不产生 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">用户帐号的锁定。 </span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

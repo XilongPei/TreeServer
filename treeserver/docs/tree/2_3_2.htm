@@ -1,0 +1,35 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>引擎开发要求</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>引擎开发要求</strong></p>
+    <p>　</p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">开发ＴreeSVR引擎有如下要求：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(1)引擎是可Win32标准的动态连接库。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(2)每个引擎必须提供三个函数：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">初始化函数，一个引擎被装入系统内首先调用的函数，这个函数可以完成诸如环境初始化之类工作：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">ProcessAttach()</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">析构函数，引擎被关闭时做的工作：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">ProcessDetach()</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">引擎事务函数入口，如果是单线程引擎，TreeSVR将当前任务指针指向它；如果是多任务引擎，TreeSVR狼子野心建一个新的线程满足当前用户服务要求：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EngineEntryPoint()</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">(3)引擎内无法使用静态线程局部存储，因为引擎是通过LoadLibrary()加载的，即下面的定义将使引擎无法加载（假定编译器为Visual 
+    C）。</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">_declspec(thread) DWORD 
+    gt_dwStartTime=0;</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

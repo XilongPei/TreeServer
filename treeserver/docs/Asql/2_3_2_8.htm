@@ -1,0 +1,28 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>New Page 8</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+
+<table border="1" width="100%">
+  <tr>
+    <td width="100%">　<p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]bToFile(域名, 
+    文件名&lt;字符串型表达式&gt;)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]将文件内容填写至目标结果的域名所指示的域中。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/* 
+    将某人的履历写成文件。利用SCOPE语法提高执行速度*/</span></p>
+    <p><span style="font-size: 12px">FROM (SCOPE: CODE, &quot;123456789012345&quot;, 
+    &quot;123456789012345&quot;) \TG\DATA\SUB0.DBF<br>
+    TO \TG\DATA\CXMAIN.DBF<br>
+    CONDITION<br>
+    BEGIN<br>
+    CODE=&quot;123456789012345&quot; $ btofile(memo, &quot;MEMO.TXT&quot;);<br>
+    END</span></td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>引擎的提供形式</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>引擎的提供形式</strong></p>
+    <p>　</p>
+    <b><p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">1 配置文件登记</span></font></p>
+    </b><blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">引擎可执行文件路径：</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Engine = c:\Program 
+      Files\TreeServer\Engine\isql.dll</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">引擎命令名，客户端就是通过声明本次事务提交给具体引擎的名字来标识事务类型的，TreeSVR也是靠这个名字来管理引擎的。大小写不敏感。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Command = isql</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">引擎的入口函数名，大小写敏感。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EntryFunction = iSQLEntry</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">兼容性，是否支持多线程，若不支持，ASQL将使这个引擎工作在单任务方式，不并发访问它。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Capability = m-s</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">允许定时器事件否</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EnableTimer = 0 </span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">允许IDLE事件否</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EnableIdle = 0</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">超时时限毫秒数，即本引擎工作的最长时延，超过这个时延TreeSVR认为它已经死亡，奖清理现场，重新加载引擎。</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TimeOut = 100000</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">是否加载，不加载显然不能被客户引用</span></font></p>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Enable = 1</span></font></p>
+    </blockquote>
+    <b><p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">2 示例</span></font></b></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">// 配置文件的示例</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">[Transaction Engine]</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">iSQL = Informix ODBC 
+    function engine</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">File = File Service engine</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Hello = test</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">David = </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">[iSQL]</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Engine = c:\Program 
+    Files\TreeServer\Engine\isql.dll</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Command = isql</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EntryFunction = iSQLEntry</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Capability = m-s</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EnableTimer = 0 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EnableIdle = 0</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TimeOut = 100000</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Enable = 1</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">[FILE]</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Engine = c:\Program 
+    Files\TreeServer\Engine\filesvc.dll</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Command = File</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EntryFunction = 
+    MyExportFunction</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Capability = m--</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EnableTimer = 0 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EnableIdle = 0</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TimeOut = 60000</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Enable = 1</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">[Hello]</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Engine = c:\Program 
+    Files\TreeServer\Engine\Hello.dll</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Command = Hello</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EntryFunction = 
+    MyExportFunction</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Capability = m-s</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EnableTimer = 0 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EnableIdle = 0</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TimeOut = 60000</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Enable = 1</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">[David]</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Engine = c:\Program 
+    Files\TreeServer\Engine\David.dll</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Command = David</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EntryFunction = 
+    MyExportFunction</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Capability = m-s</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EnableTimer = 0 </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">EnableIdle = 0</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TimeOut = 60000</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">Enable = 1</span></font></p>
+    <b><p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">3 
+    可执行程序提供。</span></font></p>
+    </b><blockquote>
+      <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">需在相应目录（视具体描述）存有用户提供的动态连接库。</span></font></p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

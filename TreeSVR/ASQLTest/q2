@@ -1,0 +1,7 @@
+
+from (scope:a04:"2","2")lz1.dbf
+to cx.dbf.*
+cond
+begin
+   a04="2" $ record(@1)
+end

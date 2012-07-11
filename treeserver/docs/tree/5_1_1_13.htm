@@ -1,0 +1,42 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>取域信息</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>取域信息</strong></p>
+    <p align="left"><strong>　</strong></p>
+    <p><font size="3"><span style="font-size: 12px">lp = 0x2012取域信息 (cmTS_FIELD_INFO)</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">请求包格式：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">4字节：df，</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">应答包格式：</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">由三部分组成：包头</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">packetType = 'R';</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">msgType = 'D';</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">len = 包长</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">lp =域数量</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">域数组,域的元素定义为：</span></font></p>
+    <blockquote>
+      <p><font size="3"><span style="font-size: 12px">typedef struct {</span></font></p>
+    </blockquote>
+    <p><font size="3"><span style="font-size: 12px">unsigned char field[32];</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">unsigned char fieldtype;</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">unsigned char fieldlen;</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">unsigned char fielddec;</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">long fieldstart;</span></font></p>
+    <blockquote>
+      <p><font size="3"><span style="font-size: 12px">} DIO_FIELD, *LPDIO_FIELD;</span></font></p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

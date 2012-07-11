@@ -1,0 +1,24 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>数据库联合</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>数据库联合(udbf)</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]udbf(&lt;目标库名&gt;,&lt;连接关键字&gt;,&lt;库名1&gt;,&lt;库名2&gt;...)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]把多个数据库按一定的顺序合并成一个数据库。&lt;连接关键字&gt;为各库中都有的任意域名。类似idbf，只是这是数据库的并集。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*将sub1,sub2库合并放入cxmain库中。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ACTION 
+    udbf(cxmain.dbf,code,sub1.dbf,sub2.dbf)</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

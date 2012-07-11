@@ -1,0 +1,40 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>用户注册</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>用户注册</strong></p>
+    <p align="left"><strong>　</strong></p>
+    <p><font size="3"><span style="font-size: 12px">DWORD tsLogon(LPCSTR szServer, LPCSTR 
+    szUser, LPCSTR szPassword, LPHANDLE lphConnect);</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <b><p><font size="3"><span style="font-size: 12px">返回： </span></font></p>
+    </b><blockquote>
+      <p><font size="3"><span style="font-size: 12px">成功：用户ID,一个标识用户的内部整数；同时lphConnect中填有本次连接的标识。</span></font></p>
+    </blockquote>
+    <p><font size="3"><span style="font-size: 12px">出错：0xFFFFFFFF</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">之所以不让tsLogon直接返回连接标识，是因为一个TreeSVR客户端可能同时与多个TreeSVR服务器相连。</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <b><p><font size="3"><span style="font-size: 12px">参数：</span></font></p>
+    </b><blockquote>
+      <p><font size="3"><span style="font-size: 12px">szServer：待连接服务器名称，这个名称是WindowsNT赋予运行TreeSVR服务器的那台机器的。例：ohnt40。不可带“\\”</span></font></p>
+    </blockquote>
+    <p><font size="3"><span style="font-size: 12px">szUser：用户在TreeSVR服务器端登记的用户名，例如：david</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">szPassword:用户在TreeSVR服务器端登记的口令。例如：weiwei</span></font></p>
+    <blockquote>
+      <p><font size="3"><span style="font-size: 12px">lphConnect:返回，用以标识本连接。</span></font></p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

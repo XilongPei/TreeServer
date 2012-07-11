@@ -1,0 +1,30 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>初始化记录缓冲区</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><b><span style="font-size: 12px">初始化记录缓冲区(initrec)</span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><br>
+    [原型]initrec([提交源表声明]或域名)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]将目标数据表的当前记录缓冲区清空。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[提交源表声明]的说明见calrec()的定义，如果有这个参数的话，表示对源表的哪张表进行这个操作。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM \tg\data\sub0.dbf<br>
+    TO cxmain.dbf,code,name,sex,s2 7 2 N<br>
+    CONDITION<br>
+    BEGIN<br>
+    sex=&quot;1&quot; $ initrec(CODE);calrec(CODE)<br>
+    END</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

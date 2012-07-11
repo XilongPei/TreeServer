@@ -1,0 +1,96 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>TreeServer 的用户帐号信息结构</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>TreeServer 的用户帐号信息结构</strong></p>
+    <p><span style="font-size: 12px">typedef struct tagTsTime {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">unsigned short year;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">unsigned char month;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">unsigned char day;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">unsigned char hour;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">unsigned char min;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">unsigned char sec;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">unsigned char week;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} TS_TIME, *PTS_TIME, *LPTS_TIME;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">typedef struct tagUserInfo {</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR szUser[MAX_USER_NAME];</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">DWORD dwUserId;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR szPasswd[MAX_PASSWD];</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR szHomeDir[MAX_PATH];</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR szLogonComputer[MAX_LOGON_COMPUTER];</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">BYTE bLogonHours[MAX_LOGON_HOURS];</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR szAccessMask[MAX_ACCESS_MASK];</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR szDescription[MAX_DESCRIPTION];</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR cLogonFail;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR cLocked;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">TS_TIME tLastLogon;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">TS_TIME tLastLogonFail;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">CHAR szReserved[158];</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">} USER_INFO, *PUSER_INFO, *LPUSER_INFO;</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p><span style="font-size: 12px">　</span></p>
+    <b><p ALIGN="JUSTIFY"><span style="font-size: 12px">结构成员说明： </span></b></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">szUser </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">用户帐号的名字。 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">dwUserId </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">用户帐号的内部标识，又系统统一分配，具有唯一性，该成员是只读的。 
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">szPasswd </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">用户帐号的密码。 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">szHomeDir </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">用户帐号的宿主目录。 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">szLogonComputer </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">用户可登录的以访问 TreeSVR 
+    的工作站的名字的列表，以 MultiString 的 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">格式存储。例如： </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">&quot;VAcer\0Multi\0Peixl01\0Motor\0\0&quot; 
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">工作站的名字的最大长度为 15 
+    字节，szLogonComputer 的空间为 320 字节， </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">可容纳 20 
+    个工作站的名字列表。 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">bLogonHours </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">用户帐号被许可的登录时间的位掩码，共计 
+    21 字节，168 Bits。每一为 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">表示一个小时，从星期日的零时到星期六的23时，如下表： 
+    </span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px"><img SRC="Image24.gif" WIDTH="548"
+    HEIGHT="189"></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">szAccessMask </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">用户帐号的权限掩码，共计 16 
+    字节，每一字节表示一种权限。若该字节 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">为 0，则对应的权限对本帐号禁用，若该字节为 
+    1，则对应的权限对本帐 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">号许可。目前有效的字节是前四字节，分别为： 
+    </span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px"><img SRC="Image25.gif" WIDTH="274"
+    HEIGHT="169"></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">szDescription 
+    用户帐号的描述性文字。仅供浏览，不做管理使用。 cLogonFail 
+    用户帐号登录失败计数。用户在登录时，登录失败一次，该计数加一； 
+    登录成功则自动将计数清零。 cLocked 用户帐号的锁定标志字，为 0 
+    表示帐号未锁定， 为 1 表示帐号锁定。 tLastLogon</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">用户最近成功登录时间</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">tLastLogonFail</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">用户最近失败登录时间</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">szReserved 174 字节的保留空间。 </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">（具体的常量定义见 Attach 中的 
+    &quot;tlimits.h&quot; 文件） </span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

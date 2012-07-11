@@ -1,0 +1,81 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: gdbm - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP36.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /Fp"Debug/gdbm.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\TreeServer\gdbm\bucket.c"
+"F:\TreeServer\gdbm\falloc.c"
+"F:\TreeServer\gdbm\findkey.c"
+"F:\TreeServer\gdbm\gdbmclose.c"
+"F:\TreeServer\gdbm\gdbmdelete.c"
+"F:\TreeServer\gdbm\gdbmerrno.c"
+"F:\TreeServer\gdbm\gdbmexists.c"
+"F:\TreeServer\gdbm\gdbmfetch.c"
+"F:\TreeServer\gdbm\gdbmopen.c"
+"F:\TreeServer\gdbm\gdbmreorg.c"
+"F:\TreeServer\gdbm\gdbmseq.c"
+"F:\TreeServer\gdbm\gdbmsetopt.c"
+"F:\TreeServer\gdbm\gdbmstore.c"
+"F:\TreeServer\gdbm\gdbmsync.c"
+"F:\TreeServer\gdbm\global.c"
+"F:\TreeServer\gdbm\hash.c"
+"F:\TreeServer\gdbm\update.c"
+]
+Creating command line "cl.exe @D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP36.tmp" 
+Creating temporary file "D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP37.tmp" with contents
+[
+/nologo /out:"Debug\gdbm.lib" 
+.\Debug\bucket.obj
+.\Debug\falloc.obj
+.\Debug\findkey.obj
+.\Debug\gdbmclose.obj
+.\Debug\gdbmdelete.obj
+.\Debug\gdbmerrno.obj
+.\Debug\gdbmexists.obj
+.\Debug\gdbmfetch.obj
+.\Debug\gdbmopen.obj
+.\Debug\gdbmreorg.obj
+.\Debug\gdbmseq.obj
+.\Debug\gdbmsetopt.obj
+.\Debug\gdbmstore.obj
+.\Debug\gdbmsync.obj
+.\Debug\global.obj
+.\Debug\hash.obj
+.\Debug\update.obj
+.\Debug\version.obj
+]
+Creating command line "link.exe -lib @D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP37.tmp"
+<h3>Output Window</h3>
+Compiling...
+bucket.c
+falloc.c
+findkey.c
+gdbmclose.c
+gdbmdelete.c
+gdbmerrno.c
+gdbmexists.c
+gdbmfetch.c
+gdbmopen.c
+gdbmreorg.c
+gdbmseq.c
+gdbmsetopt.c
+gdbmstore.c
+gdbmsync.c
+global.c
+hash.c
+update.c
+Creating library...
+
+
+
+<h3>Results</h3>
+gdbm.lib - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>历史资料获取</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>历史资料获取</strong></p>
+    <font FACE="宋体" SIZE="3"><p> </font><span style="font-size: 12px"> 
+    &nbsp; 历史数据获取是指从现有数据仓库中提取数据的过程。一般可以手工来获取数据，因为TreeSVR的数据仓库中开放数据格式存储的；但更多的是通过程序自动获取这些数据，组成分析表，甚至再运算。</span></p>
+    <p><span style="font-size: 12px">　</span><b></p>
+    <p><span style="font-size: 12px">注意：</span></b></p>
+    <p><span style="font-size: 12px">由于TreeSVR对工业标准的DBF格式有所扩充，建议用户不要自己通过非TreeSVR提供的工具修改数据，读可以。</span></p>
+    <p><span style="font-size: 12px">可以通过下面这种ASQL语法来完成这一工作。</span></p>
+    <p><span style="font-size: 12px">PREDICATES</span></p>
+    <p><span style="font-size: 12px">FLOAT lsfx[6,4]</span></p>
+    <p><span style="font-size: 12px">DATABASE 
+    某一历史数据仓库应可以做为一个独立数据库定义于数据字典中</span></p>
+    <p><span style="font-size: 12px">FROM HIST_COND</span></p>
+    <p><span style="font-size: 12px">CONDITION</span></p>
+    <p><span style="font-size: 12px">BEGIN</span></p>
+    <p><span style="font-size: 12px">SUMMER lsfx, val(RESULT)</span></p>
+    <p><span style="font-size: 12px">#Y1: STAT_ID=时间点1的STAT_ID</span></p>
+    <p><span style="font-size: 12px">#Y2: STAT_ID=时间点2的STAT_ID</span></p>
+    <p><span style="font-size: 12px">#Y3: STAT_ID=时间点3的STAT_ID</span></p>
+    <p><span style="font-size: 12px">#Y4: STAT_ID=时间点4的STAT_ID</span></p>
+    <p><span style="font-size: 12px">#Y5: STAT_ID=时间点5的STAT_ID</span></p>
+    <p><span style="font-size: 12px">#Y6: STAT_ID=时间点6的STAT_ID</span></p>
+    <p><span style="font-size: 12px">#X1: COND_CODE=采集要求1</span></p>
+    <p><span style="font-size: 12px">#X2: COND_CODE=采集要求2</span></p>
+    <p><span style="font-size: 12px">#X3: COND_CODE=采集要求3</span></p>
+    <p><span style="font-size: 12px">#X4: COND_CODE=采集要求4</span></p>
+    <p><span style="font-size: 12px">END</span></p>
+    <p><span style="font-size: 12px">/*将结果写至物理文件中*/</span></p>
+    <p><span style="font-size: 12px">ACTION WARRAY(&quot;fxjg&quot;, lsfx);</span></p>
+    <p><span style="font-size: 12px">[举例]</span></p>
+    <p><span style="font-size: 12px">假如用户已经将该公司历年来干部的管理数据存入计算机（或许只有到用到这些数据时，用户才感到保存历史数据的重要性，也才真正理会了一些数据仓库的概念）：</span></p>
+    <p><span style="font-size: 12px">HISTCOND.DBF:</span></p>
+    <p><span style="font-size: 12px">─────┬───────┬──────────┬──────┬───</span></p>
+    <p><span style="font-size: 12px">COND_CODE │ EXPLAIN │ ASQL_ASK │RESULTTYPE │FLAG</span></p>
+    <p><span style="font-size: 12px">─────┼───────┼──────────┼──────┼───</span></p>
+    <p><span style="font-size: 12px">ASQL │干部数量统计 │gbslSK │ │</span></p>
+    <p><span style="font-size: 12px">001001 │干部总数 │A.DBF(1,1) │N │</span></p>
+    <p><span style="font-size: 12px">001002 │干部增加数 │A.DBF(2,1) │N │</span></p>
+    <p><span style="font-size: 12px">001003 │靛年增加数 │A.DBF(3,1) │N │</span></p>
+    <p><span style="font-size: 12px">... │... │... │... │...</span></p>
+    <p><span style="font-size: 12px">─────┴───────┴──────────┴──────┴───</span></p>
+    <p><span style="font-size: 12px">HISTSREM.DBF</span></p>
+    <p><span style="font-size: 12px">───────────┬──────┬───┬────┬──────</span></p>
+    <p><span style="font-size: 12px">EXPLAIN │ DATE │ TIME │ STAT_ID│ FLAG</span></p>
+    <p><span style="font-size: 12px">───────────┼──────┼───┼────┼──────</span></p>
+    <p><span style="font-size: 12px">1990年统计 │19901230 │143002│ 1 │</span></p>
+    <p><span style="font-size: 12px">1991年统计 │19911230 │143002│ 2 │</span></p>
+    <p><span style="font-size: 12px">1992年统计 │19921230 │143002│ 3 │</span></p>
+    <p><span style="font-size: 12px">1993年统计 │19921230 │143002│ 4 │</span></p>
+    <p><span style="font-size: 12px">1994年统计 │19921230 │143002│ 5 │</span></p>
+    <p><span style="font-size: 12px">───────────┴──────┴───┴────┴──────</span></p>
+    <p><span style="font-size: 12px">HISTRSUT.DBF</span></p>
+    <p><span style="font-size: 12px">──────┬─────┬────┬───────</span></p>
+    <p><span style="font-size: 12px">COND_CODE│ STAT_ID │ RESULT │ RESULT_TYPE</span></p>
+    <p><span style="font-size: 12px">──────┼─────┼────┼───────</span></p>
+    <p><span style="font-size: 12px">001001 │ 1 │ 49323 │ N</span></p>
+    <p><span style="font-size: 12px">001002 │ 1 │ 9323 │ N</span></p>
+    <p><span style="font-size: 12px">001003 │ 1 │ 18783 │ N</span></p>
+    <p><span style="font-size: 12px">..... │ ... │ ... │ ...</span></p>
+    <p><span style="font-size: 12px">──────┴─────┴────┴───────</span></p>
+    <p><span style="font-size: 12px">通过运算下面的ASQL语句，将能获得如表5.3所示的结果。</span></p>
+    <p><span style="font-size: 12px">PREDICATES</span></p>
+    <p><span style="font-size: 12px">FLOAT lsfx[5,3]</span></p>
+    <p><span style="font-size: 12px">FROM C:\SJCK\HIST_COND.DBF</span></p>
+    <p><span style="font-size: 12px">CONDITION</span></p>
+    <p><span style="font-size: 12px">BEGIN</span></p>
+    <p><span style="font-size: 12px">SUMMER lsfx, val(RESULT)</span></p>
+    <p><span style="font-size: 12px">#Y1: STAT_ID=&quot;1&quot;</span></p>
+    <p><span style="font-size: 12px">#Y2: STAT_ID=&quot;2&quot;</span></p>
+    <p><span style="font-size: 12px">#Y3: STAT_ID=&quot;3&quot;</span></p>
+    <p><span style="font-size: 12px">#Y4: STAT_ID=&quot;4&quot;</span></p>
+    <p><span style="font-size: 12px">#Y5: STAT_ID=&quot;5&quot;</span></p>
+    <p><span style="font-size: 12px">#X1: COND_CODE=&quot;001001&quot;</span></p>
+    <p><span style="font-size: 12px">#X2: COND_CODE=&quot;001002&quot;</span></p>
+    <p><span style="font-size: 12px">#X3: COND_CODE=&quot;001003&quot;</span></p>
+    <p><span style="font-size: 12px">END</span></p>
+    <p><span style="font-size: 12px">/*将结果写至物理文件中*/</span></p>
+    <p><span style="font-size: 12px">ACTION WARRAY(&quot;fxjg&quot;, lsfx);</span></p>
+    <p><span style="font-size: 12px">　</span></p>
+    <p ALIGN="CENTER"><span style="font-size: 12px">表5.3 <u><b>近年来干部情况表</span></p>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <blockquote>
+                <blockquote>
+                  <blockquote>
+                    <blockquote>
+                      <blockquote>
+                        <blockquote>
+                        <blockquote>
+                        <blockquote>
+                        <blockquote>
+                        <blockquote>
+                        <blockquote>
+                        <blockquote>
+                        <blockquote>
+                        </b></u><p>　</p>
+                        </blockquote>
+                        </blockquote>
+                        </blockquote>
+                        </blockquote>
+                        </blockquote>
+                        </blockquote>
+                        </blockquote>
+                        </blockquote>
+                      </blockquote>
+                    </blockquote>
+                  </blockquote>
+                </blockquote>
+              </blockquote>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+    <div align="center"><center><table border="0" width="434" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="100%" align="right"><span style="font-size: 12px">单位：人</span></td>
+      </tr>
+      <tr>
+        <td width="100%">&nbsp; </td>
+      </tr>
+    </table>
+    </center></div><div align="center"><center><table BORDER="1" CELLSPACING="2"
+    BORDERCOLOR="#000000" CELLPADDING="7" WIDTH="434">
+      <tr>
+        <td WIDTH="35%" VALIGN="TOP"><span style="font-size: 12px">　</span></td>
+        <td WIDTH="22%" VALIGN="TOP"><span style="font-size: 12px">干部总数</span></td>
+        <td WIDTH="22%" VALIGN="TOP"><span style="font-size: 12px">干部增加数</span></td>
+        <td WIDTH="21%" VALIGN="TOP"><span style="font-size: 12px">逐年境加数</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="35%" VALIGN="TOP"><span style="font-size: 12px">一九九零年</span></td>
+        <td WIDTH="22%" VALIGN="TOP"><span style="font-size: 12px">49323</span></td>
+        <td WIDTH="22%" VALIGN="TOP"><span style="font-size: 12px">9323</span></td>
+        <td WIDTH="21%" VALIGN="TOP"><span style="font-size: 12px">18783</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="35%" VALIGN="TOP"><span style="font-size: 12px">一九九一年</span></td>
+        <td WIDTH="22%" VALIGN="TOP"><span style="font-size: 12px">51243</span></td>
+        <td WIDTH="22%" VALIGN="TOP"><span style="font-size: 12px">1243</span></td>
+        <td WIDTH="21%" VALIGN="TOP"><span style="font-size: 12px">20285</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="35%" VALIGN="TOP"><span style="font-size: 12px">一九九二年</span></td>
+        <td WIDTH="22%" VALIGN="TOP"><span style="font-size: 12px">55066</span></td>
+        <td WIDTH="22%" VALIGN="TOP"><span style="font-size: 12px">5066</span></td>
+        <td WIDTH="21%" VALIGN="TOP"><span style="font-size: 12px">25788</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="35%" VALIGN="TOP"><span style="font-size: 12px">一九九三年</span></td>
+        <td WIDTH="22%" VALIGN="TOP"><span style="font-size: 12px">57243</span></td>
+        <td WIDTH="22%" VALIGN="TOP"><span style="font-size: 12px">1243</span></td>
+        <td WIDTH="21%" VALIGN="TOP"><span style="font-size: 12px">26285</span></td>
+      </tr>
+      <tr>
+        <td WIDTH="35%" VALIGN="TOP"><span style="font-size: 12px">一九九四年</span></td>
+        <td WIDTH="22%" VALIGN="TOP"><span style="font-size: 12px">59342</span></td>
+        <td WIDTH="22%" VALIGN="TOP"><span style="font-size: 12px">9342</span></td>
+        <td WIDTH="21%" VALIGN="TOP"><span style="font-size: 12px">35276</span></td>
+      </tr>
+    </table>
+    </center></div></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

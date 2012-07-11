@@ -1,0 +1,72 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>工作代码文件的生成与代码维护</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><strong>工作代码文件的生成与代码维护</strong></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">在系统维护菜单项下，选择了代码维护，有两项菜单：工作代码文件生成和小代码库维护。工作代码文件生成是将代码库中的代码集成到工作代码文件中。在代码库进行维护后必须重新生成工作代码文件，否则汉字替换将出错。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">小代码库维护是对某一个代码库中的代码进行增加、删除和修改。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　 1.工作代码文件生成</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　 
+    工作代码库生成是为了适应新的管理信息系统的建立或者原有信息管理系统中代码库的改变(增加)。有以下几种情况必须重新生成工作代码文件：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　(1)系统初建，不生成工作代码文件整个系统就无法运行。 
+    工作代码文件一般不作为系统的基本文件下达，只作为工作文件存在。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　(2)原始代码库经过维护，必须重新生成工作代码库。从TGMIS 
+    4.0开始，如果通过代码维护菜单功能对代码库进行修改，系统可以自动检测到，从而重建工作代码库。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　(3)新增代码库。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　总之，代码库一旦发生变化，工作代码文件必须重新生成。否则就得不到应有的汉字替换结果。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　工作代码文件是根据工作代码文件组织数据库(CODE.DBF)生成的，凡新增代码库或原代码库换名，必须首先在CODE.DBF 
+    库中作必要的登录或修改。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">2. 代码库维护</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">在管理信息系统中，代码维护是系统维护的主要内容之一，代码库维护有三种方式：新增代码库；删除代码库；代码库维护码。凡经过以上三种代码维护后都必须重新生成工作代码库。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">代码库的增加和删除都必须对CODE.DBF的记录进行增加和删除。 
+    </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">3.小代码库维护操作</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">利用系统所提供的功能对所需进行维护的代码库进行代码的增、删、改操作。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">操作步骤如下：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　(1) 
+    选择系统维护菜单中的代码维护，再选择小代码库维护，选择所需进行维护的代码库。　　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(2)屏幕出现的是当前代码库的情况， 
+    这时可以对代码库进行维护，用CTRL_B在代码库中添加代码，用CTRL_A在代码库中插入代码，用CTRL_U删除代码库中的代码。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　注意: 
+    代码库中的代码必须有序排列且唯一，即前边的代码值小于后边的代码值。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　代码库维护结束，用Esc 
+    键存盘退出。然后再在代码维护菜单下选择生成集成代码库，将维护后的代码生成到系统所用的工作代码文件(或称集成代码库)中。不进行这一步工作，新增加的代码在汉字替换和数据检查中均不起作用。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">当发生其它情况需要对代码库进行维护时应遵循以上原则及步骤，否则将得不到预想的结果。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">为了保证汉字替换的顺利进行，应按以下步骤进行代码库的维护工作:</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(1) 建立自用代码库</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">建立自用代码主要是部门名称代码和自用域所用的代码。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　新增代码库的建立步骤如下：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　① 
+    在域控制库中定义域，并给出对应的代码库名。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　② 
+    确定编码方式，建立代码库结构，代码库结构必须与数据项的定义相一致，并与该数据项在总控库中的登录相一致。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　 ③ 将代码录入到代码库中。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　 ④ 
+    将代码库中的代码按代码进行排序，去掉不必要的空记录。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　 ⑤ 代码库登录到CODE.DBF中。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　 ⑥ 
+    生成工作代码文件。这样就能按照要求进行汉字替换。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">(2) 修改下达的国标或行业代码</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　对下达的国标或行业的代码库进行维护，必须遵循以下原则：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　① 
+    本单位不用的代码可以删除。例如行政区码、学校码等等。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　② 
+    国标和行业代码不能重定义。这是个数据的规范化问题。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">　　③ 
+    一般不宜在国标或行业代码库中增加自用代码。如果确有必要， 
+    则应按国标或行业的编码原则进行编码，编码规则不可重定义。代码库名也不要重命名。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

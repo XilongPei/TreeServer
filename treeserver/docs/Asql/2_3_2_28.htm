@@ -1,0 +1,94 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>求和X运算</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>求和X运算(sumx)</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]sumx(列号,数组,数值表达式)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]要求与statx()基本一致，必须与staty()连用。只是当列条件成立时， 
+    它通过列号在数组相应位置加上表达式的数值，最后数组中的数据即是相应的统计求和结果。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">这里的表达式只能有一个数值，即一个sumx()只能对一个数据求和。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]下面是各学历层次的职务岗位工资和技能工资总和表。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">┌───┬────────┬────────┐<br>
+    │ │ 工资总和 │ 技能工资 │<br>
+    │ ├──┬──┬──┼──┬──┬──┤ <br>
+    │ │ 男 │ 女 │合计│ 男 │ 女 │合计│ <br>
+    ├───┼──┼──┼──┼──┼──┼──┤<br>
+    │研究生│ │ │ │ │ │ │<br>
+    ├───┼──┼──┼──┼──┼──┼──┤ <br>
+    │本科 │ │ │ │ │ │ │<br>
+    ├───┼──┼──┼──┼──┼──┼──┤<br>
+    │大专 │ │ │ │ │ │ │<br>
+    ├───┼──┼──┼──┼──┼──┼──┤ <br>
+    │中专 │ │ │ │ │ │ │<br>
+    ├───┼──┼──┼──┼──┼──┼──┤ <br>
+    │技校 │ │ │ │ │ │ │<br>
+    └───┴──┴──┴──┴──┴──┴──┘ </span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">/*下面是完成各学历层次的职务岗位工资和技术级别工资总表的ASQL语句*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">PREDICATES<br>
+    LONG fxr(6,10)<br>
+    FROM \TG\SUB0<br>
+    CONDITION<br>
+    BEGIN<br>
+    SUMMER fxr<br>
+    EDUCATION=&quot;0&quot; $ staty(1); /*研究生*/<br>
+    EDUCATION=&quot;1&quot; $ staty(2); /*大学本科*/<br>
+    EDUCATION=&quot;2&quot; $ staty(3); /*大学专科*/<br>
+    EDUCATION=&quot;3&quot; $ staty(4); /*中专*/<br>
+    EDUCATION=&quot;4&quot; $ staty(5); /*技校*/<br>
+    EDUCATION=&quot;5&quot; $ staty(6); /*高中*/<br>
+    EDUCATION=&quot;6&quot; $ staty(7); /*初中*/<br>
+    EDUCATION=&quot;7&quot; $ staty(8); /*小学*/<br>
+    EDUCATION=&quot;8&quot; $ staty(9); /*文盲半文盲*/<br>
+    EDUCATION&lt;&gt;&quot; &quot; $ staty(10); /*总计*/<br>
+    SEX=1 $ sumx(1,fxr,total_s);<br>
+    SEX=2 $ sumx(2,fxr,total_s);<br>
+    SEX=1||SEX=2 $ sumx(3,fxr,total_s);<br>
+    SEX=1 $ sumx(4,fxr,duty_s);<br>
+    SEX=2 $ sumx(5,fxr,duty_s));<br>
+    SEX=1||SEX=2 $ sumx(6,fxr,duty_s);<br>
+    END<br>
+    ACTION warray(\\TG\DATA\CXMAIN.DBF,fxr)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">此ASQL语法也可简化如下：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">PREDICATES<br>
+    LONG fxr(6,10)<br>
+    FROM \TG\SUB0<br>
+    CONDITION<br>
+    BEGIN<br>
+    SUMMER fxr,total_s<br>
+    #Y1: EDUCATION=&quot;0&quot;;<br>
+    #Y2: EDUCATION=&quot;1&quot; ;<br>
+    #Y3: EDUCATION=&quot;2&quot; ;<br>
+    #Y4: EDUCATION=&quot;3&quot; ;<br>
+    #Y5: EDUCATION=&quot;4&quot; ;<br>
+    #Y6: EDUCATION=&quot;5&quot; ;<br>
+    #Y7: EDUCATION=&quot;6&quot; ;<br>
+    #Y8: EDUCATION=&quot;7&quot; ;<br>
+    #Y9: EDUCATION=&quot;8&quot; ;<br>
+    #Y10: EDUCATION&lt;&gt;&quot; &quot;;<br>
+    #X1: SEX=1;<br>
+    #X2: SEX=2;<br>
+    #X3: SEX=1||SEX=2;<br>
+    SUMMER fxr,duty_s<br>
+    #X4: SEX=1;<br>
+    #X5: SEX=2;<br>
+    #X6: SEX=1||SEX=2;<br>
+    END<br>
+    ACTION warray(&quot;\\TG\DATA\\CXMAIN.DBF&quot;,fxr)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="15"
+    HEIGHT="15"> SUMMER 数组变量,数字型表达式</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">表示后面对X轴的约束是一种累计,上例中表示符合X1，X2，X3条件的记录分别对total_s做累计运算，符合X4，X5，X6条件的记录每别对duty_s做累计运算，累计结果放在数组fxr的相应元素中。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">SUMMER在遇到下一个SUMMER时失效，新的SUMMER生效。</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

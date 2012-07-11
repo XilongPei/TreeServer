@@ -1,0 +1,221 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>API一般定义</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>API一般定义</strong></p>
+    <p>　</p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">TreeSVR的引用是通过数据包来传递的，这个数据包的定义为：</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">typedef struct 
+    tagTS_COM_PROPS {</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char packetType; // '$'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char msgType;</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">short len; //this packet 
+    length</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">long lp;</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char leftPacket;</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char endPacket;</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">} TS_COM_PROPS, 
+    *PTS_COM_PROPS, *LPTS_COM_PROPS;</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="CENTER"><font size="3"><span style="font-size: 12px">表5.1 
+    包的各字段取值定义</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">/******************************</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">* Module Name:</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">* TS_COM.H</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">*</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">* Abstract:</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">* Contains defines of the 
+    TreeServer package information and</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">* command const value.</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">*</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">* Author:</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">* NiuJingyu.</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">*</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">* Copyright (c) NiuJingyu 
+    1997 China Railway Software Corporation</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">*</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">* Revision History:</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">* Write by NiuJingyu, 
+    1997.10</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">********************************************************************************/</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#ifndef _INC_TS_COM_</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define _INC_TS_COM_</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#ifdef _MSC_VER</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">/*</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">* Currently, all MS C 
+    compilers for application </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">* default to 1 byte 
+    alignment.</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">*/</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#pragma pack(push,1)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#endif /* _MSC_VER */</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#ifdef __cplusplus</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">extern &quot;C&quot; {</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#endif</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">typedef struct 
+    tagTS_COM_PROPS {</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char packetType; // '$'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char msgType;</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">short len; //this packet 
+    length</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">long lp;</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char leftPacket;</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">char endPacket;</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">} TS_COM_PROPS, 
+    *PTS_COM_PROPS, *LPTS_COM_PROPS;</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">//###################################################</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define pkTS_SYNC_PIPE '$'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgTS_CLIENT_LOGON 
+    'L'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define 
+    msgTS_CLIENT_LOGOFF 'E'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgTS_LOGON_OK 'O'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgTS_LOGON_ERROR 
+    'X'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgTS_PIPE_CLOSE 
+    'C'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgTS_NO_DATA 'N'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">//###################################################</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define pkTS_ASQL 'Q'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgFAST_ASQL 'Q'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_OPEN_DBF 
+    0x2000</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_CLOSE_DBF 
+    0x2001</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_REC_FETCH 
+    0x2002</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_REC_PUT 
+    0x2003</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_REC_ADD 
+    0x2004</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_REC_APP 
+    0x2005</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_REC_DEL 
+    0x2006</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_BLOB_FETCH 
+    0x2007</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_BLOB_PUT 
+    0x2008</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_DBF_RECNUM 
+    0x2009</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_LOCK_DBF 
+    0x2010</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_UNLOCK_DBF 
+    0x2011</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_FIELD_INFO 
+    0x2012</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgASQL_TYPE_A 'A'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgASQL_TYPE_B 'B'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgASQL_TYPE_C 'C'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgASQL_TYPE_E 'E' 
+    // Require the user defined symbol table </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgASQL_TEST 'T' </span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">//###################################################</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define pkTS_PIPE_FTP 'F'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgTS_FTP_FILE 'F'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmFTP_FILE_OK 0</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmFTP_FILE_ERROR 
+    0xFFFFFFFF</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmFTP_FILE_PUT 
+    0x3001</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmFTP_FILE_GET 
+    0x3002</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmFTP_FILE_DATA 
+    0x3003</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmFTP_FILE_END 
+    0x3004</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">//###################################################</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define pkTS_USER 'U'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgTS_USER_REPLAY 
+    'R'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgTS_USER 'U'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_USER_CHNG_PWD 
+    0x4000</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_USER_NET_PATH 
+    0x4013</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgTS_USER_MANAGE 
+    'M'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_USER_ADD 
+    0x4001</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_USER_DEL 
+    0x4002</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_USER_INFO 
+    0x4003</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_USER_MODI 
+    0x4004</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_USER_ENUM 
+    0x4005</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_USER_LOCK 
+    0x4006</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_USER_UNLOCK 
+    0x4007</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_USER_CLEAR_LF 
+    0x4008</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define cmTS_USER_RENAME 
+    0x4009</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define 
+    cmTS_USER_RD_TEMPLATE 0x4010</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define 
+    cmTS_USER_WR_TEMPLATE 0x4011</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define 
+    cmTS_USER_DEFAULT_HOME 0x4012</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#ifndef __INC_TUSER</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define INFO_USER_ID 1</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define INFO_PASSWD 2</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define INFO_HOME_DIR 3</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define 
+    INFO_LOGON_COMPUTER 4</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define INFO_LOGON_HOURS 5</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define INFO_ACCESS_MASK 6</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define INFO_DESCRIPTION 7</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define INFO_LOGON_FAIL 8</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define INFO_LOCKED 9</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#endif // __INC_TUSER</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">//###################################################</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define pkTS_TEST 'T'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">//###################################################</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define pkTS_MONITOR 'M'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">//###################################################</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define pkTS_INFO 'I'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">//###################################################</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define pkTS_ERROR 'E'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#define msgTS_ERROR_MSG 
+    'E'</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#ifdef __cplusplus</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">}</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#endif</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">　</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#ifdef _MSC_VER</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#pragma pack(pop)</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#endif /* _MSC_VER */</span></font></p>
+    <p ALIGN="JUSTIFY"><font size="3"><span style="font-size: 12px">#endif // _INC_TS_COM_</span></font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

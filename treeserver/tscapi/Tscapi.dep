@@ -1,0 +1,47 @@
+# Microsoft Developer Studio Generated Dependency File, included by Tscapi.mak
+
+.\des.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\des.h"\
+	
+
+.\Lzhuf.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\exchbuff.h"\
+	".\namedpipe.h"\
+	".\terror.h"\
+	".\tlimits.h"\
+	".\ts_com.h"\
+	".\ts_const.h"\
+	
+
+.\MISTRING.C : \
+	".\dir.h"\
+	".\mistring.h"\
+	".\wst2mt.h"\
+	
+
+.\namedpipe.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\namedpipe.h"\
+	".\terror.h"\
+	".\tlimits.h"\
+	".\tree_tcp.h"\
+	".\ts_com.h"\
+	
+
+.\Tree_tcp.c : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\tree_tcp.h"\
+	
+
+.\TSCAPI.C : \
+	"..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\des.h"\
+	".\lzhuf.h"\
+	".\namedpipe.h"\
+	".\terror.h"\
+	".\tlimits.h"\
+	".\ts_com.h"\
+	".\tscapi.h"\
+	

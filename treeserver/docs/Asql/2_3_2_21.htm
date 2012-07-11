@@ -1,0 +1,43 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>填表函数</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><span style="font-size: 12px"><b>填表函数(filltable)</b></span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[原型]filltable(&lt;关键字&gt;,&lt;数据域名&gt;,&lt;数据&gt;,……)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]依照关键字，把从源库中提取的数据存入目标库中的相应域中，其中&lt;数据域名&gt;和&lt;数据&gt;可有多组，但须一一对应。其实质就是利用源库中的数据，按照用户的格式和要求，重新建立数据库。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">要求：目标库已存在，即域已建好。若目标库中无函数中的域名，则系统将试图找域名为&quot;T______&quot;的域（域名前七位为T和6个下划线），将其改名为新的域名。如果利用KEY找不到目标库的相应记录，则在该表尾部添加一个记录。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]/*将学生成绩库Lesson1改写成Tab1的形式，以利操作（设只有三门课）。*/</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">Lesson1: Tab1:</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">┌────┬───┬───┐ 
+    ┌────┬───┬───┬───┐<br>
+    │ 学号 │ 课程 │ 成绩 │ │ 学号 │ 课程1│ 课程2│ 课程3│<br>
+    │ code │lesson│ score│ │ code │ T001 │ T002 │ T003 │<br>
+    ├────┼───┼───┤ 
+    ├────┼───┼───┼───┤<br>
+    │960001 │ 001 │76.0 │ │960001 │76.0 │ 87.5 │ 97.0 │<br>
+    │960001 │ 002 │87.5 │ │960002 │64.0 │ 73.0 │ ... │<br>
+    │960001 │ 003 │97.0 │ │960003 │... │ ... │ │<br>
+    │960002 │ 001 │64.0 │ │ ... │ │ │ │<br>
+    │960002 │ 002 │73.0 │ └────┴───┴───┴───┘<br>
+    │ ... │ ... │... │<br>
+    └────┴───┴───┘</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">FROM Lesson1<br>
+    TO Tab1，*<br>
+    CONDITION<br>
+    BEGIN<br>
+    &nbsp; 1 $ filltable(code, &quot;T&quot;+lesson,score)<br>
+    END</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

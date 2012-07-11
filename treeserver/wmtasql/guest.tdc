@@ -1,0 +1,6 @@
+act webprint("name","email","title","url","guest","\n")
+from guest
+condition
+begin
+  1$webprint(name,email,title,url,guest)
+end

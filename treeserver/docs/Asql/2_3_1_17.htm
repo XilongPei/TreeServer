@@ -1,0 +1,34 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>模比字符串</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" width="90%">
+  <tr>
+    <td width="100%"><p align="center"><strong><span style="font-size: 12px">模比字符串(mdstr)</span></strong></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px"><br>
+    [原型]LOGIC_TYPE mdstr(&lt;字符串型表达式&gt;, &lt;模板字符串&gt;)</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[功能]把字符串和模板字符串进行比较。字符串符合模板字符串提供的格式，返回值为1(真值)；否则，返回0(假)。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">模板字符串由普通字符和模板字符组成。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">ASQL支持的模板字符有：</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">'9'代表数字</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">'#'代表数字, 空格, 正号, 负号</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">'A'代表中英文字符</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">'X'代表任意字符</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">其它字符：必须与待匹配字符串相等。</span></p>
+    <p ALIGN="JUSTIFY"><span style="font-size: 12px">[示例]<br>
+    mdstr(&quot;+12345&quot;, &quot;#129&quot;) <br>
+    结果为： 1(真值)<br>
+    mdstr(&quot;cde2%&quot;,&quot;AXe#X&quot;) <br>
+    结果为： 1(真值)</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

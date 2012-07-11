@@ -1,0 +1,647 @@
+{*******************************************************}
+{                                                       }
+{       Delphi Helping Tools                            }
+{                                                       }
+{  Copyright (c) 1996 Fabula Software info@fabula.com   }
+{                                                       }
+{*******************************************************}
+unit SrcParser;
+{ Miniparser for Syntax-Highlighting etc.
+  This code is usefull if you implement programmer tools
+  for example a source viewer or a documentation system.
+
+  You can use this unit to parse various languages like Pascal,
+  Java and C++. Each language have it's own parsing class
+  looking for identifiers and comments.
+
+  If you find a bug in the syntax parser for a language
+  please let me know. eMail the fix or bug to stefc@fabula.com
+  I only use Delphi so not wonder if the syntax scanning for Delphi
+  is the best :-)
+
+  Projekt1.dpr, MiniParser.dfm & .pas demonstrate this unit.
+
+  You need a actual xProcs.dcu came from xTools package
+  for compile this. Look for our xTools-Nails & xTools-Screws
+  also !
+
+  If you enhance this unit with your own parser for your language
+  like Basic, Smalltalk, .... let me also known.
+
+                         Stefan B鰐her, Fabula Software
+}
+interface
+
+uses
+  Classes,ComCtrls,Dialogs;
+
+type
+  TParseState = (psNormal, psIdent, psKeyword, psNumber, psString, psComment ,psOpera,psChinese);
+
+type
+  TParser = class
+  private
+    FOnFound  : TNotifyEvent;
+    FOnReplace: TNotifyEvent;
+    FState   : TParseState;
+    FInput   : String;
+    FSource  : String;
+    FKeyWord : String;
+    FSelStart,
+    FSelEnd  : Integer;
+    FComment : Integer;
+    FPrior   : Boolean;
+    FIndex   : Integer;
+    FKeywords: TStrings;
+    procedure SetKeywords(Value: TStrings);
+  protected
+    procedure Found; virtual;
+    procedure Mark;
+    procedure ParseChar(Ch,Next: Char; i: Integer); virtual; abstract;
+    procedure PushChar(Ch: Char);
+    function  IsKeyword(const aKey: String): Boolean;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    procedure HighLight(const Prefix, Postfix: String);
+    function  Parse(const S: String): String; virtual;
+    property  State  : TParseState read FState;
+    property  Input  : String read FInput write FInput;
+    property  Source : String read FSource write FSource;
+    property  Keywords: TStrings read FKeywords write SetKeywords;
+    property  OnFound: TNotifyEvent read FOnFound write FOnFound;
+    property  OnReplace: TNotifyEvent read FOnReplace write FOnReplace;
+  end;
+
+  TASqlParser = class(TParser)
+  protected
+    procedure ParseChar(Ch, Next: Char; i: Integer); override;
+  public
+    constructor Create;
+  end;
+
+  function SourceToRtf(const aFile: String; aMono, aHeader: Boolean): String;
+  function searchkey(var pos,len:integer;text:string;textLen:integer;var Note:Boolean):integer;
+
+implementation
+
+uses
+  Windows, Graphics, SysUtils;
+
+var
+  IsFirst:Boolean;
+
+const
+  DIGIT = ['0'..'9'];
+  ALPHA = ['A'..'Z', 'a'..'z'];
+  IDENT = ALPHA + DIGIT + ['_'];
+  OPERATOR = ['+','-','*','/','(',')','[',']','='];
+
+  _Alpha : set of char = ['A'..'Z'];
+
+constructor TParser.Create;
+begin
+  inherited Create;
+  FKeywords:=TStringList.Create;
+  TStringList(FKeywords).Sorted:=True;
+  IsFirst:=True;
+end;
+
+destructor TParser.Destroy;
+begin
+  FKeywords.Free;
+  inherited Destroy;
+end;
+
+procedure TParser.SetKeywords(Value: TStrings);
+begin
+  FKeywords.Assign(Value);
+end;
+
+function TParser.IsKeyword(const aKey: String): Boolean;
+var
+  L, H, I, C: Integer;
+begin
+  Result := False;
+  L := 0;
+  H := FKeywords.Count-1;
+  while L <= H do
+  begin
+    I := (L + H) shr 1;
+    C := CompareText(FKeywords[i],aKey);
+    if C < 0  then L := I + 1 else
+    begin
+      H := I - 1;
+      if C = 0 then
+      begin
+        Result:=True;
+        break;
+      end;
+    end;
+  end;
+end;
+
+
+procedure TParser.HighLight(const Prefix, Postfix: String);
+begin
+  Insert(Postfix,FSource,FSelEnd+1);
+  Insert(Prefix,FSource,FSelStart);
+end;
+
+function TParser.Parse(const S: String): String;
+var
+  Ch,
+  Next: Char;
+begin
+  FState := psNormal;
+  FSource:= '';
+  FInput := S;
+  Findex := 1;
+  while FIndex <= Length(FInput) do
+  begin
+    Ch := FInput[FIndex];
+    if FIndex < Length(FInput) then Next:=FInput[FIndex+1] else Next:=#0;
+    FSource := FSource + Ch;
+    if FState = psNormal then
+       FSelStart:=Length(FSource);
+    if Assigned(FOnReplace) then
+       FOnReplace(Self);
+    ParseChar(Ch,Next,FIndex);
+    Inc(FIndex);
+  end;
+  Result:=FSource;
+end;
+
+procedure TParser.PushChar(Ch: Char);
+begin
+  FSource:=FSource+ Ch;
+  Inc(FIndex);
+end;
+
+procedure TParser.Found;
+begin
+  if Assigned(FOnFound) then FOnFound(Self);
+end;
+
+procedure TParser.Mark;
+begin
+  FPrior:=False;
+end;
+
+
+{ TAsqlParser - Asql Parser }
+
+constructor TASqlParser.Create;
+const
+   _Keywords : array[0..29] of string = (
+       'ACTION','BEGIN','CALL','CHAR','CONDITION','DATABASE','DO','ELSE','END',
+       'ENDIF','ENDWHILE','EXECLUSIVE','EXIT','FLOAT','FOR','FROM','FUNCTION',
+       'IF','INT','LABEL','LET','LONG','LOOP','GROUPBY','GROUPBYACTION','PREDICATES',
+       'STRING','TITLE','TO','WHILE');
+var
+  i : Integer;
+
+begin
+  inherited Create;
+  for i:= Low(_Keywords) to High(_Keywords) do
+    FKeywords.Add(_Keywords[i]);
+end;
+
+procedure TASqlParser.ParseChar(Ch, Next: Char; i: Integer);
+begin
+  case FState of
+    psChinese:
+       if not ((Ch > #160)and (ch<#255)) then
+       begin
+          //FSelEnd:=Length(FSource)-1;
+          //showmessage(inttostr(length(self.Source)));
+          //Self.Source:='\''ba\''cd';
+          FSelEnd:=Length(FSource);
+          //FSelStart:=FselStart-2;
+          Found;
+          FState:=psNormal;
+       end;
+    psOpera :
+       begin
+          FSelEnd:=Length(FSource)-1;
+          Found;
+          FState:=psNormal;
+       end;
+    psIdent :
+      if not (Ch in IDENT ) then
+      begin
+        FSelEnd:=Length(FSource)-1;
+        if IsKeyWord(FKeyWord) then
+        begin
+          FState := psKeyword;
+          Found;
+        end else
+        begin
+          Found;
+          //FSelStart:=FselStart-1;
+        end;
+        FState:=psNormal;
+      end else
+        FKeyword:=FKeyword+Upcase(Ch);
+
+    psNumber :
+      if not (Ch in ['0'..'9','.','E','e']) then
+      begin
+        FSelEnd:=Length(FSource)-1;
+        Found;
+        FState:=psNormal;                           { push number on stack }
+      end;
+
+    psString :
+      if Ch = '"' then
+         if Next <>'"' then
+         begin
+           //PushChar(Next);
+           FSelEnd:=Length(FSource);
+           Found;
+           FState:=psNormal;                        { push string on stack }
+         end;
+
+    psNormal :
+      case Ch of
+        ' ',#0,#8,#13,#10 : ;                    { null characters }
+
+        '>','<','=','[',']','+','-' :            { operators }
+              begin
+                 Fstate:=psOpera;
+              end;
+
+        '0'..'9' :                                { numbers }
+              begin
+                FState:=psNumber;
+              end;
+
+        'A'..'Z', 'a'..'z', '_' :                   { identifier }
+              begin
+                FState:=psIdent;
+                FKeyword:=Ch;
+                Mark;
+              end;
+
+        '"' : begin                                 { string }
+                FState:=psString;
+                Mark;
+              end;
+
+        '/' : if Next = '/' then                  { // & /* comment }
+              begin
+                FState:=psComment;
+                FComment:=3;
+                Mark;
+              end else if Next = '*' then
+              begin
+                FState:=psComment;
+                FComment:=2;
+                Mark;
+              end;
+        #160..#255:
+              begin
+                FState:=psChinese;
+                Mark;
+              end;
+      end;
+
+    psComment :
+
+      case FComment of
+        1 : ;
+        2 : if Ch = '*' then
+               if Next = '/' then
+               begin
+                 PushChar(Next);
+                 FSelEnd:=Length(FSource);
+                 Found;
+                 FState:=psNormal;
+               end;
+        3 : if Ch in [#13, #10] then
+            begin
+              FSelEnd:=Length(FSource)-1;
+              Found;
+              FState:=psNormal;
+            end;
+      end;
+  end; { case state }
+end;
+
+type
+  TParserCallBack = class
+    class procedure FoundColor(Sender: TObject);
+    class procedure FoundMono(Sender: TObject);
+    class procedure Replace(Sender: TObject);
+  end;
+
+class procedure TParserCallBack.FoundColor(Sender: TObject);
+var
+  aParser : TParser;
+begin
+  aParser := Sender as TParser;
+  case aParser.State of
+    psKeyword : aParser.HighLight('{\cf3\b ','}');   { white bold }
+    psComment : begin
+                   aParser.HighLight('{\cf5\i ','}');   { gray  italic}
+                   aParser.FSelStart:=aParser.FSelStart+9;
+                   aParser.FSelEnd:=aParser.FSelEnd+8;
+                   aParser.HighLight('\plain\lang2052\f3\fs20\cf5\i','\plain\lang1031\f0\fs20');
+                end;
+    psNumber  : aParser.HighLight('{\cf6 ','}');
+    psString  : aParser.HighLight('{\cf4','}');//aParser.HighLight('{\cf5\i ','}');
+    psOpera   : aParser.HighLight('{\cf7','}');
+    psChinese : aParser.HighLight('\plain\lang2052\f3\fs20','');//'\plain\lang1031\f0\fs20');
+  end;
+end;
+
+class procedure TParserCallBack.FoundMono(Sender: TObject);
+var
+  aParser : TParser;
+begin
+  aParser := Sender as TParser;
+  case aParser.State of
+    psKeyword : aParser.HighLight('{\b ','}');   { bold }
+    psComment : aParser.HighLight('{\i ','}');   { italic}
+  end;
+end;
+
+class procedure TParserCallBack.Replace(Sender: TObject);
+var
+  aParser : TParser;
+  Ch{,Ch1} : Char;
+  S: String;
+//  Str:String;
+begin
+  aParser := Sender as TParser;
+  S := aParser.Source;
+  Ch := S[Length(S)];
+  case Ch of
+    '{' : Insert('\',S,Length(S));
+    '}' : Insert('\',S,Length(S));
+    #10  : Insert('\par ',S,Length(S));
+{    #176..#255:
+        begin
+           if not Isfirst then
+           begin
+           Str:='';
+           showmessage(s);
+           Ch1 := S[Length(S)-1];
+           str:='\'''+lowercase(inttohex(ord(ch1),2));
+           str:=str+'\'''+lowercase(inttohex(ord(ch),2));
+           Delete(s,length(s)-1,2);
+           Insert(str,s,length(s)+1);
+           end;
+        end;   }
+    else exit;
+  end;
+  aParser.Source:=S;
+end;
+
+{ converts a Delphi TColor into a RTF-color table string }
+function ColorToRtf(aColor:TColor): String;
+begin
+  aColor:=ColorToRGB(aColor);
+  Result:='\red'+IntToStr(GetRValue(aColor))+
+          '\green'+IntToStr(GetGValue(aColor))+
+          '\blue'+IntToStr(GetBValue(aColor))+';';
+end;
+
+function strFileLoad(const aFile: String): String;
+var
+  aStr    : TStrings;
+begin
+  aStr:=TStringList.Create;
+  aStr.LoadFromFile(AFile);
+  Result:=aStr.Text;
+end;
+
+{ converts a source file to a RTF-String that can be displayed or not }
+function SourceToRtf(const aFile: String; aMono,aHeader: Boolean): String;
+var
+  aParser   : TParser;
+//  aExt      : String[10];
+  RtfHeader : String;
+begin
+  RtfHeader :=
+    '{\rtf1\ansicpg936\deff0\deftab720'
+   +'{\fonttbl'
+     +'{\f0\fmodern Courier New;}'
+     +'{\f1\froman\fcharset2 Symbol;}'
+     +'{\f2\fnil\fcharset134 MS Sans Serif;}'
+     +'{\f3\fnil\fcharset134 \''cb\''ce\''cc\''e5;}}'
+   +'{\colortbl'+
+      ColorToRtf(clBlack)+
+      ColorToRtf(clWhite);
+
+   if not aMono then                { add yellow and silver }
+      RtfHeader := RtfHeader +
+        ColorToRtf(clYellow)+
+        ColorToRtf(clRed)+
+        ColorToRtf(clNavy)+
+//        ColorToRtf(clYellow)+
+        ColorToRtf(ClGray)+
+        ColorToRtf(clGreen)+
+        ColorToRtf(clLime);
+
+  RtfHeader:=RtfHeader +'}' +'\deflang1031\pard\plain\f0\fs20';
+
+  if not aMono then RtfHeader:= RtfHeader + '\cf0';   { yellow as default }
+
+{  aExt:=LowerCase(ExtractFileExt(aFile));
+  if Pos(aExt,'*.ask') > 0 then}
+     aParser := TASqlParser.Create;
+{  else
+     raise Exception.Create('Unknown source yet !');
+}
+  Result:= strFileLoad(aFile);
+
+  try
+    with TParserCallBack do begin
+      if aMono then
+         aParser.OnFound:= FoundMono
+      else
+         aParser.OnFound:= FoundColor;
+      aParser.OnReplace := Replace;
+    end;
+
+    Result := aParser.Parse(Result);
+    if aHeader then
+       Result := RtfHeader+Result+'}';
+  finally
+    aParser.Free;
+  end;
+end;
+
+function IsKeyWord(const aKey:string):Boolean;
+var
+  L, H, I, C: Integer;
+const
+   FKeywords : array[0..29] of string = (
+       'ACTION','BEGIN','CALL','CHAR','CONDITION','DATABASE','DO','ELSE','END',
+       'ENDIF','ENDWHILE','EXECLUSIVE','EXIT','FLOAT','FOR','FROM','FUNCTION',
+       'IF','INT','LABEL','LET','LONG','LOOP','GROUPBY','GROUPBYACTION','PREDICATE',
+       'STRING','TITLE','TO','WHILE');
+begin
+  Result := False;
+  L := 0;
+  H := 29;  //High(FKeywords);
+  while L <= H do
+  begin
+    I := (L + H) shr 1;
+    C := CompareText(FKeywords[i],aKey);
+    if C < 0  then L := I + 1 else
+    begin
+      H := I - 1;
+      if C = 0 then
+      begin
+        Result:=True;
+        break;
+      end;
+    end;
+  end;
+end;
+
+function searchkey(var pos,len:integer;text:string;textLen:integer;var Note:Boolean):integer;
+//  return:
+//      0 : 正常情况
+//      1 : 关键字
+//      2 : 运算符
+//      3 : 注释内容
+var
+   i,j:Integer;
+   tmp:string;
+begin                                                
+   len:=0;
+   if (pos < 1) or (pos>textLen) then
+   begin
+      //messagedlg('参数错误!',mtInformation,[mbOk],0);
+      result:=0;
+      exit;
+   end;
+
+   if Note then
+   begin
+      if (Text[pos] = #13) or (Text[pos] = #10) then
+      begin
+         Note:=False;
+      end;
+      i:=Pos-1;
+      while not((text[i]='/') and (text[i+1]='/')) do
+      begin
+         i:=i-1;
+         Pos:=i;
+      end;
+      i:=Pos;
+      while (i<textLen) or (text[i]=#13) do
+      begin
+         i:=i+1;
+         len:=i-Pos+1;
+      end;
+      Pos:=Pos-1;
+      result:=3;
+      exit;
+   end;
+
+   //if  not (text[pos] in ALPHA) then
+   if  not ((text[pos] >= 'a') and (text[pos] <= 'z' )  or (text[pos] <= 'Z' ) and (text[pos] >= 'A' ))then
+   begin
+      if (text[Pos]='/') and (text[pos-1]='/') then
+      begin
+         i:=Pos;
+         Pos:=Pos-2;
+         len:=2;
+         while (i<textLen) and (text[i]<>#13) do
+         begin
+            i:=i+1;
+            len:=i-Pos+1;
+         end;
+         result:=3;
+         Note:=True;
+         exit;
+      end;
+      if text[pos] in OPERATOR then
+      begin
+         pos:=Pos-1;
+         Len:=1;
+         result:=2;
+      end
+      else
+      begin
+         pos:=Pos-1;
+         Len:=1;
+         result:=0;
+      end;
+      exit;
+   end;
+
+   i:=pos;
+   j:=pos;
+
+   while (i>1) and (text[i-1] in ALPHA) do
+      i:=i-1;
+   while (j<textLen) and (text[j+1] in ALPHA) do
+      j:=j+1;
+   tmp:=copy(text,i,j-i+1);
+   if IsKeyWord(tmp) then
+   begin
+      pos:=i-1;
+      len:=j-i+1;//length(key);
+      result:=1;
+   end
+   else
+   begin
+      Pos:=i-1;
+      len:=j-i+1;
+      result:=0;
+   end;
+end;
+
+procedure FormatEdit(editor:TRichedit;Start,SelLen:integer;Var Note:Boolean);
+var
+   pos,len:integer;
+   IsKey:integer;
+   textLen:integer;
+begin
+   Note := false;
+   textLen:=length(editor.Text);
+   if (Start<1) or (Start+SelLen > textLen+1) then
+   begin
+      messagedlg('参数错误!',mtInformation,[mbOk],0);
+      exit;
+   end;
+   pos:=Start;
+   len:=0;
+   while Pos-Start< SelLen do
+   begin
+      IsKey:=searchkey(pos,len,editor.text,textLen,Note);
+      case Iskey of
+         0:Pos:=Pos+Len+1;
+         1:
+         begin
+            editor.SelStart :=pos;
+            editor.SelLength := len;
+            editor.SelAttributes.Color :=Clred;
+            Pos:=Pos+Len+1;
+         end;
+         2:
+         begin
+            editor.SelStart :=pos;
+            editor.SelLength := 1;
+            editor.SelAttributes.Color :=clLime;
+            Pos:=Pos+2;
+         end;
+         3:
+         begin
+            editor.SelStart :=pos;
+            editor.SelLength := len;
+            editor.SelAttributes.Color :=ClGray;
+            Note:=False;
+            Pos:=Pos+Len+1;
+         end;
+      end;
+   end;
+end;
+
+end.
+

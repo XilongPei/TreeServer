@@ -1,0 +1,74 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>数据仓库(历史数据)</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="center"><strong>数据仓库(历史数据)</strong></p>
+    <p align="left">　</p>
+    <b><p><font size="3"><span style="font-size: 12px">数据仓库（历史数据）数据采集</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">（数据仓库技术在本书其它章节有述）</span></font></b></p>
+    <p><font size="3"><span style="font-size: 12px">DWORD tsHistDataCollect(HANDLE hConnect, 
+    LPCSTR szHistcondPath, LPCSTR szRem, LPSysVarOFunType lpXexpVar, DWORD dwXexpVarNum, LPSTR 
+    szInstResult，DWORD dwInstResultSize，LPVOID lpRsutMem, LPDWORD lpdwLen);</span></font></p>
+    <p>　</p>
+    <b><p><font size="3"><span style="font-size: 12px">功能：</span></font></b></p>
+    <p><font size="3"><span style="font-size: 12px">请求TreeSVR给予数据仓库服务，同时将符号表传给TreeSVR，TreeSVR在数据仓库的ASQL角本运算时可以引用这些符号，同时也可以将结果放在这些符号中，在数据仓库事务完成后，TreeSVR负责将符号表传回来，放在原来的内存空间，API的调用者就可以通过这些符号表获得一些运算结果了。</span></font></p>
+    <p>　</p>
+    <b><p><font size="3"><span style="font-size: 12px">参数：</span></font></p>
+    </b><blockquote>
+      <p><font size="3"><span style="font-size: 12px">typedef struct {</span></font></p>
+    </blockquote>
+    <p><font size="3"><span style="font-size: 12px">short type; //变量类型</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">char VarOFunName[32]; //变量名</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">unsigned char values[32]; //值空间</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">short length; //长度，最大值为32</span></font></p>
+    <blockquote>
+      <p><font size="3"><span style="font-size: 12px">} SysVarOFunType *LPSysVarOFunType;</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">type的可取值为：</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">整型：INT，1054</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">长整：LONG，1055</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">浮点：FLOAT，1056</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">字符：CHAR，1053</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">字符串：STRING，1051</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">日期：DATE，1052</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">所有变量的值都在values中，字符串最长31字符，另有一尾0，具体存法参见ASQL文档。</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">lpXexpVar：符号缓冲区</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">dwXexpVarNum：符号数量</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">szHistcondPath：数据仓库条件存放位置字符串，若在系统数据库内，可用数据库名代替，缺省(“”)为TreeSVR的ROOTDBS，以尾0结束。</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">szRem 本次数据采集说明，以尾0结束</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">lpRsutMem：存放长大结果的缓冲区</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">lpdwLen：缓冲区大小</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">szInstResult:立即结果。为一指向字符缓冲区指针。</span></font></p>
+    </blockquote>
+    <p><font size="3"><span style="font-size: 12px">sprintf(szInstResult, &quot;ERR:%d 
+    INF:%s\n%s\nXEXP:%s&quot;, \</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">ERR:ASQL错误号 \</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">ASQL错误信息, \</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">ASQL错误附属信息, \</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">表达式错误信息 {表达式错误附属信息}</span></font></p>
+    <p><font size="3"><span style="font-size: 12px">);</span></font></p>
+    <blockquote>
+      <p><font size="3"><span style="font-size: 12px">dwBufSize：立即结果缓冲区大小</span></font></p>
+    </blockquote>
+    <p>　</p>
+    <b><p><font size="3"><span style="font-size: 12px">返回：</span></font></p>
+    </b><blockquote>
+      <p><font size="3"><span style="font-size: 12px">1:完整结果</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">2：不完整</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">3：不成功</span></font></p>
+      <p><font size="3"><span style="font-size: 12px">tsGetLastError()可获得出错信息。</span></font></p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

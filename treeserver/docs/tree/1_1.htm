@@ -1,0 +1,61 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>TREESERVER 安装准备</title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" width="90%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%"><p align="left"><img src="leftup.jpg" width="324" height="85"
+    alt="leftup.bmp (82674 bytes)"><font FACE="黑体" SIZE="4"><b>TreeSVR安装准备</b></font></p>
+    <p>　</p>
+    <p><span style="font-size: 12px">TreeServer 是一个基于 Windows NT 
+    开发的事务代理服务器，本身提供了数据管理及事务服务的能力。其用户访问接口同时支持标准的用户访问方式和 
+    Web 的访问方式。TreeServer 的安全系统是同 Windows NT 集成的，即使用 NT 
+    的安全子系统来对用户进行审计，而基于事务的审计则是 TreeServer 
+    内置的。</span></p>
+    <p><span style="font-size: 12px">　　TreeServer 须运行于 Windows NT 
+    平台上，要求中文 Windows NT4.00 
+    以上版本，具体环境可以是域控制器或独立的服务器。安装前的准备工作根据用户的不同需求做不同的安排：</span></p>
+    <p><span style="font-size: 12px">　　所有用户在安装前均须创建 TreeServer 
+    的公共用户组，组帐号名字为 &quot;TreeServer Users&quot;，访问 TreeServer 
+    的所有用户都应设定为该用户组的成员。</span></p>
+    <p><span style="font-size: 12px"><img SRC="Image1.gif" WIDTH="32" HEIGHT="32">TreeServer 
+    用户组通常为全局用户组。</span></p>
+    <p><span style="font-size: 12px">如果用户需要通过 Internet 
+    进行对服务器的访问，则须有一台 Web 服务器，Web 服务器可以与 
+    TreeServer 运行于相同或不同的机器上。具体的细节可参阅系统设置。</span></p>
+    <p><span style="font-size: 12px"><img SRC="Image1.gif" WIDTH="32" HEIGHT="32">TreeServer的用户与Windows 
+    NT上的用户是不同的，Windows NT的上的用户负责实施客户端与服器端通讯级的审计，即，客户端登录上的这个用户，如果连Windows 
+    NT也登录不上，则根本无法与TreeSVR产生联系。而登录TreeSVR时所用的用户是基于事务审计的。用户通过这个帐号才可产生与TreeSVR服务器的连接。</span></p>
+    <p><span style="font-size: 12px">TreeSVR的用户帐号是与Windows NT完全独立的，它们之间没有一个影射关系。</span></p>
+    <p><span style="font-size: 12px">基于此，装TreeSVR时一定先做Windows NT用户的开用户工作，然后才做TreeSVR的开用户工作。</span></p>
+    <p><span style="font-size: 12px"><img SRC="Image1.gif" WIDTH="32" HEIGHT="32">Windows NT的全局组是针对域来讲的，只有域控制器可以创建全局组，如果当前服务器是单一服务器，即只有组。则只能创建本地组。</span></p>
+    <p><span style="font-size: 12px">在Windows NT的一个物理网中，通常单一服务器的组名不应与同网内的其它服务器的域名相同，否则Windows 
+    NT可能认为这个服务器的缺省域是同名的域了，这可能是Windows NT的一种错误。</span></p>
+    <p>　</p>
+    <p ALIGN="CENTER"><span style="font-size: 12px"><img SRC="Image2.gif" WIDTH="511"
+    HEIGHT="384"></span></p>
+    <p ALIGN="CENTER">　</p>
+    <p ALIGN="CENTER"><span style="font-size: 12px">图1.1 用户组</span></p>
+    <p ALIGN="CENTER">　</p>
+    <p ALIGN="CENTER">　</p>
+    <p ALIGN="CENTER"><span style="font-size: 12px"><img SRC="Image3.gif" WIDTH="548"
+    HEIGHT="410"></span></p>
+    <p ALIGN="CENTER">　</p>
+    <p ALIGN="CENTER"><span style="font-size: 12px">图1.2 TreeServer Users用户组设置</span></p>
+    <p ALIGN="CENTER">　</p>
+    <p ALIGN="CENTER"><span style="font-size: 12px"><img SRC="Image4.gif" WIDTH="511"
+    HEIGHT="384"></span></p>
+    <p ALIGN="CENTER">　</p>
+    <p ALIGN="CENTER"><span style="font-size: 12px">图1.3 TreeServer Users用户组本机登录权限设置</span></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>
